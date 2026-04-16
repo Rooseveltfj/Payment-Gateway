@@ -4,7 +4,11 @@ import pg from "pg";
 
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
-const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
+// No Prisma 7, conexões diretas via driver nativo exigem o uso de um adapter.
+const pool = new pg.Pool({ 
+  connectionString: process.env.DATABASE_URL,
+  connectionTimeoutMillis: 10000, // 10s
+});
 const adapter = new PrismaPg(pool);
 
 export const prisma =

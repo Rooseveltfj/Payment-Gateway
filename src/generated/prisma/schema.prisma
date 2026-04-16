@@ -1,0 +1,296 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                 String        @id @default(cuid())
+  name               String
+  email              String        @unique
+  password           String
+  role               Role          @default(USER)
+  status             UserStatus    @default(PENDING)
+  kycStatus          KycStatus     @default(NOT_SUBMITTED)
+  document           String? // CPF
+  phone              String?
+  pixKey             String?
+  pixKeyType         PixKeyType?
+  bankName           String?
+  bankAgency         String?
+  bankAccount        String?
+  avatarUrl          String?
+  platformFeePercent Float         @default(9.99)
+  totalEarnings      Float         @default(0)
+  totalWithdrawn     Float         @default(0)
+  availableBalance   Float         @default(0)
+  pendingBalance     Float         @default(0)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  products           Product[]
+  orders             Order[]
+  withdrawals        Withdrawal[]
+  transactions       Transaction[]
+  webhooks           Webhook[]
+  apiKeys            ApiKey[]
+  kycDocuments       KycDocument[]
+  badges             UserBadge[]
+}
+
+model Product {
+  id             String         @id @default(cuid())
+  userId         String
+  user           User           @relation(fields: [userId], references: [id])
+  name           String
+  description    String?
+  price          Float
+  currency       String         @default("BRL")
+  type           ProductType    @default(SINGLE)
+  status         ProductStatus  @default(ACTIVE)
+  imageUrl       String?
+  checkoutConfig Json? // configuração completa do checkout builder
+  slug           String         @unique
+  salesCount     Int            @default(0)
+  revenue        Float          @default(0)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  orders         Order[]
+  checkoutLinks  CheckoutLink[]
+}
+
+model Order {
+  id            String        @id @default(cuid())
+  userId        String
+  user          User          @relation(fields: [userId], references: [id])
+  productId     String
+  product       Product       @relation(fields: [productId], references: [id])
+  buyerName     String
+  buyerEmail    String
+  buyerCpf      String?
+  buyerPhone    String?
+  buyerData     Json? // campos personalizados do checkout
+  amount        Float
+  platformFee   Float
+  netAmount     Float
+  status        OrderStatus   @default(PENDING)
+  paymentMethod PaymentMethod
+  pixQrCode     String?
+  pixCopyPaste  String?
+  boletoUrl     String?
+  boletoBarcode String?
+  cardLastFour  String?
+  cardBrand     String?
+  installments  Int           @default(1)
+  externalId    String? // ID do Pagar.me
+  paidAt        DateTime?
+  refundedAt    DateTime?
+  isMatured     Boolean       @default(false)
+  statusHistory Json? // Histórico de estados: [{status: string, date: string}]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Withdrawal {
+  id          String           @id @default(cuid())
+  userId      String
+  user        User             @relation(fields: [userId], references: [id])
+  amount      Float
+  status      WithdrawalStatus @default(PENDING)
+  pixKey      String
+  pixKeyType  PixKeyType
+  processedAt DateTime?
+  createdAt   DateTime         @default(now())
+}
+
+model Webhook {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  url       String
+  secret    String
+  events    String[] // ["order.paid", "order.refunded", etc]
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model WebhookLog {
+  id         String   @id @default(cuid())
+  webhookId  String
+  event      String
+  payload    Json
+  statusCode Int?
+  response   String?
+  success    Boolean
+  sentAt     DateTime @default(now())
+}
+
+model ApiKey {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  name      String
+  key       String    @unique
+  lastUsed  DateTime?
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+}
+
+model KycDocument {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  type       DocType
+  fileUrl    String
+  status     DocStatus @default(PENDING)
+  reviewNote String?
+  reviewedAt DateTime?
+  createdAt  DateTime  @default(now())
+}
+
+model UserBadge {
+  id       String    @id @default(cuid())
+  userId   String
+  user     User      @relation(fields: [userId], references: [id])
+  badge    BadgeType
+  earnedAt DateTime  @default(now())
+}
+
+model CheckoutLink {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  slug      String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Transaction {
+  id          String          @id @default(cuid())
+  userId      String
+  user        User            @relation(fields: [userId], references: [id])
+  type        TransactionType
+  amount      Float
+  balance     Float // saldo após a transação
+  description String
+  createdAt   DateTime        @default(now())
+}
+
+model PlatformSetting {
+  id                   String   @id @default("global")
+  defaultPlatformFee   Float    @default(9.99)
+  withdrawalFee        Float    @default(3.50)
+  withdrawalPercentFee Float    @default(5.0)
+  minWithdrawalAmount  Float    @default(50.0)
+  minWithdrawalDays    Int      @default(7)
+  balanceRetentionDays Int      @default(30)
+  maintenanceMode      Boolean  @default(false)
+  maintenanceMessage   String?
+  wooviProductionKey   String?
+  wooviSandboxKey      String?
+  emailSenderName      String   @default("Black Gate")
+  emailSenderAddress   String   @default("noreply@blackgate.com")
+  updatedAt            DateTime @updatedAt
+}
+
+model AdminLog {
+  id        String   @id @default(cuid())
+  adminId   String
+  targetId  String? // ID do usuário ou produto afetado
+  action    String // "USER_SUSPEND", "FEE_CHANGE", etc
+  details   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum KycStatus {
+  NOT_SUBMITTED
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ProductType {
+  SINGLE
+  SUBSCRIPTION
+  INSTALLMENT
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+  DRAFT
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  CHARGEBACK
+  ABANDONED
+  EXPIRED
+}
+
+enum PaymentMethod {
+  PIX
+  CREDIT_CARD
+  BOLETO
+}
+
+enum WithdrawalStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum PixKeyType {
+  CPF
+  CNPJ
+  EMAIL
+  PHONE
+  RANDOM
+}
+
+enum DocType {
+  IDENTITY_FRONT
+  IDENTITY_BACK
+  SELFIE
+  PROOF_OF_ADDRESS
+}
+
+enum DocStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum BadgeType {
+  BADGE_10K
+  BADGE_50K
+  BADGE_100K
+  BADGE_500K
+  BADGE_1M
+  BADGE_5M
+}
+
+enum TransactionType {
+  SALE
+  WITHDRAWAL
+  REFUND
+  CHARGEBACK
+}

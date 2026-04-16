@@ -13,7 +13,7 @@ export async function GET(req: Request) {
   const method = searchParams.get("method");
   const productId = searchParams.get("productId");
   const search = searchParams.get("search");
-  const page = parseInt(searchParams.get("page") || "1");
+  const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
   const limit = 15;
   const skip = (page - 1) * limit;
 
