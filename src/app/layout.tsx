@@ -22,6 +22,9 @@ export const metadata: Metadata = {
   keywords: ["gateway de pagamento", "pix", "boleto", "cartão de crédito", "checkout"],
 };
 
+import { SessionProvider } from "@/components/providers/SessionProvider";
+import { Toaster } from "sonner";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,9 +33,12 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-text-primary`}
+        className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased bg-background text-text-primary`}
       >
-        {children}
+        <SessionProvider>
+          {children}
+        </SessionProvider>
+        <Toaster position="top-right" richColors theme="dark" />
       </body>
     </html>
   );

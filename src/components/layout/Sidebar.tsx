@@ -26,6 +26,7 @@ import {
   LogOut,
   User,
   Shield,
+  Trophy,
 } from "lucide-react";
 
 interface NavItem {
@@ -78,9 +79,23 @@ const NAV_ITEMS: NavItem[] = [
       { label: "Meus documentos (KYC)", href: "/dashboard/configuracoes/kyc", icon: Shield },
     ],
   },
-  { label: "Integrações", href: "/dashboard/integracoes", icon: Plug },
+  {
+    label: "Integrações",
+    icon: Plug,
+    children: [
+      { label: "API Keys", href: "/dashboard/integracoes", icon: Plug },
+      { label: "Webhooks", href: "/dashboard/integracoes/webhooks", icon: MessageCircle },
+    ],
+  },
   { label: "Domínios", href: "/dashboard/dominios", icon: Globe },
-  { label: "Plaquinhas de meta", href: "/dashboard/metas", icon: Award },
+  {
+    label: "Plaquinhas de meta",
+    icon: Award,
+    children: [
+      { label: "Minhas conquistas", href: "/dashboard/metas", icon: Award },
+      { label: "Ranking global", href: "/dashboard/metas/ranking", icon: Trophy },
+    ],
+  },
   { label: "Indique e ganhe", href: "/dashboard/indicacao", icon: Gift },
 ];
 

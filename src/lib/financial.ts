@@ -1,5 +1,6 @@
 import { prisma } from "./prisma";
 import { PixKeyType } from "@/generated/prisma/client";
+import { checkAndAwardBadges } from "./badges";
 
 /**
  * Processa a entrada de uma nova venda no saldo pendente do usuário.
@@ -34,6 +35,9 @@ export async function processSale(orderId: string) {
       }
     })
   ]);
+
+  // Verifica novos badges conquistados
+  await checkAndAwardBadges(order.userId);
 }
 
 /**
