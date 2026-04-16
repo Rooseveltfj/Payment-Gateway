@@ -1,5 +1,6 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript"],
+  "ignorePatterns": ["src/generated"],
   "rules": {
     "@next/next/no-img-element": "off",
     "jsx-a11y/alt-text": "warn"
