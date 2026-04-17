@@ -2,73 +2,77 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 6%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 263.4 70% 50.4%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 263.4 70% 50.4%;
-    --radius: 0.75rem;
-  }
+:root {
+  /* Black Gate - Dark Premium Tech Palette */
+  --bg-void: #030507;
+  --bg-deep: #070b0f;
+  --bg-card: #0d1117;
+  --bg-card-hover: #111820;
+  --border-subtle: #ffffff0f;
+  --border-glow: #BF00FF30;
+  --accent: #BF00FF;
+  --accent-dim: #BF00FF15;
+  --text-primary: #f0f4f8;
+  --text-secondary: #7a8fa6;
+  --text-muted: #3d5166;
+  
+  --gradient-hero: linear-gradient(135deg, #030507 0%, #060d14 50%, #030a0f 100%);
 }
 
 @layer base {
   * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground antialiased font-sans;
-    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
-}
-
-@layer components {
-  .premium-card {
-    @apply bg-card border border-white/[0.05] rounded-[2rem] shadow-2xl backdrop-blur-xl;
-    background-image: radial-gradient(circle at top left, rgba(124, 58, 237, 0.05) 0%, transparent 40%);
-  }
-
-  .premium-button {
-    @apply relative overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98];
+    @apply border-border-subtle;
   }
   
-  .glass-effect {
-    @apply bg-white/[0.02] backdrop-blur-md border border-white/[0.05];
+  body {
+    @apply bg-bg-void text-text-primary overflow-x-hidden;
+    background-image: var(--gradient-hero);
+    min-height: 100vh;
+  }
+
+  /* Noise Texture Overlay */
+  body::before {
+    content: "";
+    @apply fixed inset-0 pointer-events-none z-[9999];
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.025;
   }
 }
 
 @layer utilities {
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-br from-white to-white/50;
+  .grid-dots {
+    background-image: radial-gradient(circle, #7a8fa610 1px, transparent 1px);
+    background-size: 32px 32px;
   }
   
-  .bg-grid-white {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(255 255 255 / 0.04)'%3E%3Cpath d='M0 .5H31.5V32'/%3E%3C/svg%3E");
+  .glow-accent {
+    box-shadow: 0 0 40px #BF00FF20;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 20px #BF00FF60;
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
   }
 }
 
-/* Custom animations */
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
 }
 
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out forwards;
+::-webkit-scrollbar-track {
+  @apply bg-bg-void;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-accent/20 rounded-full hover:bg-accent/40 transition-colors;
+}
+
+/* Scroll Progress Bar */
+#scroll-progress {
+  @apply fixed top-0 left-0 h-[2px] bg-accent z-[10000] w-0;
+  box-shadow: 0 0 10px #BF00FF;
 }

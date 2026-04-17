@@ -17,6 +17,19 @@ const config: Config = {
     },
     extend: {
       colors: {
+        "bg-void": "#030507",
+        "bg-deep": "#070b0f",
+        "bg-card": "#0d1117",
+        "bg-card-hover": "#111820",
+        "border-subtle": "#ffffff0f",
+        "border-glow": "#BF00FF30",
+        accent: {
+          DEFAULT: "#BF00FF",
+          dim: "#BF00FF15",
+        },
+        "text-primary": "#f0f4f8",
+        "text-secondary": "#7a8fa6",
+        "text-muted": "#3d5166",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -38,10 +51,6 @@ const config: Config = {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
         },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
         popover: {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
@@ -50,7 +59,7 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        success: "#22c55e",
+        success: "#00e676",
         error: "#ef4444",
         warning: "#f59e0b",
       },
@@ -60,8 +69,9 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-geist-sans)", "Inter", "sans-serif"],
-        mono: ["var(--font-geist-mono)", "monospace"],
+        display: ["var(--font-syne)", "sans-serif"],
+        body: ["var(--font-dm-sans)", "sans-serif"],
+        mono: ["var(--font-jetbrains-mono)", "monospace"],
       },
       keyframes: {
         "accordion-down": {
