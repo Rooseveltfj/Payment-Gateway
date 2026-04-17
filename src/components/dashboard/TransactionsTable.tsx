@@ -10,8 +10,8 @@ type PayMethod = "PIX" | "CREDIT_CARD" | "BOLETO";
 interface Transaction {
   id: string;
   method: PayMethod;
-  product: string;
-  buyer: string;
+  product: { name: string };
+  buyerName: string;
   buyerEmail: string;
   amount: number;
   status: TxStatus;
@@ -118,8 +118,8 @@ export function TransactionsTable({ initial, initialHasMore }: TransactionsTable
 
               {/* Product */}
               <div className="flex flex-col justify-center lg:col-auto">
-                <span className="text-xs font-medium text-text-primary line-clamp-1">{tx.product}</span>
-                <span className="text-[10px] text-text-secondary mt-0.5 lg:hidden">{tx.buyer}</span>
+                <span className="text-xs font-medium text-text-primary line-clamp-1">{tx.product.name}</span>
+                <span className="text-[10px] text-text-secondary mt-0.5 lg:hidden">{tx.buyerName}</span>
                 {/* Mobile: show all inline */}
                 <div className="flex items-center gap-2 mt-1 lg:hidden">
                   <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-medium", status.cls)}>
@@ -134,7 +134,7 @@ export function TransactionsTable({ initial, initialHasMore }: TransactionsTable
 
               {/* Buyer — desktop only */}
               <div className="hidden lg:flex items-center">
-                <span className="text-xs text-text-secondary line-clamp-1">{tx.buyer}</span>
+                <span className="text-xs text-text-secondary line-clamp-1">{tx.buyerName}</span>
               </div>
 
               {/* Email — desktop only */}
