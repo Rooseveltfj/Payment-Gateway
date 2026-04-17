@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Syne, DM_Sans, JetBrains_Mono } from "next/font/google";
 import { SessionProvider } from "@/components/providers/SessionProvider";
-import { Toaster } from "sonner";
+import { ToastProvider } from "@/components/providers/ToastProvider";
+import { PageTransition } from "@/components/animations/PageTransition";
 import "./globals.css";
 
 const syne = Syne({
@@ -27,11 +28,9 @@ export const metadata: Metadata = {
     default: "PulsePay",
     template: "%s | PulsePay",
   },
-  description: "Gateway de pagamento seguro e eficiente para o seu negócio digital.",
-  keywords: ["gateway de pagamento", "pix", "boleto", "cartão de crédito", "checkout", "pulsepay"],
+  description: "Gateway de pagamento seguro e eficiente para o seu negcio digital.",
+  keywords: ["gateway de pagamento", "pix", "boleto", "carto de crdito", "checkout", "pulsepay"],
 };
-
-
 
 export default function RootLayout({
   children,
@@ -39,14 +38,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" className="scroll-smooth">
       <body
-        className={`${syne.variable} ${dmSans.variable} ${jetBrainsMono.variable} font-body antialiased bg-bg-void text-text-primary`}
+        className={`${syne.variable} ${dmSans.variable} ${jetBrainsMono.variable} font-body antialiased bg-[#030507] text-[#f0f4f8]`}
       >
         <SessionProvider>
-          {children}
+          <ToastProvider />
+          <PageTransition>
+            {children}
+          </PageTransition>
         </SessionProvider>
-        <Toaster position="top-right" richColors theme="dark" />
       </body>
     </html>
   );

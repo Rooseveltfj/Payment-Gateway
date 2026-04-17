@@ -53,27 +53,39 @@ export function Topbar({ onPeriodChange, period: propPeriod, user: propUser }: T
   return (
     <>
       {needsKyc && (
-        <div className="fixed left-60 right-0 top-0 z-50 h-10 bg-[#7c19c1]/10 border-b border-[#7c19c1]/20 flex items-center justify-center text-[#9b49e6] text-xs font-bold" style={{backdropFilter: 'blur(8px)'}}>
-           <Shield className="w-3.5 h-3.5 mr-2" />
-           Sua conta precisa de verificação para sacar. 
-           <a href="/dashboard/configuracoes/kyc" className="underline ml-2 hover:text-[#b17ef3] transition-colors">Complete o KYC →</a>
+        <div className="fixed left-0 lg:left-64 right-0 top-0 z-50 h-10 bg-[#7c19c1]/10 border-b border-[#7c19c1]/20 flex items-center justify-center text-[#9b49e6] text-[10px] md:text-xs font-bold transition-all duration-300" style={{backdropFilter: 'blur(8px)'}}>
+           <Shield className="w-3.5 h-3.5 mr-2 shrink-0" />
+           <span className="truncate">Sua conta precisa de verificação.</span>
+           <a href="/dashboard/configuracoes/kyc" className="underline ml-2 hover:text-[#b17ef3] transition-colors whitespace-nowrap">Completar KYC →</a>
         </div>
       )}
       <header
-        className={cn("fixed left-60 right-0 z-30 flex h-14 items-center justify-between px-8 transition-all", needsKyc ? "top-10" : "top-0")}
+        className={cn(
+          "fixed left-0 lg:left-64 right-0 z-30 flex h-16 items-center justify-between px-4 md:px-8 transition-all duration-300",
+          needsKyc ? "top-10" : "top-0"
+        )}
       style={{
-        background: "#09090b",
+        background: "rgba(9, 9, 11, 0.8)",
         borderBottom: "1px solid rgba(255,255,255,0.08)",
+        backdropFilter: 'blur(12px)'
       }}
     >
-      {/* Left — greeting */}
-      <div>
-        <h2 className="text-sm font-semibold text-text-primary leading-none">
-          Olá, {userName} 👋
-        </h2>
-        <p className="text-xs text-text-secondary mt-0.5">
-          Seja bem-vindo ao painel de controle
-        </p>
+      <div className="flex items-center gap-4">
+        <button 
+          onClick={() => context.setSidebarOpen(true)}
+          className="lg:hidden p-2 hover:bg-white/5 rounded-xl transition-all"
+        >
+          <Sun className="h-5 w-5 text-text-secondary rotate-90" /> {/* Using Sun as menu placeholder for now or another icon */}
+        </button>
+
+        <div className="hidden sm:block">
+          <h2 className="text-sm font-bold text-text-primary leading-none">
+            Ol, {userName} 👋
+          </h2>
+          <p className="text-[10px] text-text-secondary mt-1">
+            Seja bem-vindo ao PulsePay
+          </p>
+        </div>
       </div>
 
       {/* Right — controls */}
@@ -124,9 +136,9 @@ export function Topbar({ onPeriodChange, period: propPeriod, user: propUser }: T
         </button>
 
         {/* Notifications */}
-        <button className="relative flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-card text-text-secondary hover:text-text-primary hover:bg-hover transition-colors duration-200 cursor-pointer">
+        <button className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-white/5 bg-card text-text-secondary hover:text-text-primary hover:bg-hover transition-colors duration-200 cursor-pointer">
           <Bell className="h-4 w-4" />
-          <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-primary ring-2 ring-background" />
+          <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-primary ring-2 ring-[#09090b] animate-pulse" />
         </button>
 
         <div className="h-6 w-[1px] bg-white/5 mx-1" />

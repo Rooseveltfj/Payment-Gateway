@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { wooviRequest } from "@/lib/woovi";
 import crypto from "crypto";

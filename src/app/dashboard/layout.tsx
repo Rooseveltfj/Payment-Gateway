@@ -5,15 +5,13 @@ import { DashboardProvider } from "@/lib/dashboard-context";
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
     <DashboardProvider>
-      <div className="min-h-screen bg-[#09090b] selection:bg-primary/30">
+      <div className="min-h-screen bg-[#030507] selection:bg-primary/30">
         <Sidebar />
         
-        <div className="flex flex-col min-h-screen pl-60">
-          {/* The Topbar is now global to all dashboard routes */}
+        <div className="flex flex-col min-h-screen lg:pl-64 transition-all duration-300">
           <Topbar />
           
-          {/* pt-32 (128px) ensures content starts 32px below the Topbar even with KYC banner (96px) */}
-          <main className="flex-1 w-full pt-32 px-8 pb-12">
+          <main className="flex-1 w-full pt-28 md:pt-32 px-4 md:px-8 pb-12">
             {children}
           </main>
         </div>

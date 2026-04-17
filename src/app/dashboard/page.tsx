@@ -5,6 +5,7 @@ import { MetricsGrid, MetricsGridSkeleton } from "@/components/dashboard/Metrics
 import { RevenueChart, RevenueChartSkeleton } from "@/components/dashboard/RevenueChart";
 import { PixConversion, PixConversionSkeleton } from "@/components/dashboard/PixConversion";
 import { TransactionsTable, TransactionsTableSkeleton } from "@/components/dashboard/TransactionsTable";
+import { OnboardingChecklist } from "@/components/dashboard/OnboardingChecklist";
 import { useDashboard } from "@/lib/dashboard-context";
 
 interface Metrics {
@@ -70,11 +71,10 @@ export default function DashboardPage() {
   }, [period, fetchAll]);
 
   return (
-    <div className="w-full">
-      {/* Topbar is now in Layout */}
+    <div className="w-full relative">
+      <OnboardingChecklist />
 
       <div className="space-y-6">
-
           {/* Metrics */}
           <section>
             {loading || !metrics ? (

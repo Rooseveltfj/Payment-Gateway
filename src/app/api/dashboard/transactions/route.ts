@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { paginate } from "@/lib/pagination";
 
 export async function GET(req: Request) {
   const session = await auth();
   if (!session?.user?.id) {
-    return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
   const { searchParams } = new URL(req.url);
@@ -14,10 +15,8 @@ export async function GET(req: Request) {
   const productId = searchParams.get("productId");
   const search = searchParams.get("search");
   const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
-  const limit = 15;
-  const skip = (page - 1) * limit;
-
-  const where: Record<string, unknown> = { userId: session.user.id };
+  
+  const where: any = { userId: session.user.id };
 
   if (status && status !== "ALL") where.status = status;
   if (method && method !== "ALL") where.paymentMethod = method;
@@ -31,25 +30,29 @@ export async function GET(req: Request) {
     ];
   }
 
-  const [transactions, total] = await Promise.all([
-    prisma.order.findMany({
-      where,
-      orderBy: { createdAt: "desc" },
-      skip,
-      take: limit,
-      include: {
-        product: { select: { name: true } }
-      }
-    }),
-    prisma.order.count({ where })
-  ]);
+  const result = await paginate(prisma.order, {
+    where,
+    orderBy: { createdAt: "desc" },
+    select: {
+      id: true,
+      paymentMethod: true,
+      amount: true,
+      status: true,
+      createdAt: true,
+      buyerName: true,
+      buyerEmail: true,
+      product: { select: { name: true } }
+    }
+  }, { page, pageSize: 15 });
 
   return NextResponse.json({
-    transactions,
+    transactions: result.data,
     pagination: {
-      total,
-      pages: Math.ceil(total / limit),
-      currentPage: page
+      total: result.total,
+      pages: result.totalPages,
+      currentPage: result.page,
+      hasMore: result.hasMore
     }
   });
 }
+

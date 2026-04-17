@@ -26,7 +26,11 @@ import {
   User,
   Shield,
   Trophy,
+  X,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { useDashboard } from "@/lib/dashboard-context";
 
 interface NavItem {
   label: string;
@@ -164,8 +168,6 @@ function NavGroup({ item }: { item: NavItem }) {
   );
 }
 
-import { useSession } from "next-auth/react";
-
 const ADMIN_ITEMS: NavItem[] = [
   {
     label: "Administração",
@@ -177,60 +179,82 @@ const ADMIN_ITEMS: NavItem[] = [
   },
 ];
 
-import Image from "next/image";
-
 export function Sidebar() {
   const { data: session } = useSession();
+  const { sidebarOpen, setSidebarOpen } = useDashboard();
   const user = session?.user as { role?: string; name?: string; email?: string } | undefined;
   const isAdmin = user?.role === "ADMIN";
 
   return (
-    <aside
-      className="fixed left-0 top-0 z-40 flex h-screen w-60 flex-col"
-      style={{
-        background: "#111113",
-        borderRight: "1px solid rgba(255,255,255,0.08)",
-      }}
-    >
-      {/* Logo */}
-      <div className="flex h-20 items-center justify-center gap-3 px-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-        <Link href="/dashboard" className="flex items-center">
-          <Image 
-            src="/assets/logo-png.png" 
-            alt="PulsePay Logo" 
-            width={160} 
-            height={44} 
-            className="w-auto h-10 object-contain"
-          />
-        </Link>
-      </div>
+    <>
+      {/* Overlay for mobile */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden animate-in fade-in duration-300" 
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-      {/* Nav */}
-      <nav className="flex-1 overflow-y-auto px-3 py-6 space-y-3 scrollbar-thin">
-        {NAV_ITEMS.map((item) => (
-          <NavGroup key={item.label} item={item} />
-        ))}
-
-        {isAdmin && (
-          <>
-            <div className="my-4 border-t border-border/50 pt-4 px-3">
-               <span className="text-[10px] font-bold text-text-secondary uppercase tracking-widest pl-3">Painel Admin</span>
-            </div>
-            {ADMIN_ITEMS.map((item) => (
-              <NavGroup key={item.label} item={item} />
-            ))}
-          </>
+      <aside
+        className={cn(
+          "fixed left-0 top-0 z-50 flex h-screen w-64 flex-col transition-all duration-300 transform lg:translate-x-0",
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
+        style={{
+          background: "#111113",
+          borderRight: "1px solid rgba(255,255,255,0.08)",
+        }}
+      >
+        {/* Logo & Close Button (Mobile Only) */}
+        <div className="flex h-20 items-center justify-between px-6 shrink-0" style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+          <Link href="/dashboard" className="flex items-center">
+            <Image 
+              src="/assets/logo-png.png" 
+              alt="PulsePay Logo" 
+              width={160} 
+              height={44} 
+              className="w-auto h-10 object-contain"
+            />
+          </Link>
+          <button 
+            onClick={() => setSidebarOpen(false)}
+            className="lg:hidden p-2 hover:bg-white/5 rounded-xl transition-all"
+          >
+            <X className="w-5 h-5 text-text-secondary" />
+          </button>
+        </div>
 
-        {/* Support */}
-        <button
-          onClick={() => window.open("https://wa.me/", "_blank")}
-          className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-hover hover:text-text-primary transition-all duration-200 cursor-pointer mt-1"
-        >
-          <MessageCircle className="h-4 w-4 shrink-0" />
-          <span>Fale com o suporte</span>
-        </button>
-      </nav>
-    </aside>
+        {/* Nav */}
+        <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-3 scrollbar-thin">
+          {NAV_ITEMS.map((item) => (
+            <div key={item.label} onClick={() => window.innerWidth < 1024 && setSidebarOpen(false)}>
+              <NavGroup item={item} />
+            </div>
+          ))}
+
+          {isAdmin && (
+            <>
+              <div className="my-6 border-t border-white/5 pt-6 px-3">
+                 <span className="text-[10px] font-bold text-text-secondary uppercase tracking-widest pl-3 opacity-50">Painel Admin</span>
+              </div>
+              {ADMIN_ITEMS.map((item) => (
+                <div key={item.label} onClick={() => window.innerWidth < 1024 && setSidebarOpen(false)}>
+                   <NavGroup item={item} />
+                </div>
+              ))}
+            </>
+          )}
+
+          {/* Support */}
+          <button
+            onClick={() => window.open("https://wa.me/", "_blank")}
+            className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm text-text-secondary hover:bg-hover hover:text-text-primary transition-all duration-200 cursor-pointer mt-4"
+          >
+            <MessageCircle className="h-4 w-4 shrink-0" />
+            <span>Fale com o suporte</span>
+          </button>
+        </nav>
+      </aside>
+    </>
   );
 }

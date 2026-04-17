@@ -39,6 +39,49 @@ model User {
   kycDocuments      KycDocument[]
   badges            UserBadge[]
   pendingBalances   PendingBalance[]
+  username          String?   @unique
+  showcaseConfig    Json?     // { bannerUrl: string, title: string, bio: string }
+  socialLinks       Json?     // { twitter: string, instagram: string, etc }
+  customDomains     CustomDomain[]
+  twoFactorEnabled  Boolean   @default(false)
+  twoFactorSecret   String?
+  onboardingSteps   Json?     // { profile: bool, kyc: bool, product: bool, checkout: bool, share: bool }
+  lastActiveAt      DateTime  @default(now())
+  notifications     Notification[]
+  auditLogs         AuditLog[]
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id])
+  title     String
+  content   String
+  read      Boolean          @default(false)
+  type      NotificationType @default(INFO)
+  createdAt DateTime         @default(now())
+
+  @@index([userId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String   // "LOGIN", "WITHDRAWAL_REQUEST", "PASSWORD_CHANGE", etc
+  details   String?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ERROR
 }
 
 model Product {
@@ -58,8 +101,13 @@ model Product {
   revenue       Float         @default(0)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+  showInShowcase Boolean @default(true)
   orders        Order[]
   checkoutLinks CheckoutLink[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([slug])
 }
 
 model Order {
@@ -99,6 +147,10 @@ model Order {
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
   pendingBalances PendingBalance[]
+
+  @@index([userId, status])
+  @@index([createdAt])
+  @@index([wooviCorrelationId])
 }
 
 model PendingBalance {
@@ -337,4 +389,23 @@ enum TransactionType {
   WITHDRAWAL
   REFUND
   CHARGEBACK
+}
+
+model CustomDomain {
+  id        String       @id @default(cuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id])
+  domain    String       @unique
+  status    DomainStatus @default(PENDING)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@index([userId])
+}
+
+enum DomainStatus {
+  PENDING
+  VERIFIED
+  ACTIVE
+  ERROR
 }
