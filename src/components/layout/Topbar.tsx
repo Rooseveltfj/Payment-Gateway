@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, ChevronDown, ArrowDownToLine, User, Settings, Shield, FileText, Code, Sun, LogOut, LayoutDashboard } from "lucide-react";
+import { Bell, ChevronDown, ArrowDownToLine, User, Shield, FileText, Code, Sun, LogOut, LayoutDashboard } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useSession, signOut } from "next-auth/react";

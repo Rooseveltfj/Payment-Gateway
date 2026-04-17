@@ -5,7 +5,6 @@ import { MetricsGrid, MetricsGridSkeleton } from "@/components/dashboard/Metrics
 import { RevenueChart, RevenueChartSkeleton } from "@/components/dashboard/RevenueChart";
 import { PixConversion, PixConversionSkeleton } from "@/components/dashboard/PixConversion";
 import { TransactionsTable, TransactionsTableSkeleton } from "@/components/dashboard/TransactionsTable";
-import { Topbar } from "@/components/layout/Topbar";
 import { useDashboard } from "@/lib/dashboard-context";
 
 interface Metrics {

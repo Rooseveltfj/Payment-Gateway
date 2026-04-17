@@ -23,7 +23,6 @@ import {
   Gift,
   MessageCircle,
   ChevronDown,
-  LogOut,
   User,
   Shield,
   Trophy,
