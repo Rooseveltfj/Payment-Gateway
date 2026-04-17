@@ -23,6 +23,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         )
 
         if (passwordsMatch) {
+          if (user.status === "PENDING") {
+            throw new Error("UNVERIFIED_EMAIL")
+          }
+
           return {
             id: user.id,
             email: user.email,

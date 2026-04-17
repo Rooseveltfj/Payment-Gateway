@@ -178,6 +178,8 @@ const ADMIN_ITEMS: NavItem[] = [
   },
 ];
 
+import Image from "next/image";
+
 export function Sidebar() {
   const { data: session } = useSession();
   const user = session?.user as { role?: string; name?: string; email?: string } | undefined;
@@ -192,11 +194,16 @@ export function Sidebar() {
       }}
     >
       {/* Logo */}
-      <div className="flex h-14 items-center gap-3 px-4" style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-          <Shield className="h-4 w-4 text-white" />
-        </div>
-        <span className="text-base font-bold tracking-tight text-text-primary">PulsePay</span>
+      <div className="flex h-14 items-center gap-3 px-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+        <Link href="/dashboard" className="flex items-center">
+          <Image 
+            src="/assets/logo-png.png" 
+            alt="PulsePay Logo" 
+            width={120} 
+            height={32} 
+            className="w-auto h-7 object-contain"
+          />
+        </Link>
       </div>
 
       {/* Nav */}

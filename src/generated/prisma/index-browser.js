@@ -288,6 +288,23 @@ exports.Prisma.PlatformSettingScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.TwoFactorTokenScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  token: 'token',
+  expires: 'expires',
+  attempts: 'attempts',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.PasswordResetTokenScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  token: 'token',
+  expires: 'expires',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.AdminLogScalarFieldEnum = {
   id: 'id',
   adminId: 'adminId',
@@ -430,6 +447,8 @@ exports.Prisma.ModelName = {
   CheckoutLink: 'CheckoutLink',
   Transaction: 'Transaction',
   PlatformSetting: 'PlatformSetting',
+  TwoFactorToken: 'TwoFactorToken',
+  PasswordResetToken: 'PasswordResetToken',
   AdminLog: 'AdminLog'
 };
 

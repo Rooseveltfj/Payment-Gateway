@@ -106,7 +106,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-6 flex items-center justify-between">
           <Link href="/" className="flex items-center group">
             <Image 
-              src="/assets/logo.png" 
+              src="/assets/logo-png.png" 
               alt="PulsePay Logo" 
               width={160} 
               height={40} 
@@ -734,7 +734,7 @@ export default function LandingPage() {
         <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
           <div className="col-span-1 md:col-span-1 lg:col-span-1">
              <Link href="/" className="flex items-center mb-8 group">
-                <Image src="/assets/logo.png" alt="PulsePay" width={120} height={32} className="w-auto h-8 object-contain group-hover:scale-105 transition-transform duration-300" />
+                <Image src="/assets/logo-png.png" alt="PulsePay" width={120} height={32} className="w-auto h-8 object-contain group-hover:scale-105 transition-transform duration-300" />
              </Link>
              <p className="text-sm text-text-secondary leading-relaxed mb-8 max-w-xs">A tecnologia definitiva de processamento PIX para quem escala no mercado digital. D+0 real.</p>
              <div className="flex gap-4">

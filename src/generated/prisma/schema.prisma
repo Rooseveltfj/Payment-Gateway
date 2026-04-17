@@ -190,9 +190,30 @@ model PlatformSetting {
   maintenanceMessage   String?
   wooviProductionKey   String?
   wooviSandboxKey      String?
-  emailSenderName      String   @default("Black Gate")
-  emailSenderAddress   String   @default("noreply@blackgate.com")
+  emailSenderName      String   @default("PulsePay")
+  emailSenderAddress   String   @default("noreply@pulsepay.com.br")
   updatedAt            DateTime @updatedAt
+}
+
+model TwoFactorToken {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  token     String // hashed code
+  expires   DateTime
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expires   DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
 }
 
 model AdminLog {

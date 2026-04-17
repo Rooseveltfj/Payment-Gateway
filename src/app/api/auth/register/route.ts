@@ -2,6 +2,9 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 import { z } from "zod"
+import { generateTwoFactorToken } from "@/lib/tokens"
+import { sendEmail } from "@/lib/mail"
+import { getTwoFactorEmailTemplate } from "@/lib/email-templates"
 
 const registerSchema = z.object({
   name: z.string().min(2),
@@ -36,13 +39,22 @@ export async function POST(req: Request) {
         email,
         password: hashedPassword,
         document,
+        status: "PENDING",
       },
     })
 
-    // TODO: Enviar email de boas-vindas
+    // Generate and send 2FA Token
+    const { code } = await generateTwoFactorToken(email);
+    
+    await sendEmail({
+      to: email,
+      subject: "Verifique sua conta - PulsePay",
+      html: getTwoFactorEmailTemplate(code)
+    });
 
     return NextResponse.json({
-      user: { id: user.id, email: user.email, name: user.name }
+      user: { id: user.id, email: user.email, name: user.name },
+      message: "Verificação enviada. Verifique seu e-mail."
     }, { status: 201 })
   } catch (error) {
     if (error instanceof z.ZodError) {

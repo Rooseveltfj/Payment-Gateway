@@ -3,6 +3,7 @@
 import { Bell, ChevronDown, ArrowDownToLine } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
 
 export type Period = "today" | "week" | "month" | "quarter" | "year";
 
@@ -21,7 +22,11 @@ interface TopbarProps {
   user?: any;
 }
 
-export function Topbar({ onPeriodChange, period = "week", user }: TopbarProps) {
+export function Topbar({ onPeriodChange, period = "week", user: propUser }: TopbarProps) {
+  const { data: session } = useSession();
+  const user = propUser || session?.user;
+  const userName = user?.name?.split(' ')[0] || "Usuário";
+  
   const needsKyc = user?.kycStatus && user.kycStatus !== "APPROVED";
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -30,7 +35,7 @@ export function Topbar({ onPeriodChange, period = "week", user }: TopbarProps) {
       {needsKyc && (
         <div className="fixed left-60 right-0 top-0 z-50 h-10 bg-warning/10 border-b border-warning/20 flex items-center justify-center text-warning text-xs font-semibold" style={{backdropFilter: 'blur(4px)'}}>
            ⚠️ Sua conta precisa de verificação para sacar. 
-           <a href="/dashboard/documentos" className="underline ml-2 hover:text-warning/80">Complete o KYC →</a>
+           <a href="/dashboard/configuracoes/kyc" className="underline ml-2 hover:text-warning/80">Complete o KYC →</a>
         </div>
       )}
       <header
@@ -43,7 +48,7 @@ export function Topbar({ onPeriodChange, period = "week", user }: TopbarProps) {
       {/* Left — greeting */}
       <div>
         <h2 className="text-sm font-semibold text-text-primary leading-none">
-          Olá, Roosevelt 👋
+          Olá, {userName} 👋
         </h2>
         <p className="text-xs text-text-secondary mt-0.5">
           Seja bem-vindo ao painel de controle

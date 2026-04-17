@@ -10,12 +10,16 @@ interface SendEmailProps {
 
 /**
  * Utility to send emails using Resend.
- * As no verified domain exists yet, it defaults to onboarding@resend.dev.
+ * Uses the verified domain 'pulsepay.com.br' as configured in .env
  */
 export async function sendEmail({ to, subject, html }: SendEmailProps) {
   try {
+    const from = process.env.EMAIL_FROM || 'PulsePay <noreply@pulsepay.com.br>';
+    
+    console.log(`[Mail] Sending email to ${to} from ${from}...`);
+
     const { data, error } = await resend.emails.send({
-      from: 'PulsePay <onboarding@resend.dev>',
+      from,
       to,
       subject,
       html,
@@ -26,6 +30,7 @@ export async function sendEmail({ to, subject, html }: SendEmailProps) {
       return { success: false, error };
     }
 
+    console.log('[Mail] Email sent successfully:', data?.id);
     return { success: true, data };
   } catch (error) {
     console.error('Unexpected email error:', error);
