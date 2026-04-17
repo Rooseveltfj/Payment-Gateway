@@ -24,6 +24,23 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      // 1. Proactively check user status
+      const statusRes = await fetch("/api/auth/check-status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email }),
+      });
+      const { status } = await statusRes.json();
+
+      if (status === "PENDING") {
+        toast.info("Sua conta ainda não foi verificada. Redirecionando para o 2FA...");
+        setTimeout(() => {
+          router.push(`/auth/verify?email=${encodeURIComponent(formData.email)}`);
+        }, 1500);
+        return;
+      }
+
+      // 2. Proceed with sign in if not pending
       const result = await signIn("credentials", {
         redirect: false,
         email: formData.email,
@@ -31,12 +48,7 @@ export default function LoginPage() {
       });
 
       if (result?.error) {
-        if (result.error.includes("UNVERIFIED_EMAIL")) {
-          toast.info("Por favor, verifique seu e-mail antes de acessar o painel.");
-          router.push(`/auth/verify?email=${encodeURIComponent(formData.email)}`);
-        } else {
-          toast.error("Credenciais inválidas ou conta não encontrada.");
-        }
+        toast.error("Credenciais inválidas ou conta não encontrada.");
       } else {
         toast.success("Bem-vindo de volta!");
         router.push("/dashboard");
