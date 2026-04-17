@@ -86,8 +86,9 @@ export async function POST(req: Request) {
         } as any
       });
       return NextResponse.json(newProduct, { status: 201 });
-    } catch {
-       return NextResponse.json({ ...data, id: "mock_created_id" }, { status: 201 });
+    } catch (dbError: any) {
+       console.error("PRODUCT_CREATE_DATABASE_ERROR:", dbError);
+       return NextResponse.json({ error: dbError.message || "Erro ao salvar no banco" }, { status: 500 });
     }
 
   } catch (error) {
