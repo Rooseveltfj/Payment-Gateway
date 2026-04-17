@@ -23,11 +23,14 @@ if (supabaseUrl === "https://mock.supabase.co" || supabaseKey === "mock-key") {
     const fileExt = file.name.split(".").pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
 
-    const { error } = await supabase.storage
+    const { data: uploadData, error: uploadError } = await supabase.storage
       .from("products")
-      .upload(fileName, file);
+      .upload(fileName, file, { cacheControl: "3600", upsert: true });
 
-    if (error) throw error;
+    if (uploadError) {
+      console.error("SUPABASE_UPLOAD_ERROR:", uploadError);
+      return NextResponse.json({ error: uploadError.message }, { status: 500 });
+    }
 
     const { data } = supabase.storage.from("products").getPublicUrl(fileName);
 
