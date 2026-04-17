@@ -89,7 +89,17 @@ export async function POST(
       }
     });
 
-    // 7. Send Notification Email (Async)
+    // 7. Create Dashboard Notification (Async)
+    prisma.notification.create({
+      data: {
+        userId: seller.id,
+        title: "Novo Pix gerado! ⚡",
+        content: `Um cliente gerou um Pix de R$ ${product.price.toFixed(2)} para o produto ${product.name}.`,
+        type: "INFO"
+      }
+    }).catch(err => console.error("Error creating notification:", err));
+
+    // 8. Send Notification Email (Async)
     sendPixGeneratedEmail(
        { email: buyerEmail, name: buyerName },
        product.name,
@@ -98,7 +108,7 @@ export async function POST(
        charge.qrCodeImage
     ).catch(err => console.error("Error sending initial Pix email:", err));
 
-    // 8. Success Response
+    // 9. Success Response
     return NextResponse.json({
       orderId: order.id,
       correlationID: correlationID,

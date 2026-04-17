@@ -132,7 +132,17 @@ async function handleChargePaid(payload: any) {
     sendNewSaleEmail({ email: seller.email, name: seller.name }, product.name, order.amount, order.netAmount)
   ]).catch(err => console.error("Email sending Error:", err));
 
-  // 6. Player Webhooks Output (Optional robustness)
+  // 6. Create Dashboard Notification (Async)
+  prisma.notification.create({
+    data: {
+      userId: seller.id,
+      title: "Pagamento recebido! 💰",
+      content: `Venda confirmada: ${product.name} no valor de R$ ${order.amount.toFixed(2)}.`,
+      type: "SUCCESS"
+    }
+  }).catch(err => console.error("Error creating notification:", err));
+
+  // 7. Player Webhooks Output (Optional robustness)
   await dispatchPlayerWebhooks(seller.id, "order.paid", {
     order_id: order.id,
     product_slug: product.slug,

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { useDashboard } from "@/lib/dashboard-context";
+import { NotificationCenter } from "@/components/dashboard/NotificationCenter";
 
 export type Period = "today" | "week" | "month" | "quarter" | "year";
 
@@ -136,10 +137,7 @@ export function Topbar({ onPeriodChange, period: propPeriod, user: propUser }: T
         </button>
 
         {/* Notifications */}
-        <button className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-white/5 bg-card text-text-secondary hover:text-text-primary hover:bg-hover transition-colors duration-200 cursor-pointer">
-          <Bell className="h-4 w-4" />
-          <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-primary ring-2 ring-[#09090b] animate-pulse" />
-        </button>
+        <NotificationCenter />
 
         <div className="h-6 w-[1px] bg-white/5 mx-1" />
 

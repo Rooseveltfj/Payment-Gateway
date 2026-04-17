@@ -8,6 +8,9 @@ const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 const pool = new pg.Pool({ 
   connectionString: process.env.DATABASE_URL,
   connectionTimeoutMillis: 10000,
+  idleTimeoutMillis: 30000, // Fecha conexões inativas após 30s
+  max: 10, // Limite por container
+  allowExitOnIdle: true,
   ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false
 });
 
