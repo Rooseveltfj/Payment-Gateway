@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import { Syne, DM_Sans, JetBrains_Mono } from "next/font/google";
+import { SessionProvider } from "@/components/providers/SessionProvider";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const syne = Syne({
@@ -28,8 +31,7 @@ export const metadata: Metadata = {
   keywords: ["gateway de pagamento", "pix", "boleto", "cartão de crédito", "checkout", "pulsepay"],
 };
 
-import { SessionProvider } from "@/components/providers/SessionProvider";
-import { Toaster } from "sonner";
+
 
 export default function RootLayout({
   children,
