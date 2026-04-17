@@ -4,7 +4,9 @@ import {
   getOrderConfirmationTemplate, 
   getNewSaleTemplate, 
   getKycApprovedTemplate,
-  getBadgeEarnedTemplate
+  getBadgeEarnedTemplate,
+  getPixGeneratedTemplate,
+  getNewOrderGeneratedTemplate
 } from "./email-templates";
 
 /**
@@ -61,4 +63,23 @@ export async function sendBadgeEarnedEmail(user: { email: string; name: string }
   });
 }
 
-// TODO: Implement other notifications as templates are added (Refund, Withdrawal, etc.)
+export async function sendPixGeneratedEmail(
+  to: { email: string; name: string },
+  productName: string,
+  amount: number,
+  brCode: string,
+  qrCodeUrl: string
+) {
+  return sendEmail({
+    to: to.email,
+    subject: `Seu PIX para ${productName} está pronto! ⚡`,
+    html: getPixGeneratedTemplate(to.name, productName, amount, brCode, qrCodeUrl),
+  });
+}
+export async function sendNewOrderNotificationEmail(user: { email: string; name: string }, productName: string, amount: number) {
+  return sendEmail({
+    to: user.email,
+    subject: `🔥 Novo interesse: ${productName}`,
+    html: getNewOrderGeneratedTemplate(user.name, productName, amount),
+  });
+}

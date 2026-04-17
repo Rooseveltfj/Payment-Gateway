@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { wooviRequest } from "@/lib/woovi";
+import { sendPixGeneratedEmail } from "@/lib/email";
 import crypto from "crypto";
 
 export async function POST(
@@ -88,7 +89,16 @@ export async function POST(
       }
     });
 
-    // 7. Success Response
+    // 7. Send Notification Email (Async)
+    sendPixGeneratedEmail(
+       { email: buyerEmail, name: buyerName },
+       product.name,
+       product.price,
+       charge.brCode,
+       charge.qrCodeImage
+    ).catch(err => console.error("Error sending initial Pix email:", err));
+
+    // 8. Success Response
     return NextResponse.json({
       orderId: order.id,
       correlationID: correlationID,

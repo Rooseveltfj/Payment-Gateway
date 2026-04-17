@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { sendOrderConfirmationEmail, sendNewSaleEmail, sendBadgeEarnedEmail } from "@/lib/email";
+import { sendOrderConfirmationEmail, sendNewSaleEmail, sendBadgeEarnedEmail, sendNewOrderNotificationEmail } from "@/lib/email";
 
 /**
  * Woovi Webhook Handler
@@ -37,8 +37,13 @@ export async function POST(req: Request) {
     ].includes(event);
 
     if (isPaid) {
+      console.log(`[Webhook] Payment Confirmed: ${charge?.correlationID} (${event})`);
       await handleChargePaid(payload);
-    } else if (event === "OPENPIX:CHARGE_EXPIRED") {
+    } else if (event === "woovi:CHARGE_CREATED" || event === "OPENPIX:CHARGE_CREATED") {
+      console.log(`[Webhook] Charge Created: ${charge?.correlationID}`);
+      await handleChargeCreated(charge);
+    } else if (event === "OPENPIX:CHARGE_EXPIRED" || event === "woovi:CHARGE_EXPIRED") {
+      console.log(`[Webhook] Charge Expired: ${charge?.correlationID}`);
       await handleChargeExpired(charge);
     }
 
@@ -208,5 +213,20 @@ async function dispatchPlayerWebhooks(userId: string, event: string, payload: an
     }
   } catch (err) {
     console.error("Webhook Dispatch error:", err);
+  }
+}
+
+async function handleChargeCreated(charge: any) {
+  const order = await prisma.order.findUnique({
+    where: { wooviCorrelationId: charge.correlationID },
+    include: { user: true, product: true }
+  });
+
+  if (order) {
+    await sendNewOrderNotificationEmail(
+      { email: order.user.email, name: order.user.name },
+      order.product.name,
+      order.amount
+    ).catch(err => console.error("Error sending New Order Notification:", err));
   }
 }

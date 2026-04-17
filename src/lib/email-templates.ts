@@ -257,3 +257,62 @@ export const getBadgeEarnedTemplate = (name: string, badgeName: string) => `
 </body>
 </html>
 `;
+
+export const getNewOrderGeneratedTemplate = (sellerName: string, productName: string, amount: number) => `
+<!DOCTYPE html>
+<html>
+<head><style>${SHARED_STYLES}</style></head>
+<body>
+  <div class="container">
+    <div class="header"><img src="${LOGO_URL}" width="160"></div>
+    <div class="content">
+      <h1 class="headline">Interesse em seu produto! 🔥</h1>
+      <p class="text">Olá <strong>${sellerName}</strong>, um cliente acabou de gerar um PIX para o seu produto <strong>${productName}</strong>.</p>
+      <div style="background-color: #111820; padding: 20px; border-radius: 12px; border: 1px solid #ffffff08; margin: 20px 0;">
+        <span style="font-size: 11px; color: #7a8fa6; text-transform: uppercase;">Valor do Interesse</span>
+        <div style="font-size: 24px; font-weight: 800; color: #fff; margin-top: 5px;">R$ ${amount.toFixed(2).replace('.', ',')}</div>
+      </div>
+      <p class="text">Você receberá outro e-mail assim que o pagamento for confirmado.</p>
+      <a href="https://www.pulsepay.com.br/dashboard/vendas" class="button">Ver no Painel</a>
+    </div>
+  </div>
+</body>
+</html>
+`;
+
+export const getPixGeneratedTemplate = (buyerName: string, productName: string, amount: number, brCode: string, qrCodeUrl: string) => `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    ${SHARED_STYLES}
+    .pix-box { background-color: #111820; border-radius: 20px; padding: 30px; border: 1px solid ${ACCENT_COLOR}20; margin: 25px 0; }
+    .pix-code { background: #000; padding: 15px; border-radius: 12px; font-family: monospace; font-size: 11px; color: #7a8fa6; word-break: break-all; border: 1px solid #ffffff10; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header"><img src="${LOGO_URL}" width="160"></div>
+    <div class="content">
+      <h1 class="headline">Seu PIX está pronto! ⚡</h1>
+      <p class="text">Olá <strong>${buyerName}</strong>, falta pouco para você garantir o seu <strong>${productName}</strong>.</p>
+      
+      <div class="pix-box">
+        <p style="margin: 0; font-size: 11px; color: #7a8fa6; text-transform: uppercase;">Valor do Pedido</p>
+        <div style="font-size: 28px; font-weight: 800; color: #fff; margin: 5px 0 20px 0;">R$ ${amount.toFixed(2).replace('.', ',')}</div>
+        
+        <img src="${qrCodeUrl}" width="180" style="border-radius: 12px; border: 4px solid #fff;">
+        
+        <p style="margin: 20px 0 5px 0; font-size: 11px; color: #7a8fa6;">OU COPIE O CÓDIGO ABAIXO:</p>
+        <div class="pix-code">${brCode}</div>
+      </div>
+      
+      <p class="text" style="font-size: 13px;">Após o pagamento, você receberá a confirmação por e-mail automaticamente.</p>
+    </div>
+    <div class="footer">
+      <p>&copy; 2024 PulsePay. Pagamentos rápidos e seguros.</p>
+    </div>
+  </div>
+</body>
+</html>
+`;

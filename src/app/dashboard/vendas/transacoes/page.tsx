@@ -178,10 +178,10 @@ export default function TransactionsPage() {
                         <MethodIcon method={t.paymentMethod} />
                      </td>
                      <td className="px-6 py-4 text-right">
-                        <span className="text-sm font-bold text-text-primary">R$ {t.amount.toFixed(2)}</span>
+                        <span className="text-sm font-bold text-text-primary">R$ {(t.amount || 0).toFixed(2)}</span>
                      </td>
                      <td className="px-6 py-4 text-right">
-                        <span className="text-sm font-bold text-success">R$ {t.netAmount.toFixed(2)}</span>
+                        <span className="text-sm font-bold text-success">R$ {(t.netAmount || 0).toFixed(2)}</span>
                      </td>
                      <td className="px-6 py-4 text-center">
                         <StatusBadge status={t.status} />
