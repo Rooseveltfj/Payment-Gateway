@@ -10,6 +10,18 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const userId = session.user.id;
+  const period = req.nextUrl.searchParams.get("period") ?? "week";
+
+  // Filtro de tempo baseado no período
+  const now = new Date();
+  const startDate = new Date();
+  if (period === "today") startDate.setHours(0, 0, 0, 0);
+  else if (period === "week") startDate.setDate(now.getDate() - 7);
+  else if (period === "month") startDate.setDate(now.getDate() - 30);
+  else if (period === "quarter") startDate.setDate(now.getDate() - 90);
+  else if (period === "year") startDate.setDate(now.getDate() - 365);
+
   try {
     const [user, stats, pixStats] = await Promise.all([
       // Saldo do usuário
