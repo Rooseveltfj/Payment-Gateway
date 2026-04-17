@@ -10,14 +10,16 @@ import { TriggersTab } from "@/components/checkout-builder/tabs/TriggersTab";
 import { SocialProofTab } from "@/components/checkout-builder/tabs/SocialProofTab";
 import { FormFieldsTab } from "@/components/checkout-builder/tabs/FormFieldsTab";
 import { BumpUpsellTab } from "@/components/checkout-builder/tabs/BumpUpsellTab";
-import { PixelsTab } from "@/components/checkout-builder/tabs/PixelsTab";
+import { PixelsTab } from "@/components/pixels/PixelsTab";
+import { GeneralTab } from "@/components/checkout-builder/tabs/GeneralTab";
 import { CheckoutPreview } from "@/components/checkout-builder/CheckoutPreview";
 import {
-  Palette, Type, Zap, Users, ClipboardList, ShoppingCart, Code2,
+  Settings2, Palette, Type, Zap, Users, ClipboardList, ShoppingCart, Code2,
   Monitor, Smartphone, ExternalLink, Save, CheckCircle2, Loader2
 } from "lucide-react";
 
 const TABS = [
+  { id: "general", label: "Geral", icon: Settings2 },
   { id: "appearance", label: "Aparência", icon: Palette },
   { id: "content", label: "Conteúdo", icon: Type },
   { id: "triggers", label: "Gatilhos", icon: Zap },
@@ -27,9 +29,22 @@ const TABS = [
   { id: "pixels", label: "Pixels", icon: Code2 },
 ];
 
-export function CheckoutBuilderClient({ productId }: { productId: string }) {
-  const [activeTab, setActiveTab] = useState("appearance");
-  const [config, setConfig] = useState<CheckoutConfig>(DEFAULT_CHECKOUT_CONFIG);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function CheckoutBuilderClient({ productId, initialProduct }: { productId: string; initialProduct: any }) {
+  const [activeTab, setActiveTab] = useState("general");
+  
+  // States to keep track of changes
+  const [config, setConfig] = useState<CheckoutConfig>(
+    (initialProduct?.checkoutConfig as unknown as CheckoutConfig) || DEFAULT_CHECKOUT_CONFIG
+  );
+  
+  const [productInfo, setProductInfo] = useState({
+    name: initialProduct?.name || "",
+    price: initialProduct?.price || 0,
+    slug: initialProduct?.slug || "",
+    description: initialProduct?.description || ""
+  });
+
   const [previewMode, setPreviewMode] = useState<"desktop" | "mobile">("desktop");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -48,15 +63,28 @@ export function CheckoutBuilderClient({ productId }: { productId: string }) {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await fetch(`/api/products/${productId}/checkout-config`, {
+      // 1. Save Checkout Config
+      const resConfig = await fetch(`/api/products/${productId}/checkout-config`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ checkoutConfig: config }),
       });
+
+      // 2. Save Basic Info
+      const resInfo = await fetch(`/api/products/${productId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(productInfo),
+      });
+
+      if (!resConfig.ok || !resInfo.ok) {
+        throw new Error("Falha ao salvar. Verifique sua conexão.");
+      }
+
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
-    } catch {
-      alert("Erro ao salvar configuração.");
+    } catch (err: any) {
+      alert(err.message || "Erro ao salvar configuração.");
     } finally {
       setSaving(false);
     }
@@ -120,6 +148,9 @@ export function CheckoutBuilderClient({ productId }: { productId: string }) {
 
         {/* Tab content — scrollable */}
         <div className="flex-1 overflow-y-auto p-4 space-y-1">
+          {activeTab === "general" && (
+            <GeneralTab data={productInfo} onChange={d => setProductInfo(prev => ({ ...prev, ...d }))} />
+          )}
           {activeTab === "appearance" && (
             <AppearanceTab config={config.appearance} onChange={d => updateConfig("appearance", d)} />
           )}

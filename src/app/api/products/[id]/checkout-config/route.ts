@@ -11,18 +11,15 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   try {
     const { checkoutConfig } = await req.json();
 
-    try {
-      const product = await prisma.product.update({
-        where: { id: params.id, userId: session.user.id },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data: { checkoutConfig: checkoutConfig as any },
-      });
-      return NextResponse.json({ success: true, product });
-    } catch {
-      // Mock graceful — DB not connected
-      return NextResponse.json({ success: true, mocked: true });
-    }
-  } catch {
-    return NextResponse.json({ error: "Erro interno" }, { status: 500 });
+    const product = await prisma.product.update({
+      where: { id: params.id, userId: session.user.id },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data: { checkoutConfig: checkoutConfig as any },
+    });
+    
+    return NextResponse.json({ success: true, product });
+  } catch (error) {
+    console.error("CHECKOUT_CONFIG_UPDATE_ERROR:", error);
+    return NextResponse.json({ error: "Erro ao salvar configuração no banco" }, { status: 500 });
   }
 }
