@@ -79,7 +79,7 @@ export default function AdminProductsManagement() {
       {/* Header */}
       <div>
          <h1 className="text-3xl font-black text-white tracking-tighter uppercase italic">Catálogo Global</h1>
-         <p className="text-slate-500 mt-1 font-medium">Controle total sobre todos os produtos criados na rede Black Gate.</p>
+         <p className="text-slate-500 mt-1 font-medium">Controle total sobre todos os produtos criados na rede PulsePay.</p>
       </div>
 
       {/* Global Search */}

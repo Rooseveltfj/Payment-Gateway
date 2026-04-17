@@ -73,7 +73,7 @@ export default function AdminOverview() {
       {/* Header */}
       <div>
          <h1 className="text-4xl font-black text-white tracking-tighter uppercase italic">Oversight Global</h1>
-         <p className="text-slate-500 mt-2 font-medium">Dashboard central para controle total da plataforma Black Gate.</p>
+         <p className="text-slate-500 mt-2 font-medium">Dashboard central para controle total da plataforma PulsePay.</p>
       </div>
 
       {/* Stats Grid */}

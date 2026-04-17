@@ -1,7 +1,7 @@
 import ProductWizard from "@/components/products/ProductWizard";
 
 export const metadata = {
-  title: "Novo Produto | Black Gate",
+  title: "Novo Produto | PulsePay",
 };
 
 export default function NewProductPage() {

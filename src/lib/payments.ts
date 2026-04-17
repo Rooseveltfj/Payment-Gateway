@@ -1,5 +1,5 @@
 // ============================================================
-// Black Gate — Payment Adapters (Woovi & PagarMe)
+// PulsePay — Payment Adapters (Woovi & PagarMe)
 // ============================================================
 
 export interface PixChargeResponse {
@@ -27,8 +27,8 @@ export async function createWooviPixCharge(amount: number, orderId: string): Pro
   if (!appId || appId === "mock") {
     return {
       id: `woovi_${orderId}`,
-      qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=blackgate_mock_pix_payload",
-      copyPaste: "00020101021226850014br.gov.bcb.pix0121blackgate_mock_payload52040000530398654041.005802BR5913BLACKGATE_CORP6009SAO_PAULO62070503***6304EFA1"
+      qrCode: "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=pulsepay_mock_pix_payload",
+      copyPaste: "00020101021226850014br.gov.bcb.pix0121pulsepay_mock_payload52040000530398654041.005802BR5913PULSEPAY_CORP6009SAO_PAULO62070503***6304EFA1"
     };
   }
 

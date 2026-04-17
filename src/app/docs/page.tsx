@@ -121,7 +121,7 @@ function Endpoint({ method, path, desc, params, body, response, curl, node, pyth
   );
 }
 
-const BASE = "https://blackgate.com.br";
+const BASE = "https://pulsepay.com.br";
 
 export default function DocsPage() {
   const [active, setActive] = useState("auth");
@@ -156,7 +156,7 @@ export default function DocsPage() {
               <BookOpen className="h-4 w-4 text-white" />
             </div>
             <div>
-              <p className="text-sm font-black text-white tracking-tight">Black Gate</p>
+              <p className="text-sm font-black text-white tracking-tight">PulsePay</p>
               <p className="text-xs text-slate-500">API Docs v1</p>
             </div>
           </div>
@@ -194,7 +194,7 @@ export default function DocsPage() {
           </div>
           <h1 className="text-4xl font-black text-white tracking-tight mb-4">Documentação da API</h1>
           <p className="text-slate-400 text-lg leading-relaxed">
-            Integre o Black Gate na sua aplicação com nossa API RESTful. Todas as respostas são retornadas em JSON.
+            Integre o PulsePay na sua aplicação com nossa API RESTful. Todas as respostas são retornadas em JSON.
           </p>
           <div className="mt-4 flex items-center gap-3">
             <code className="text-sm bg-slate-900 border border-slate-800 px-3 py-2 rounded-lg text-primary font-mono">{BASE}/api/v1/</code>
@@ -312,14 +312,14 @@ export default function DocsPage() {
         {/* Signature */}
         <section id="signature" className="mb-16 scroll-mt-4">
           <h2 className="text-2xl font-black text-white mb-2">Validação de Assinatura</h2>
-          <p className="text-slate-400 mb-6">Todo webhook inclui o header <code className="text-primary">X-BlackGate-Signature</code> com uma assinatura HMAC-SHA256. Valide para garantir autenticidade.</p>
-          <CodeBlock lang="javascript" code={`// Node.js\nconst crypto = require('crypto');\n\nfunction verifyWebhook(body, signature, secret) {\n  const expected = 'sha256=' + \n    crypto.createHmac('sha256', secret)\n          .update(body)\n          .digest('hex');\n  return crypto.timingSafeEqual(\n    Buffer.from(signature),\n    Buffer.from(expected)\n  );\n}\n\n// Express.js\napp.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {\n  const sig = req.headers['x-blackgate-signature'];\n  if (!verifyWebhook(req.body, sig, process.env.WEBHOOK_SECRET)) {\n    return res.status(401).send('Invalid signature');\n  }\n  const event = JSON.parse(req.body);\n  // handle event...\n  res.status(200).send('OK');\n});`} />
+          <p className="text-slate-400 mb-6">Todo webhook inclui o header <code className="text-primary">X-PulsePay-Signature</code> com uma assinatura HMAC-SHA256. Valide para garantir autenticidade.</p>
+          <CodeBlock lang="javascript" code={`// Node.js\nconst crypto = require('crypto');\n\nfunction verifyWebhook(body, signature, secret) {\n  const expected = 'sha256=' + \n    crypto.createHmac('sha256', secret)\n          .update(body)\n          .digest('hex');\n  return crypto.timingSafeEqual(\n    Buffer.from(signature),\n    Buffer.from(expected)\n  );\n}\n\n// Express.js\napp.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {\n  const sig = req.headers['x-pulsepay-signature'];\n  if (!verifyWebhook(req.body, sig, process.env.WEBHOOK_SECRET)) {\n    return res.status(401).send('Invalid signature');\n  }\n  const event = JSON.parse(req.body);\n  // handle event...\n  res.status(200).send('OK');\n});`} />
         </section>
 
         {/* Sandbox */}
         <section id="sandbox" className="mb-16 scroll-mt-4">
           <h2 className="text-2xl font-black text-white mb-2">Sandbox</h2>
-          <p className="text-slate-400 mb-6">Use chaves prefixadas com <code className="text-primary">bg_test_</code> para fazer testes sem processar pagamentos reais.</p>
+          <p className="text-slate-400 mb-6">Use chaves prefixadas com <code className="text-primary">pp_test_</code> para fazer testes sem processar pagamentos reais.</p>
           <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-6">
             <p className="text-sm font-bold text-white mb-4 flex items-center gap-2">
               <Play className="h-4 w-4 text-primary" />
@@ -328,7 +328,7 @@ export default function DocsPage() {
             <div className="flex gap-3 mb-4">
               <input
                 type="text"
-                placeholder="bg_live_... ou bg_test_..."
+                placeholder="pp_live_... ou pp_test_..."
                 value={playgroundKey}
                 onChange={(e) => setPlaygroundKey(e.target.value)}
                 className="flex-1 bg-slate-950 border border-slate-700 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-primary font-mono"

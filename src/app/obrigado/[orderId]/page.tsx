@@ -140,7 +140,7 @@ export default async function ThankYouPage({ params }: { params: { orderId: stri
         )}
 
         <p className="text-center text-xs text-zinc-600 pt-8">
-          Black Gate Payments &copy; 2026. Todos os direitos reservados.
+          PulsePay Payments &copy; 2026. Todos os direitos reservados.
         </p>
       </div>
     </div>

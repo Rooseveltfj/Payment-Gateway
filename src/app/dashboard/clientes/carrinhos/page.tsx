@@ -147,7 +147,7 @@ export default function AbandonedCartsPage() {
             <AlertCircle className="h-6 w-6" />
          </div>
          <div>
-            <h4 className="text-sm font-bold text-text-primary uppercase tracking-wider">Dica do Black Gate</h4>
+            <h4 className="text-sm font-bold text-text-primary uppercase tracking-wider">Dica do PulsePay</h4>
             <p className="text-xs text-text-secondary mt-1 leading-relaxed max-w-2xl">
                O envio de lembretes nas primeiras **2 horas** após o abandono aumenta em até **35%** as chances de conversão. Personalize sua abordagem oferecendo um cupom de desconto exclusivo para fechar o negócio.
             </p>

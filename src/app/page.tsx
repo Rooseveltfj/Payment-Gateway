@@ -13,14 +13,15 @@ import {
   ChevronRight, 
   Menu, 
   X, 
-  Play, 
-  CheckCircle2, 
+  Play,
+  CheckCircle2,
   ArrowRight,
   Code2,
   Globe,
   Database,
   Lock
 } from "lucide-react";
+import Image from "next/image";
 import { IconBrandTabler } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 
@@ -99,15 +100,18 @@ export default function LandingPage() {
 
       {/* --- Navbar --- */}
       <nav className={cn(
-        "fixed top-0 w-full z-[1000] border-b transition-all duration-300 backdrop-blur-xl bg-bg-void/80",
-        isScrolled ? "py-3 border-accent/20 border-b-2 shadow-[0_4px_30px_rgba(191,0,255,0.05)]" : "py-6 border-transparent"
+        "fixed top-0 w-full z-[1000] border-b transition-all duration-300 bg-[#08090f]",
+        isScrolled ? "py-3 border-accent/20 border-b shadow-[0_4px_30px_rgba(191,0,255,0.05)]" : "py-6 border-transparent"
       )}>
         <div className="container mx-auto px-6 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-5 h-5 bg-accent rounded-sm group-hover:rotate-45 transition-transform duration-300 shadow-[0_0_15px_rgba(191,0,255,0.6)]" />
-            <span className="font-display text-2xl font-bold tracking-tight text-white uppercase italic">
-              BLACK<span className="text-accent">GATE</span>
-            </span>
+          <Link href="/" className="flex items-center group">
+            <Image 
+              src="/assets/logo.png" 
+              alt="PulsePay Logo" 
+              width={160} 
+              height={40} 
+              className="w-auto h-8 md:h-10 object-contain group-hover:scale-105 transition-transform duration-300"
+            />
           </Link>
 
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-text-secondary">
@@ -159,29 +163,42 @@ export default function LandingPage() {
       </AnimatePresence>
 
       {/* --- Section 1: Hero --- */}
-      <section className="relative min-h-[100vh] flex flex-col items-center justify-center pt-32 pb-20 overflow-hidden grid-dots">
-        {/* Particles */}
-        {Array.from({ length: 15 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-accent/60 rounded-full blur-[1px]"
-            animate={{
-              y: [-20, 20],
-              x: [-10, 10],
-              opacity: [0.2, 0.6, 0.2],
+      <section className="relative min-h-[100vh] flex flex-col items-center justify-center pt-32 pb-20 overflow-hidden">
+        {/* Hero Video Background System */}
+        <div className="absolute inset-0 z-0">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, 1, 1, 0] }}
+            transition={{ 
+              duration: 10, 
+              repeat: Infinity, 
+              times: [0, 0.1, 0.9, 1],
+              ease: "easeInOut"
             }}
-            transition={{
-              duration: 3 + Math.random() * 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: Math.random() * 5,
-            }}
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-            }}
-          />
-        ))}
+            className="absolute inset-0 w-full h-full"
+          >
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+              poster="/assets/video-fallback.jpg" // Optional poster
+            >
+              <source src="/assets/video-hero.mp4" type="video/mp4" />
+            </video>
+          </motion.div>
+          
+          {/* Loop Masking Overlays */}
+          {/* 1. Gradient Overlay (rgba(0,0,0,0.4) to 0.7) */}
+          <div className="absolute inset-0 bg-gradient-to-b from-bg-void/40 via-bg-void/60 to-bg-void/80 z-[1]" />
+          
+          {/* 2. Backdrop Blur (Light) + Purple Tint */}
+          <div className="absolute inset-0 backdrop-blur-[4px] md:backdrop-blur-[6px] bg-accent/2 z-[2]" />
+          
+          {/* 3. Global Noise / Overlay Texture */}
+          <div className="absolute inset-0 opacity-20 z-[3] pointer-events-none grid-dots" />
+        </div>
 
         <div className="container mx-auto px-6 text-center relative z-10">
           <motion.div 
@@ -210,7 +227,7 @@ export default function LandingPage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-accent text-glow"
             >
-              BLACK GATE.
+              PULSEPAY.
             </motion.span>
             <br />
             <motion.span 
@@ -226,10 +243,10 @@ export default function LandingPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8 }}
-            className="max-w-2xl mx-auto text-lg md:text-xl text-text-secondary leading-relaxed mb-12"
+            className="max-w-2xl mx-auto text-lg md:text-xl text-text-secondary leading-relaxed mb-12 font-medium"
           >
             Checkout builder completo, split PIX instantâneo e dashboard em tempo real.
-            Tudo que um player digital precisa para escalar.
+            A nova era dos pagamentos para players e afiliados.
           </motion.p>
 
           <motion.div 
@@ -271,7 +288,7 @@ export default function LandingPage() {
               <div className="flex justify-between items-center mb-10">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center">
-                    <span className="text-accent text-[8px] font-bold italic">BG</span>
+                    <span className="text-accent text-[8px] font-bold italic">PP</span>
                   </div>
                   <span className="text-white text-sm font-bold opacity-80">Olá, Rafael 👋</span>
                 </div>
@@ -416,9 +433,9 @@ export default function LandingPage() {
               tag="REST API"
               visual={<div className="p-3 bg-bg-void rounded border border-white/5 font-mono text-[8px] leading-tight text-text-secondary overflow-hidden h-24">
                 <span className="text-accent underline">{"{"}</span><br />
-                &nbsp;&nbsp;"event": "order.paid",<br />
-                &nbsp;&nbsp;"amount": 29700,<br />
-                &nbsp;&nbsp;"status": "success"<br />
+                &nbsp;&nbsp;&quot;event&quot;: &quot;order.paid&quot;,<br />
+                &nbsp;&nbsp;&quot;amount&quot;: 29700,<br />
+                &nbsp;&nbsp;&quot;status&quot;: &quot;success&quot;<br />
                 <span className="text-accent">{"}"}</span>
               </div>}
             />
@@ -626,7 +643,7 @@ export default function LandingPage() {
              <TestimonialCard 
                name="Rafael M."
                role="Afiliado Digital · R$ 847k"
-               text="Antes eu ficava no escuro com outros gateways. Com o Black Gate, cada venda aparece em tempo real e o split vai direto pra minha chave PIX. Não existe nada mais rápido."
+               text="Antes eu ficava no escuro com outros gateways. Com o PulsePay, cada venda aparece em tempo real e o split vai direto pra minha chave PIX. Não existe nada mais rápido."
                seed="Rafael"
                badge="🏆 Plaquinha 500k"
              />
@@ -693,7 +710,7 @@ export default function LandingPage() {
                   {/* Terminal Code Content */}
                   <div className="font-mono text-[11px] md:text-sm leading-relaxed overflow-x-auto">
                      <p className="text-text-muted mb-4 hidden md:block"># Crie um novo pedido via API</p>
-                     <p className="text-white"><span className="text-success">curl</span> -X POST https://api.blackgate.com.br/v1/orders \</p>
+                     <p className="text-white"><span className="text-success">curl</span> -X POST https://api.pulsepay.com.br/v1/orders \</p>
                      <p className="text-white">&nbsp;&nbsp;-H <span className="text-accent-dim bg-accent/10 px-1">&quot;AppID: YOUR_KEY&quot;</span> \</p>
                      <p className="text-white">&nbsp;&nbsp;-d <span className="text-yellow-200">{"'{"}</span></p>
                      <p className="text-text-secondary">&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-success">&quot;amount&quot;</span>: 29700,</p>
@@ -716,9 +733,8 @@ export default function LandingPage() {
       <footer className="bg-bg-void border-t border-white/5 py-20 overflow-hidden relative">
         <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-20">
           <div className="col-span-1 md:col-span-1 lg:col-span-1">
-             <Link href="/" className="flex items-center gap-2 mb-8 group">
-                <div className="w-4 h-4 bg-accent rounded-sm shadow-[0_0_15px_rgba(191,0,255,0.6)]" />
-                <span className="font-display text-xl font-bold tracking-tight text-white uppercase italic">BLACKGATE</span>
+             <Link href="/" className="flex items-center mb-8 group">
+                <Image src="/assets/logo.png" alt="PulsePay" width={120} height={32} className="w-auto h-8 object-contain group-hover:scale-105 transition-transform duration-300" />
              </Link>
              <p className="text-sm text-text-secondary leading-relaxed mb-8 max-w-xs">A tecnologia definitiva de processamento PIX para quem escala no mercado digital. D+0 real.</p>
              <div className="flex gap-4">
@@ -759,7 +775,7 @@ export default function LandingPage() {
         </div>
 
         <div className="container mx-auto px-6 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-           <p className="text-[10px] text-text-muted font-bold uppercase tracking-[0.2em]">&copy; 2024 BLACK GATE INTERMEDIAÇÃO LTDA. TODOS OS DIREITOS RESERVADOS.</p>
+           <p className="text-[10px] text-text-muted font-bold uppercase tracking-[0.2em]">&copy; 2024 PulsePay INTERMEDIAÇÃO LTDA. TODOS OS DIREITOS RESERVADOS.</p>
            <p className="text-[10px] text-text-muted font-bold uppercase tracking-[0.2em] flex items-center gap-2">FEITO COM <div className="w-2 h-2 bg-accent rounded-full animate-ping" /> PARA PLAYERS FORTES.</p>
         </div>
       </footer>

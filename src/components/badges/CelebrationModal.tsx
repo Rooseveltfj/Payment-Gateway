@@ -53,7 +53,7 @@ export function CelebrationModal({ userName, badgeType, onClose }: CelebrationMo
       });
       
       const link = document.createElement("a");
-      link.download = `BlackGate_Achievement_${badgeType}.png`;
+      link.download = `PulsePay_Achievement_${badgeType}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
     } catch (err) {
@@ -95,7 +95,7 @@ export function CelebrationModal({ userName, badgeType, onClose }: CelebrationMo
               {downloading ? "Gerando..." : "Baixar Plaquinha"}
             </button>
             <button
-               onClick={() => { navigator.clipboard.writeText(`https://blackgate.com.br/share/${badgeType}`); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+               onClick={() => { navigator.clipboard.writeText(`https://PulsePay.com.br/share/${badgeType}`); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
                className="flex items-center gap-2 bg-slate-800 text-white font-black px-6 py-4 rounded-2xl hover:bg-slate-700 transition-all"
             >
               {copied ? <Check className="h-5 w-5 text-emerald-400" /> : <Share2 className="h-5 w-5" />}
@@ -105,7 +105,7 @@ export function CelebrationModal({ userName, badgeType, onClose }: CelebrationMo
           
           <p className="mt-8 text-xs text-slate-500 flex items-center gap-2 uppercase tracking-widest font-bold">
             <Camera className="h-4 w-4" />
-            Poste nos stories e marque @blackgate.oficial
+            Poste nos stories e marque @pulsepay.oficial
           </p>
         </div>
 

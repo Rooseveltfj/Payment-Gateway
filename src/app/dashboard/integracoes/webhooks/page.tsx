@@ -245,7 +245,7 @@ export default function WebhooksPage() {
                 <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2 block">URL do Endpoint</label>
                 <input
                   type="url"
-                  placeholder="https://seusite.com/webhooks/blackgate"
+                  placeholder="https://seusite.com/webhooks/PulsePay"
                   value={newUrl}
                   onChange={(e) => setNewUrl(e.target.value)}
                   className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary font-mono"

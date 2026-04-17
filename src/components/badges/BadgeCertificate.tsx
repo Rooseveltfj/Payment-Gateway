@@ -54,7 +54,7 @@ export function BadgeCertificate({ userName, badgeType, earnedAt = new Date(), r
           <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center">
             <div className="w-8 h-8 border-4 border-white rounded-lg rotate-45" />
           </div>
-          <span className="text-4xl font-black text-white tracking-widest uppercase">Black Gate</span>
+          <span className="text-4xl font-black text-white tracking-widest uppercase">PulsePay</span>
         </div>
 
         {/* The Badge Icon */}
@@ -86,7 +86,7 @@ export function BadgeCertificate({ userName, badgeType, earnedAt = new Date(), r
         </h2>
         
         <p className="text-slate-400 text-3xl max-w-2xl leading-relaxed mb-16">
-          Por ter atingido o volume extraordinário de <span className="text-white font-black">R$ {revenue?.toLocaleString("pt-BR") ?? milestone.replace("K", ".000").replace("M", ".000.000")}</span> em vendas liquidadas na plataforma Black Gate.
+          Por ter atingido o volume extraordinário de <span className="text-white font-black">R$ {revenue?.toLocaleString("pt-BR") ?? milestone.replace("K", ".000").replace("M", ".000.000")}</span> em vendas liquidadas na plataforma PulsePay.
         </p>
 
         {/* Footer info */}
@@ -97,7 +97,7 @@ export function BadgeCertificate({ userName, badgeType, earnedAt = new Date(), r
           </div>
           <div className="text-right">
             <p className="text-slate-600 text-sm uppercase tracking-widest font-bold">Autenticidade</p>
-            <p className="text-primary text-xl font-bold">blackgate.com.br/verify</p>
+            <p className="text-primary text-xl font-bold">pulsepay.com.br/verify</p>
           </div>
         </div>
       </div>

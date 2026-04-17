@@ -40,9 +40,9 @@ async function deliverWebhook(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-BlackGate-Signature": signature,
-        "X-BlackGate-Event": payload.event,
-        "User-Agent": "BlackGate-Webhooks/1.0",
+        "X-PulsePay-Signature": signature,
+        "X-PulsePay-Event": payload.event,
+        "User-Agent": "PulsePay-Webhooks/1.0",
       },
       body,
       signal: AbortSignal.timeout(10000), // 10s timeout

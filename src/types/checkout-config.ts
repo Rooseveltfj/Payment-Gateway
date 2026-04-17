@@ -1,5 +1,5 @@
 // ============================================================
-// Black Gate — Checkout Config Type System
+// PulsePay — Checkout Config Type System
 // ============================================================
 
 export type ButtonStyle = "rounded" | "square" | "pill";

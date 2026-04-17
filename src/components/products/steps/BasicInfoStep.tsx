@@ -86,7 +86,7 @@ export function BasicInfoStep({ data, updateData }: { data: any; updateData: (d:
          <div>
            <label className="block text-sm font-medium text-text-secondary mb-1">Slug URL</label>
            <div className="flex border border-border rounded-md bg-background overflow-hidden items-center focus-within:ring-2 focus-within:ring-primary">
-              <span className="pl-3 text-text-secondary text-sm">pay.blackgate.com/</span>
+              <span className="pl-3 text-text-secondary text-sm">pay.PulsePay.com/</span>
               <input 
                 type="text" 
                 className="flex-1 bg-transparent border-0 px-2 py-2 text-sm text-text-primary focus:outline-none focus:ring-0" 

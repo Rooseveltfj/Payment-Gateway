@@ -90,7 +90,7 @@ export function PixelsTab({ config, onChange }: Props) {
       <div className="mt-4 p-3 bg-warning/5 border border-warning/20 rounded-lg">
         <p className="text-xs text-warning font-semibold mb-1">⚠️ Atenção</p>
         <p className="text-[11px] text-text-secondary leading-relaxed">
-          Códigos injetados são executados no checkout do comprador. Certifique-se de utilizar apenas scripts confiáveis. A Black Gate não se responsabiliza por scripts de terceiros.
+          Códigos injetados são executados no checkout do comprador. Certifique-se de utilizar apenas scripts confiáveis. A PulsePay não se responsabiliza por scripts de terceiros.
         </p>
       </div>
     </div>

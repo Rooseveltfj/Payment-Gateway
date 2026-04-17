@@ -48,7 +48,7 @@ export default function RankingPage() {
                 Voltar para Metas
               </Link>
               <h1 className="text-4xl font-black text-white tracking-tight flex items-center gap-4">
-                Ranking Black Gate
+                Ranking PulsePay
                 <Trophy className="h-8 w-8 text-amber-500" />
               </h1>
               <p className="text-slate-500 mt-2">Os 50 players com maior faturamento da rede.</p>

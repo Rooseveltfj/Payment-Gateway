@@ -75,7 +75,7 @@ export default function AdminSettings() {
       <div className="flex items-center justify-between">
          <div>
             <h1 className="text-3xl font-black text-white tracking-tighter uppercase italic">Configurações Base</h1>
-            <p className="text-slate-500 mt-1">Defina as regras de negócio e integrações globais da plataforma Black Gate.</p>
+            <p className="text-slate-500 mt-1">Defina as regras de negócio e integrações globais da plataforma PulsePay.</p>
          </div>
          <Button 
            size="lg" 

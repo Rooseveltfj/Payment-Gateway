@@ -37,9 +37,9 @@ export async function POST(request: Request, { params }: { params: { id: string 
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "X-BlackGate-Signature": signature,
-        "X-BlackGate-Event": "order.paid",
-        "User-Agent": "BlackGate-Webhooks/1.0 (test)",
+        "X-PulsePay-Signature": signature,
+        "X-PulsePay-Event": "order.paid",
+        "User-Agent": "PulsePay-Webhooks/1.0 (test)",
       },
       body,
       signal: AbortSignal.timeout(10000),

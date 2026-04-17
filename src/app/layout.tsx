@@ -21,11 +21,11 @@ const jetBrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Black Gate",
-    template: "%s | Black Gate",
+    default: "PulsePay",
+    template: "%s | PulsePay",
   },
   description: "Gateway de pagamento seguro e eficiente para o seu negócio digital.",
-  keywords: ["gateway de pagamento", "pix", "boleto", "cartão de crédito", "checkout"],
+  keywords: ["gateway de pagamento", "pix", "boleto", "cartão de crédito", "checkout", "pulsepay"],
 };
 
 import { SessionProvider } from "@/components/providers/SessionProvider";

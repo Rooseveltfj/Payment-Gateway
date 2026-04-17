@@ -15,7 +15,7 @@ interface SendEmailProps {
 export async function sendEmail({ to, subject, html }: SendEmailProps) {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Black Gate <onboarding@resend.dev>',
+      from: 'PulsePay <onboarding@resend.dev>',
       to,
       subject,
       html,

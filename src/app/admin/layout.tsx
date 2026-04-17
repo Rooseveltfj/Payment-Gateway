@@ -47,7 +47,7 @@ export default async function AdminLayout({
               </div>
               <div>
                  <h1 className="text-xl font-black tracking-tighter uppercase italic text-white leading-none">Admin</h1>
-                 <span className="text-[10px] font-bold text-primary uppercase tracking-widest">Black Gate</span>
+                 <span className="text-[10px] font-bold text-primary uppercase tracking-widest">PulsePay</span>
               </div>
            </div>
         </div>
