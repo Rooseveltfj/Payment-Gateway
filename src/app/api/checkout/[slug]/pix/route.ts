@@ -67,13 +67,6 @@ export async function POST(
           taxID: buyerCpf || undefined,
           phone: buyerPhone ? `55${buyerPhone.replace(/\D/g, "")}` : undefined
         },
-        splits: [
-          {
-            pixKey: seller.pixKey,
-            value: netAmountCents,
-            splitType: "SPLIT_SUB_ACCOUNT"
-          }
-        ],
         additionalInfo: [
           { key: "orderId", value: order.id },
           { key: "productName", value: product.name },

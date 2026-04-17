@@ -32,7 +32,8 @@ export async function createWooviPixCharge(amount: number, orderId: string): Pro
     };
   }
 
-  return { id: "...", qrCode: "...", copyPaste: "..." };
+  // Manual repass model: 100% of charge goes to platform account
+  return { id: "manual_sync", qrCode: "...", copyPaste: "..." };
 }
 
 // ─── PagarMe Adapter (Card/Boleto) ─────────────────────────
