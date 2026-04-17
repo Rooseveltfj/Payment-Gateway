@@ -1,44 +1,91 @@
 "use client";
 
-import { Paintbrush, LayoutTemplate, Palette } from "lucide-react";
+import { useState } from "react";
+import { AppearanceTab } from "@/components/checkout-builder/tabs/AppearanceTab";
+import { FormFieldsTab } from "@/components/checkout-builder/tabs/FormFieldsTab";
+import { CheckoutPreview } from "@/components/checkout-builder/CheckoutPreview";
+import { CheckoutConfig } from "@/types/checkout-config";
+import { cn } from "@/lib/utils";
+import { Paintbrush, LayoutTemplate, Eye } from "lucide-react";
 
-export function CheckoutConfigStep() {
+interface Props {
+  data: CheckoutConfig;
+  updateData: (d: Partial<CheckoutConfig>) => void;
+}
+
+export function CheckoutConfigStep({ data, updateData }: Props) {
+  const [activeTab, setActiveTab] = useState<"appearance" | "form">("appearance");
+  const [showPreview, setShowPreview] = useState(false);
+
   return (
-    <div className="h-full flex flex-col items-center justify-center text-center animate-in fade-in zoom-in-95 duration-500 py-12">
-      <div className="h-20 w-20 bg-hover rounded-full flex flex-col items-center justify-center relative shadow-inner shadow-black mb-6">
-         <Paintbrush className="h-8 w-8 text-primary absolute" />
-      </div>
-      
-      <h2 className="text-2xl font-bold text-text-primary">Checkout Builder</h2>
-      <p className="text-text-secondary max-w-md mt-2 mb-8 text-sm">
-        Esta seção integrará o módulo de edição interativa da interface de pagamento de acordo com o design especificado no Prompt 5.
-      </p>
-
-      {/* Scaffold Preview Boxes */}
-      <div className="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="p-6 border border-border rounded-xl bg-background/50 flex items-center gap-4 text-left shadow-sm">
-           <div className="h-10 w-10 bg-primary/20 rounded-lg flex items-center justify-center shrink-0">
-             <LayoutTemplate className="h-5 w-5 text-primary" />
-           </div>
-           <div>
-             <h4 className="text-sm font-semibold text-text-primary">Layout Dinâmico</h4>
-             <p className="text-xs text-text-secondary mt-1">Configuração de Bump, Order Bump e disposições em tela direita.</p>
-           </div>
+    <div className="flex flex-col h-full animate-in fade-in duration-500">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2 bg-hover p-1 rounded-xl border border-border">
+          <button
+            onClick={() => setActiveTab("appearance")}
+            className={cn(
+              "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
+              activeTab === "appearance" ? "bg-background text-primary shadow-sm" : "text-text-secondary hover:text-text-primary"
+            )}
+          >
+            <Paintbrush className="w-4 h-4" />
+            Aparência
+          </button>
+          <button
+            onClick={() => setActiveTab("form")}
+            className={cn(
+              "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
+              activeTab === "form" ? "bg-background text-primary shadow-sm" : "text-text-secondary hover:text-text-primary"
+            )}
+          >
+            <LayoutTemplate className="w-4 h-4" />
+            Formulário
+          </button>
         </div>
 
-        <div className="p-6 border border-border rounded-xl bg-background/50 flex items-center gap-4 text-left shadow-sm">
-           <div className="h-10 w-10 bg-success/20 rounded-lg flex items-center justify-center shrink-0">
-             <Palette className="h-5 w-5 text-success" />
-           </div>
-           <div>
-             <h4 className="text-sm font-semibold text-text-primary">Temas Premium</h4>
-             <p className="text-xs text-text-secondary mt-1">Modificadores de tipografia, arredondamentos e cores Dark/Light base.</p>
-           </div>
-        </div>
+        <button
+          onClick={() => setShowPreview(!showPreview)}
+          className={cn(
+            "flex lg:hidden items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium border border-border transition-all",
+            showPreview ? "bg-primary text-white border-primary" : "bg-card text-text-primary"
+          )}
+        >
+          <Eye className="w-4 h-4" />
+          {showPreview ? "Editar" : "Ver Preview"}
+        </button>
       </div>
-      
-      <div className="mt-8 text-xs text-text-secondary border border-border px-4 py-2 rounded-full bg-background/50">
-        Pule esta etapa para usar o padrão de alta conversão do sistema.
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 flex-1">
+        {/* Controls */}
+        <div className={cn(
+          "space-y-6 overflow-y-auto pr-2 max-h-[500px] scrollbar-thin",
+          showPreview && "hidden lg:block"
+        )}>
+          {activeTab === "appearance" ? (
+            <AppearanceTab 
+              config={data.appearance} 
+              onChange={(appearance) => updateData({ appearance: { ...data.appearance, ...appearance } })} 
+            />
+          ) : (
+            <FormFieldsTab 
+              config={data.form} 
+              onChange={(form) => updateData({ form: { ...data.form, ...form } })} 
+            />
+          )}
+        </div>
+
+        {/* Live Preview */}
+        <div className={cn(
+          "lg:block rounded-2xl border border-border bg-black overflow-hidden relative group h-[500px]",
+          !showPreview && "hidden"
+        )}>
+          <div className="absolute inset-0 scale-[0.6] origin-top transform-gpu">
+             <CheckoutPreview config={data} />
+          </div>
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 text-[10px] text-white/70 font-medium">
+            Preview em tempo real
+          </div>
+        </div>
       </div>
     </div>
   );

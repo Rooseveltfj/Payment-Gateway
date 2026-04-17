@@ -5,6 +5,8 @@ import { Copy, Edit, Trash, Play, CopyPlus } from "lucide-react";
 import { Switch } from "@/components/ui/Switch";
 import { DropdownMenu, DropdownMenuItem } from "@/components/ui/DropdownMenu";
 import { Badge } from "@/components/ui/Badge";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface ProductCardProps {
   product: {
@@ -29,6 +31,7 @@ const TYPE_MAP: Record<string, string> = {
 };
 
 export function ProductCard({ product, onDelete, onDuplicate }: ProductCardProps) {
+  const router = useRouter();
   const [isActive, setIsActive] = useState(product.status === "ACTIVE");
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -49,6 +52,20 @@ export function ProductCard({ product, onDelete, onDuplicate }: ProductCardProps
     } finally {
       setIsUpdating(false);
     }
+  };
+  
+  const handleCopyLink = () => {
+    const url = `${window.location.origin}/c/${product.slug}`;
+    navigator.clipboard.writeText(url);
+    toast.success("Link copiado para a área de transferência!");
+  };
+
+  const handleViewCheckout = () => {
+    window.open(`/c/${product.slug}`, "_blank");
+  };
+
+  const handleEdit = () => {
+    router.push(`/dashboard/produtos/${product.id}/checkout`);
   };
 
   const statusVariant = isActive ? "success" : "secondary";
@@ -81,9 +98,9 @@ export function ProductCard({ product, onDelete, onDuplicate }: ProductCardProps
         </div>
         <div className="absolute top-3 right-3 bg-black/50 rounded flex items-center shadow-sm backdrop-blur-md">
           <DropdownMenu>
-            <DropdownMenuItem icon={Edit}>Editar</DropdownMenuItem>
-            <DropdownMenuItem icon={Play}>Ver checkout</DropdownMenuItem>
-            <DropdownMenuItem icon={Copy}>Copiar link</DropdownMenuItem>
+            <DropdownMenuItem icon={Edit} onClick={handleEdit}>Editar</DropdownMenuItem>
+            <DropdownMenuItem icon={Play} onClick={handleViewCheckout}>Ver checkout</DropdownMenuItem>
+            <DropdownMenuItem icon={Copy} onClick={handleCopyLink}>Copiar link</DropdownMenuItem>
             <DropdownMenuItem icon={CopyPlus} onClick={() => onDuplicate?.(product.id)}>Duplicar</DropdownMenuItem>
             <div className="my-1 h-px bg-border mx-2" />
             <DropdownMenuItem icon={Trash} danger onClick={() => onDelete?.(product.id)}>Excluir</DropdownMenuItem>

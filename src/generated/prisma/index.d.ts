@@ -19,6 +19,16 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model Notification
+ * 
+ */
+export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = $Result.DefaultSelection<Prisma.$AuditLogPayload>
+/**
  * Model Product
  * 
  */
@@ -28,6 +38,11 @@ export type Product = $Result.DefaultSelection<Prisma.$ProductPayload>
  * 
  */
 export type Order = $Result.DefaultSelection<Prisma.$OrderPayload>
+/**
+ * Model PendingBalance
+ * 
+ */
+export type PendingBalance = $Result.DefaultSelection<Prisma.$PendingBalancePayload>
 /**
  * Model Withdrawal
  * 
@@ -88,12 +103,27 @@ export type PasswordResetToken = $Result.DefaultSelection<Prisma.$PasswordResetT
  * 
  */
 export type AdminLog = $Result.DefaultSelection<Prisma.$AdminLogPayload>
+/**
+ * Model CustomDomain
+ * 
+ */
+export type CustomDomain = $Result.DefaultSelection<Prisma.$CustomDomainPayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
-  export const Role: {
+  export const NotificationType: {
+  INFO: 'INFO',
+  SUCCESS: 'SUCCESS',
+  WARNING: 'WARNING',
+  ERROR: 'ERROR'
+};
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
+export const Role: {
   USER: 'USER',
   ADMIN: 'ADMIN'
 };
@@ -221,7 +251,21 @@ export const TransactionType: {
 
 export type TransactionType = (typeof TransactionType)[keyof typeof TransactionType]
 
+
+export const DomainStatus: {
+  PENDING: 'PENDING',
+  VERIFIED: 'VERIFIED',
+  ACTIVE: 'ACTIVE',
+  ERROR: 'ERROR'
+};
+
+export type DomainStatus = (typeof DomainStatus)[keyof typeof DomainStatus]
+
 }
+
+export type NotificationType = $Enums.NotificationType
+
+export const NotificationType: typeof $Enums.NotificationType
 
 export type Role = $Enums.Role
 
@@ -274,6 +318,10 @@ export const BadgeType: typeof $Enums.BadgeType
 export type TransactionType = $Enums.TransactionType
 
 export const TransactionType: typeof $Enums.TransactionType
+
+export type DomainStatus = $Enums.DomainStatus
+
+export const DomainStatus: typeof $Enums.DomainStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -407,6 +455,26 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.notification`: Exposes CRUD operations for the **Notification** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Notifications
+    * const notifications = await prisma.notification.findMany()
+    * ```
+    */
+  get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.auditLog`: Exposes CRUD operations for the **AuditLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AuditLogs
+    * const auditLogs = await prisma.auditLog.findMany()
+    * ```
+    */
+  get auditLog(): Prisma.AuditLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.product`: Exposes CRUD operations for the **Product** model.
     * Example usage:
     * ```ts
@@ -425,6 +493,16 @@ export class PrismaClient<
     * ```
     */
   get order(): Prisma.OrderDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.pendingBalance`: Exposes CRUD operations for the **PendingBalance** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PendingBalances
+    * const pendingBalances = await prisma.pendingBalance.findMany()
+    * ```
+    */
+  get pendingBalance(): Prisma.PendingBalanceDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.withdrawal`: Exposes CRUD operations for the **Withdrawal** model.
@@ -545,6 +623,16 @@ export class PrismaClient<
     * ```
     */
   get adminLog(): Prisma.AdminLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.customDomain`: Exposes CRUD operations for the **CustomDomain** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CustomDomains
+    * const customDomains = await prisma.customDomain.findMany()
+    * ```
+    */
+  get customDomain(): Prisma.CustomDomainDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -980,8 +1068,11 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    Notification: 'Notification',
+    AuditLog: 'AuditLog',
     Product: 'Product',
     Order: 'Order',
+    PendingBalance: 'PendingBalance',
     Withdrawal: 'Withdrawal',
     Webhook: 'Webhook',
     WebhookLog: 'WebhookLog',
@@ -993,7 +1084,8 @@ export namespace Prisma {
     PlatformSetting: 'PlatformSetting',
     TwoFactorToken: 'TwoFactorToken',
     PasswordResetToken: 'PasswordResetToken',
-    AdminLog: 'AdminLog'
+    AdminLog: 'AdminLog',
+    CustomDomain: 'CustomDomain'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1009,7 +1101,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "product" | "order" | "withdrawal" | "webhook" | "webhookLog" | "apiKey" | "kycDocument" | "userBadge" | "checkoutLink" | "transaction" | "platformSetting" | "twoFactorToken" | "passwordResetToken" | "adminLog"
+      modelProps: "user" | "notification" | "auditLog" | "product" | "order" | "pendingBalance" | "withdrawal" | "webhook" | "webhookLog" | "apiKey" | "kycDocument" | "userBadge" | "checkoutLink" | "transaction" | "platformSetting" | "twoFactorToken" | "passwordResetToken" | "adminLog" | "customDomain"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1084,6 +1176,154 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Notification: {
+        payload: Prisma.$NotificationPayload<ExtArgs>
+        fields: Prisma.NotificationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.NotificationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.NotificationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          findFirst: {
+            args: Prisma.NotificationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.NotificationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          findMany: {
+            args: Prisma.NotificationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          create: {
+            args: Prisma.NotificationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          createMany: {
+            args: Prisma.NotificationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.NotificationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          delete: {
+            args: Prisma.NotificationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          update: {
+            args: Prisma.NotificationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          deleteMany: {
+            args: Prisma.NotificationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.NotificationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.NotificationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          upsert: {
+            args: Prisma.NotificationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          aggregate: {
+            args: Prisma.NotificationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNotification>
+          }
+          groupBy: {
+            args: Prisma.NotificationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NotificationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.NotificationCountArgs<ExtArgs>
+            result: $Utils.Optional<NotificationCountAggregateOutputType> | number
+          }
+        }
+      }
+      AuditLog: {
+        payload: Prisma.$AuditLogPayload<ExtArgs>
+        fields: Prisma.AuditLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AuditLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AuditLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          findFirst: {
+            args: Prisma.AuditLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AuditLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          findMany: {
+            args: Prisma.AuditLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          create: {
+            args: Prisma.AuditLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          createMany: {
+            args: Prisma.AuditLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AuditLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          delete: {
+            args: Prisma.AuditLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          update: {
+            args: Prisma.AuditLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.AuditLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AuditLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AuditLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.AuditLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          aggregate: {
+            args: Prisma.AuditLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAuditLog>
+          }
+          groupBy: {
+            args: Prisma.AuditLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AuditLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AuditLogCountArgs<ExtArgs>
+            result: $Utils.Optional<AuditLogCountAggregateOutputType> | number
           }
         }
       }
@@ -1232,6 +1472,80 @@ export namespace Prisma {
           count: {
             args: Prisma.OrderCountArgs<ExtArgs>
             result: $Utils.Optional<OrderCountAggregateOutputType> | number
+          }
+        }
+      }
+      PendingBalance: {
+        payload: Prisma.$PendingBalancePayload<ExtArgs>
+        fields: Prisma.PendingBalanceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PendingBalanceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PendingBalancePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PendingBalanceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PendingBalancePayload>
+          }
+          findFirst: {
+            args: Prisma.PendingBalanceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PendingBalancePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PendingBalanceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PendingBalancePayload>
+          }
+          findMany: {
+            args: Prisma.PendingBalanceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PendingBalancePayload>[]
+          }
+          create: {
+            args: Prisma.PendingBalanceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PendingBalancePayload>
+          }
+          createMany: {
+            args: Prisma.PendingBalanceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PendingBalanceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PendingBalancePayload>[]
+          }
+          delete: {
+            args: Prisma.PendingBalanceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PendingBalancePayload>
+          }
+          update: {
+            args: Prisma.PendingBalanceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PendingBalancePayload>
+          }
+          deleteMany: {
+            args: Prisma.PendingBalanceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PendingBalanceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PendingBalanceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PendingBalancePayload>[]
+          }
+          upsert: {
+            args: Prisma.PendingBalanceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PendingBalancePayload>
+          }
+          aggregate: {
+            args: Prisma.PendingBalanceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePendingBalance>
+          }
+          groupBy: {
+            args: Prisma.PendingBalanceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PendingBalanceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PendingBalanceCountArgs<ExtArgs>
+            result: $Utils.Optional<PendingBalanceCountAggregateOutputType> | number
           }
         }
       }
@@ -2123,6 +2437,80 @@ export namespace Prisma {
           }
         }
       }
+      CustomDomain: {
+        payload: Prisma.$CustomDomainPayload<ExtArgs>
+        fields: Prisma.CustomDomainFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CustomDomainFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CustomDomainFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>
+          }
+          findFirst: {
+            args: Prisma.CustomDomainFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CustomDomainFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>
+          }
+          findMany: {
+            args: Prisma.CustomDomainFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>[]
+          }
+          create: {
+            args: Prisma.CustomDomainCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>
+          }
+          createMany: {
+            args: Prisma.CustomDomainCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CustomDomainCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>[]
+          }
+          delete: {
+            args: Prisma.CustomDomainDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>
+          }
+          update: {
+            args: Prisma.CustomDomainUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>
+          }
+          deleteMany: {
+            args: Prisma.CustomDomainDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CustomDomainUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CustomDomainUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>[]
+          }
+          upsert: {
+            args: Prisma.CustomDomainUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomDomainPayload>
+          }
+          aggregate: {
+            args: Prisma.CustomDomainAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCustomDomain>
+          }
+          groupBy: {
+            args: Prisma.CustomDomainGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CustomDomainGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CustomDomainCountArgs<ExtArgs>
+            result: $Utils.Optional<CustomDomainCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2232,8 +2620,11 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    notification?: NotificationOmit
+    auditLog?: AuditLogOmit
     product?: ProductOmit
     order?: OrderOmit
+    pendingBalance?: PendingBalanceOmit
     withdrawal?: WithdrawalOmit
     webhook?: WebhookOmit
     webhookLog?: WebhookLogOmit
@@ -2246,6 +2637,7 @@ export namespace Prisma {
     twoFactorToken?: TwoFactorTokenOmit
     passwordResetToken?: PasswordResetTokenOmit
     adminLog?: AdminLogOmit
+    customDomain?: CustomDomainOmit
   }
 
   /* Types for Logging */
@@ -2334,6 +2726,10 @@ export namespace Prisma {
     apiKeys: number
     kycDocuments: number
     badges: number
+    pendingBalances: number
+    customDomains: number
+    notifications: number
+    auditLogs: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2345,6 +2741,10 @@ export namespace Prisma {
     apiKeys?: boolean | UserCountOutputTypeCountApiKeysArgs
     kycDocuments?: boolean | UserCountOutputTypeCountKycDocumentsArgs
     badges?: boolean | UserCountOutputTypeCountBadgesArgs
+    pendingBalances?: boolean | UserCountOutputTypeCountPendingBalancesArgs
+    customDomains?: boolean | UserCountOutputTypeCountCustomDomainsArgs
+    notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+    auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
   }
 
   // Custom InputTypes
@@ -2414,6 +2814,34 @@ export namespace Prisma {
     where?: UserBadgeWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPendingBalancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PendingBalanceWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCustomDomainsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CustomDomainWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditLogWhereInput
+  }
+
 
   /**
    * Count Type ProductCountOutputType
@@ -2452,6 +2880,37 @@ export namespace Prisma {
    */
   export type ProductCountOutputTypeCountCheckoutLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CheckoutLinkWhereInput
+  }
+
+
+  /**
+   * Count Type OrderCountOutputType
+   */
+
+  export type OrderCountOutputType = {
+    pendingBalances: number
+  }
+
+  export type OrderCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    pendingBalances?: boolean | OrderCountOutputTypeCountPendingBalancesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * OrderCountOutputType without action
+   */
+  export type OrderCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderCountOutputType
+     */
+    select?: OrderCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * OrderCountOutputType without action
+   */
+  export type OrderCountOutputTypeCountPendingBalancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PendingBalanceWhereInput
   }
 
 
@@ -2510,6 +2969,10 @@ export namespace Prisma {
     pendingBalance: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    username: string | null
+    twoFactorEnabled: boolean | null
+    twoFactorSecret: string | null
+    lastActiveAt: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -2535,6 +2998,10 @@ export namespace Prisma {
     pendingBalance: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    username: string | null
+    twoFactorEnabled: boolean | null
+    twoFactorSecret: string | null
+    lastActiveAt: Date | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -2560,6 +3027,13 @@ export namespace Prisma {
     pendingBalance: number
     createdAt: number
     updatedAt: number
+    username: number
+    showcaseConfig: number
+    socialLinks: number
+    twoFactorEnabled: number
+    twoFactorSecret: number
+    onboardingSteps: number
+    lastActiveAt: number
     _all: number
   }
 
@@ -2603,6 +3077,10 @@ export namespace Prisma {
     pendingBalance?: true
     createdAt?: true
     updatedAt?: true
+    username?: true
+    twoFactorEnabled?: true
+    twoFactorSecret?: true
+    lastActiveAt?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -2628,6 +3106,10 @@ export namespace Prisma {
     pendingBalance?: true
     createdAt?: true
     updatedAt?: true
+    username?: true
+    twoFactorEnabled?: true
+    twoFactorSecret?: true
+    lastActiveAt?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -2653,6 +3135,13 @@ export namespace Prisma {
     pendingBalance?: true
     createdAt?: true
     updatedAt?: true
+    username?: true
+    showcaseConfig?: true
+    socialLinks?: true
+    twoFactorEnabled?: true
+    twoFactorSecret?: true
+    onboardingSteps?: true
+    lastActiveAt?: true
     _all?: true
   }
 
@@ -2765,6 +3254,13 @@ export namespace Prisma {
     pendingBalance: number
     createdAt: Date
     updatedAt: Date
+    username: string | null
+    showcaseConfig: JsonValue | null
+    socialLinks: JsonValue | null
+    twoFactorEnabled: boolean
+    twoFactorSecret: string | null
+    onboardingSteps: JsonValue | null
+    lastActiveAt: Date
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -2809,6 +3305,13 @@ export namespace Prisma {
     pendingBalance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    username?: boolean
+    showcaseConfig?: boolean
+    socialLinks?: boolean
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: boolean
+    onboardingSteps?: boolean
+    lastActiveAt?: boolean
     products?: boolean | User$productsArgs<ExtArgs>
     orders?: boolean | User$ordersArgs<ExtArgs>
     withdrawals?: boolean | User$withdrawalsArgs<ExtArgs>
@@ -2817,6 +3320,10 @@ export namespace Prisma {
     apiKeys?: boolean | User$apiKeysArgs<ExtArgs>
     kycDocuments?: boolean | User$kycDocumentsArgs<ExtArgs>
     badges?: boolean | User$badgesArgs<ExtArgs>
+    pendingBalances?: boolean | User$pendingBalancesArgs<ExtArgs>
+    customDomains?: boolean | User$customDomainsArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
+    auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2843,6 +3350,13 @@ export namespace Prisma {
     pendingBalance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    username?: boolean
+    showcaseConfig?: boolean
+    socialLinks?: boolean
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: boolean
+    onboardingSteps?: boolean
+    lastActiveAt?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2868,6 +3382,13 @@ export namespace Prisma {
     pendingBalance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    username?: boolean
+    showcaseConfig?: boolean
+    socialLinks?: boolean
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: boolean
+    onboardingSteps?: boolean
+    lastActiveAt?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -2893,9 +3414,16 @@ export namespace Prisma {
     pendingBalance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    username?: boolean
+    showcaseConfig?: boolean
+    socialLinks?: boolean
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: boolean
+    onboardingSteps?: boolean
+    lastActiveAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "status" | "kycStatus" | "document" | "phone" | "pixKey" | "pixKeyType" | "bankName" | "bankAgency" | "bankAccount" | "avatarUrl" | "platformFeePercent" | "totalEarnings" | "totalWithdrawn" | "availableBalance" | "pendingBalance" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "status" | "kycStatus" | "document" | "phone" | "pixKey" | "pixKeyType" | "bankName" | "bankAgency" | "bankAccount" | "avatarUrl" | "platformFeePercent" | "totalEarnings" | "totalWithdrawn" | "availableBalance" | "pendingBalance" | "createdAt" | "updatedAt" | "username" | "showcaseConfig" | "socialLinks" | "twoFactorEnabled" | "twoFactorSecret" | "onboardingSteps" | "lastActiveAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     products?: boolean | User$productsArgs<ExtArgs>
     orders?: boolean | User$ordersArgs<ExtArgs>
@@ -2905,6 +3433,10 @@ export namespace Prisma {
     apiKeys?: boolean | User$apiKeysArgs<ExtArgs>
     kycDocuments?: boolean | User$kycDocumentsArgs<ExtArgs>
     badges?: boolean | User$badgesArgs<ExtArgs>
+    pendingBalances?: boolean | User$pendingBalancesArgs<ExtArgs>
+    customDomains?: boolean | User$customDomainsArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
+    auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2921,6 +3453,10 @@ export namespace Prisma {
       apiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
       kycDocuments: Prisma.$KycDocumentPayload<ExtArgs>[]
       badges: Prisma.$UserBadgePayload<ExtArgs>[]
+      pendingBalances: Prisma.$PendingBalancePayload<ExtArgs>[]
+      customDomains: Prisma.$CustomDomainPayload<ExtArgs>[]
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
+      auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2945,6 +3481,13 @@ export namespace Prisma {
       pendingBalance: number
       createdAt: Date
       updatedAt: Date
+      username: string | null
+      showcaseConfig: Prisma.JsonValue | null
+      socialLinks: Prisma.JsonValue | null
+      twoFactorEnabled: boolean
+      twoFactorSecret: string | null
+      onboardingSteps: Prisma.JsonValue | null
+      lastActiveAt: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -3347,6 +3890,10 @@ export namespace Prisma {
     apiKeys<T extends User$apiKeysArgs<ExtArgs> = {}>(args?: Subset<T, User$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     kycDocuments<T extends User$kycDocumentsArgs<ExtArgs> = {}>(args?: Subset<T, User$kycDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KycDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     badges<T extends User$badgesArgs<ExtArgs> = {}>(args?: Subset<T, User$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pendingBalances<T extends User$pendingBalancesArgs<ExtArgs> = {}>(args?: Subset<T, User$pendingBalancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    customDomains<T extends User$customDomainsArgs<ExtArgs> = {}>(args?: Subset<T, User$customDomainsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3398,6 +3945,13 @@ export namespace Prisma {
     readonly pendingBalance: FieldRef<"User", 'Float'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly username: FieldRef<"User", 'String'>
+    readonly showcaseConfig: FieldRef<"User", 'Json'>
+    readonly socialLinks: FieldRef<"User", 'Json'>
+    readonly twoFactorEnabled: FieldRef<"User", 'Boolean'>
+    readonly twoFactorSecret: FieldRef<"User", 'String'>
+    readonly onboardingSteps: FieldRef<"User", 'Json'>
+    readonly lastActiveAt: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -3983,6 +4537,102 @@ export namespace Prisma {
   }
 
   /**
+   * User.pendingBalances
+   */
+  export type User$pendingBalancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceInclude<ExtArgs> | null
+    where?: PendingBalanceWhereInput
+    orderBy?: PendingBalanceOrderByWithRelationInput | PendingBalanceOrderByWithRelationInput[]
+    cursor?: PendingBalanceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PendingBalanceScalarFieldEnum | PendingBalanceScalarFieldEnum[]
+  }
+
+  /**
+   * User.customDomains
+   */
+  export type User$customDomainsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    where?: CustomDomainWhereInput
+    orderBy?: CustomDomainOrderByWithRelationInput | CustomDomainOrderByWithRelationInput[]
+    cursor?: CustomDomainWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CustomDomainScalarFieldEnum | CustomDomainScalarFieldEnum[]
+  }
+
+  /**
+   * User.notifications
+   */
+  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.auditLogs
+   */
+  export type User$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    where?: AuditLogWhereInput
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    cursor?: AuditLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3998,6 +4648,2184 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Notification
+   */
+
+  export type AggregateNotification = {
+    _count: NotificationCountAggregateOutputType | null
+    _min: NotificationMinAggregateOutputType | null
+    _max: NotificationMaxAggregateOutputType | null
+  }
+
+  export type NotificationMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    title: string | null
+    content: string | null
+    read: boolean | null
+    type: $Enums.NotificationType | null
+    createdAt: Date | null
+  }
+
+  export type NotificationMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    title: string | null
+    content: string | null
+    read: boolean | null
+    type: $Enums.NotificationType | null
+    createdAt: Date | null
+  }
+
+  export type NotificationCountAggregateOutputType = {
+    id: number
+    userId: number
+    title: number
+    content: number
+    read: number
+    type: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type NotificationMinAggregateInputType = {
+    id?: true
+    userId?: true
+    title?: true
+    content?: true
+    read?: true
+    type?: true
+    createdAt?: true
+  }
+
+  export type NotificationMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    title?: true
+    content?: true
+    read?: true
+    type?: true
+    createdAt?: true
+  }
+
+  export type NotificationCountAggregateInputType = {
+    id?: true
+    userId?: true
+    title?: true
+    content?: true
+    read?: true
+    type?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type NotificationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Notification to aggregate.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Notifications
+    **/
+    _count?: true | NotificationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NotificationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NotificationMaxAggregateInputType
+  }
+
+  export type GetNotificationAggregateType<T extends NotificationAggregateArgs> = {
+        [P in keyof T & keyof AggregateNotification]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNotification[P]>
+      : GetScalarType<T[P], AggregateNotification[P]>
+  }
+
+
+
+
+  export type NotificationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithAggregationInput | NotificationOrderByWithAggregationInput[]
+    by: NotificationScalarFieldEnum[] | NotificationScalarFieldEnum
+    having?: NotificationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NotificationCountAggregateInputType | true
+    _min?: NotificationMinAggregateInputType
+    _max?: NotificationMaxAggregateInputType
+  }
+
+  export type NotificationGroupByOutputType = {
+    id: string
+    userId: string
+    title: string
+    content: string
+    read: boolean
+    type: $Enums.NotificationType
+    createdAt: Date
+    _count: NotificationCountAggregateOutputType | null
+    _min: NotificationMinAggregateOutputType | null
+    _max: NotificationMaxAggregateOutputType | null
+  }
+
+  type GetNotificationGroupByPayload<T extends NotificationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NotificationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NotificationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NotificationGroupByOutputType[P]>
+            : GetScalarType<T[P], NotificationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type NotificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    title?: boolean
+    content?: boolean
+    read?: boolean
+    type?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    title?: boolean
+    content?: boolean
+    read?: boolean
+    type?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    title?: boolean
+    content?: boolean
+    read?: boolean
+    type?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    title?: boolean
+    content?: boolean
+    read?: boolean
+    type?: boolean
+    createdAt?: boolean
+  }
+
+  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "title" | "content" | "read" | "type" | "createdAt", ExtArgs["result"]["notification"]>
+  export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type NotificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type NotificationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $NotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Notification"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      title: string
+      content: string
+      read: boolean
+      type: $Enums.NotificationType
+      createdAt: Date
+    }, ExtArgs["result"]["notification"]>
+    composites: {}
+  }
+
+  type NotificationGetPayload<S extends boolean | null | undefined | NotificationDefaultArgs> = $Result.GetResult<Prisma.$NotificationPayload, S>
+
+  type NotificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<NotificationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: NotificationCountAggregateInputType | true
+    }
+
+  export interface NotificationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Notification'], meta: { name: 'Notification' } }
+    /**
+     * Find zero or one Notification that matches the filter.
+     * @param {NotificationFindUniqueArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends NotificationFindUniqueArgs>(args: SelectSubset<T, NotificationFindUniqueArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Notification that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {NotificationFindUniqueOrThrowArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends NotificationFindUniqueOrThrowArgs>(args: SelectSubset<T, NotificationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Notification that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindFirstArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends NotificationFindFirstArgs>(args?: SelectSubset<T, NotificationFindFirstArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Notification that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindFirstOrThrowArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends NotificationFindFirstOrThrowArgs>(args?: SelectSubset<T, NotificationFindFirstOrThrowArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Notifications that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Notifications
+     * const notifications = await prisma.notification.findMany()
+     * 
+     * // Get first 10 Notifications
+     * const notifications = await prisma.notification.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const notificationWithIdOnly = await prisma.notification.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends NotificationFindManyArgs>(args?: SelectSubset<T, NotificationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Notification.
+     * @param {NotificationCreateArgs} args - Arguments to create a Notification.
+     * @example
+     * // Create one Notification
+     * const Notification = await prisma.notification.create({
+     *   data: {
+     *     // ... data to create a Notification
+     *   }
+     * })
+     * 
+     */
+    create<T extends NotificationCreateArgs>(args: SelectSubset<T, NotificationCreateArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Notifications.
+     * @param {NotificationCreateManyArgs} args - Arguments to create many Notifications.
+     * @example
+     * // Create many Notifications
+     * const notification = await prisma.notification.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends NotificationCreateManyArgs>(args?: SelectSubset<T, NotificationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Notifications and returns the data saved in the database.
+     * @param {NotificationCreateManyAndReturnArgs} args - Arguments to create many Notifications.
+     * @example
+     * // Create many Notifications
+     * const notification = await prisma.notification.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Notifications and only return the `id`
+     * const notificationWithIdOnly = await prisma.notification.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends NotificationCreateManyAndReturnArgs>(args?: SelectSubset<T, NotificationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Notification.
+     * @param {NotificationDeleteArgs} args - Arguments to delete one Notification.
+     * @example
+     * // Delete one Notification
+     * const Notification = await prisma.notification.delete({
+     *   where: {
+     *     // ... filter to delete one Notification
+     *   }
+     * })
+     * 
+     */
+    delete<T extends NotificationDeleteArgs>(args: SelectSubset<T, NotificationDeleteArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Notification.
+     * @param {NotificationUpdateArgs} args - Arguments to update one Notification.
+     * @example
+     * // Update one Notification
+     * const notification = await prisma.notification.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends NotificationUpdateArgs>(args: SelectSubset<T, NotificationUpdateArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Notifications.
+     * @param {NotificationDeleteManyArgs} args - Arguments to filter Notifications to delete.
+     * @example
+     * // Delete a few Notifications
+     * const { count } = await prisma.notification.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends NotificationDeleteManyArgs>(args?: SelectSubset<T, NotificationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Notifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Notifications
+     * const notification = await prisma.notification.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends NotificationUpdateManyArgs>(args: SelectSubset<T, NotificationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Notifications and returns the data updated in the database.
+     * @param {NotificationUpdateManyAndReturnArgs} args - Arguments to update many Notifications.
+     * @example
+     * // Update many Notifications
+     * const notification = await prisma.notification.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Notifications and only return the `id`
+     * const notificationWithIdOnly = await prisma.notification.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends NotificationUpdateManyAndReturnArgs>(args: SelectSubset<T, NotificationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Notification.
+     * @param {NotificationUpsertArgs} args - Arguments to update or create a Notification.
+     * @example
+     * // Update or create a Notification
+     * const notification = await prisma.notification.upsert({
+     *   create: {
+     *     // ... data to create a Notification
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Notification we want to update
+     *   }
+     * })
+     */
+    upsert<T extends NotificationUpsertArgs>(args: SelectSubset<T, NotificationUpsertArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Notifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationCountArgs} args - Arguments to filter Notifications to count.
+     * @example
+     * // Count the number of Notifications
+     * const count = await prisma.notification.count({
+     *   where: {
+     *     // ... the filter for the Notifications we want to count
+     *   }
+     * })
+    **/
+    count<T extends NotificationCountArgs>(
+      args?: Subset<T, NotificationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NotificationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Notification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NotificationAggregateArgs>(args: Subset<T, NotificationAggregateArgs>): Prisma.PrismaPromise<GetNotificationAggregateType<T>>
+
+    /**
+     * Group by Notification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends NotificationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: NotificationGroupByArgs['orderBy'] }
+        : { orderBy?: NotificationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, NotificationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotificationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Notification model
+   */
+  readonly fields: NotificationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Notification.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__NotificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Notification model
+   */
+  interface NotificationFieldRefs {
+    readonly id: FieldRef<"Notification", 'String'>
+    readonly userId: FieldRef<"Notification", 'String'>
+    readonly title: FieldRef<"Notification", 'String'>
+    readonly content: FieldRef<"Notification", 'String'>
+    readonly read: FieldRef<"Notification", 'Boolean'>
+    readonly type: FieldRef<"Notification", 'NotificationType'>
+    readonly createdAt: FieldRef<"Notification", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Notification findUnique
+   */
+  export type NotificationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification findUniqueOrThrow
+   */
+  export type NotificationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification findFirst
+   */
+  export type NotificationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification findFirstOrThrow
+   */
+  export type NotificationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification findMany
+   */
+  export type NotificationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notifications to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification create
+   */
+  export type NotificationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Notification.
+     */
+    data: XOR<NotificationCreateInput, NotificationUncheckedCreateInput>
+  }
+
+  /**
+   * Notification createMany
+   */
+  export type NotificationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Notifications.
+     */
+    data: NotificationCreateManyInput | NotificationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Notification createManyAndReturn
+   */
+  export type NotificationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * The data used to create many Notifications.
+     */
+    data: NotificationCreateManyInput | NotificationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Notification update
+   */
+  export type NotificationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Notification.
+     */
+    data: XOR<NotificationUpdateInput, NotificationUncheckedUpdateInput>
+    /**
+     * Choose, which Notification to update.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification updateMany
+   */
+  export type NotificationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Notifications.
+     */
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which Notifications to update
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Notification updateManyAndReturn
+   */
+  export type NotificationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * The data used to update Notifications.
+     */
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which Notifications to update
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Notification upsert
+   */
+  export type NotificationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Notification to update in case it exists.
+     */
+    where: NotificationWhereUniqueInput
+    /**
+     * In case the Notification found by the `where` argument doesn't exist, create a new Notification with this data.
+     */
+    create: XOR<NotificationCreateInput, NotificationUncheckedCreateInput>
+    /**
+     * In case the Notification was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<NotificationUpdateInput, NotificationUncheckedUpdateInput>
+  }
+
+  /**
+   * Notification delete
+   */
+  export type NotificationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter which Notification to delete.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification deleteMany
+   */
+  export type NotificationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Notifications to delete
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Notification without action
+   */
+  export type NotificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AuditLog
+   */
+
+  export type AggregateAuditLog = {
+    _count: AuditLogCountAggregateOutputType | null
+    _min: AuditLogMinAggregateOutputType | null
+    _max: AuditLogMaxAggregateOutputType | null
+  }
+
+  export type AuditLogMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    action: string | null
+    details: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    createdAt: Date | null
+  }
+
+  export type AuditLogMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    action: string | null
+    details: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    createdAt: Date | null
+  }
+
+  export type AuditLogCountAggregateOutputType = {
+    id: number
+    userId: number
+    action: number
+    details: number
+    ipAddress: number
+    userAgent: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AuditLogMinAggregateInputType = {
+    id?: true
+    userId?: true
+    action?: true
+    details?: true
+    ipAddress?: true
+    userAgent?: true
+    createdAt?: true
+  }
+
+  export type AuditLogMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    action?: true
+    details?: true
+    ipAddress?: true
+    userAgent?: true
+    createdAt?: true
+  }
+
+  export type AuditLogCountAggregateInputType = {
+    id?: true
+    userId?: true
+    action?: true
+    details?: true
+    ipAddress?: true
+    userAgent?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AuditLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditLog to aggregate.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AuditLogs
+    **/
+    _count?: true | AuditLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AuditLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AuditLogMaxAggregateInputType
+  }
+
+  export type GetAuditLogAggregateType<T extends AuditLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateAuditLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAuditLog[P]>
+      : GetScalarType<T[P], AggregateAuditLog[P]>
+  }
+
+
+
+
+  export type AuditLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditLogWhereInput
+    orderBy?: AuditLogOrderByWithAggregationInput | AuditLogOrderByWithAggregationInput[]
+    by: AuditLogScalarFieldEnum[] | AuditLogScalarFieldEnum
+    having?: AuditLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AuditLogCountAggregateInputType | true
+    _min?: AuditLogMinAggregateInputType
+    _max?: AuditLogMaxAggregateInputType
+  }
+
+  export type AuditLogGroupByOutputType = {
+    id: string
+    userId: string
+    action: string
+    details: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    createdAt: Date
+    _count: AuditLogCountAggregateOutputType | null
+    _min: AuditLogMinAggregateOutputType | null
+    _max: AuditLogMaxAggregateOutputType | null
+  }
+
+  type GetAuditLogGroupByPayload<T extends AuditLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AuditLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AuditLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AuditLogGroupByOutputType[P]>
+            : GetScalarType<T[P], AuditLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AuditLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    action?: boolean
+    details?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    action?: boolean
+    details?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    action?: boolean
+    details?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    action?: boolean
+    details?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    createdAt?: boolean
+  }
+
+  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "action" | "details" | "ipAddress" | "userAgent" | "createdAt", ExtArgs["result"]["auditLog"]>
+  export type AuditLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AuditLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AuditLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AuditLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AuditLog"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      action: string
+      details: string | null
+      ipAddress: string | null
+      userAgent: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["auditLog"]>
+    composites: {}
+  }
+
+  type AuditLogGetPayload<S extends boolean | null | undefined | AuditLogDefaultArgs> = $Result.GetResult<Prisma.$AuditLogPayload, S>
+
+  type AuditLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AuditLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AuditLogCountAggregateInputType | true
+    }
+
+  export interface AuditLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AuditLog'], meta: { name: 'AuditLog' } }
+    /**
+     * Find zero or one AuditLog that matches the filter.
+     * @param {AuditLogFindUniqueArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AuditLogFindUniqueArgs>(args: SelectSubset<T, AuditLogFindUniqueArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AuditLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AuditLogFindUniqueOrThrowArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AuditLogFindUniqueOrThrowArgs>(args: SelectSubset<T, AuditLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AuditLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindFirstArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AuditLogFindFirstArgs>(args?: SelectSubset<T, AuditLogFindFirstArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AuditLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindFirstOrThrowArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AuditLogFindFirstOrThrowArgs>(args?: SelectSubset<T, AuditLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AuditLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AuditLogs
+     * const auditLogs = await prisma.auditLog.findMany()
+     * 
+     * // Get first 10 AuditLogs
+     * const auditLogs = await prisma.auditLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AuditLogFindManyArgs>(args?: SelectSubset<T, AuditLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AuditLog.
+     * @param {AuditLogCreateArgs} args - Arguments to create a AuditLog.
+     * @example
+     * // Create one AuditLog
+     * const AuditLog = await prisma.auditLog.create({
+     *   data: {
+     *     // ... data to create a AuditLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends AuditLogCreateArgs>(args: SelectSubset<T, AuditLogCreateArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AuditLogs.
+     * @param {AuditLogCreateManyArgs} args - Arguments to create many AuditLogs.
+     * @example
+     * // Create many AuditLogs
+     * const auditLog = await prisma.auditLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AuditLogCreateManyArgs>(args?: SelectSubset<T, AuditLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AuditLogs and returns the data saved in the database.
+     * @param {AuditLogCreateManyAndReturnArgs} args - Arguments to create many AuditLogs.
+     * @example
+     * // Create many AuditLogs
+     * const auditLog = await prisma.auditLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AuditLogs and only return the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AuditLogCreateManyAndReturnArgs>(args?: SelectSubset<T, AuditLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AuditLog.
+     * @param {AuditLogDeleteArgs} args - Arguments to delete one AuditLog.
+     * @example
+     * // Delete one AuditLog
+     * const AuditLog = await prisma.auditLog.delete({
+     *   where: {
+     *     // ... filter to delete one AuditLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AuditLogDeleteArgs>(args: SelectSubset<T, AuditLogDeleteArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AuditLog.
+     * @param {AuditLogUpdateArgs} args - Arguments to update one AuditLog.
+     * @example
+     * // Update one AuditLog
+     * const auditLog = await prisma.auditLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AuditLogUpdateArgs>(args: SelectSubset<T, AuditLogUpdateArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AuditLogs.
+     * @param {AuditLogDeleteManyArgs} args - Arguments to filter AuditLogs to delete.
+     * @example
+     * // Delete a few AuditLogs
+     * const { count } = await prisma.auditLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AuditLogDeleteManyArgs>(args?: SelectSubset<T, AuditLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AuditLogs
+     * const auditLog = await prisma.auditLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AuditLogUpdateManyArgs>(args: SelectSubset<T, AuditLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditLogs and returns the data updated in the database.
+     * @param {AuditLogUpdateManyAndReturnArgs} args - Arguments to update many AuditLogs.
+     * @example
+     * // Update many AuditLogs
+     * const auditLog = await prisma.auditLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AuditLogs and only return the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AuditLogUpdateManyAndReturnArgs>(args: SelectSubset<T, AuditLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AuditLog.
+     * @param {AuditLogUpsertArgs} args - Arguments to update or create a AuditLog.
+     * @example
+     * // Update or create a AuditLog
+     * const auditLog = await prisma.auditLog.upsert({
+     *   create: {
+     *     // ... data to create a AuditLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AuditLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AuditLogUpsertArgs>(args: SelectSubset<T, AuditLogUpsertArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogCountArgs} args - Arguments to filter AuditLogs to count.
+     * @example
+     * // Count the number of AuditLogs
+     * const count = await prisma.auditLog.count({
+     *   where: {
+     *     // ... the filter for the AuditLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends AuditLogCountArgs>(
+      args?: Subset<T, AuditLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AuditLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AuditLogAggregateArgs>(args: Subset<T, AuditLogAggregateArgs>): Prisma.PrismaPromise<GetAuditLogAggregateType<T>>
+
+    /**
+     * Group by AuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AuditLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AuditLogGroupByArgs['orderBy'] }
+        : { orderBy?: AuditLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AuditLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAuditLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AuditLog model
+   */
+  readonly fields: AuditLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AuditLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AuditLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AuditLog model
+   */
+  interface AuditLogFieldRefs {
+    readonly id: FieldRef<"AuditLog", 'String'>
+    readonly userId: FieldRef<"AuditLog", 'String'>
+    readonly action: FieldRef<"AuditLog", 'String'>
+    readonly details: FieldRef<"AuditLog", 'String'>
+    readonly ipAddress: FieldRef<"AuditLog", 'String'>
+    readonly userAgent: FieldRef<"AuditLog", 'String'>
+    readonly createdAt: FieldRef<"AuditLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AuditLog findUnique
+   */
+  export type AuditLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog findUniqueOrThrow
+   */
+  export type AuditLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog findFirst
+   */
+  export type AuditLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditLogs.
+     */
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog findFirstOrThrow
+   */
+  export type AuditLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditLogs.
+     */
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog findMany
+   */
+  export type AuditLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLogs to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditLogs.
+     */
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog create
+   */
+  export type AuditLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AuditLog.
+     */
+    data: XOR<AuditLogCreateInput, AuditLogUncheckedCreateInput>
+  }
+
+  /**
+   * AuditLog createMany
+   */
+  export type AuditLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AuditLogs.
+     */
+    data: AuditLogCreateManyInput | AuditLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AuditLog createManyAndReturn
+   */
+  export type AuditLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many AuditLogs.
+     */
+    data: AuditLogCreateManyInput | AuditLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AuditLog update
+   */
+  export type AuditLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AuditLog.
+     */
+    data: XOR<AuditLogUpdateInput, AuditLogUncheckedUpdateInput>
+    /**
+     * Choose, which AuditLog to update.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog updateMany
+   */
+  export type AuditLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AuditLogs.
+     */
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditLogs to update
+     */
+    where?: AuditLogWhereInput
+    /**
+     * Limit how many AuditLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuditLog updateManyAndReturn
+   */
+  export type AuditLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * The data used to update AuditLogs.
+     */
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditLogs to update
+     */
+    where?: AuditLogWhereInput
+    /**
+     * Limit how many AuditLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AuditLog upsert
+   */
+  export type AuditLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AuditLog to update in case it exists.
+     */
+    where: AuditLogWhereUniqueInput
+    /**
+     * In case the AuditLog found by the `where` argument doesn't exist, create a new AuditLog with this data.
+     */
+    create: XOR<AuditLogCreateInput, AuditLogUncheckedCreateInput>
+    /**
+     * In case the AuditLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AuditLogUpdateInput, AuditLogUncheckedUpdateInput>
+  }
+
+  /**
+   * AuditLog delete
+   */
+  export type AuditLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter which AuditLog to delete.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog deleteMany
+   */
+  export type AuditLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditLogs to delete
+     */
+    where?: AuditLogWhereInput
+    /**
+     * Limit how many AuditLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AuditLog without action
+   */
+  export type AuditLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
   }
 
 
@@ -4040,6 +6868,7 @@ export namespace Prisma {
     revenue: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    showInShowcase: boolean | null
   }
 
   export type ProductMaxAggregateOutputType = {
@@ -4057,6 +6886,7 @@ export namespace Prisma {
     revenue: number | null
     createdAt: Date | null
     updatedAt: Date | null
+    showInShowcase: boolean | null
   }
 
   export type ProductCountAggregateOutputType = {
@@ -4075,6 +6905,7 @@ export namespace Prisma {
     revenue: number
     createdAt: number
     updatedAt: number
+    showInShowcase: number
     _all: number
   }
 
@@ -4106,6 +6937,7 @@ export namespace Prisma {
     revenue?: true
     createdAt?: true
     updatedAt?: true
+    showInShowcase?: true
   }
 
   export type ProductMaxAggregateInputType = {
@@ -4123,6 +6955,7 @@ export namespace Prisma {
     revenue?: true
     createdAt?: true
     updatedAt?: true
+    showInShowcase?: true
   }
 
   export type ProductCountAggregateInputType = {
@@ -4141,6 +6974,7 @@ export namespace Prisma {
     revenue?: true
     createdAt?: true
     updatedAt?: true
+    showInShowcase?: true
     _all?: true
   }
 
@@ -4246,6 +7080,7 @@ export namespace Prisma {
     revenue: number
     createdAt: Date
     updatedAt: Date
+    showInShowcase: boolean
     _count: ProductCountAggregateOutputType | null
     _avg: ProductAvgAggregateOutputType | null
     _sum: ProductSumAggregateOutputType | null
@@ -4283,6 +7118,7 @@ export namespace Prisma {
     revenue?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    showInShowcase?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     orders?: boolean | Product$ordersArgs<ExtArgs>
     checkoutLinks?: boolean | Product$checkoutLinksArgs<ExtArgs>
@@ -4305,6 +7141,7 @@ export namespace Prisma {
     revenue?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    showInShowcase?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -4324,6 +7161,7 @@ export namespace Prisma {
     revenue?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    showInShowcase?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -4343,9 +7181,10 @@ export namespace Prisma {
     revenue?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    showInShowcase?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "description" | "price" | "currency" | "type" | "status" | "imageUrl" | "checkoutConfig" | "slug" | "salesCount" | "revenue" | "createdAt" | "updatedAt", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "description" | "price" | "currency" | "type" | "status" | "imageUrl" | "checkoutConfig" | "slug" | "salesCount" | "revenue" | "createdAt" | "updatedAt" | "showInShowcase", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     orders?: boolean | Product$ordersArgs<ExtArgs>
@@ -4382,6 +7221,7 @@ export namespace Prisma {
       revenue: number
       createdAt: Date
       updatedAt: Date
+      showInShowcase: boolean
     }, ExtArgs["result"]["product"]>
     composites: {}
   }
@@ -4823,6 +7663,7 @@ export namespace Prisma {
     readonly revenue: FieldRef<"Product", 'Float'>
     readonly createdAt: FieldRef<"Product", 'DateTime'>
     readonly updatedAt: FieldRef<"Product", 'DateTime'>
+    readonly showInShowcase: FieldRef<"Product", 'Boolean'>
   }
     
 
@@ -5337,6 +8178,12 @@ export namespace Prisma {
     cardBrand: string | null
     installments: number | null
     externalId: string | null
+    wooviCorrelationId: string | null
+    wooviTransactionId: string | null
+    wooviEndToEndId: string | null
+    pixQrCodeUrl: string | null
+    pixBrCode: string | null
+    pixExpiresAt: Date | null
     paidAt: Date | null
     refundedAt: Date | null
     isMatured: boolean | null
@@ -5365,6 +8212,12 @@ export namespace Prisma {
     cardBrand: string | null
     installments: number | null
     externalId: string | null
+    wooviCorrelationId: string | null
+    wooviTransactionId: string | null
+    wooviEndToEndId: string | null
+    pixQrCodeUrl: string | null
+    pixBrCode: string | null
+    pixExpiresAt: Date | null
     paidAt: Date | null
     refundedAt: Date | null
     isMatured: boolean | null
@@ -5394,6 +8247,12 @@ export namespace Prisma {
     cardBrand: number
     installments: number
     externalId: number
+    wooviCorrelationId: number
+    wooviTransactionId: number
+    wooviEndToEndId: number
+    pixQrCodeUrl: number
+    pixBrCode: number
+    pixExpiresAt: number
     paidAt: number
     refundedAt: number
     isMatured: number
@@ -5439,6 +8298,12 @@ export namespace Prisma {
     cardBrand?: true
     installments?: true
     externalId?: true
+    wooviCorrelationId?: true
+    wooviTransactionId?: true
+    wooviEndToEndId?: true
+    pixQrCodeUrl?: true
+    pixBrCode?: true
+    pixExpiresAt?: true
     paidAt?: true
     refundedAt?: true
     isMatured?: true
@@ -5467,6 +8332,12 @@ export namespace Prisma {
     cardBrand?: true
     installments?: true
     externalId?: true
+    wooviCorrelationId?: true
+    wooviTransactionId?: true
+    wooviEndToEndId?: true
+    pixQrCodeUrl?: true
+    pixBrCode?: true
+    pixExpiresAt?: true
     paidAt?: true
     refundedAt?: true
     isMatured?: true
@@ -5496,6 +8367,12 @@ export namespace Prisma {
     cardBrand?: true
     installments?: true
     externalId?: true
+    wooviCorrelationId?: true
+    wooviTransactionId?: true
+    wooviEndToEndId?: true
+    pixQrCodeUrl?: true
+    pixBrCode?: true
+    pixExpiresAt?: true
     paidAt?: true
     refundedAt?: true
     isMatured?: true
@@ -5613,6 +8490,12 @@ export namespace Prisma {
     cardBrand: string | null
     installments: number
     externalId: string | null
+    wooviCorrelationId: string | null
+    wooviTransactionId: string | null
+    wooviEndToEndId: string | null
+    pixQrCodeUrl: string | null
+    pixBrCode: string | null
+    pixExpiresAt: Date | null
     paidAt: Date | null
     refundedAt: Date | null
     isMatured: boolean
@@ -5662,6 +8545,12 @@ export namespace Prisma {
     cardBrand?: boolean
     installments?: boolean
     externalId?: boolean
+    wooviCorrelationId?: boolean
+    wooviTransactionId?: boolean
+    wooviEndToEndId?: boolean
+    pixQrCodeUrl?: boolean
+    pixBrCode?: boolean
+    pixExpiresAt?: boolean
     paidAt?: boolean
     refundedAt?: boolean
     isMatured?: boolean
@@ -5670,6 +8559,8 @@ export namespace Prisma {
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
+    pendingBalances?: boolean | Order$pendingBalancesArgs<ExtArgs>
+    _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5694,6 +8585,12 @@ export namespace Prisma {
     cardBrand?: boolean
     installments?: boolean
     externalId?: boolean
+    wooviCorrelationId?: boolean
+    wooviTransactionId?: boolean
+    wooviEndToEndId?: boolean
+    pixQrCodeUrl?: boolean
+    pixBrCode?: boolean
+    pixExpiresAt?: boolean
     paidAt?: boolean
     refundedAt?: boolean
     isMatured?: boolean
@@ -5726,6 +8623,12 @@ export namespace Prisma {
     cardBrand?: boolean
     installments?: boolean
     externalId?: boolean
+    wooviCorrelationId?: boolean
+    wooviTransactionId?: boolean
+    wooviEndToEndId?: boolean
+    pixQrCodeUrl?: boolean
+    pixBrCode?: boolean
+    pixExpiresAt?: boolean
     paidAt?: boolean
     refundedAt?: boolean
     isMatured?: boolean
@@ -5758,6 +8661,12 @@ export namespace Prisma {
     cardBrand?: boolean
     installments?: boolean
     externalId?: boolean
+    wooviCorrelationId?: boolean
+    wooviTransactionId?: boolean
+    wooviEndToEndId?: boolean
+    pixQrCodeUrl?: boolean
+    pixBrCode?: boolean
+    pixExpiresAt?: boolean
     paidAt?: boolean
     refundedAt?: boolean
     isMatured?: boolean
@@ -5766,10 +8675,12 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "productId" | "buyerName" | "buyerEmail" | "buyerCpf" | "buyerPhone" | "buyerData" | "amount" | "platformFee" | "netAmount" | "status" | "paymentMethod" | "pixQrCode" | "pixCopyPaste" | "boletoUrl" | "boletoBarcode" | "cardLastFour" | "cardBrand" | "installments" | "externalId" | "paidAt" | "refundedAt" | "isMatured" | "statusHistory" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "productId" | "buyerName" | "buyerEmail" | "buyerCpf" | "buyerPhone" | "buyerData" | "amount" | "platformFee" | "netAmount" | "status" | "paymentMethod" | "pixQrCode" | "pixCopyPaste" | "boletoUrl" | "boletoBarcode" | "cardLastFour" | "cardBrand" | "installments" | "externalId" | "wooviCorrelationId" | "wooviTransactionId" | "wooviEndToEndId" | "pixQrCodeUrl" | "pixBrCode" | "pixExpiresAt" | "paidAt" | "refundedAt" | "isMatured" | "statusHistory" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
+    pendingBalances?: boolean | Order$pendingBalancesArgs<ExtArgs>
+    _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -5785,6 +8696,7 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
       product: Prisma.$ProductPayload<ExtArgs>
+      pendingBalances: Prisma.$PendingBalancePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5808,6 +8720,12 @@ export namespace Prisma {
       cardBrand: string | null
       installments: number
       externalId: string | null
+      wooviCorrelationId: string | null
+      wooviTransactionId: string | null
+      wooviEndToEndId: string | null
+      pixQrCodeUrl: string | null
+      pixBrCode: string | null
+      pixExpiresAt: Date | null
       paidAt: Date | null
       refundedAt: Date | null
       isMatured: boolean
@@ -6210,6 +9128,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    pendingBalances<T extends Order$pendingBalancesArgs<ExtArgs> = {}>(args?: Subset<T, Order$pendingBalancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6260,6 +9179,12 @@ export namespace Prisma {
     readonly cardBrand: FieldRef<"Order", 'String'>
     readonly installments: FieldRef<"Order", 'Int'>
     readonly externalId: FieldRef<"Order", 'String'>
+    readonly wooviCorrelationId: FieldRef<"Order", 'String'>
+    readonly wooviTransactionId: FieldRef<"Order", 'String'>
+    readonly wooviEndToEndId: FieldRef<"Order", 'String'>
+    readonly pixQrCodeUrl: FieldRef<"Order", 'String'>
+    readonly pixBrCode: FieldRef<"Order", 'String'>
+    readonly pixExpiresAt: FieldRef<"Order", 'DateTime'>
     readonly paidAt: FieldRef<"Order", 'DateTime'>
     readonly refundedAt: FieldRef<"Order", 'DateTime'>
     readonly isMatured: FieldRef<"Order", 'Boolean'>
@@ -6667,6 +9592,30 @@ export namespace Prisma {
   }
 
   /**
+   * Order.pendingBalances
+   */
+  export type Order$pendingBalancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceInclude<ExtArgs> | null
+    where?: PendingBalanceWhereInput
+    orderBy?: PendingBalanceOrderByWithRelationInput | PendingBalanceOrderByWithRelationInput[]
+    cursor?: PendingBalanceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PendingBalanceScalarFieldEnum | PendingBalanceScalarFieldEnum[]
+  }
+
+  /**
    * Order without action
    */
   export type OrderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6682,6 +9631,1137 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: OrderInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PendingBalance
+   */
+
+  export type AggregatePendingBalance = {
+    _count: PendingBalanceCountAggregateOutputType | null
+    _avg: PendingBalanceAvgAggregateOutputType | null
+    _sum: PendingBalanceSumAggregateOutputType | null
+    _min: PendingBalanceMinAggregateOutputType | null
+    _max: PendingBalanceMaxAggregateOutputType | null
+  }
+
+  export type PendingBalanceAvgAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type PendingBalanceSumAggregateOutputType = {
+    amount: number | null
+  }
+
+  export type PendingBalanceMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    orderId: string | null
+    amount: number | null
+    availableAt: Date | null
+    released: boolean | null
+    createdAt: Date | null
+  }
+
+  export type PendingBalanceMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    orderId: string | null
+    amount: number | null
+    availableAt: Date | null
+    released: boolean | null
+    createdAt: Date | null
+  }
+
+  export type PendingBalanceCountAggregateOutputType = {
+    id: number
+    userId: number
+    orderId: number
+    amount: number
+    availableAt: number
+    released: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PendingBalanceAvgAggregateInputType = {
+    amount?: true
+  }
+
+  export type PendingBalanceSumAggregateInputType = {
+    amount?: true
+  }
+
+  export type PendingBalanceMinAggregateInputType = {
+    id?: true
+    userId?: true
+    orderId?: true
+    amount?: true
+    availableAt?: true
+    released?: true
+    createdAt?: true
+  }
+
+  export type PendingBalanceMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    orderId?: true
+    amount?: true
+    availableAt?: true
+    released?: true
+    createdAt?: true
+  }
+
+  export type PendingBalanceCountAggregateInputType = {
+    id?: true
+    userId?: true
+    orderId?: true
+    amount?: true
+    availableAt?: true
+    released?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PendingBalanceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PendingBalance to aggregate.
+     */
+    where?: PendingBalanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PendingBalances to fetch.
+     */
+    orderBy?: PendingBalanceOrderByWithRelationInput | PendingBalanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PendingBalanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PendingBalances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PendingBalances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PendingBalances
+    **/
+    _count?: true | PendingBalanceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PendingBalanceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PendingBalanceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PendingBalanceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PendingBalanceMaxAggregateInputType
+  }
+
+  export type GetPendingBalanceAggregateType<T extends PendingBalanceAggregateArgs> = {
+        [P in keyof T & keyof AggregatePendingBalance]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePendingBalance[P]>
+      : GetScalarType<T[P], AggregatePendingBalance[P]>
+  }
+
+
+
+
+  export type PendingBalanceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PendingBalanceWhereInput
+    orderBy?: PendingBalanceOrderByWithAggregationInput | PendingBalanceOrderByWithAggregationInput[]
+    by: PendingBalanceScalarFieldEnum[] | PendingBalanceScalarFieldEnum
+    having?: PendingBalanceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PendingBalanceCountAggregateInputType | true
+    _avg?: PendingBalanceAvgAggregateInputType
+    _sum?: PendingBalanceSumAggregateInputType
+    _min?: PendingBalanceMinAggregateInputType
+    _max?: PendingBalanceMaxAggregateInputType
+  }
+
+  export type PendingBalanceGroupByOutputType = {
+    id: string
+    userId: string
+    orderId: string
+    amount: number
+    availableAt: Date
+    released: boolean
+    createdAt: Date
+    _count: PendingBalanceCountAggregateOutputType | null
+    _avg: PendingBalanceAvgAggregateOutputType | null
+    _sum: PendingBalanceSumAggregateOutputType | null
+    _min: PendingBalanceMinAggregateOutputType | null
+    _max: PendingBalanceMaxAggregateOutputType | null
+  }
+
+  type GetPendingBalanceGroupByPayload<T extends PendingBalanceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PendingBalanceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PendingBalanceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PendingBalanceGroupByOutputType[P]>
+            : GetScalarType<T[P], PendingBalanceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PendingBalanceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    orderId?: boolean
+    amount?: boolean
+    availableAt?: boolean
+    released?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pendingBalance"]>
+
+  export type PendingBalanceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    orderId?: boolean
+    amount?: boolean
+    availableAt?: boolean
+    released?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pendingBalance"]>
+
+  export type PendingBalanceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    orderId?: boolean
+    amount?: boolean
+    availableAt?: boolean
+    released?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pendingBalance"]>
+
+  export type PendingBalanceSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    orderId?: boolean
+    amount?: boolean
+    availableAt?: boolean
+    released?: boolean
+    createdAt?: boolean
+  }
+
+  export type PendingBalanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "orderId" | "amount" | "availableAt" | "released" | "createdAt", ExtArgs["result"]["pendingBalance"]>
+  export type PendingBalanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }
+  export type PendingBalanceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }
+  export type PendingBalanceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }
+
+  export type $PendingBalancePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PendingBalance"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      order: Prisma.$OrderPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      orderId: string
+      amount: number
+      availableAt: Date
+      released: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["pendingBalance"]>
+    composites: {}
+  }
+
+  type PendingBalanceGetPayload<S extends boolean | null | undefined | PendingBalanceDefaultArgs> = $Result.GetResult<Prisma.$PendingBalancePayload, S>
+
+  type PendingBalanceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PendingBalanceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PendingBalanceCountAggregateInputType | true
+    }
+
+  export interface PendingBalanceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PendingBalance'], meta: { name: 'PendingBalance' } }
+    /**
+     * Find zero or one PendingBalance that matches the filter.
+     * @param {PendingBalanceFindUniqueArgs} args - Arguments to find a PendingBalance
+     * @example
+     * // Get one PendingBalance
+     * const pendingBalance = await prisma.pendingBalance.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PendingBalanceFindUniqueArgs>(args: SelectSubset<T, PendingBalanceFindUniqueArgs<ExtArgs>>): Prisma__PendingBalanceClient<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PendingBalance that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PendingBalanceFindUniqueOrThrowArgs} args - Arguments to find a PendingBalance
+     * @example
+     * // Get one PendingBalance
+     * const pendingBalance = await prisma.pendingBalance.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PendingBalanceFindUniqueOrThrowArgs>(args: SelectSubset<T, PendingBalanceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PendingBalanceClient<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PendingBalance that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PendingBalanceFindFirstArgs} args - Arguments to find a PendingBalance
+     * @example
+     * // Get one PendingBalance
+     * const pendingBalance = await prisma.pendingBalance.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PendingBalanceFindFirstArgs>(args?: SelectSubset<T, PendingBalanceFindFirstArgs<ExtArgs>>): Prisma__PendingBalanceClient<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PendingBalance that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PendingBalanceFindFirstOrThrowArgs} args - Arguments to find a PendingBalance
+     * @example
+     * // Get one PendingBalance
+     * const pendingBalance = await prisma.pendingBalance.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PendingBalanceFindFirstOrThrowArgs>(args?: SelectSubset<T, PendingBalanceFindFirstOrThrowArgs<ExtArgs>>): Prisma__PendingBalanceClient<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PendingBalances that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PendingBalanceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PendingBalances
+     * const pendingBalances = await prisma.pendingBalance.findMany()
+     * 
+     * // Get first 10 PendingBalances
+     * const pendingBalances = await prisma.pendingBalance.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pendingBalanceWithIdOnly = await prisma.pendingBalance.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PendingBalanceFindManyArgs>(args?: SelectSubset<T, PendingBalanceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PendingBalance.
+     * @param {PendingBalanceCreateArgs} args - Arguments to create a PendingBalance.
+     * @example
+     * // Create one PendingBalance
+     * const PendingBalance = await prisma.pendingBalance.create({
+     *   data: {
+     *     // ... data to create a PendingBalance
+     *   }
+     * })
+     * 
+     */
+    create<T extends PendingBalanceCreateArgs>(args: SelectSubset<T, PendingBalanceCreateArgs<ExtArgs>>): Prisma__PendingBalanceClient<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PendingBalances.
+     * @param {PendingBalanceCreateManyArgs} args - Arguments to create many PendingBalances.
+     * @example
+     * // Create many PendingBalances
+     * const pendingBalance = await prisma.pendingBalance.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PendingBalanceCreateManyArgs>(args?: SelectSubset<T, PendingBalanceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PendingBalances and returns the data saved in the database.
+     * @param {PendingBalanceCreateManyAndReturnArgs} args - Arguments to create many PendingBalances.
+     * @example
+     * // Create many PendingBalances
+     * const pendingBalance = await prisma.pendingBalance.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PendingBalances and only return the `id`
+     * const pendingBalanceWithIdOnly = await prisma.pendingBalance.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PendingBalanceCreateManyAndReturnArgs>(args?: SelectSubset<T, PendingBalanceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PendingBalance.
+     * @param {PendingBalanceDeleteArgs} args - Arguments to delete one PendingBalance.
+     * @example
+     * // Delete one PendingBalance
+     * const PendingBalance = await prisma.pendingBalance.delete({
+     *   where: {
+     *     // ... filter to delete one PendingBalance
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PendingBalanceDeleteArgs>(args: SelectSubset<T, PendingBalanceDeleteArgs<ExtArgs>>): Prisma__PendingBalanceClient<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PendingBalance.
+     * @param {PendingBalanceUpdateArgs} args - Arguments to update one PendingBalance.
+     * @example
+     * // Update one PendingBalance
+     * const pendingBalance = await prisma.pendingBalance.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PendingBalanceUpdateArgs>(args: SelectSubset<T, PendingBalanceUpdateArgs<ExtArgs>>): Prisma__PendingBalanceClient<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PendingBalances.
+     * @param {PendingBalanceDeleteManyArgs} args - Arguments to filter PendingBalances to delete.
+     * @example
+     * // Delete a few PendingBalances
+     * const { count } = await prisma.pendingBalance.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PendingBalanceDeleteManyArgs>(args?: SelectSubset<T, PendingBalanceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PendingBalances.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PendingBalanceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PendingBalances
+     * const pendingBalance = await prisma.pendingBalance.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PendingBalanceUpdateManyArgs>(args: SelectSubset<T, PendingBalanceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PendingBalances and returns the data updated in the database.
+     * @param {PendingBalanceUpdateManyAndReturnArgs} args - Arguments to update many PendingBalances.
+     * @example
+     * // Update many PendingBalances
+     * const pendingBalance = await prisma.pendingBalance.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PendingBalances and only return the `id`
+     * const pendingBalanceWithIdOnly = await prisma.pendingBalance.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PendingBalanceUpdateManyAndReturnArgs>(args: SelectSubset<T, PendingBalanceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PendingBalance.
+     * @param {PendingBalanceUpsertArgs} args - Arguments to update or create a PendingBalance.
+     * @example
+     * // Update or create a PendingBalance
+     * const pendingBalance = await prisma.pendingBalance.upsert({
+     *   create: {
+     *     // ... data to create a PendingBalance
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PendingBalance we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PendingBalanceUpsertArgs>(args: SelectSubset<T, PendingBalanceUpsertArgs<ExtArgs>>): Prisma__PendingBalanceClient<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PendingBalances.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PendingBalanceCountArgs} args - Arguments to filter PendingBalances to count.
+     * @example
+     * // Count the number of PendingBalances
+     * const count = await prisma.pendingBalance.count({
+     *   where: {
+     *     // ... the filter for the PendingBalances we want to count
+     *   }
+     * })
+    **/
+    count<T extends PendingBalanceCountArgs>(
+      args?: Subset<T, PendingBalanceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PendingBalanceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PendingBalance.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PendingBalanceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PendingBalanceAggregateArgs>(args: Subset<T, PendingBalanceAggregateArgs>): Prisma.PrismaPromise<GetPendingBalanceAggregateType<T>>
+
+    /**
+     * Group by PendingBalance.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PendingBalanceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PendingBalanceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PendingBalanceGroupByArgs['orderBy'] }
+        : { orderBy?: PendingBalanceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PendingBalanceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPendingBalanceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PendingBalance model
+   */
+  readonly fields: PendingBalanceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PendingBalance.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PendingBalanceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PendingBalance model
+   */
+  interface PendingBalanceFieldRefs {
+    readonly id: FieldRef<"PendingBalance", 'String'>
+    readonly userId: FieldRef<"PendingBalance", 'String'>
+    readonly orderId: FieldRef<"PendingBalance", 'String'>
+    readonly amount: FieldRef<"PendingBalance", 'Float'>
+    readonly availableAt: FieldRef<"PendingBalance", 'DateTime'>
+    readonly released: FieldRef<"PendingBalance", 'Boolean'>
+    readonly createdAt: FieldRef<"PendingBalance", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PendingBalance findUnique
+   */
+  export type PendingBalanceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceInclude<ExtArgs> | null
+    /**
+     * Filter, which PendingBalance to fetch.
+     */
+    where: PendingBalanceWhereUniqueInput
+  }
+
+  /**
+   * PendingBalance findUniqueOrThrow
+   */
+  export type PendingBalanceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceInclude<ExtArgs> | null
+    /**
+     * Filter, which PendingBalance to fetch.
+     */
+    where: PendingBalanceWhereUniqueInput
+  }
+
+  /**
+   * PendingBalance findFirst
+   */
+  export type PendingBalanceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceInclude<ExtArgs> | null
+    /**
+     * Filter, which PendingBalance to fetch.
+     */
+    where?: PendingBalanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PendingBalances to fetch.
+     */
+    orderBy?: PendingBalanceOrderByWithRelationInput | PendingBalanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PendingBalances.
+     */
+    cursor?: PendingBalanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PendingBalances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PendingBalances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PendingBalances.
+     */
+    distinct?: PendingBalanceScalarFieldEnum | PendingBalanceScalarFieldEnum[]
+  }
+
+  /**
+   * PendingBalance findFirstOrThrow
+   */
+  export type PendingBalanceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceInclude<ExtArgs> | null
+    /**
+     * Filter, which PendingBalance to fetch.
+     */
+    where?: PendingBalanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PendingBalances to fetch.
+     */
+    orderBy?: PendingBalanceOrderByWithRelationInput | PendingBalanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PendingBalances.
+     */
+    cursor?: PendingBalanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PendingBalances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PendingBalances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PendingBalances.
+     */
+    distinct?: PendingBalanceScalarFieldEnum | PendingBalanceScalarFieldEnum[]
+  }
+
+  /**
+   * PendingBalance findMany
+   */
+  export type PendingBalanceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceInclude<ExtArgs> | null
+    /**
+     * Filter, which PendingBalances to fetch.
+     */
+    where?: PendingBalanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PendingBalances to fetch.
+     */
+    orderBy?: PendingBalanceOrderByWithRelationInput | PendingBalanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PendingBalances.
+     */
+    cursor?: PendingBalanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PendingBalances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PendingBalances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PendingBalances.
+     */
+    distinct?: PendingBalanceScalarFieldEnum | PendingBalanceScalarFieldEnum[]
+  }
+
+  /**
+   * PendingBalance create
+   */
+  export type PendingBalanceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PendingBalance.
+     */
+    data: XOR<PendingBalanceCreateInput, PendingBalanceUncheckedCreateInput>
+  }
+
+  /**
+   * PendingBalance createMany
+   */
+  export type PendingBalanceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PendingBalances.
+     */
+    data: PendingBalanceCreateManyInput | PendingBalanceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PendingBalance createManyAndReturn
+   */
+  export type PendingBalanceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * The data used to create many PendingBalances.
+     */
+    data: PendingBalanceCreateManyInput | PendingBalanceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PendingBalance update
+   */
+  export type PendingBalanceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PendingBalance.
+     */
+    data: XOR<PendingBalanceUpdateInput, PendingBalanceUncheckedUpdateInput>
+    /**
+     * Choose, which PendingBalance to update.
+     */
+    where: PendingBalanceWhereUniqueInput
+  }
+
+  /**
+   * PendingBalance updateMany
+   */
+  export type PendingBalanceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PendingBalances.
+     */
+    data: XOR<PendingBalanceUpdateManyMutationInput, PendingBalanceUncheckedUpdateManyInput>
+    /**
+     * Filter which PendingBalances to update
+     */
+    where?: PendingBalanceWhereInput
+    /**
+     * Limit how many PendingBalances to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PendingBalance updateManyAndReturn
+   */
+  export type PendingBalanceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * The data used to update PendingBalances.
+     */
+    data: XOR<PendingBalanceUpdateManyMutationInput, PendingBalanceUncheckedUpdateManyInput>
+    /**
+     * Filter which PendingBalances to update
+     */
+    where?: PendingBalanceWhereInput
+    /**
+     * Limit how many PendingBalances to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PendingBalance upsert
+   */
+  export type PendingBalanceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PendingBalance to update in case it exists.
+     */
+    where: PendingBalanceWhereUniqueInput
+    /**
+     * In case the PendingBalance found by the `where` argument doesn't exist, create a new PendingBalance with this data.
+     */
+    create: XOR<PendingBalanceCreateInput, PendingBalanceUncheckedCreateInput>
+    /**
+     * In case the PendingBalance was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PendingBalanceUpdateInput, PendingBalanceUncheckedUpdateInput>
+  }
+
+  /**
+   * PendingBalance delete
+   */
+  export type PendingBalanceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceInclude<ExtArgs> | null
+    /**
+     * Filter which PendingBalance to delete.
+     */
+    where: PendingBalanceWhereUniqueInput
+  }
+
+  /**
+   * PendingBalance deleteMany
+   */
+  export type PendingBalanceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PendingBalances to delete
+     */
+    where?: PendingBalanceWhereInput
+    /**
+     * Limit how many PendingBalances to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PendingBalance without action
+   */
+  export type PendingBalanceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceInclude<ExtArgs> | null
   }
 
 
@@ -19651,6 +23731,1082 @@ export namespace Prisma {
 
 
   /**
+   * Model CustomDomain
+   */
+
+  export type AggregateCustomDomain = {
+    _count: CustomDomainCountAggregateOutputType | null
+    _min: CustomDomainMinAggregateOutputType | null
+    _max: CustomDomainMaxAggregateOutputType | null
+  }
+
+  export type CustomDomainMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    domain: string | null
+    status: $Enums.DomainStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CustomDomainMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    domain: string | null
+    status: $Enums.DomainStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CustomDomainCountAggregateOutputType = {
+    id: number
+    userId: number
+    domain: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CustomDomainMinAggregateInputType = {
+    id?: true
+    userId?: true
+    domain?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CustomDomainMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    domain?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CustomDomainCountAggregateInputType = {
+    id?: true
+    userId?: true
+    domain?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CustomDomainAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CustomDomain to aggregate.
+     */
+    where?: CustomDomainWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CustomDomains to fetch.
+     */
+    orderBy?: CustomDomainOrderByWithRelationInput | CustomDomainOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CustomDomainWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CustomDomains from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CustomDomains.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CustomDomains
+    **/
+    _count?: true | CustomDomainCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CustomDomainMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CustomDomainMaxAggregateInputType
+  }
+
+  export type GetCustomDomainAggregateType<T extends CustomDomainAggregateArgs> = {
+        [P in keyof T & keyof AggregateCustomDomain]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCustomDomain[P]>
+      : GetScalarType<T[P], AggregateCustomDomain[P]>
+  }
+
+
+
+
+  export type CustomDomainGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CustomDomainWhereInput
+    orderBy?: CustomDomainOrderByWithAggregationInput | CustomDomainOrderByWithAggregationInput[]
+    by: CustomDomainScalarFieldEnum[] | CustomDomainScalarFieldEnum
+    having?: CustomDomainScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CustomDomainCountAggregateInputType | true
+    _min?: CustomDomainMinAggregateInputType
+    _max?: CustomDomainMaxAggregateInputType
+  }
+
+  export type CustomDomainGroupByOutputType = {
+    id: string
+    userId: string
+    domain: string
+    status: $Enums.DomainStatus
+    createdAt: Date
+    updatedAt: Date
+    _count: CustomDomainCountAggregateOutputType | null
+    _min: CustomDomainMinAggregateOutputType | null
+    _max: CustomDomainMaxAggregateOutputType | null
+  }
+
+  type GetCustomDomainGroupByPayload<T extends CustomDomainGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CustomDomainGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CustomDomainGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CustomDomainGroupByOutputType[P]>
+            : GetScalarType<T[P], CustomDomainGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CustomDomainSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    domain?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["customDomain"]>
+
+  export type CustomDomainSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    domain?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["customDomain"]>
+
+  export type CustomDomainSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    domain?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["customDomain"]>
+
+  export type CustomDomainSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    domain?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CustomDomainOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "domain" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["customDomain"]>
+  export type CustomDomainInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CustomDomainIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type CustomDomainIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $CustomDomainPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CustomDomain"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      domain: string
+      status: $Enums.DomainStatus
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["customDomain"]>
+    composites: {}
+  }
+
+  type CustomDomainGetPayload<S extends boolean | null | undefined | CustomDomainDefaultArgs> = $Result.GetResult<Prisma.$CustomDomainPayload, S>
+
+  type CustomDomainCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CustomDomainFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CustomDomainCountAggregateInputType | true
+    }
+
+  export interface CustomDomainDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CustomDomain'], meta: { name: 'CustomDomain' } }
+    /**
+     * Find zero or one CustomDomain that matches the filter.
+     * @param {CustomDomainFindUniqueArgs} args - Arguments to find a CustomDomain
+     * @example
+     * // Get one CustomDomain
+     * const customDomain = await prisma.customDomain.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CustomDomainFindUniqueArgs>(args: SelectSubset<T, CustomDomainFindUniqueArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CustomDomain that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CustomDomainFindUniqueOrThrowArgs} args - Arguments to find a CustomDomain
+     * @example
+     * // Get one CustomDomain
+     * const customDomain = await prisma.customDomain.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CustomDomainFindUniqueOrThrowArgs>(args: SelectSubset<T, CustomDomainFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CustomDomain that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomDomainFindFirstArgs} args - Arguments to find a CustomDomain
+     * @example
+     * // Get one CustomDomain
+     * const customDomain = await prisma.customDomain.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CustomDomainFindFirstArgs>(args?: SelectSubset<T, CustomDomainFindFirstArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CustomDomain that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomDomainFindFirstOrThrowArgs} args - Arguments to find a CustomDomain
+     * @example
+     * // Get one CustomDomain
+     * const customDomain = await prisma.customDomain.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CustomDomainFindFirstOrThrowArgs>(args?: SelectSubset<T, CustomDomainFindFirstOrThrowArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CustomDomains that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomDomainFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CustomDomains
+     * const customDomains = await prisma.customDomain.findMany()
+     * 
+     * // Get first 10 CustomDomains
+     * const customDomains = await prisma.customDomain.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const customDomainWithIdOnly = await prisma.customDomain.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CustomDomainFindManyArgs>(args?: SelectSubset<T, CustomDomainFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CustomDomain.
+     * @param {CustomDomainCreateArgs} args - Arguments to create a CustomDomain.
+     * @example
+     * // Create one CustomDomain
+     * const CustomDomain = await prisma.customDomain.create({
+     *   data: {
+     *     // ... data to create a CustomDomain
+     *   }
+     * })
+     * 
+     */
+    create<T extends CustomDomainCreateArgs>(args: SelectSubset<T, CustomDomainCreateArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CustomDomains.
+     * @param {CustomDomainCreateManyArgs} args - Arguments to create many CustomDomains.
+     * @example
+     * // Create many CustomDomains
+     * const customDomain = await prisma.customDomain.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CustomDomainCreateManyArgs>(args?: SelectSubset<T, CustomDomainCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CustomDomains and returns the data saved in the database.
+     * @param {CustomDomainCreateManyAndReturnArgs} args - Arguments to create many CustomDomains.
+     * @example
+     * // Create many CustomDomains
+     * const customDomain = await prisma.customDomain.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CustomDomains and only return the `id`
+     * const customDomainWithIdOnly = await prisma.customDomain.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CustomDomainCreateManyAndReturnArgs>(args?: SelectSubset<T, CustomDomainCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CustomDomain.
+     * @param {CustomDomainDeleteArgs} args - Arguments to delete one CustomDomain.
+     * @example
+     * // Delete one CustomDomain
+     * const CustomDomain = await prisma.customDomain.delete({
+     *   where: {
+     *     // ... filter to delete one CustomDomain
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CustomDomainDeleteArgs>(args: SelectSubset<T, CustomDomainDeleteArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CustomDomain.
+     * @param {CustomDomainUpdateArgs} args - Arguments to update one CustomDomain.
+     * @example
+     * // Update one CustomDomain
+     * const customDomain = await prisma.customDomain.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CustomDomainUpdateArgs>(args: SelectSubset<T, CustomDomainUpdateArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CustomDomains.
+     * @param {CustomDomainDeleteManyArgs} args - Arguments to filter CustomDomains to delete.
+     * @example
+     * // Delete a few CustomDomains
+     * const { count } = await prisma.customDomain.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CustomDomainDeleteManyArgs>(args?: SelectSubset<T, CustomDomainDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CustomDomains.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomDomainUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CustomDomains
+     * const customDomain = await prisma.customDomain.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CustomDomainUpdateManyArgs>(args: SelectSubset<T, CustomDomainUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CustomDomains and returns the data updated in the database.
+     * @param {CustomDomainUpdateManyAndReturnArgs} args - Arguments to update many CustomDomains.
+     * @example
+     * // Update many CustomDomains
+     * const customDomain = await prisma.customDomain.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CustomDomains and only return the `id`
+     * const customDomainWithIdOnly = await prisma.customDomain.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CustomDomainUpdateManyAndReturnArgs>(args: SelectSubset<T, CustomDomainUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CustomDomain.
+     * @param {CustomDomainUpsertArgs} args - Arguments to update or create a CustomDomain.
+     * @example
+     * // Update or create a CustomDomain
+     * const customDomain = await prisma.customDomain.upsert({
+     *   create: {
+     *     // ... data to create a CustomDomain
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CustomDomain we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CustomDomainUpsertArgs>(args: SelectSubset<T, CustomDomainUpsertArgs<ExtArgs>>): Prisma__CustomDomainClient<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CustomDomains.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomDomainCountArgs} args - Arguments to filter CustomDomains to count.
+     * @example
+     * // Count the number of CustomDomains
+     * const count = await prisma.customDomain.count({
+     *   where: {
+     *     // ... the filter for the CustomDomains we want to count
+     *   }
+     * })
+    **/
+    count<T extends CustomDomainCountArgs>(
+      args?: Subset<T, CustomDomainCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CustomDomainCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CustomDomain.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomDomainAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CustomDomainAggregateArgs>(args: Subset<T, CustomDomainAggregateArgs>): Prisma.PrismaPromise<GetCustomDomainAggregateType<T>>
+
+    /**
+     * Group by CustomDomain.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomDomainGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CustomDomainGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CustomDomainGroupByArgs['orderBy'] }
+        : { orderBy?: CustomDomainGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CustomDomainGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCustomDomainGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CustomDomain model
+   */
+  readonly fields: CustomDomainFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CustomDomain.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CustomDomainClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CustomDomain model
+   */
+  interface CustomDomainFieldRefs {
+    readonly id: FieldRef<"CustomDomain", 'String'>
+    readonly userId: FieldRef<"CustomDomain", 'String'>
+    readonly domain: FieldRef<"CustomDomain", 'String'>
+    readonly status: FieldRef<"CustomDomain", 'DomainStatus'>
+    readonly createdAt: FieldRef<"CustomDomain", 'DateTime'>
+    readonly updatedAt: FieldRef<"CustomDomain", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CustomDomain findUnique
+   */
+  export type CustomDomainFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * Filter, which CustomDomain to fetch.
+     */
+    where: CustomDomainWhereUniqueInput
+  }
+
+  /**
+   * CustomDomain findUniqueOrThrow
+   */
+  export type CustomDomainFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * Filter, which CustomDomain to fetch.
+     */
+    where: CustomDomainWhereUniqueInput
+  }
+
+  /**
+   * CustomDomain findFirst
+   */
+  export type CustomDomainFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * Filter, which CustomDomain to fetch.
+     */
+    where?: CustomDomainWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CustomDomains to fetch.
+     */
+    orderBy?: CustomDomainOrderByWithRelationInput | CustomDomainOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CustomDomains.
+     */
+    cursor?: CustomDomainWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CustomDomains from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CustomDomains.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CustomDomains.
+     */
+    distinct?: CustomDomainScalarFieldEnum | CustomDomainScalarFieldEnum[]
+  }
+
+  /**
+   * CustomDomain findFirstOrThrow
+   */
+  export type CustomDomainFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * Filter, which CustomDomain to fetch.
+     */
+    where?: CustomDomainWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CustomDomains to fetch.
+     */
+    orderBy?: CustomDomainOrderByWithRelationInput | CustomDomainOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CustomDomains.
+     */
+    cursor?: CustomDomainWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CustomDomains from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CustomDomains.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CustomDomains.
+     */
+    distinct?: CustomDomainScalarFieldEnum | CustomDomainScalarFieldEnum[]
+  }
+
+  /**
+   * CustomDomain findMany
+   */
+  export type CustomDomainFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * Filter, which CustomDomains to fetch.
+     */
+    where?: CustomDomainWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CustomDomains to fetch.
+     */
+    orderBy?: CustomDomainOrderByWithRelationInput | CustomDomainOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CustomDomains.
+     */
+    cursor?: CustomDomainWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CustomDomains from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CustomDomains.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CustomDomains.
+     */
+    distinct?: CustomDomainScalarFieldEnum | CustomDomainScalarFieldEnum[]
+  }
+
+  /**
+   * CustomDomain create
+   */
+  export type CustomDomainCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CustomDomain.
+     */
+    data: XOR<CustomDomainCreateInput, CustomDomainUncheckedCreateInput>
+  }
+
+  /**
+   * CustomDomain createMany
+   */
+  export type CustomDomainCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CustomDomains.
+     */
+    data: CustomDomainCreateManyInput | CustomDomainCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CustomDomain createManyAndReturn
+   */
+  export type CustomDomainCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * The data used to create many CustomDomains.
+     */
+    data: CustomDomainCreateManyInput | CustomDomainCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CustomDomain update
+   */
+  export type CustomDomainUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CustomDomain.
+     */
+    data: XOR<CustomDomainUpdateInput, CustomDomainUncheckedUpdateInput>
+    /**
+     * Choose, which CustomDomain to update.
+     */
+    where: CustomDomainWhereUniqueInput
+  }
+
+  /**
+   * CustomDomain updateMany
+   */
+  export type CustomDomainUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CustomDomains.
+     */
+    data: XOR<CustomDomainUpdateManyMutationInput, CustomDomainUncheckedUpdateManyInput>
+    /**
+     * Filter which CustomDomains to update
+     */
+    where?: CustomDomainWhereInput
+    /**
+     * Limit how many CustomDomains to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CustomDomain updateManyAndReturn
+   */
+  export type CustomDomainUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * The data used to update CustomDomains.
+     */
+    data: XOR<CustomDomainUpdateManyMutationInput, CustomDomainUncheckedUpdateManyInput>
+    /**
+     * Filter which CustomDomains to update
+     */
+    where?: CustomDomainWhereInput
+    /**
+     * Limit how many CustomDomains to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CustomDomain upsert
+   */
+  export type CustomDomainUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CustomDomain to update in case it exists.
+     */
+    where: CustomDomainWhereUniqueInput
+    /**
+     * In case the CustomDomain found by the `where` argument doesn't exist, create a new CustomDomain with this data.
+     */
+    create: XOR<CustomDomainCreateInput, CustomDomainUncheckedCreateInput>
+    /**
+     * In case the CustomDomain was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CustomDomainUpdateInput, CustomDomainUncheckedUpdateInput>
+  }
+
+  /**
+   * CustomDomain delete
+   */
+  export type CustomDomainDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    /**
+     * Filter which CustomDomain to delete.
+     */
+    where: CustomDomainWhereUniqueInput
+  }
+
+  /**
+   * CustomDomain deleteMany
+   */
+  export type CustomDomainDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CustomDomains to delete
+     */
+    where?: CustomDomainWhereInput
+    /**
+     * Limit how many CustomDomains to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CustomDomain without action
+   */
+  export type CustomDomainDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -19686,10 +24842,43 @@ export namespace Prisma {
     availableBalance: 'availableBalance',
     pendingBalance: 'pendingBalance',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    username: 'username',
+    showcaseConfig: 'showcaseConfig',
+    socialLinks: 'socialLinks',
+    twoFactorEnabled: 'twoFactorEnabled',
+    twoFactorSecret: 'twoFactorSecret',
+    onboardingSteps: 'onboardingSteps',
+    lastActiveAt: 'lastActiveAt'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const NotificationScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    title: 'title',
+    content: 'content',
+    read: 'read',
+    type: 'type',
+    createdAt: 'createdAt'
+  };
+
+  export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
+
+
+  export const AuditLogScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    action: 'action',
+    details: 'details',
+    ipAddress: 'ipAddress',
+    userAgent: 'userAgent',
+    createdAt: 'createdAt'
+  };
+
+  export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
   export const ProductScalarFieldEnum: {
@@ -19707,7 +24896,8 @@ export namespace Prisma {
     salesCount: 'salesCount',
     revenue: 'revenue',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    showInShowcase: 'showInShowcase'
   };
 
   export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
@@ -19735,6 +24925,12 @@ export namespace Prisma {
     cardBrand: 'cardBrand',
     installments: 'installments',
     externalId: 'externalId',
+    wooviCorrelationId: 'wooviCorrelationId',
+    wooviTransactionId: 'wooviTransactionId',
+    wooviEndToEndId: 'wooviEndToEndId',
+    pixQrCodeUrl: 'pixQrCodeUrl',
+    pixBrCode: 'pixBrCode',
+    pixExpiresAt: 'pixExpiresAt',
     paidAt: 'paidAt',
     refundedAt: 'refundedAt',
     isMatured: 'isMatured',
@@ -19744,6 +24940,19 @@ export namespace Prisma {
   };
 
   export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
+
+
+  export const PendingBalanceScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    orderId: 'orderId',
+    amount: 'amount',
+    availableAt: 'availableAt',
+    released: 'released',
+    createdAt: 'createdAt'
+  };
+
+  export type PendingBalanceScalarFieldEnum = (typeof PendingBalanceScalarFieldEnum)[keyof typeof PendingBalanceScalarFieldEnum]
 
 
   export const WithdrawalScalarFieldEnum: {
@@ -19904,6 +25113,18 @@ export namespace Prisma {
   export type AdminLogScalarFieldEnum = (typeof AdminLogScalarFieldEnum)[keyof typeof AdminLogScalarFieldEnum]
 
 
+  export const CustomDomainScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    domain: 'domain',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CustomDomainScalarFieldEnum = (typeof CustomDomainScalarFieldEnum)[keyof typeof CustomDomainScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -19935,14 +25156,6 @@ export namespace Prisma {
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
-  export const NullsOrder: {
-    first: 'first',
-    last: 'last'
-  };
-
-  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
-
-
   export const JsonNullValueFilter: {
     DbNull: typeof DbNull,
     JsonNull: typeof JsonNull,
@@ -19950,6 +25163,14 @@ export namespace Prisma {
   };
 
   export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
   /**
@@ -20056,6 +25277,41 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'NotificationType'
+   */
+  export type EnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType'>
+    
+
+
+  /**
+   * Reference to a field of type 'NotificationType[]'
+   */
+  export type ListEnumNotificationTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NotificationType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'ProductType'
    */
   export type EnumProductTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductType'>
@@ -20080,20 +25336,6 @@ export namespace Prisma {
    * Reference to a field of type 'ProductStatus[]'
    */
   export type ListEnumProductStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Json'
-   */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-  /**
-   * Reference to a field of type 'QueryMode'
-   */
-  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -20136,13 +25378,6 @@ export namespace Prisma {
    * Reference to a field of type 'PaymentMethod[]'
    */
   export type ListEnumPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentMethod[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -20214,6 +25449,20 @@ export namespace Prisma {
    */
   export type ListEnumTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TransactionType[]'>
     
+
+
+  /**
+   * Reference to a field of type 'DomainStatus'
+   */
+  export type EnumDomainStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DomainStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DomainStatus[]'
+   */
+  export type ListEnumDomainStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DomainStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -20245,6 +25494,13 @@ export namespace Prisma {
     pendingBalance?: FloatFilter<"User"> | number
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    username?: StringNullableFilter<"User"> | string | null
+    showcaseConfig?: JsonNullableFilter<"User">
+    socialLinks?: JsonNullableFilter<"User">
+    twoFactorEnabled?: BoolFilter<"User"> | boolean
+    twoFactorSecret?: StringNullableFilter<"User"> | string | null
+    onboardingSteps?: JsonNullableFilter<"User">
+    lastActiveAt?: DateTimeFilter<"User"> | Date | string
     products?: ProductListRelationFilter
     orders?: OrderListRelationFilter
     withdrawals?: WithdrawalListRelationFilter
@@ -20253,6 +25509,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyListRelationFilter
     kycDocuments?: KycDocumentListRelationFilter
     badges?: UserBadgeListRelationFilter
+    pendingBalances?: PendingBalanceListRelationFilter
+    customDomains?: CustomDomainListRelationFilter
+    notifications?: NotificationListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -20278,6 +25538,13 @@ export namespace Prisma {
     pendingBalance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    username?: SortOrderInput | SortOrder
+    showcaseConfig?: SortOrderInput | SortOrder
+    socialLinks?: SortOrderInput | SortOrder
+    twoFactorEnabled?: SortOrder
+    twoFactorSecret?: SortOrderInput | SortOrder
+    onboardingSteps?: SortOrderInput | SortOrder
+    lastActiveAt?: SortOrder
     products?: ProductOrderByRelationAggregateInput
     orders?: OrderOrderByRelationAggregateInput
     withdrawals?: WithdrawalOrderByRelationAggregateInput
@@ -20286,11 +25553,16 @@ export namespace Prisma {
     apiKeys?: ApiKeyOrderByRelationAggregateInput
     kycDocuments?: KycDocumentOrderByRelationAggregateInput
     badges?: UserBadgeOrderByRelationAggregateInput
+    pendingBalances?: PendingBalanceOrderByRelationAggregateInput
+    customDomains?: CustomDomainOrderByRelationAggregateInput
+    notifications?: NotificationOrderByRelationAggregateInput
+    auditLogs?: AuditLogOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     email?: string
+    username?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
@@ -20314,6 +25586,12 @@ export namespace Prisma {
     pendingBalance?: FloatFilter<"User"> | number
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    showcaseConfig?: JsonNullableFilter<"User">
+    socialLinks?: JsonNullableFilter<"User">
+    twoFactorEnabled?: BoolFilter<"User"> | boolean
+    twoFactorSecret?: StringNullableFilter<"User"> | string | null
+    onboardingSteps?: JsonNullableFilter<"User">
+    lastActiveAt?: DateTimeFilter<"User"> | Date | string
     products?: ProductListRelationFilter
     orders?: OrderListRelationFilter
     withdrawals?: WithdrawalListRelationFilter
@@ -20322,7 +25600,11 @@ export namespace Prisma {
     apiKeys?: ApiKeyListRelationFilter
     kycDocuments?: KycDocumentListRelationFilter
     badges?: UserBadgeListRelationFilter
-  }, "id" | "email">
+    pendingBalances?: PendingBalanceListRelationFilter
+    customDomains?: CustomDomainListRelationFilter
+    notifications?: NotificationListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
+  }, "id" | "email" | "username">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -20347,6 +25629,13 @@ export namespace Prisma {
     pendingBalance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    username?: SortOrderInput | SortOrder
+    showcaseConfig?: SortOrderInput | SortOrder
+    socialLinks?: SortOrderInput | SortOrder
+    twoFactorEnabled?: SortOrder
+    twoFactorSecret?: SortOrderInput | SortOrder
+    onboardingSteps?: SortOrderInput | SortOrder
+    lastActiveAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -20380,6 +25669,143 @@ export namespace Prisma {
     pendingBalance?: FloatWithAggregatesFilter<"User"> | number
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    username?: StringNullableWithAggregatesFilter<"User"> | string | null
+    showcaseConfig?: JsonNullableWithAggregatesFilter<"User">
+    socialLinks?: JsonNullableWithAggregatesFilter<"User">
+    twoFactorEnabled?: BoolWithAggregatesFilter<"User"> | boolean
+    twoFactorSecret?: StringNullableWithAggregatesFilter<"User"> | string | null
+    onboardingSteps?: JsonNullableWithAggregatesFilter<"User">
+    lastActiveAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+  }
+
+  export type NotificationWhereInput = {
+    AND?: NotificationWhereInput | NotificationWhereInput[]
+    OR?: NotificationWhereInput[]
+    NOT?: NotificationWhereInput | NotificationWhereInput[]
+    id?: StringFilter<"Notification"> | string
+    userId?: StringFilter<"Notification"> | string
+    title?: StringFilter<"Notification"> | string
+    content?: StringFilter<"Notification"> | string
+    read?: BoolFilter<"Notification"> | boolean
+    type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type NotificationOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    read?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type NotificationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: NotificationWhereInput | NotificationWhereInput[]
+    OR?: NotificationWhereInput[]
+    NOT?: NotificationWhereInput | NotificationWhereInput[]
+    userId?: StringFilter<"Notification"> | string
+    title?: StringFilter<"Notification"> | string
+    content?: StringFilter<"Notification"> | string
+    read?: BoolFilter<"Notification"> | boolean
+    type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type NotificationOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    read?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+    _count?: NotificationCountOrderByAggregateInput
+    _max?: NotificationMaxOrderByAggregateInput
+    _min?: NotificationMinOrderByAggregateInput
+  }
+
+  export type NotificationScalarWhereWithAggregatesInput = {
+    AND?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
+    OR?: NotificationScalarWhereWithAggregatesInput[]
+    NOT?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Notification"> | string
+    userId?: StringWithAggregatesFilter<"Notification"> | string
+    title?: StringWithAggregatesFilter<"Notification"> | string
+    content?: StringWithAggregatesFilter<"Notification"> | string
+    read?: BoolWithAggregatesFilter<"Notification"> | boolean
+    type?: EnumNotificationTypeWithAggregatesFilter<"Notification"> | $Enums.NotificationType
+    createdAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
+  }
+
+  export type AuditLogWhereInput = {
+    AND?: AuditLogWhereInput | AuditLogWhereInput[]
+    OR?: AuditLogWhereInput[]
+    NOT?: AuditLogWhereInput | AuditLogWhereInput[]
+    id?: StringFilter<"AuditLog"> | string
+    userId?: StringFilter<"AuditLog"> | string
+    action?: StringFilter<"AuditLog"> | string
+    details?: StringNullableFilter<"AuditLog"> | string | null
+    ipAddress?: StringNullableFilter<"AuditLog"> | string | null
+    userAgent?: StringNullableFilter<"AuditLog"> | string | null
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type AuditLogOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    details?: SortOrderInput | SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type AuditLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AuditLogWhereInput | AuditLogWhereInput[]
+    OR?: AuditLogWhereInput[]
+    NOT?: AuditLogWhereInput | AuditLogWhereInput[]
+    userId?: StringFilter<"AuditLog"> | string
+    action?: StringFilter<"AuditLog"> | string
+    details?: StringNullableFilter<"AuditLog"> | string | null
+    ipAddress?: StringNullableFilter<"AuditLog"> | string | null
+    userAgent?: StringNullableFilter<"AuditLog"> | string | null
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type AuditLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    details?: SortOrderInput | SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: AuditLogCountOrderByAggregateInput
+    _max?: AuditLogMaxOrderByAggregateInput
+    _min?: AuditLogMinOrderByAggregateInput
+  }
+
+  export type AuditLogScalarWhereWithAggregatesInput = {
+    AND?: AuditLogScalarWhereWithAggregatesInput | AuditLogScalarWhereWithAggregatesInput[]
+    OR?: AuditLogScalarWhereWithAggregatesInput[]
+    NOT?: AuditLogScalarWhereWithAggregatesInput | AuditLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AuditLog"> | string
+    userId?: StringWithAggregatesFilter<"AuditLog"> | string
+    action?: StringWithAggregatesFilter<"AuditLog"> | string
+    details?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    ipAddress?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    userAgent?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"AuditLog"> | Date | string
   }
 
   export type ProductWhereInput = {
@@ -20401,6 +25827,7 @@ export namespace Prisma {
     revenue?: FloatFilter<"Product"> | number
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
+    showInShowcase?: BoolFilter<"Product"> | boolean
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     orders?: OrderListRelationFilter
     checkoutLinks?: CheckoutLinkListRelationFilter
@@ -20422,6 +25849,7 @@ export namespace Prisma {
     revenue?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    showInShowcase?: SortOrder
     user?: UserOrderByWithRelationInput
     orders?: OrderOrderByRelationAggregateInput
     checkoutLinks?: CheckoutLinkOrderByRelationAggregateInput
@@ -20446,6 +25874,7 @@ export namespace Prisma {
     revenue?: FloatFilter<"Product"> | number
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
+    showInShowcase?: BoolFilter<"Product"> | boolean
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     orders?: OrderListRelationFilter
     checkoutLinks?: CheckoutLinkListRelationFilter
@@ -20467,6 +25896,7 @@ export namespace Prisma {
     revenue?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    showInShowcase?: SortOrder
     _count?: ProductCountOrderByAggregateInput
     _avg?: ProductAvgOrderByAggregateInput
     _max?: ProductMaxOrderByAggregateInput
@@ -20493,6 +25923,7 @@ export namespace Prisma {
     revenue?: FloatWithAggregatesFilter<"Product"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Product"> | Date | string
+    showInShowcase?: BoolWithAggregatesFilter<"Product"> | boolean
   }
 
   export type OrderWhereInput = {
@@ -20520,6 +25951,12 @@ export namespace Prisma {
     cardBrand?: StringNullableFilter<"Order"> | string | null
     installments?: IntFilter<"Order"> | number
     externalId?: StringNullableFilter<"Order"> | string | null
+    wooviCorrelationId?: StringNullableFilter<"Order"> | string | null
+    wooviTransactionId?: StringNullableFilter<"Order"> | string | null
+    wooviEndToEndId?: StringNullableFilter<"Order"> | string | null
+    pixQrCodeUrl?: StringNullableFilter<"Order"> | string | null
+    pixBrCode?: StringNullableFilter<"Order"> | string | null
+    pixExpiresAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     paidAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     refundedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     isMatured?: BoolFilter<"Order"> | boolean
@@ -20528,6 +25965,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Order"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    pendingBalances?: PendingBalanceListRelationFilter
   }
 
   export type OrderOrderByWithRelationInput = {
@@ -20552,6 +25990,12 @@ export namespace Prisma {
     cardBrand?: SortOrderInput | SortOrder
     installments?: SortOrder
     externalId?: SortOrderInput | SortOrder
+    wooviCorrelationId?: SortOrderInput | SortOrder
+    wooviTransactionId?: SortOrderInput | SortOrder
+    wooviEndToEndId?: SortOrderInput | SortOrder
+    pixQrCodeUrl?: SortOrderInput | SortOrder
+    pixBrCode?: SortOrderInput | SortOrder
+    pixExpiresAt?: SortOrderInput | SortOrder
     paidAt?: SortOrderInput | SortOrder
     refundedAt?: SortOrderInput | SortOrder
     isMatured?: SortOrder
@@ -20560,10 +26004,12 @@ export namespace Prisma {
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
     product?: ProductOrderByWithRelationInput
+    pendingBalances?: PendingBalanceOrderByRelationAggregateInput
   }
 
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    wooviCorrelationId?: string
     AND?: OrderWhereInput | OrderWhereInput[]
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
@@ -20587,6 +26033,11 @@ export namespace Prisma {
     cardBrand?: StringNullableFilter<"Order"> | string | null
     installments?: IntFilter<"Order"> | number
     externalId?: StringNullableFilter<"Order"> | string | null
+    wooviTransactionId?: StringNullableFilter<"Order"> | string | null
+    wooviEndToEndId?: StringNullableFilter<"Order"> | string | null
+    pixQrCodeUrl?: StringNullableFilter<"Order"> | string | null
+    pixBrCode?: StringNullableFilter<"Order"> | string | null
+    pixExpiresAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     paidAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     refundedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     isMatured?: BoolFilter<"Order"> | boolean
@@ -20595,7 +26046,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Order"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-  }, "id">
+    pendingBalances?: PendingBalanceListRelationFilter
+  }, "id" | "wooviCorrelationId">
 
   export type OrderOrderByWithAggregationInput = {
     id?: SortOrder
@@ -20619,6 +26071,12 @@ export namespace Prisma {
     cardBrand?: SortOrderInput | SortOrder
     installments?: SortOrder
     externalId?: SortOrderInput | SortOrder
+    wooviCorrelationId?: SortOrderInput | SortOrder
+    wooviTransactionId?: SortOrderInput | SortOrder
+    wooviEndToEndId?: SortOrderInput | SortOrder
+    pixQrCodeUrl?: SortOrderInput | SortOrder
+    pixBrCode?: SortOrderInput | SortOrder
+    pixExpiresAt?: SortOrderInput | SortOrder
     paidAt?: SortOrderInput | SortOrder
     refundedAt?: SortOrderInput | SortOrder
     isMatured?: SortOrder
@@ -20657,12 +26115,88 @@ export namespace Prisma {
     cardBrand?: StringNullableWithAggregatesFilter<"Order"> | string | null
     installments?: IntWithAggregatesFilter<"Order"> | number
     externalId?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    wooviCorrelationId?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    wooviTransactionId?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    wooviEndToEndId?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    pixQrCodeUrl?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    pixBrCode?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    pixExpiresAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     paidAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     refundedAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     isMatured?: BoolWithAggregatesFilter<"Order"> | boolean
     statusHistory?: JsonNullableWithAggregatesFilter<"Order">
     createdAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
+  }
+
+  export type PendingBalanceWhereInput = {
+    AND?: PendingBalanceWhereInput | PendingBalanceWhereInput[]
+    OR?: PendingBalanceWhereInput[]
+    NOT?: PendingBalanceWhereInput | PendingBalanceWhereInput[]
+    id?: StringFilter<"PendingBalance"> | string
+    userId?: StringFilter<"PendingBalance"> | string
+    orderId?: StringFilter<"PendingBalance"> | string
+    amount?: FloatFilter<"PendingBalance"> | number
+    availableAt?: DateTimeFilter<"PendingBalance"> | Date | string
+    released?: BoolFilter<"PendingBalance"> | boolean
+    createdAt?: DateTimeFilter<"PendingBalance"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+  }
+
+  export type PendingBalanceOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    orderId?: SortOrder
+    amount?: SortOrder
+    availableAt?: SortOrder
+    released?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    order?: OrderOrderByWithRelationInput
+  }
+
+  export type PendingBalanceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PendingBalanceWhereInput | PendingBalanceWhereInput[]
+    OR?: PendingBalanceWhereInput[]
+    NOT?: PendingBalanceWhereInput | PendingBalanceWhereInput[]
+    userId?: StringFilter<"PendingBalance"> | string
+    orderId?: StringFilter<"PendingBalance"> | string
+    amount?: FloatFilter<"PendingBalance"> | number
+    availableAt?: DateTimeFilter<"PendingBalance"> | Date | string
+    released?: BoolFilter<"PendingBalance"> | boolean
+    createdAt?: DateTimeFilter<"PendingBalance"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+  }, "id">
+
+  export type PendingBalanceOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    orderId?: SortOrder
+    amount?: SortOrder
+    availableAt?: SortOrder
+    released?: SortOrder
+    createdAt?: SortOrder
+    _count?: PendingBalanceCountOrderByAggregateInput
+    _avg?: PendingBalanceAvgOrderByAggregateInput
+    _max?: PendingBalanceMaxOrderByAggregateInput
+    _min?: PendingBalanceMinOrderByAggregateInput
+    _sum?: PendingBalanceSumOrderByAggregateInput
+  }
+
+  export type PendingBalanceScalarWhereWithAggregatesInput = {
+    AND?: PendingBalanceScalarWhereWithAggregatesInput | PendingBalanceScalarWhereWithAggregatesInput[]
+    OR?: PendingBalanceScalarWhereWithAggregatesInput[]
+    NOT?: PendingBalanceScalarWhereWithAggregatesInput | PendingBalanceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PendingBalance"> | string
+    userId?: StringWithAggregatesFilter<"PendingBalance"> | string
+    orderId?: StringWithAggregatesFilter<"PendingBalance"> | string
+    amount?: FloatWithAggregatesFilter<"PendingBalance"> | number
+    availableAt?: DateTimeWithAggregatesFilter<"PendingBalance"> | Date | string
+    released?: BoolWithAggregatesFilter<"PendingBalance"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"PendingBalance"> | Date | string
   }
 
   export type WithdrawalWhereInput = {
@@ -21450,6 +26984,66 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"AdminLog"> | Date | string
   }
 
+  export type CustomDomainWhereInput = {
+    AND?: CustomDomainWhereInput | CustomDomainWhereInput[]
+    OR?: CustomDomainWhereInput[]
+    NOT?: CustomDomainWhereInput | CustomDomainWhereInput[]
+    id?: StringFilter<"CustomDomain"> | string
+    userId?: StringFilter<"CustomDomain"> | string
+    domain?: StringFilter<"CustomDomain"> | string
+    status?: EnumDomainStatusFilter<"CustomDomain"> | $Enums.DomainStatus
+    createdAt?: DateTimeFilter<"CustomDomain"> | Date | string
+    updatedAt?: DateTimeFilter<"CustomDomain"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type CustomDomainOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    domain?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type CustomDomainWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    domain?: string
+    AND?: CustomDomainWhereInput | CustomDomainWhereInput[]
+    OR?: CustomDomainWhereInput[]
+    NOT?: CustomDomainWhereInput | CustomDomainWhereInput[]
+    userId?: StringFilter<"CustomDomain"> | string
+    status?: EnumDomainStatusFilter<"CustomDomain"> | $Enums.DomainStatus
+    createdAt?: DateTimeFilter<"CustomDomain"> | Date | string
+    updatedAt?: DateTimeFilter<"CustomDomain"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "domain">
+
+  export type CustomDomainOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    domain?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CustomDomainCountOrderByAggregateInput
+    _max?: CustomDomainMaxOrderByAggregateInput
+    _min?: CustomDomainMinOrderByAggregateInput
+  }
+
+  export type CustomDomainScalarWhereWithAggregatesInput = {
+    AND?: CustomDomainScalarWhereWithAggregatesInput | CustomDomainScalarWhereWithAggregatesInput[]
+    OR?: CustomDomainScalarWhereWithAggregatesInput[]
+    NOT?: CustomDomainScalarWhereWithAggregatesInput | CustomDomainScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CustomDomain"> | string
+    userId?: StringWithAggregatesFilter<"CustomDomain"> | string
+    domain?: StringWithAggregatesFilter<"CustomDomain"> | string
+    status?: EnumDomainStatusWithAggregatesFilter<"CustomDomain"> | $Enums.DomainStatus
+    createdAt?: DateTimeWithAggregatesFilter<"CustomDomain"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CustomDomain"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name: string
@@ -21473,6 +27067,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductCreateNestedManyWithoutUserInput
     orders?: OrderCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
@@ -21481,6 +27082,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
     badges?: UserBadgeCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -21506,6 +27111,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutUserInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
@@ -21514,6 +27126,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
     badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -21539,6 +27155,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutUserNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
@@ -21547,6 +27170,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -21572,6 +27199,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutUserNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
@@ -21580,6 +27214,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -21605,6 +27243,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
   }
 
   export type UserUpdateManyMutationInput = {
@@ -21630,6 +27275,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -21655,6 +27307,151 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationCreateInput = {
+    id?: string
+    title: string
+    content: string
+    read?: boolean
+    type?: $Enums.NotificationType
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateInput = {
+    id?: string
+    userId: string
+    title: string
+    content: string
+    read?: boolean
+    type?: $Enums.NotificationType
+    createdAt?: Date | string
+  }
+
+  export type NotificationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationCreateManyInput = {
+    id?: string
+    userId: string
+    title: string
+    content: string
+    read?: boolean
+    type?: $Enums.NotificationType
+    createdAt?: Date | string
+  }
+
+  export type NotificationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogCreateInput = {
+    id?: string
+    action: string
+    details?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutAuditLogsInput
+  }
+
+  export type AuditLogUncheckedCreateInput = {
+    id?: string
+    userId: string
+    action: string
+    details?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AuditLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAuditLogsNestedInput
+  }
+
+  export type AuditLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogCreateManyInput = {
+    id?: string
+    userId: string
+    action: string
+    details?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AuditLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ProductCreateInput = {
@@ -21672,6 +27469,7 @@ export namespace Prisma {
     revenue?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    showInShowcase?: boolean
     user: UserCreateNestedOneWithoutProductsInput
     orders?: OrderCreateNestedManyWithoutProductInput
     checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
@@ -21693,6 +27491,7 @@ export namespace Prisma {
     revenue?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    showInShowcase?: boolean
     orders?: OrderUncheckedCreateNestedManyWithoutProductInput
     checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
   }
@@ -21712,6 +27511,7 @@ export namespace Prisma {
     revenue?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutProductsNestedInput
     orders?: OrderUpdateManyWithoutProductNestedInput
     checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
@@ -21733,6 +27533,7 @@ export namespace Prisma {
     revenue?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
     checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
   }
@@ -21753,6 +27554,7 @@ export namespace Prisma {
     revenue?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    showInShowcase?: boolean
   }
 
   export type ProductUpdateManyMutationInput = {
@@ -21770,6 +27572,7 @@ export namespace Prisma {
     revenue?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type ProductUncheckedUpdateManyInput = {
@@ -21788,6 +27591,7 @@ export namespace Prisma {
     revenue?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type OrderCreateInput = {
@@ -21810,6 +27614,12 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
@@ -21818,6 +27628,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutOrdersInput
     product: ProductCreateNestedOneWithoutOrdersInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateInput = {
@@ -21842,12 +27653,19 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUpdateInput = {
@@ -21870,6 +27688,12 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
@@ -21878,6 +27702,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateInput = {
@@ -21902,12 +27727,19 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderCreateManyInput = {
@@ -21932,6 +27764,12 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
@@ -21960,6 +27798,12 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
@@ -21990,12 +27834,86 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PendingBalanceCreateInput = {
+    id?: string
+    amount: number
+    availableAt: Date | string
+    released?: boolean
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutPendingBalancesInput
+    order: OrderCreateNestedOneWithoutPendingBalancesInput
+  }
+
+  export type PendingBalanceUncheckedCreateInput = {
+    id?: string
+    userId: string
+    orderId: string
+    amount: number
+    availableAt: Date | string
+    released?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PendingBalanceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    released?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPendingBalancesNestedInput
+    order?: OrderUpdateOneRequiredWithoutPendingBalancesNestedInput
+  }
+
+  export type PendingBalanceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    released?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PendingBalanceCreateManyInput = {
+    id?: string
+    userId: string
+    orderId: string
+    amount: number
+    availableAt: Date | string
+    released?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PendingBalanceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    released?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PendingBalanceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    released?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type WithdrawalCreateInput = {
@@ -22845,6 +28763,68 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CustomDomainCreateInput = {
+    id?: string
+    domain: string
+    status?: $Enums.DomainStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutCustomDomainsInput
+  }
+
+  export type CustomDomainUncheckedCreateInput = {
+    id?: string
+    userId: string
+    domain: string
+    status?: $Enums.DomainStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CustomDomainUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutCustomDomainsNestedInput
+  }
+
+  export type CustomDomainUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomDomainCreateManyInput = {
+    id?: string
+    userId: string
+    domain: string
+    status?: $Enums.DomainStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CustomDomainUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomDomainUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -22924,6 +28904,34 @@ export namespace Prisma {
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
 
   export type ProductListRelationFilter = {
     every?: ProductWhereInput
@@ -22973,6 +28981,30 @@ export namespace Prisma {
     none?: UserBadgeWhereInput
   }
 
+  export type PendingBalanceListRelationFilter = {
+    every?: PendingBalanceWhereInput
+    some?: PendingBalanceWhereInput
+    none?: PendingBalanceWhereInput
+  }
+
+  export type CustomDomainListRelationFilter = {
+    every?: CustomDomainWhereInput
+    some?: CustomDomainWhereInput
+    none?: CustomDomainWhereInput
+  }
+
+  export type NotificationListRelationFilter = {
+    every?: NotificationWhereInput
+    some?: NotificationWhereInput
+    none?: NotificationWhereInput
+  }
+
+  export type AuditLogListRelationFilter = {
+    every?: AuditLogWhereInput
+    some?: AuditLogWhereInput
+    none?: AuditLogWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -23010,6 +29042,22 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type PendingBalanceOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CustomDomainOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type NotificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AuditLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -23033,6 +29081,13 @@ export namespace Prisma {
     pendingBalance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    username?: SortOrder
+    showcaseConfig?: SortOrder
+    socialLinks?: SortOrder
+    twoFactorEnabled?: SortOrder
+    twoFactorSecret?: SortOrder
+    onboardingSteps?: SortOrder
+    lastActiveAt?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -23066,6 +29121,10 @@ export namespace Prisma {
     pendingBalance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    username?: SortOrder
+    twoFactorEnabled?: SortOrder
+    twoFactorSecret?: SortOrder
+    lastActiveAt?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -23091,6 +29150,10 @@ export namespace Prisma {
     pendingBalance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    username?: SortOrder
+    twoFactorEnabled?: SortOrder
+    twoFactorSecret?: SortOrder
+    lastActiveAt?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -23206,28 +29269,14 @@ export namespace Prisma {
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
-
-  export type EnumProductTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.ProductType | EnumProductTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.ProductType[] | ListEnumProductTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ProductType[] | ListEnumProductTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumProductTypeFilter<$PrismaModel> | $Enums.ProductType
-  }
-
-  export type EnumProductStatusFilter<$PrismaModel = never> = {
-    equals?: $Enums.ProductStatus | EnumProductStatusFieldRefInput<$PrismaModel>
-    in?: $Enums.ProductStatus[] | ListEnumProductStatusFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ProductStatus[] | ListEnumProductStatusFieldRefInput<$PrismaModel>
-    not?: NestedEnumProductStatusFilter<$PrismaModel> | $Enums.ProductStatus
-  }
-  export type JsonNullableFilter<$PrismaModel = never> =
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
       >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
 
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
     path?: string[]
     mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
@@ -23242,6 +29291,113 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type EnumNotificationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeFilter<$PrismaModel> | $Enums.NotificationType
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type NotificationCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    read?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type NotificationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    read?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type NotificationMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    title?: SortOrder
+    content?: SortOrder
+    read?: SortOrder
+    type?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumNotificationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeWithAggregatesFilter<$PrismaModel> | $Enums.NotificationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNotificationTypeFilter<$PrismaModel>
+    _max?: NestedEnumNotificationTypeFilter<$PrismaModel>
+  }
+
+  export type AuditLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    details?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AuditLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    details?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AuditLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    action?: SortOrder
+    details?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumProductTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProductType | EnumProductTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ProductType[] | ListEnumProductTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProductType[] | ListEnumProductTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumProductTypeFilter<$PrismaModel> | $Enums.ProductType
+  }
+
+  export type EnumProductStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ProductStatus | EnumProductStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ProductStatus[] | ListEnumProductStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ProductStatus[] | ListEnumProductStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumProductStatusFilter<$PrismaModel> | $Enums.ProductStatus
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -23253,11 +29409,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
-  }
-
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
   }
 
   export type CheckoutLinkListRelationFilter = {
@@ -23286,6 +29437,7 @@ export namespace Prisma {
     revenue?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    showInShowcase?: SortOrder
   }
 
   export type ProductAvgOrderByAggregateInput = {
@@ -23309,6 +29461,7 @@ export namespace Prisma {
     revenue?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    showInShowcase?: SortOrder
   }
 
   export type ProductMinOrderByAggregateInput = {
@@ -23326,6 +29479,7 @@ export namespace Prisma {
     revenue?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    showInShowcase?: SortOrder
   }
 
   export type ProductSumOrderByAggregateInput = {
@@ -23352,32 +29506,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumProductStatusFilter<$PrismaModel>
     _max?: NestedEnumProductStatusFilter<$PrismaModel>
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -23421,11 +29549,6 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type ProductScalarRelationFilter = {
     is?: ProductWhereInput
     isNot?: ProductWhereInput
@@ -23453,6 +29576,12 @@ export namespace Prisma {
     cardBrand?: SortOrder
     installments?: SortOrder
     externalId?: SortOrder
+    wooviCorrelationId?: SortOrder
+    wooviTransactionId?: SortOrder
+    wooviEndToEndId?: SortOrder
+    pixQrCodeUrl?: SortOrder
+    pixBrCode?: SortOrder
+    pixExpiresAt?: SortOrder
     paidAt?: SortOrder
     refundedAt?: SortOrder
     isMatured?: SortOrder
@@ -23489,6 +29618,12 @@ export namespace Prisma {
     cardBrand?: SortOrder
     installments?: SortOrder
     externalId?: SortOrder
+    wooviCorrelationId?: SortOrder
+    wooviTransactionId?: SortOrder
+    wooviEndToEndId?: SortOrder
+    pixQrCodeUrl?: SortOrder
+    pixBrCode?: SortOrder
+    pixExpiresAt?: SortOrder
     paidAt?: SortOrder
     refundedAt?: SortOrder
     isMatured?: SortOrder
@@ -23517,6 +29652,12 @@ export namespace Prisma {
     cardBrand?: SortOrder
     installments?: SortOrder
     externalId?: SortOrder
+    wooviCorrelationId?: SortOrder
+    wooviTransactionId?: SortOrder
+    wooviEndToEndId?: SortOrder
+    pixQrCodeUrl?: SortOrder
+    pixBrCode?: SortOrder
+    pixExpiresAt?: SortOrder
     paidAt?: SortOrder
     refundedAt?: SortOrder
     isMatured?: SortOrder
@@ -23565,12 +29706,47 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
+  export type OrderScalarRelationFilter = {
+    is?: OrderWhereInput
+    isNot?: OrderWhereInput
+  }
+
+  export type PendingBalanceCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    orderId?: SortOrder
+    amount?: SortOrder
+    availableAt?: SortOrder
+    released?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PendingBalanceAvgOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type PendingBalanceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    orderId?: SortOrder
+    amount?: SortOrder
+    availableAt?: SortOrder
+    released?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PendingBalanceMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    orderId?: SortOrder
+    amount?: SortOrder
+    availableAt?: SortOrder
+    released?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PendingBalanceSumOrderByAggregateInput = {
+    amount?: SortOrder
   }
 
   export type EnumWithdrawalStatusFilter<$PrismaModel = never> = {
@@ -24173,6 +30349,50 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type EnumDomainStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DomainStatus | EnumDomainStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDomainStatusFilter<$PrismaModel> | $Enums.DomainStatus
+  }
+
+  export type CustomDomainCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    domain?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CustomDomainMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    domain?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CustomDomainMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    domain?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumDomainStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DomainStatus | EnumDomainStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDomainStatusWithAggregatesFilter<$PrismaModel> | $Enums.DomainStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDomainStatusFilter<$PrismaModel>
+    _max?: NestedEnumDomainStatusFilter<$PrismaModel>
+  }
+
   export type ProductCreateNestedManyWithoutUserInput = {
     create?: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput> | ProductCreateWithoutUserInput[] | ProductUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ProductCreateOrConnectWithoutUserInput | ProductCreateOrConnectWithoutUserInput[]
@@ -24227,6 +30447,34 @@ export namespace Prisma {
     connectOrCreate?: UserBadgeCreateOrConnectWithoutUserInput | UserBadgeCreateOrConnectWithoutUserInput[]
     createMany?: UserBadgeCreateManyUserInputEnvelope
     connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
+  }
+
+  export type PendingBalanceCreateNestedManyWithoutUserInput = {
+    create?: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput> | PendingBalanceCreateWithoutUserInput[] | PendingBalanceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PendingBalanceCreateOrConnectWithoutUserInput | PendingBalanceCreateOrConnectWithoutUserInput[]
+    createMany?: PendingBalanceCreateManyUserInputEnvelope
+    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+  }
+
+  export type CustomDomainCreateNestedManyWithoutUserInput = {
+    create?: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput> | CustomDomainCreateWithoutUserInput[] | CustomDomainUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CustomDomainCreateOrConnectWithoutUserInput | CustomDomainCreateOrConnectWithoutUserInput[]
+    createMany?: CustomDomainCreateManyUserInputEnvelope
+    connect?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+  }
+
+  export type NotificationCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type AuditLogCreateNestedManyWithoutUserInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
   }
 
   export type ProductUncheckedCreateNestedManyWithoutUserInput = {
@@ -24285,6 +30533,34 @@ export namespace Prisma {
     connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
   }
 
+  export type PendingBalanceUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput> | PendingBalanceCreateWithoutUserInput[] | PendingBalanceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PendingBalanceCreateOrConnectWithoutUserInput | PendingBalanceCreateOrConnectWithoutUserInput[]
+    createMany?: PendingBalanceCreateManyUserInputEnvelope
+    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+  }
+
+  export type CustomDomainUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput> | CustomDomainCreateWithoutUserInput[] | CustomDomainUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CustomDomainCreateOrConnectWithoutUserInput | CustomDomainCreateOrConnectWithoutUserInput[]
+    createMany?: CustomDomainCreateManyUserInputEnvelope
+    connect?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type AuditLogUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -24319,6 +30595,10 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type ProductUpdateManyWithoutUserNestedInput = {
@@ -24433,6 +30713,62 @@ export namespace Prisma {
     deleteMany?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
   }
 
+  export type PendingBalanceUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput> | PendingBalanceCreateWithoutUserInput[] | PendingBalanceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PendingBalanceCreateOrConnectWithoutUserInput | PendingBalanceCreateOrConnectWithoutUserInput[]
+    upsert?: PendingBalanceUpsertWithWhereUniqueWithoutUserInput | PendingBalanceUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PendingBalanceCreateManyUserInputEnvelope
+    set?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    disconnect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    delete?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    update?: PendingBalanceUpdateWithWhereUniqueWithoutUserInput | PendingBalanceUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PendingBalanceUpdateManyWithWhereWithoutUserInput | PendingBalanceUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
+  }
+
+  export type CustomDomainUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput> | CustomDomainCreateWithoutUserInput[] | CustomDomainUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CustomDomainCreateOrConnectWithoutUserInput | CustomDomainCreateOrConnectWithoutUserInput[]
+    upsert?: CustomDomainUpsertWithWhereUniqueWithoutUserInput | CustomDomainUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CustomDomainCreateManyUserInputEnvelope
+    set?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+    disconnect?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+    delete?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+    connect?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+    update?: CustomDomainUpdateWithWhereUniqueWithoutUserInput | CustomDomainUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CustomDomainUpdateManyWithWhereWithoutUserInput | CustomDomainUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CustomDomainScalarWhereInput | CustomDomainScalarWhereInput[]
+  }
+
+  export type NotificationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type AuditLogUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutUserInput | AuditLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
   export type ProductUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput> | ProductCreateWithoutUserInput[] | ProductUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ProductCreateOrConnectWithoutUserInput | ProductCreateOrConnectWithoutUserInput[]
@@ -24543,6 +30879,94 @@ export namespace Prisma {
     update?: UserBadgeUpdateWithWhereUniqueWithoutUserInput | UserBadgeUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserBadgeUpdateManyWithWhereWithoutUserInput | UserBadgeUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
+  }
+
+  export type PendingBalanceUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput> | PendingBalanceCreateWithoutUserInput[] | PendingBalanceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PendingBalanceCreateOrConnectWithoutUserInput | PendingBalanceCreateOrConnectWithoutUserInput[]
+    upsert?: PendingBalanceUpsertWithWhereUniqueWithoutUserInput | PendingBalanceUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PendingBalanceCreateManyUserInputEnvelope
+    set?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    disconnect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    delete?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    update?: PendingBalanceUpdateWithWhereUniqueWithoutUserInput | PendingBalanceUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PendingBalanceUpdateManyWithWhereWithoutUserInput | PendingBalanceUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
+  }
+
+  export type CustomDomainUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput> | CustomDomainCreateWithoutUserInput[] | CustomDomainUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CustomDomainCreateOrConnectWithoutUserInput | CustomDomainCreateOrConnectWithoutUserInput[]
+    upsert?: CustomDomainUpsertWithWhereUniqueWithoutUserInput | CustomDomainUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CustomDomainCreateManyUserInputEnvelope
+    set?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+    disconnect?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+    delete?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+    connect?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+    update?: CustomDomainUpdateWithWhereUniqueWithoutUserInput | CustomDomainUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CustomDomainUpdateManyWithWhereWithoutUserInput | CustomDomainUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CustomDomainScalarWhereInput | CustomDomainScalarWhereInput[]
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutUserInput | AuditLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumNotificationTypeFieldUpdateOperationsInput = {
+    set?: $Enums.NotificationType
+  }
+
+  export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
+    create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
+    upsert?: UserUpsertWithoutNotificationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationsInput, UserUpdateWithoutNotificationsInput>, UserUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type UserCreateNestedOneWithoutAuditLogsInput = {
+    create?: XOR<UserCreateWithoutAuditLogsInput, UserUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAuditLogsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutAuditLogsNestedInput = {
+    create?: XOR<UserCreateWithoutAuditLogsInput, UserUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAuditLogsInput
+    upsert?: UserUpsertWithoutAuditLogsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAuditLogsInput, UserUpdateWithoutAuditLogsInput>, UserUncheckedUpdateWithoutAuditLogsInput>
   }
 
   export type UserCreateNestedOneWithoutProductsInput = {
@@ -24671,6 +31095,20 @@ export namespace Prisma {
     connect?: ProductWhereUniqueInput
   }
 
+  export type PendingBalanceCreateNestedManyWithoutOrderInput = {
+    create?: XOR<PendingBalanceCreateWithoutOrderInput, PendingBalanceUncheckedCreateWithoutOrderInput> | PendingBalanceCreateWithoutOrderInput[] | PendingBalanceUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: PendingBalanceCreateOrConnectWithoutOrderInput | PendingBalanceCreateOrConnectWithoutOrderInput[]
+    createMany?: PendingBalanceCreateManyOrderInputEnvelope
+    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+  }
+
+  export type PendingBalanceUncheckedCreateNestedManyWithoutOrderInput = {
+    create?: XOR<PendingBalanceCreateWithoutOrderInput, PendingBalanceUncheckedCreateWithoutOrderInput> | PendingBalanceCreateWithoutOrderInput[] | PendingBalanceUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: PendingBalanceCreateOrConnectWithoutOrderInput | PendingBalanceCreateOrConnectWithoutOrderInput[]
+    createMany?: PendingBalanceCreateManyOrderInputEnvelope
+    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+  }
+
   export type EnumOrderStatusFieldUpdateOperationsInput = {
     set?: $Enums.OrderStatus
   }
@@ -24681,10 +31119,6 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
@@ -24701,6 +31135,62 @@ export namespace Prisma {
     upsert?: ProductUpsertWithoutOrdersInput
     connect?: ProductWhereUniqueInput
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutOrdersInput, ProductUpdateWithoutOrdersInput>, ProductUncheckedUpdateWithoutOrdersInput>
+  }
+
+  export type PendingBalanceUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<PendingBalanceCreateWithoutOrderInput, PendingBalanceUncheckedCreateWithoutOrderInput> | PendingBalanceCreateWithoutOrderInput[] | PendingBalanceUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: PendingBalanceCreateOrConnectWithoutOrderInput | PendingBalanceCreateOrConnectWithoutOrderInput[]
+    upsert?: PendingBalanceUpsertWithWhereUniqueWithoutOrderInput | PendingBalanceUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: PendingBalanceCreateManyOrderInputEnvelope
+    set?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    disconnect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    delete?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    update?: PendingBalanceUpdateWithWhereUniqueWithoutOrderInput | PendingBalanceUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: PendingBalanceUpdateManyWithWhereWithoutOrderInput | PendingBalanceUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
+  }
+
+  export type PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<PendingBalanceCreateWithoutOrderInput, PendingBalanceUncheckedCreateWithoutOrderInput> | PendingBalanceCreateWithoutOrderInput[] | PendingBalanceUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: PendingBalanceCreateOrConnectWithoutOrderInput | PendingBalanceCreateOrConnectWithoutOrderInput[]
+    upsert?: PendingBalanceUpsertWithWhereUniqueWithoutOrderInput | PendingBalanceUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: PendingBalanceCreateManyOrderInputEnvelope
+    set?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    disconnect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    delete?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    update?: PendingBalanceUpdateWithWhereUniqueWithoutOrderInput | PendingBalanceUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: PendingBalanceUpdateManyWithWhereWithoutOrderInput | PendingBalanceUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutPendingBalancesInput = {
+    create?: XOR<UserCreateWithoutPendingBalancesInput, UserUncheckedCreateWithoutPendingBalancesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPendingBalancesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type OrderCreateNestedOneWithoutPendingBalancesInput = {
+    create?: XOR<OrderCreateWithoutPendingBalancesInput, OrderUncheckedCreateWithoutPendingBalancesInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutPendingBalancesInput
+    connect?: OrderWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutPendingBalancesNestedInput = {
+    create?: XOR<UserCreateWithoutPendingBalancesInput, UserUncheckedCreateWithoutPendingBalancesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPendingBalancesInput
+    upsert?: UserUpsertWithoutPendingBalancesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPendingBalancesInput, UserUpdateWithoutPendingBalancesInput>, UserUncheckedUpdateWithoutPendingBalancesInput>
+  }
+
+  export type OrderUpdateOneRequiredWithoutPendingBalancesNestedInput = {
+    create?: XOR<OrderCreateWithoutPendingBalancesInput, OrderUncheckedCreateWithoutPendingBalancesInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutPendingBalancesInput
+    upsert?: OrderUpsertWithoutPendingBalancesInput
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutPendingBalancesInput, OrderUpdateWithoutPendingBalancesInput>, OrderUncheckedUpdateWithoutPendingBalancesInput>
   }
 
   export type UserCreateNestedOneWithoutWithdrawalsInput = {
@@ -24842,6 +31332,24 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTransactionsInput, UserUpdateWithoutTransactionsInput>, UserUncheckedUpdateWithoutTransactionsInput>
   }
 
+  export type UserCreateNestedOneWithoutCustomDomainsInput = {
+    create?: XOR<UserCreateWithoutCustomDomainsInput, UserUncheckedCreateWithoutCustomDomainsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCustomDomainsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumDomainStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DomainStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutCustomDomainsNestedInput = {
+    create?: XOR<UserCreateWithoutCustomDomainsInput, UserUncheckedCreateWithoutCustomDomainsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCustomDomainsInput
+    upsert?: UserUpsertWithoutCustomDomainsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCustomDomainsInput, UserUpdateWithoutCustomDomainsInput>, UserUncheckedUpdateWithoutCustomDomainsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -24918,6 +31426,11 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
@@ -25045,6 +31558,54 @@ export namespace Prisma {
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedEnumNotificationTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeFilter<$PrismaModel> | $Enums.NotificationType
+  }
+
+  export type NestedEnumNotificationTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.NotificationType | EnumNotificationTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.NotificationType[] | ListEnumNotificationTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumNotificationTypeWithAggregatesFilter<$PrismaModel> | $Enums.NotificationType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumNotificationTypeFilter<$PrismaModel>
+    _max?: NestedEnumNotificationTypeFilter<$PrismaModel>
+  }
 
   export type NestedEnumProductTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.ProductType | EnumProductTypeFieldRefInput<$PrismaModel>
@@ -25078,29 +31639,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumProductStatusFilter<$PrismaModel>
     _max?: NestedEnumProductStatusFilter<$PrismaModel>
-  }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -25144,11 +31682,6 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedEnumOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
     in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
@@ -25181,14 +31714,6 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedEnumWithdrawalStatusFilter<$PrismaModel = never> = {
@@ -25343,6 +31868,23 @@ export namespace Prisma {
     _max?: NestedEnumTransactionTypeFilter<$PrismaModel>
   }
 
+  export type NestedEnumDomainStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DomainStatus | EnumDomainStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDomainStatusFilter<$PrismaModel> | $Enums.DomainStatus
+  }
+
+  export type NestedEnumDomainStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DomainStatus | EnumDomainStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDomainStatusWithAggregatesFilter<$PrismaModel> | $Enums.DomainStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDomainStatusFilter<$PrismaModel>
+    _max?: NestedEnumDomainStatusFilter<$PrismaModel>
+  }
+
   export type ProductCreateWithoutUserInput = {
     id?: string
     name: string
@@ -25358,6 +31900,7 @@ export namespace Prisma {
     revenue?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    showInShowcase?: boolean
     orders?: OrderCreateNestedManyWithoutProductInput
     checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
   }
@@ -25377,6 +31920,7 @@ export namespace Prisma {
     revenue?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    showInShowcase?: boolean
     orders?: OrderUncheckedCreateNestedManyWithoutProductInput
     checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
   }
@@ -25411,6 +31955,12 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
@@ -25418,6 +31968,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     product: ProductCreateNestedOneWithoutOrdersInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutUserInput = {
@@ -25441,12 +31992,19 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutUserInput = {
@@ -25625,6 +32183,116 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PendingBalanceCreateWithoutUserInput = {
+    id?: string
+    amount: number
+    availableAt: Date | string
+    released?: boolean
+    createdAt?: Date | string
+    order: OrderCreateNestedOneWithoutPendingBalancesInput
+  }
+
+  export type PendingBalanceUncheckedCreateWithoutUserInput = {
+    id?: string
+    orderId: string
+    amount: number
+    availableAt: Date | string
+    released?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PendingBalanceCreateOrConnectWithoutUserInput = {
+    where: PendingBalanceWhereUniqueInput
+    create: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput>
+  }
+
+  export type PendingBalanceCreateManyUserInputEnvelope = {
+    data: PendingBalanceCreateManyUserInput | PendingBalanceCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CustomDomainCreateWithoutUserInput = {
+    id?: string
+    domain: string
+    status?: $Enums.DomainStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CustomDomainUncheckedCreateWithoutUserInput = {
+    id?: string
+    domain: string
+    status?: $Enums.DomainStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CustomDomainCreateOrConnectWithoutUserInput = {
+    where: CustomDomainWhereUniqueInput
+    create: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput>
+  }
+
+  export type CustomDomainCreateManyUserInputEnvelope = {
+    data: CustomDomainCreateManyUserInput | CustomDomainCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type NotificationCreateWithoutUserInput = {
+    id?: string
+    title: string
+    content: string
+    read?: boolean
+    type?: $Enums.NotificationType
+    createdAt?: Date | string
+  }
+
+  export type NotificationUncheckedCreateWithoutUserInput = {
+    id?: string
+    title: string
+    content: string
+    read?: boolean
+    type?: $Enums.NotificationType
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationCreateManyUserInputEnvelope = {
+    data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AuditLogCreateWithoutUserInput = {
+    id?: string
+    action: string
+    details?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AuditLogUncheckedCreateWithoutUserInput = {
+    id?: string
+    action: string
+    details?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
+  }
+
+  export type AuditLogCreateOrConnectWithoutUserInput = {
+    where: AuditLogWhereUniqueInput
+    create: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type AuditLogCreateManyUserInputEnvelope = {
+    data: AuditLogCreateManyUserInput | AuditLogCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ProductUpsertWithWhereUniqueWithoutUserInput = {
     where: ProductWhereUniqueInput
     update: XOR<ProductUpdateWithoutUserInput, ProductUncheckedUpdateWithoutUserInput>
@@ -25660,6 +32328,7 @@ export namespace Prisma {
     revenue?: FloatFilter<"Product"> | number
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
+    showInShowcase?: BoolFilter<"Product"> | boolean
   }
 
   export type OrderUpsertWithWhereUniqueWithoutUserInput = {
@@ -25703,6 +32372,12 @@ export namespace Prisma {
     cardBrand?: StringNullableFilter<"Order"> | string | null
     installments?: IntFilter<"Order"> | number
     externalId?: StringNullableFilter<"Order"> | string | null
+    wooviCorrelationId?: StringNullableFilter<"Order"> | string | null
+    wooviTransactionId?: StringNullableFilter<"Order"> | string | null
+    wooviEndToEndId?: StringNullableFilter<"Order"> | string | null
+    pixQrCodeUrl?: StringNullableFilter<"Order"> | string | null
+    pixBrCode?: StringNullableFilter<"Order"> | string | null
+    pixExpiresAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     paidAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     refundedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     isMatured?: BoolFilter<"Order"> | boolean
@@ -25884,6 +32559,497 @@ export namespace Prisma {
     earnedAt?: DateTimeFilter<"UserBadge"> | Date | string
   }
 
+  export type PendingBalanceUpsertWithWhereUniqueWithoutUserInput = {
+    where: PendingBalanceWhereUniqueInput
+    update: XOR<PendingBalanceUpdateWithoutUserInput, PendingBalanceUncheckedUpdateWithoutUserInput>
+    create: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput>
+  }
+
+  export type PendingBalanceUpdateWithWhereUniqueWithoutUserInput = {
+    where: PendingBalanceWhereUniqueInput
+    data: XOR<PendingBalanceUpdateWithoutUserInput, PendingBalanceUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PendingBalanceUpdateManyWithWhereWithoutUserInput = {
+    where: PendingBalanceScalarWhereInput
+    data: XOR<PendingBalanceUpdateManyMutationInput, PendingBalanceUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PendingBalanceScalarWhereInput = {
+    AND?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
+    OR?: PendingBalanceScalarWhereInput[]
+    NOT?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
+    id?: StringFilter<"PendingBalance"> | string
+    userId?: StringFilter<"PendingBalance"> | string
+    orderId?: StringFilter<"PendingBalance"> | string
+    amount?: FloatFilter<"PendingBalance"> | number
+    availableAt?: DateTimeFilter<"PendingBalance"> | Date | string
+    released?: BoolFilter<"PendingBalance"> | boolean
+    createdAt?: DateTimeFilter<"PendingBalance"> | Date | string
+  }
+
+  export type CustomDomainUpsertWithWhereUniqueWithoutUserInput = {
+    where: CustomDomainWhereUniqueInput
+    update: XOR<CustomDomainUpdateWithoutUserInput, CustomDomainUncheckedUpdateWithoutUserInput>
+    create: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput>
+  }
+
+  export type CustomDomainUpdateWithWhereUniqueWithoutUserInput = {
+    where: CustomDomainWhereUniqueInput
+    data: XOR<CustomDomainUpdateWithoutUserInput, CustomDomainUncheckedUpdateWithoutUserInput>
+  }
+
+  export type CustomDomainUpdateManyWithWhereWithoutUserInput = {
+    where: CustomDomainScalarWhereInput
+    data: XOR<CustomDomainUpdateManyMutationInput, CustomDomainUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type CustomDomainScalarWhereInput = {
+    AND?: CustomDomainScalarWhereInput | CustomDomainScalarWhereInput[]
+    OR?: CustomDomainScalarWhereInput[]
+    NOT?: CustomDomainScalarWhereInput | CustomDomainScalarWhereInput[]
+    id?: StringFilter<"CustomDomain"> | string
+    userId?: StringFilter<"CustomDomain"> | string
+    domain?: StringFilter<"CustomDomain"> | string
+    status?: EnumDomainStatusFilter<"CustomDomain"> | $Enums.DomainStatus
+    createdAt?: DateTimeFilter<"CustomDomain"> | Date | string
+    updatedAt?: DateTimeFilter<"CustomDomain"> | Date | string
+  }
+
+  export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutUserInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type NotificationScalarWhereInput = {
+    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    OR?: NotificationScalarWhereInput[]
+    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    id?: StringFilter<"Notification"> | string
+    userId?: StringFilter<"Notification"> | string
+    title?: StringFilter<"Notification"> | string
+    content?: StringFilter<"Notification"> | string
+    read?: BoolFilter<"Notification"> | boolean
+    type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+  }
+
+  export type AuditLogUpsertWithWhereUniqueWithoutUserInput = {
+    where: AuditLogWhereUniqueInput
+    update: XOR<AuditLogUpdateWithoutUserInput, AuditLogUncheckedUpdateWithoutUserInput>
+    create: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type AuditLogUpdateWithWhereUniqueWithoutUserInput = {
+    where: AuditLogWhereUniqueInput
+    data: XOR<AuditLogUpdateWithoutUserInput, AuditLogUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AuditLogUpdateManyWithWhereWithoutUserInput = {
+    where: AuditLogScalarWhereInput
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AuditLogScalarWhereInput = {
+    AND?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+    OR?: AuditLogScalarWhereInput[]
+    NOT?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+    id?: StringFilter<"AuditLog"> | string
+    userId?: StringFilter<"AuditLog"> | string
+    action?: StringFilter<"AuditLog"> | string
+    details?: StringNullableFilter<"AuditLog"> | string | null
+    ipAddress?: StringNullableFilter<"AuditLog"> | string | null
+    userAgent?: StringNullableFilter<"AuditLog"> | string | null
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+  }
+
+  export type UserCreateWithoutNotificationsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
+    products?: ProductCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutNotificationsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutNotificationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+  }
+
+  export type UserUpsertWithoutNotificationsInput = {
+    update: XOR<UserUpdateWithoutNotificationsInput, UserUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutNotificationsInput, UserUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type UserUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    document?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKeyType?: NullableEnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAgency?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    platformFeePercent?: FloatFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    totalWithdrawn?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    document?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKeyType?: NullableEnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAgency?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    platformFeePercent?: FloatFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    totalWithdrawn?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutAuditLogsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
+    products?: ProductCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAuditLogsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAuditLogsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAuditLogsInput, UserUncheckedCreateWithoutAuditLogsInput>
+  }
+
+  export type UserUpsertWithoutAuditLogsInput = {
+    update: XOR<UserUpdateWithoutAuditLogsInput, UserUncheckedUpdateWithoutAuditLogsInput>
+    create: XOR<UserCreateWithoutAuditLogsInput, UserUncheckedCreateWithoutAuditLogsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAuditLogsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAuditLogsInput, UserUncheckedUpdateWithoutAuditLogsInput>
+  }
+
+  export type UserUpdateWithoutAuditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    document?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKeyType?: NullableEnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAgency?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    platformFeePercent?: FloatFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    totalWithdrawn?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAuditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    document?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKeyType?: NullableEnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAgency?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    platformFeePercent?: FloatFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    totalWithdrawn?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserCreateWithoutProductsInput = {
     id?: string
     name: string
@@ -25907,6 +33073,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     orders?: OrderCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -25914,6 +33087,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
     badges?: UserBadgeCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProductsInput = {
@@ -25939,6 +33116,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -25946,6 +33130,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
     badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProductsInput = {
@@ -25973,6 +33161,12 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
@@ -25980,6 +33174,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutOrdersInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutProductInput = {
@@ -26003,12 +33198,19 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutProductInput = {
@@ -26079,6 +33281,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orders?: OrderUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -26086,6 +33295,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProductsInput = {
@@ -26111,6 +33324,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -26118,6 +33338,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type OrderUpsertWithWhereUniqueWithoutProductInput = {
@@ -26186,6 +33410,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -26193,6 +33424,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
     badges?: UserBadgeCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrdersInput = {
@@ -26218,6 +33453,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -26225,6 +33467,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
     badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrdersInput = {
@@ -26247,6 +33493,7 @@ export namespace Prisma {
     revenue?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    showInShowcase?: boolean
     user: UserCreateNestedOneWithoutProductsInput
     checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
   }
@@ -26267,12 +33514,41 @@ export namespace Prisma {
     revenue?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    showInShowcase?: boolean
     checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutOrdersInput = {
     where: ProductWhereUniqueInput
     create: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
+  }
+
+  export type PendingBalanceCreateWithoutOrderInput = {
+    id?: string
+    amount: number
+    availableAt: Date | string
+    released?: boolean
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutPendingBalancesInput
+  }
+
+  export type PendingBalanceUncheckedCreateWithoutOrderInput = {
+    id?: string
+    userId: string
+    amount: number
+    availableAt: Date | string
+    released?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PendingBalanceCreateOrConnectWithoutOrderInput = {
+    where: PendingBalanceWhereUniqueInput
+    create: XOR<PendingBalanceCreateWithoutOrderInput, PendingBalanceUncheckedCreateWithoutOrderInput>
+  }
+
+  export type PendingBalanceCreateManyOrderInputEnvelope = {
+    data: PendingBalanceCreateManyOrderInput | PendingBalanceCreateManyOrderInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutOrdersInput = {
@@ -26309,6 +33585,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -26316,6 +33599,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -26341,6 +33628,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -26348,6 +33642,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductUpsertWithoutOrdersInput = {
@@ -26376,6 +33674,7 @@ export namespace Prisma {
     revenue?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutProductsNestedInput
     checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
   }
@@ -26396,7 +33695,372 @@ export namespace Prisma {
     revenue?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type PendingBalanceUpsertWithWhereUniqueWithoutOrderInput = {
+    where: PendingBalanceWhereUniqueInput
+    update: XOR<PendingBalanceUpdateWithoutOrderInput, PendingBalanceUncheckedUpdateWithoutOrderInput>
+    create: XOR<PendingBalanceCreateWithoutOrderInput, PendingBalanceUncheckedCreateWithoutOrderInput>
+  }
+
+  export type PendingBalanceUpdateWithWhereUniqueWithoutOrderInput = {
+    where: PendingBalanceWhereUniqueInput
+    data: XOR<PendingBalanceUpdateWithoutOrderInput, PendingBalanceUncheckedUpdateWithoutOrderInput>
+  }
+
+  export type PendingBalanceUpdateManyWithWhereWithoutOrderInput = {
+    where: PendingBalanceScalarWhereInput
+    data: XOR<PendingBalanceUpdateManyMutationInput, PendingBalanceUncheckedUpdateManyWithoutOrderInput>
+  }
+
+  export type UserCreateWithoutPendingBalancesInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
+    products?: ProductCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPendingBalancesInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPendingBalancesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPendingBalancesInput, UserUncheckedCreateWithoutPendingBalancesInput>
+  }
+
+  export type OrderCreateWithoutPendingBalancesInput = {
+    id?: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutOrdersInput
+    product: ProductCreateNestedOneWithoutOrdersInput
+  }
+
+  export type OrderUncheckedCreateWithoutPendingBalancesInput = {
+    id?: string
+    userId: string
+    productId: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OrderCreateOrConnectWithoutPendingBalancesInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutPendingBalancesInput, OrderUncheckedCreateWithoutPendingBalancesInput>
+  }
+
+  export type UserUpsertWithoutPendingBalancesInput = {
+    update: XOR<UserUpdateWithoutPendingBalancesInput, UserUncheckedUpdateWithoutPendingBalancesInput>
+    create: XOR<UserCreateWithoutPendingBalancesInput, UserUncheckedCreateWithoutPendingBalancesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPendingBalancesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPendingBalancesInput, UserUncheckedUpdateWithoutPendingBalancesInput>
+  }
+
+  export type UserUpdateWithoutPendingBalancesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    document?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKeyType?: NullableEnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAgency?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    platformFeePercent?: FloatFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    totalWithdrawn?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPendingBalancesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    document?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKeyType?: NullableEnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAgency?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    platformFeePercent?: FloatFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    totalWithdrawn?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type OrderUpsertWithoutPendingBalancesInput = {
+    update: XOR<OrderUpdateWithoutPendingBalancesInput, OrderUncheckedUpdateWithoutPendingBalancesInput>
+    create: XOR<OrderCreateWithoutPendingBalancesInput, OrderUncheckedCreateWithoutPendingBalancesInput>
+    where?: OrderWhereInput
+  }
+
+  export type OrderUpdateToOneWithWhereWithoutPendingBalancesInput = {
+    where?: OrderWhereInput
+    data: XOR<OrderUpdateWithoutPendingBalancesInput, OrderUncheckedUpdateWithoutPendingBalancesInput>
+  }
+
+  export type OrderUpdateWithoutPendingBalancesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutOrdersNestedInput
+    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutPendingBalancesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateWithoutWithdrawalsInput = {
@@ -26422,6 +34086,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductCreateNestedManyWithoutUserInput
     orders?: OrderCreateNestedManyWithoutUserInput
     transactions?: TransactionCreateNestedManyWithoutUserInput
@@ -26429,6 +34100,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
     badges?: UserBadgeCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWithdrawalsInput = {
@@ -26454,6 +34129,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutUserInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
@@ -26461,6 +34143,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
     badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWithdrawalsInput = {
@@ -26502,6 +34188,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutUserNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     transactions?: TransactionUpdateManyWithoutUserNestedInput
@@ -26509,6 +34202,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWithdrawalsInput = {
@@ -26534,6 +34231,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutUserNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
@@ -26541,6 +34245,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWebhooksInput = {
@@ -26566,6 +34274,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductCreateNestedManyWithoutUserInput
     orders?: OrderCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
@@ -26573,6 +34288,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
     badges?: UserBadgeCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWebhooksInput = {
@@ -26598,6 +34317,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutUserInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
@@ -26605,6 +34331,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
     badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWebhooksInput = {
@@ -26646,6 +34376,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutUserNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
@@ -26653,6 +34390,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWebhooksInput = {
@@ -26678,6 +34419,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutUserNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
@@ -26685,6 +34433,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutApiKeysInput = {
@@ -26710,6 +34462,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductCreateNestedManyWithoutUserInput
     orders?: OrderCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
@@ -26717,6 +34476,10 @@ export namespace Prisma {
     webhooks?: WebhookCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
     badges?: UserBadgeCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutApiKeysInput = {
@@ -26742,6 +34505,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutUserInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
@@ -26749,6 +34519,10 @@ export namespace Prisma {
     webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
     badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutApiKeysInput = {
@@ -26790,6 +34564,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutUserNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
@@ -26797,6 +34578,10 @@ export namespace Prisma {
     webhooks?: WebhookUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApiKeysInput = {
@@ -26822,6 +34607,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutUserNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
@@ -26829,6 +34621,10 @@ export namespace Prisma {
     webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutKycDocumentsInput = {
@@ -26854,6 +34650,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductCreateNestedManyWithoutUserInput
     orders?: OrderCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
@@ -26861,6 +34664,10 @@ export namespace Prisma {
     webhooks?: WebhookCreateNestedManyWithoutUserInput
     apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
     badges?: UserBadgeCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutKycDocumentsInput = {
@@ -26886,6 +34693,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutUserInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
@@ -26893,6 +34707,10 @@ export namespace Prisma {
     webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
     badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutKycDocumentsInput = {
@@ -26934,6 +34752,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutUserNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
@@ -26941,6 +34766,10 @@ export namespace Prisma {
     webhooks?: WebhookUpdateManyWithoutUserNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutKycDocumentsInput = {
@@ -26966,6 +34795,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutUserNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
@@ -26973,6 +34809,10 @@ export namespace Prisma {
     webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutBadgesInput = {
@@ -26998,6 +34838,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductCreateNestedManyWithoutUserInput
     orders?: OrderCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
@@ -27005,6 +34852,10 @@ export namespace Prisma {
     webhooks?: WebhookCreateNestedManyWithoutUserInput
     apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBadgesInput = {
@@ -27030,6 +34881,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutUserInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
@@ -27037,6 +34895,10 @@ export namespace Prisma {
     webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBadgesInput = {
@@ -27078,6 +34940,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutUserNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
@@ -27085,6 +34954,10 @@ export namespace Prisma {
     webhooks?: WebhookUpdateManyWithoutUserNestedInput
     apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBadgesInput = {
@@ -27110,6 +34983,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutUserNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
@@ -27117,6 +34997,10 @@ export namespace Prisma {
     webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductCreateWithoutCheckoutLinksInput = {
@@ -27134,6 +35018,7 @@ export namespace Prisma {
     revenue?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    showInShowcase?: boolean
     user: UserCreateNestedOneWithoutProductsInput
     orders?: OrderCreateNestedManyWithoutProductInput
   }
@@ -27154,6 +35039,7 @@ export namespace Prisma {
     revenue?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    showInShowcase?: boolean
     orders?: OrderUncheckedCreateNestedManyWithoutProductInput
   }
 
@@ -27188,6 +35074,7 @@ export namespace Prisma {
     revenue?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutProductsNestedInput
     orders?: OrderUpdateManyWithoutProductNestedInput
   }
@@ -27208,6 +35095,7 @@ export namespace Prisma {
     revenue?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
   }
 
@@ -27234,6 +35122,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductCreateNestedManyWithoutUserInput
     orders?: OrderCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
@@ -27241,6 +35136,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
     badges?: UserBadgeCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -27266,6 +35165,13 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
     products?: ProductUncheckedCreateNestedManyWithoutUserInput
     orders?: OrderUncheckedCreateNestedManyWithoutUserInput
     withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
@@ -27273,6 +35179,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
     kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
     badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTransactionsInput = {
@@ -27314,6 +35224,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUpdateManyWithoutUserNestedInput
     orders?: OrderUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
@@ -27321,6 +35238,10 @@ export namespace Prisma {
     apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -27346,6 +35267,13 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     products?: ProductUncheckedUpdateManyWithoutUserNestedInput
     orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
     withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
@@ -27353,6 +35281,198 @@ export namespace Prisma {
     apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
     kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
     badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutCustomDomainsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
+    products?: ProductCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCustomDomainsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCustomDomainsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCustomDomainsInput, UserUncheckedCreateWithoutCustomDomainsInput>
+  }
+
+  export type UserUpsertWithoutCustomDomainsInput = {
+    update: XOR<UserUpdateWithoutCustomDomainsInput, UserUncheckedUpdateWithoutCustomDomainsInput>
+    create: XOR<UserCreateWithoutCustomDomainsInput, UserUncheckedCreateWithoutCustomDomainsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCustomDomainsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCustomDomainsInput, UserUncheckedUpdateWithoutCustomDomainsInput>
+  }
+
+  export type UserUpdateWithoutCustomDomainsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    document?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKeyType?: NullableEnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAgency?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    platformFeePercent?: FloatFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    totalWithdrawn?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCustomDomainsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    document?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKeyType?: NullableEnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAgency?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    platformFeePercent?: FloatFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    totalWithdrawn?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductCreateManyUserInput = {
@@ -27370,6 +35490,7 @@ export namespace Prisma {
     revenue?: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    showInShowcase?: boolean
   }
 
   export type OrderCreateManyUserInput = {
@@ -27393,6 +35514,12 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
@@ -27454,6 +35581,41 @@ export namespace Prisma {
     earnedAt?: Date | string
   }
 
+  export type PendingBalanceCreateManyUserInput = {
+    id?: string
+    orderId: string
+    amount: number
+    availableAt: Date | string
+    released?: boolean
+    createdAt?: Date | string
+  }
+
+  export type CustomDomainCreateManyUserInput = {
+    id?: string
+    domain: string
+    status?: $Enums.DomainStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type NotificationCreateManyUserInput = {
+    id?: string
+    title: string
+    content: string
+    read?: boolean
+    type?: $Enums.NotificationType
+    createdAt?: Date | string
+  }
+
+  export type AuditLogCreateManyUserInput = {
+    id?: string
+    action: string
+    details?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
+  }
+
   export type ProductUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -27469,6 +35631,7 @@ export namespace Prisma {
     revenue?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     orders?: OrderUpdateManyWithoutProductNestedInput
     checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
   }
@@ -27488,6 +35651,7 @@ export namespace Prisma {
     revenue?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
     checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
   }
@@ -27507,6 +35671,7 @@ export namespace Prisma {
     revenue?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type OrderUpdateWithoutUserInput = {
@@ -27529,6 +35694,12 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
@@ -27536,6 +35707,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutUserInput = {
@@ -27559,12 +35731,19 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateManyWithoutUserInput = {
@@ -27588,6 +35767,12 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
@@ -27755,6 +35940,111 @@ export namespace Prisma {
     earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PendingBalanceUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    released?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutPendingBalancesNestedInput
+  }
+
+  export type PendingBalanceUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    released?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PendingBalanceUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    released?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomDomainUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomDomainUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomDomainUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type OrderCreateManyProductInput = {
     id?: string
     userId: string
@@ -27776,6 +36066,12 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
@@ -27811,6 +36107,12 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
@@ -27818,6 +36120,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutProductInput = {
@@ -27841,12 +36144,19 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateManyWithoutProductInput = {
@@ -27870,6 +36180,12 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
@@ -27896,6 +36212,42 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PendingBalanceCreateManyOrderInput = {
+    id?: string
+    userId: string
+    amount: number
+    availableAt: Date | string
+    released?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PendingBalanceUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    released?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPendingBalancesNestedInput
+  }
+
+  export type PendingBalanceUncheckedUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    released?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PendingBalanceUncheckedUpdateManyWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    released?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

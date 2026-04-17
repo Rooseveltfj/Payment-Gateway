@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { BasicInfoStep } from "./steps/BasicInfoStep";
 import { CheckoutConfigStep } from "./steps/CheckoutConfigStep";
 import { PaymentMethodsStep } from "./steps/PaymentMethodsStep";
+import { DEFAULT_CHECKOUT_CONFIG } from "@/types/checkout-config";
 
 const STEPS = [
   { id: "basic", title: "Informações Iniciais" },
@@ -36,8 +37,8 @@ export default function ProductWizard() {
       credit_card: true,
       boleto: false,
     },
-    pixDiscount: 0,
     maxInstallments: 12,
+    checkoutConfig: DEFAULT_CHECKOUT_CONFIG,
   });
 
   const handleNext = () => {
@@ -70,10 +71,12 @@ export default function ProductWizard() {
           type: formData.type,
           slug: formData.slug,
           imageUrl: formData.imageUrl,
+          imageUrl: formData.imageUrl,
           checkoutConfig: {
-             methods: formData.paymentMethods,
-             pixDiscount: formData.pixDiscount,
-             installments: formData.maxInstallments
+            ...formData.checkoutConfig,
+            paymentMethods: formData.paymentMethods,
+            pixDiscount: formData.pixDiscount,
+            installments: formData.maxInstallments
           }
         }),
       });
@@ -81,7 +84,7 @@ export default function ProductWizard() {
       if (!res.ok) throw new Error("Falha ao salvar produto");
       
       const { id } = await res.json();
-      router.push(`/dashboard/produtos/${id}`);
+      router.push(`/dashboard/produtos/${id}/checkout`);
 
     } catch (error) {
       console.error(error);
@@ -104,7 +107,13 @@ export default function ProductWizard() {
           <BasicInfoStep data={formData} updateData={(d) => setFormData(prev => ({ ...prev, ...d }))} />
         )}
         {currentStep === 1 && (
-          <CheckoutConfigStep />
+          <CheckoutConfigStep 
+            data={formData.checkoutConfig} 
+            updateData={(d) => setFormData(prev => ({ 
+              ...prev, 
+              checkoutConfig: { ...prev.checkoutConfig, ...d } 
+            }))} 
+          />
         )}
         {currentStep === 2 && (
           <PaymentMethodsStep data={formData} updateData={(d) => setFormData(prev => ({ ...prev, ...d }))} />

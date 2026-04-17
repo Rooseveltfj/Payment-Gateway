@@ -13,10 +13,12 @@ export async function POST(req: Request) {
 
     if (!file) return NextResponse.json({ error: "Nenhum arquivo enviado" }, { status: 400 });
 
-    // Mock response if valid env variables aren't provided
-    if (supabaseUrl === "https://mock.supabase.co") {
-       return NextResponse.json({ url: "https://via.placeholder.com/300x150?text=Mock+Image" });
-    }
+// Mock response if valid env variables aren't provided
+if (supabaseUrl === "https://mock.supabase.co" || supabaseKey === "mock-key") {
+   // Artificial delay for better UX feel during mock
+   await new Promise(r => setTimeout(r, 800));
+   return NextResponse.json({ url: "https://via.placeholder.com/600x400?text=PulsePay+Mock+Upload" });
+}
 
     const fileExt = file.name.split(".").pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;

@@ -142,7 +142,34 @@ exports.Prisma.UserScalarFieldEnum = {
   availableBalance: 'availableBalance',
   pendingBalance: 'pendingBalance',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  username: 'username',
+  showcaseConfig: 'showcaseConfig',
+  socialLinks: 'socialLinks',
+  twoFactorEnabled: 'twoFactorEnabled',
+  twoFactorSecret: 'twoFactorSecret',
+  onboardingSteps: 'onboardingSteps',
+  lastActiveAt: 'lastActiveAt'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  content: 'content',
+  read: 'read',
+  type: 'type',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AuditLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  action: 'action',
+  details: 'details',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.ProductScalarFieldEnum = {
@@ -160,7 +187,8 @@ exports.Prisma.ProductScalarFieldEnum = {
   salesCount: 'salesCount',
   revenue: 'revenue',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  showInShowcase: 'showInShowcase'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
@@ -185,12 +213,28 @@ exports.Prisma.OrderScalarFieldEnum = {
   cardBrand: 'cardBrand',
   installments: 'installments',
   externalId: 'externalId',
+  wooviCorrelationId: 'wooviCorrelationId',
+  wooviTransactionId: 'wooviTransactionId',
+  wooviEndToEndId: 'wooviEndToEndId',
+  pixQrCodeUrl: 'pixQrCodeUrl',
+  pixBrCode: 'pixBrCode',
+  pixExpiresAt: 'pixExpiresAt',
   paidAt: 'paidAt',
   refundedAt: 'refundedAt',
   isMatured: 'isMatured',
   statusHistory: 'statusHistory',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PendingBalanceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  orderId: 'orderId',
+  amount: 'amount',
+  availableAt: 'availableAt',
+  released: 'released',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.WithdrawalScalarFieldEnum = {
@@ -315,6 +359,15 @@ exports.Prisma.AdminLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.CustomDomainScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  domain: 'domain',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -334,15 +387,15 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
-exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
-};
-
 exports.Prisma.JsonNullValueFilter = {
   DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
+};
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
 };
 exports.Role = exports.$Enums.Role = {
   USER: 'USER',
@@ -368,6 +421,13 @@ exports.PixKeyType = exports.$Enums.PixKeyType = {
   EMAIL: 'EMAIL',
   PHONE: 'PHONE',
   RANDOM: 'RANDOM'
+};
+
+exports.NotificationType = exports.$Enums.NotificationType = {
+  INFO: 'INFO',
+  SUCCESS: 'SUCCESS',
+  WARNING: 'WARNING',
+  ERROR: 'ERROR'
 };
 
 exports.ProductType = exports.$Enums.ProductType = {
@@ -434,10 +494,20 @@ exports.TransactionType = exports.$Enums.TransactionType = {
   CHARGEBACK: 'CHARGEBACK'
 };
 
+exports.DomainStatus = exports.$Enums.DomainStatus = {
+  PENDING: 'PENDING',
+  VERIFIED: 'VERIFIED',
+  ACTIVE: 'ACTIVE',
+  ERROR: 'ERROR'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
+  Notification: 'Notification',
+  AuditLog: 'AuditLog',
   Product: 'Product',
   Order: 'Order',
+  PendingBalance: 'PendingBalance',
   Withdrawal: 'Withdrawal',
   Webhook: 'Webhook',
   WebhookLog: 'WebhookLog',
@@ -449,7 +519,8 @@ exports.Prisma.ModelName = {
   PlatformSetting: 'PlatformSetting',
   TwoFactorToken: 'TwoFactorToken',
   PasswordResetToken: 'PasswordResetToken',
-  AdminLog: 'AdminLog'
+  AdminLog: 'AdminLog',
+  CustomDomain: 'CustomDomain'
 };
 
 /**

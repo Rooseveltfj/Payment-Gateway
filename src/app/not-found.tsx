@@ -12,9 +12,9 @@ export default function NotFound() {
       
       <div className="space-y-4 max-w-md relative z-10">
         <h1 className="text-6xl font-black tracking-tighter text-white">404</h1>
-        <h2 className="text-2xl font-bold">Oops! Pgina no encontrada.</h2>
+        <h2 className="text-2xl font-bold">Oops! Página não encontrada.</h2>
         <p className="text-text-secondary leading-relaxed">
-          Parece que o link que voc acessou no existe ou foi movido para um novo endereço.
+          Parece que o link que você acessou não existe ou foi movido para um novo endereço.
         </p>
       </div>
 

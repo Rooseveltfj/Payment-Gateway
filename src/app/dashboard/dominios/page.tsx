@@ -7,10 +7,17 @@ export default async function DominiosPage() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
-  const domains = await prisma.customDomain.findMany({
-    where: { userId: session.user.id },
-    orderBy: { createdAt: "desc" }
-  });
+  let domains = [];
+  try {
+     domains = await prisma.customDomain.findMany({
+      where: { userId: session.user.id },
+      orderBy: { createdAt: "desc" }
+    });
+  } catch (error) {
+    console.error("Erro Prisma em Domínios (Local):", error);
+    // Em caso de erro local (ex: model não gerado), retornamos lista vazia 
+    // e poderíamos mostrar um aviso no DominiosClient se necessário.
+  }
 
   return (
     <div className="max-w-7xl mx-auto">

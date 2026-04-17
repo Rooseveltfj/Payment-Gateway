@@ -1,6 +1,8 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import z from "zod";
+import { auth } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
   try {
@@ -67,8 +69,11 @@ export async function POST(req: Request) {
     const body = await req.json();
     const data = ProductSchema.parse(body);
 
-    // Hardcoded user id for standalone environment testing
-    const userId = "temp_user_id";
+    const session = await auth();
+    if (!session?.user?.id) {
+       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    const userId = session.user.id;
 
     // Attempt creation
     try {

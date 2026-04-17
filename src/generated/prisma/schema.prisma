@@ -8,13 +8,13 @@ datasource db {
 }
 
 model User {
-  id                 String        @id @default(cuid())
+  id                 String           @id @default(cuid())
   name               String
-  email              String        @unique
+  email              String           @unique
   password           String
-  role               Role          @default(USER)
-  status             UserStatus    @default(PENDING)
-  kycStatus          KycStatus     @default(NOT_SUBMITTED)
+  role               Role             @default(USER)
+  status             UserStatus       @default(PENDING)
+  kycStatus          KycStatus        @default(NOT_SUBMITTED)
   document           String? // CPF
   phone              String?
   pixKey             String?
@@ -23,13 +23,13 @@ model User {
   bankAgency         String?
   bankAccount        String?
   avatarUrl          String?
-  platformFeePercent Float         @default(9.99)
-  totalEarnings      Float         @default(0)
-  totalWithdrawn     Float         @default(0)
-  availableBalance   Float         @default(0)
-  pendingBalance     Float         @default(0)
-  createdAt          DateTime      @default(now())
-  updatedAt          DateTime      @updatedAt
+  platformFeePercent Float            @default(9.99)
+  totalEarnings      Float            @default(0)
+  totalWithdrawn     Float            @default(0)
+  availableBalance   Float            @default(0)
+  pendingBalance     Float            @default(0)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
   products           Product[]
   orders             Order[]
   withdrawals        Withdrawal[]
@@ -38,6 +38,50 @@ model User {
   apiKeys            ApiKey[]
   kycDocuments       KycDocument[]
   badges             UserBadge[]
+  pendingBalances    PendingBalance[]
+  username           String?          @unique
+  showcaseConfig     Json? // { bannerUrl: string, title: string, bio: string }
+  socialLinks        Json? // { twitter: string, instagram: string, etc }
+  customDomains      CustomDomain[]
+  twoFactorEnabled   Boolean          @default(false)
+  twoFactorSecret    String?
+  onboardingSteps    Json? // { profile: bool, kyc: bool, product: bool, checkout: bool, share: bool }
+  lastActiveAt       DateTime         @default(now())
+  notifications      Notification[]
+  auditLogs          AuditLog[]
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id])
+  title     String
+  content   String
+  read      Boolean          @default(false)
+  type      NotificationType @default(INFO)
+  createdAt DateTime         @default(now())
+
+  @@index([userId])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String // "LOGIN", "WITHDRAWAL_REQUEST", "PASSWORD_CHANGE", etc
+  details   String?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ERROR
 }
 
 model Product {
@@ -57,40 +101,71 @@ model Product {
   revenue        Float          @default(0)
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
+  showInShowcase Boolean        @default(true)
   orders         Order[]
   checkoutLinks  CheckoutLink[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([slug])
 }
 
 model Order {
-  id            String        @id @default(cuid())
-  userId        String
-  user          User          @relation(fields: [userId], references: [id])
-  productId     String
-  product       Product       @relation(fields: [productId], references: [id])
-  buyerName     String
-  buyerEmail    String
-  buyerCpf      String?
-  buyerPhone    String?
-  buyerData     Json? // campos personalizados do checkout
-  amount        Float
-  platformFee   Float
-  netAmount     Float
-  status        OrderStatus   @default(PENDING)
-  paymentMethod PaymentMethod
-  pixQrCode     String?
-  pixCopyPaste  String?
-  boletoUrl     String?
-  boletoBarcode String?
-  cardLastFour  String?
-  cardBrand     String?
-  installments  Int           @default(1)
-  externalId    String? // ID do Pagar.me
-  paidAt        DateTime?
-  refundedAt    DateTime?
-  isMatured     Boolean       @default(false)
-  statusHistory Json? // Histórico de estados: [{status: string, date: string}]
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id                 String           @id @default(cuid())
+  userId             String
+  user               User             @relation(fields: [userId], references: [id])
+  productId          String
+  product            Product          @relation(fields: [productId], references: [id])
+  buyerName          String
+  buyerEmail         String
+  buyerCpf           String?
+  buyerPhone         String?
+  buyerData          Json? // campos personalizados do checkout
+  amount             Float
+  platformFee        Float
+  netAmount          Float
+  status             OrderStatus      @default(PENDING)
+  paymentMethod      PaymentMethod
+  pixQrCode          String?
+  pixCopyPaste       String?
+  boletoUrl          String?
+  boletoBarcode      String?
+  cardLastFour       String?
+  cardBrand          String?
+  installments       Int              @default(1)
+  externalId         String? // ID do Pagar.me (legacy)
+  wooviCorrelationId String?          @unique
+  wooviTransactionId String?
+  wooviEndToEndId    String?
+  pixQrCodeUrl       String?
+  pixBrCode          String?
+  pixExpiresAt       DateTime?
+  paidAt             DateTime?
+  refundedAt         DateTime?
+  isMatured          Boolean          @default(false)
+  statusHistory      Json? // Histórico de estados: [{status: string, date: string}]
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  pendingBalances    PendingBalance[]
+
+  @@index([userId, status])
+  @@index([createdAt])
+  @@index([wooviCorrelationId])
+}
+
+model PendingBalance {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id])
+  amount      Float
+  availableAt DateTime
+  released    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([availableAt])
 }
 
 model Withdrawal {
@@ -314,4 +389,23 @@ enum TransactionType {
   WITHDRAWAL
   REFUND
   CHARGEBACK
+}
+
+model CustomDomain {
+  id        String       @id @default(cuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id])
+  domain    String       @unique
+  status    DomainStatus @default(PENDING)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@index([userId])
+}
+
+enum DomainStatus {
+  PENDING
+  VERIFIED
+  ACTIVE
+  ERROR
 }
