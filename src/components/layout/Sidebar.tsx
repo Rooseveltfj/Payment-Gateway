@@ -110,7 +110,7 @@ function NavGroup({ item }: { item: NavItem }) {
       <Link
         href={item.href!}
         className={cn(
-          "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all duration-200 cursor-pointer",
+          "flex items-center gap-3 rounded-lg px-3 py-3.5 text-sm transition-all duration-200 cursor-pointer",
           isActive
             ? "bg-primary text-white font-medium"
             : "text-text-secondary hover:bg-hover hover:text-text-primary"
@@ -127,7 +127,7 @@ function NavGroup({ item }: { item: NavItem }) {
       <button
         onClick={() => setOpen(!open)}
         className={cn(
-          "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all duration-200 cursor-pointer",
+          "flex w-full items-center gap-3 rounded-lg px-3 py-3.5 text-sm transition-all duration-200 cursor-pointer",
           isChildActive
             ? "text-primary"
             : "text-text-secondary hover:bg-hover hover:text-text-primary"
@@ -194,20 +194,20 @@ export function Sidebar() {
       }}
     >
       {/* Logo */}
-      <div className="flex h-14 items-center gap-3 px-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+      <div className="flex h-20 items-center justify-center gap-3 px-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
         <Link href="/dashboard" className="flex items-center">
           <Image 
             src="/assets/logo-png.png" 
             alt="PulsePay Logo" 
-            width={120} 
-            height={32} 
-            className="w-auto h-7 object-contain"
+            width={160} 
+            height={44} 
+            className="w-auto h-10 object-contain"
           />
         </Link>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-0.5 scrollbar-thin">
+      <nav className="flex-1 overflow-y-auto px-3 py-6 space-y-3 scrollbar-thin">
         {NAV_ITEMS.map((item) => (
           <NavGroup key={item.label} item={item} />
         ))}
@@ -232,27 +232,6 @@ export function Sidebar() {
           <span>Fale com o suporte</span>
         </button>
       </nav>
-
-      {/* User footer */}
-      <div
-        className="flex items-center gap-3 px-4 py-3"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
-      >
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary ring-1 ring-primary/30">
-          <User className="h-4 w-4" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <p className="truncate text-xs font-medium text-text-primary">{user?.name || "Usuário"}</p>
-          <p className="truncate text-[10px] text-text-secondary uppercase tracking-tighter">{user?.role || "Player"}</p>
-        </div>
-        <button
-          className="text-text-secondary hover:text-error transition-colors duration-200 cursor-pointer"
-          title="Sair"
-          onClick={() => window.location.href = "/api/auth/signout"}
-        >
-          <LogOut className="h-4 w-4" />
-        </button>
-      </div>
     </aside>
   );
 }

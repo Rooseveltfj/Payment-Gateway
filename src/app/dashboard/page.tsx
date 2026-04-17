@@ -5,7 +5,8 @@ import { MetricsGrid, MetricsGridSkeleton } from "@/components/dashboard/Metrics
 import { RevenueChart, RevenueChartSkeleton } from "@/components/dashboard/RevenueChart";
 import { PixConversion, PixConversionSkeleton } from "@/components/dashboard/PixConversion";
 import { TransactionsTable, TransactionsTableSkeleton } from "@/components/dashboard/TransactionsTable";
-import { Topbar, type Period } from "@/components/layout/Topbar";
+import { Topbar } from "@/components/layout/Topbar";
+import { useDashboard } from "@/lib/dashboard-context";
 
 interface Metrics {
   availableBalance: number;
@@ -34,14 +35,14 @@ interface Transaction {
 }
 
 export default function DashboardPage() {
-  const [period, setPeriod] = useState<Period>("week");
+  const { period } = useDashboard();
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [chartData, setChartData] = useState<ChartPoint[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [txHasMore, setTxHasMore] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const fetchAll = useCallback(async (p: Period) => {
+  const fetchAll = useCallback(async (p: string) => {
     setLoading(true);
     try {
       const [metricsRes, chartRes, txRes] = await Promise.all([
@@ -70,11 +71,10 @@ export default function DashboardPage() {
   }, [period, fetchAll]);
 
   return (
-    <div className="min-h-screen" style={{ background: "#09090b" }}>
-      <Topbar period={period} onPeriodChange={setPeriod} />
+    <div className="w-full">
+      {/* Topbar is now in Layout */}
 
-      <main className="pl-60 pt-14">
-        <div className="px-8 py-8 space-y-6">
+      <div className="px-8 py-8 space-y-6">
 
           {/* Metrics */}
           <section>
@@ -110,7 +110,6 @@ export default function DashboardPage() {
           </section>
 
         </div>
-      </main>
     </div>
   );
 }
