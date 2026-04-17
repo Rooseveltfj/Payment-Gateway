@@ -12,7 +12,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {/* The Topbar is now global to all dashboard routes */}
           <Topbar />
           
-          <main className="flex-1 w-full pt-16">
+          {/* pt-32 (128px) ensures content starts 32px below the Topbar even with KYC banner (96px) */}
+          <main className="flex-1 w-full pt-32 px-8 pb-12">
             {children}
           </main>
         </div>

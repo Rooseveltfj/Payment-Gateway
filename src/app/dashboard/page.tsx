@@ -73,7 +73,7 @@ export default function DashboardPage() {
     <div className="w-full">
       {/* Topbar is now in Layout */}
 
-      <div className="px-8 py-8 space-y-6">
+      <div className="space-y-6">
 
           {/* Metrics */}
           <section>
