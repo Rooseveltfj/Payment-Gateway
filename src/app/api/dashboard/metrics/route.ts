@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
   // Filtro de tempo baseado no período
   const now = new Date();
-  let startDate = new Date();
+  const startDate = new Date();
   if (period === "today") startDate.setHours(0, 0, 0, 0);
   else if (period === "week") startDate.setDate(now.getDate() - 7);
   else if (period === "month") startDate.setDate(now.getDate() - 30);

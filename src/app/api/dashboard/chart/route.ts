@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
   };
 
   const cfg = configs[period] ?? configs.week;
-  let startDate = new Date();
+  const startDate = new Date();
   
   if (cfg.type === "day") {
     startDate.setDate(now.getDate() - cfg.days);

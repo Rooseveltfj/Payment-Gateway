@@ -99,7 +99,7 @@ export default function LoginPage() {
                   <label className="text-[10px] font-bold text-text-muted uppercase tracking-[0.2em] flex items-center gap-2">
                     <Lock size={12} className="text-accent" /> Senha
                   </label>
-                  <Link href="/forgot" className="text-[10px] font-bold uppercase text-accent hover:underline tracking-tight">
+                  <Link href="/auth/forgot-password" className="text-[10px] font-bold uppercase text-accent hover:underline tracking-tight">
                     Esqueceu?
                   </Link>
                 </div>
