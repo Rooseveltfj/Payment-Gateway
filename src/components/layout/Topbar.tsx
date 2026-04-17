@@ -2,6 +2,7 @@
 
 import { Bell, ChevronDown, ArrowDownToLine, User, Settings, Shield, FileText, Code, Sun, LogOut, LayoutDashboard } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { cn } from "@/lib/utils";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { useDashboard } from "@/lib/dashboard-context";
@@ -202,7 +203,8 @@ export function Topbar({ onPeriodChange, period: propPeriod, user: propUser }: T
             </div>
           )}
         </div>
-      </header>
+      </div>
+    </header>
     </>
   );
 }
