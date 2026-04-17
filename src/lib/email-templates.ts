@@ -130,3 +130,130 @@ export const getForgotPasswordTemplate = (resetLink: string) => `
 </body>
 </html>
 `;
+
+export const getOrderConfirmationTemplate = (buyerName: string, productName: string, amount: number) => `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compra Confirmada - PulsePay</title>
+  <style>
+    ${SHARED_STYLES}
+    .order-box { background-color: #111820; border-radius: 16px; padding: 25px; border: 1px solid #ffffff08; margin: 20px 0; }
+    .price { font-size: 32px; font-weight: 800; color: ${ACCENT_COLOR}; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="${LOGO_URL}" alt="PulsePay" width="160" style="display: block; margin: 0 auto;">
+    </div>
+    <div class="content">
+      <h1 class="headline">Pagamento Confirmado ✅</h1>
+      <p class="text">Olá <strong>${buyerName}</strong>, sua compra de <strong>${productName}</strong> foi processada com sucesso.</p>
+      
+      <div class="order-box">
+        <p style="margin: 0; font-size: 11px; color: #7a8fa6; text-transform: uppercase; letter-spacing: 1px;">Valor Pago</p>
+        <div class="price">R$ ${amount.toFixed(2).replace('.', ',')}</div>
+      </div>
+      
+      <p class="text">O acesso ao seu produto será enviado em breve pelo vendedor ou já está disponível na sua plataforma de origem.</p>
+      
+      <a href="https://www.pulsepay.com.br" class="button">Ver Detalhes</a>
+    </div>
+    <div class="footer">
+      <p>&copy; 2024 PulsePay. Transação segura via PIX.</p>
+    </div>
+  </div>
+</body>
+</html>
+`;
+
+export const getNewSaleTemplate = (userName: string, productName: string, amount: number, netAmount: number) => `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova Venda! 🚀</title>
+  <style>
+    ${SHARED_STYLES}
+    .stats-box { display: flex; gap: 10px; margin: 20px 0; }
+    .stat-card { flex: 1; background-color: #111820; padding: 15px; border-radius: 12px; border: 1px solid #ffffff08; }
+    .stat-label { font-size: 10px; color: #7a8fa6; text-transform: uppercase; margin-bottom: 5px; }
+    .stat-val { font-size: 18px; font-weight: 800; color: #fff; }
+    .stat-val.highlight { color: ${ACCENT_COLOR}; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="${LOGO_URL}" alt="PulsePay" width="160" style="display: block; margin: 0 auto;">
+    </div>
+    <div class="content">
+      <h1 class="headline">Venda Realizada! 🚀</h1>
+      <p class="text">Parabéns <strong>${userName}</strong>, você acaba de realizar uma venda do produto <strong>${productName}</strong>.</p>
+      
+      <div class="stats-box" style="display: table; width: 100%; border-spacing: 10px; border-collapse: separate;">
+        <div style="display: table-cell; background-color: #111820; padding: 15px; border-radius: 12px; border: 1px solid #ffffff08;">
+          <p style="margin: 0; font-size: 10px; color: #7a8fa6; text-transform: uppercase;">Valor Bruto</p>
+          <p style="margin: 5px 0 0 0; font-size: 18px; font-weight: 800; color: #fff;">R$ ${amount.toFixed(2).replace('.', ',')}</p>
+        </div>
+        <div style="display: table-cell; background-color: #111820; padding: 15px; border-radius: 12px; border: 1px solid ${ACCENT_COLOR}30;">
+          <p style="margin: 0; font-size: 10px; color: ${ACCENT_COLOR}; text-transform: uppercase;">Você Recebe</p>
+          <p style="margin: 5px 0 0 0; font-size: 18px; font-weight: 800; color: ${ACCENT_COLOR};">R$ ${netAmount.toFixed(2).replace('.', ',')}</p>
+        </div>
+      </div>
+      
+      <p class="text" style="font-size: 12px;">O saldo líquido ficará disponível para saque após o período de maturação.</p>
+      
+      <a href="https://www.pulsepay.com.br/dashboard/vendas" class="button">Ver Dashboard</a>
+    </div>
+    <div class="footer">
+      <p>&copy; 2024 PulsePay. Escalando seu negócio.</p>
+    </div>
+  </div>
+</body>
+</html>
+`;
+
+export const getKycApprovedTemplate = (name: string) => `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>${SHARED_STYLES}</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header"><img src="${LOGO_URL}" width="160"></div>
+    <div class="content">
+      <h1 class="headline">KYC Aprovado! 💎</h1>
+      <p class="text">Olá ${name}, seus documentos foram verificados. Sua conta está agora totalmente liberada para saques.</p>
+      <a href="https://www.pulsepay.com.br/dashboard/financeiro" class="button">Realizar Saque</a>
+    </div>
+  </div>
+</body>
+</html>
+`;
+
+export const getBadgeEarnedTemplate = (name: string, badgeName: string) => `
+<!DOCTYPE html>
+<html>
+<head>
+  <style>${SHARED_STYLES} .badge-icon { font-size: 64px; margin: 20px 0; }</style>
+</head>
+<body>
+  <div class="container">
+    <div class="header"><img src="${LOGO_URL}" width="160"></div>
+    <div class="content">
+      <h1 class="headline">Nova Conquista! 🏆</h1>
+      <div class="badge-icon">💎</div>
+      <p class="text">Incrível! <strong>${name}</strong>, você desbloqueou a plaquinha de <strong>${badgeName}</strong> em vendas acumuladas.</p>
+      <p class="text">Você faz parte do nosso grupo de elite. Continue escalando!</p>
+      <a href="https://www.pulsepay.com.br/dashboard" class="button">Ver minhas conquistas</a>
+    </div>
+  </div>
+</body>
+</html>
+`;

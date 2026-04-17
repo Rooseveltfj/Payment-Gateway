@@ -86,29 +86,31 @@ export function CheckoutClient({ product, config }: Props) {
     setLoading(true);
 
     try {
-      const res = await fetch(`/api/checkout/${product.slug}/create-order`, {
-        method: "POST",
-        body: JSON.stringify({
-          ...formData,
-          productId: product.id,
-          paymentMethod,
-          orderBump
-        })
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-
-      setOrderId(data.orderId);
-
       if (paymentMethod === "PIX") {
-        const pixRes = await fetch(`/api/checkout/${product.slug}/pix`, {
+        const res = await fetch(`/api/checkout/${product.slug}/pix`, {
           method: "POST",
-          body: JSON.stringify({ orderId: data.orderId })
+          body: JSON.stringify(formData)
         });
-        const pixJson = await pixRes.json();
-        setPixData({ qrCode: pixJson.qrCode, copyPaste: pixJson.copyPaste });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+
+        setOrderId(data.orderId);
+        setPixData({ qrCode: data.qrCodeImage, copyPaste: data.brCode });
       } else {
+        // Fallback for Credit Card / Boleto (Not yet fully implemented with real Woovi logic)
+        const res = await fetch(`/api/checkout/${product.slug}/create-order`, {
+          method: "POST",
+          body: JSON.stringify({
+            ...formData,
+            productId: product.id,
+            paymentMethod,
+            orderBump
+          })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error);
+        
+        setOrderId(data.orderId);
         router.push(`/obrigado/${data.orderId}`);
       }
     } catch (err: unknown) {

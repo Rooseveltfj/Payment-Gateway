@@ -1,43 +1,115 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { createWooviPixCharge } from "@/lib/payments";
+import { wooviRequest } from "@/lib/woovi";
+import crypto from "crypto";
 
-export async function POST(req: Request) {
+export async function POST(
+  req: Request,
+  { params }: { params: { slug: string } }
+) {
   try {
+    const { slug } = params;
     const body = await req.json();
-    const { orderId } = body;
+    const { buyerName, buyerEmail, buyerCpf, buyerPhone } = body;
 
-    const order = await prisma.order.findUnique({
-      where: { id: orderId }
+    // 1. Fetch Product and Seller
+    const product = await prisma.product.findUnique({
+      where: { slug },
+      include: { user: true }
     });
 
-    if (!order) {
-      return NextResponse.json({ error: "Pedido não encontrado" }, { status: 404 });
+    if (!product) {
+      return NextResponse.json({ error: "Produto não encontrado" }, { status: 404 });
     }
 
-    const pixData = await createWooviPixCharge(order.amount, order.id);
+    const seller = product.user;
 
-    const history = (order.statusHistory as { status: string; label: string; date: string }[]) || [];
+    // 2. Calculate Values (Cents)
+    const amountCents = Math.round(product.price * 100);
+    const platformFeePercent = seller.platformFeePercent || 9.99;
+    const platformFeeCents = Math.round(amountCents * (platformFeePercent / 100));
+    const netAmountCents = amountCents - platformFeeCents;
 
-    await prisma.order.update({
-      where: { id: orderId },
+    // 3. Generate IDs
+    const correlationID = `order_${crypto.randomUUID()}`;
+
+    // 4. Create Order in DB
+    const order = await prisma.order.create({
       data: {
-        pixQrCode: pixData.qrCode,
-        pixCopyPaste: pixData.copyPaste,
-        externalId: pixData.id,
+        userId: seller.id,
+        productId: product.id,
+        buyerName,
+        buyerEmail,
+        buyerCpf,
+        buyerPhone,
+        amount: product.price,
+        platformFee: platformFeeCents / 100,
+        netAmount: netAmountCents / 100,
+        status: "PENDING",
+        paymentMethod: "PIX",
+        wooviCorrelationId: correlationID,
         statusHistory: [
-          ...history,
-          { status: "PENDING", label: "Pagamento Gerado (PIX)", date: new Date().toISOString() }
+          { status: "PENDING", label: "Aguardando Pagamento (PIX)", date: new Date().toISOString() }
         ]
       }
     });
 
-    return NextResponse.json({ 
-      success: true, 
-      qrCode: pixData.qrCode, 
-      copyPaste: pixData.copyPaste 
+    // 5. Call Woovi API
+    const wooviData = await wooviRequest("/charge", {
+      method: "POST",
+      body: JSON.stringify({
+        value: amountCents,
+        correlationID: correlationID,
+        comment: `Compra: ${product.name}`,
+        customer: {
+          name: buyerName,
+          email: buyerEmail,
+          taxID: buyerCpf || undefined,
+          phone: buyerPhone ? `55${buyerPhone.replace(/\D/g, "")}` : undefined
+        },
+        splits: [
+          {
+            pixKey: seller.pixKey,
+            value: netAmountCents,
+            splitType: "SPLIT_SUB_ACCOUNT"
+          }
+        ],
+        additionalInfo: [
+          { key: "orderId", value: order.id },
+          { key: "productName", value: product.name },
+          { key: "platform", value: "PulsePay" }
+        ]
+      })
     });
-  } catch {
-    return NextResponse.json({ error: "Erro ao gerar PIX" }, { status: 500 });
+
+    const charge = wooviData.charge;
+
+    // 6. Update Order with Woovi Info
+    await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        wooviTransactionId: charge.transactionID,
+        pixBrCode: charge.brCode,
+        pixQrCodeUrl: charge.qrCodeImage,
+        pixExpiresAt: new Date(charge.expiresDate)
+      }
+    });
+
+    // 7. Success Response
+    return NextResponse.json({
+      orderId: order.id,
+      correlationID: correlationID,
+      brCode: charge.brCode,
+      qrCodeImage: charge.qrCodeImage,
+      expiresIn: charge.expiresIn,
+      amount: product.price
+    });
+
+  } catch (error: any) {
+    console.error("PIX Creation Error:", error);
+    return NextResponse.json(
+      { error: error.message || "Erro ao gerar cobrança PIX" },
+      { status: 500 }
+    );
   }
 }

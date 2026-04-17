@@ -38,6 +38,7 @@ model User {
   apiKeys           ApiKey[]
   kycDocuments      KycDocument[]
   badges            UserBadge[]
+  pendingBalances   PendingBalance[]
 }
 
 model Product {
@@ -84,13 +85,35 @@ model Order {
   cardLastFour    String?
   cardBrand       String?
   installments    Int         @default(1)
-  externalId      String?     // ID do Pagar.me
+  externalId      String?     // ID do Pagar.me (legacy)
+  wooviCorrelationId  String?   @unique
+  wooviTransactionId  String?   
+  wooviEndToEndId     String?   
+  pixQrCodeUrl        String?   
+  pixBrCode           String?   
+  pixExpiresAt        DateTime? 
   paidAt          DateTime?
   refundedAt      DateTime?
   isMatured       Boolean     @default(false)
   statusHistory   Json?       // Histórico de estados: [{status: string, date: string}]
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
+  pendingBalances PendingBalance[]
+}
+
+model PendingBalance {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id])
+  amount      Float
+  availableAt DateTime
+  released    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([availableAt])
 }
 
 model Withdrawal {
