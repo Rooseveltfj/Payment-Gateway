@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
   const session = await auth();
@@ -16,7 +17,11 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: { checkoutConfig: checkoutConfig as any },
     });
-    
+
+    // Invalidate the public checkout page cache immediately
+    revalidatePath(`/c/${product.slug}`);
+    revalidatePath(`/api/products/${params.id}/checkout-config`);
+
     return NextResponse.json({ success: true, product });
   } catch (error) {
     console.error("CHECKOUT_CONFIG_UPDATE_ERROR:", error);

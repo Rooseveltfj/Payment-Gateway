@@ -33,7 +33,7 @@
   /* Noise Texture Overlay */
   body::before {
     content: "";
-    @apply fixed inset-0 pointer-events-none z-[9999];
+    @apply fixed inset-0 pointer-events-none z-[-1];
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     opacity: 0.025;
   }
@@ -59,17 +59,34 @@
 }
 
 /* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(139,92,246,0.25); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(139,92,246,0.4); }
+
+/* Seleção de texto */
+::selection { background: rgba(139,92,246,0.25); color: #f1f5f9; }
+
+/* Remover outline padrão do browser em favor do design system */
+*:focus { outline: none; }
+*:focus-visible { outline: 2px solid rgba(139,92,246,0.6); outline-offset: 2px; border-radius: 4px; }
+
+/* Input autofill — combater o fundo azul do Chrome */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #0d0d1c inset !important;
+  -webkit-text-fill-color: #f1f5f9 !important;
+  transition: background-color 5000s ease-in-out 0s;
+  caret-color: #f1f5f9;
 }
 
-::-webkit-scrollbar-track {
-  @apply bg-bg-void;
-}
+/* Smooth scroll global */
+html { scroll-behavior: smooth; }
 
-::-webkit-scrollbar-thumb {
-  @apply bg-accent/20 rounded-full hover:bg-accent/40 transition-colors;
-}
+/* Remover bordas brancas de tabelas nativas */
+table { border-collapse: collapse; }
+th, td { border: none !important; }
 
 /* Scroll Progress Bar */
 #scroll-progress {

@@ -1,8 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { cn } from "@/lib/utils"
 import { X } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { cn } from "@/lib/utils"
 
 interface ModalProps {
   isOpen: boolean
@@ -10,42 +11,86 @@ interface ModalProps {
   title?: string
   description?: string
   children: React.ReactNode
-  size?: "sm" | "md" | "lg" | "xl" | "2xl"
+  maxWidth?: string // e.g. "520px"
 }
 
-export function Modal({ isOpen, onClose, title, description, children, size = "md" }: ModalProps) {
-  if (!isOpen) return null
-
-  const sizeClasses = {
-    sm: "max-w-sm",
-    md: "max-w-md",
-    lg: "max-w-lg",
-    xl: "max-w-xl",
-    "2xl": "max-w-2xl"
-  }
+export function Modal({ 
+  isOpen, 
+  onClose, 
+  title, 
+  description, 
+  children, 
+  maxWidth = "520px" 
+}: ModalProps) {
+  
+  // Prevent scrolling when modal is open
+  React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "unset"
+    }
+    return () => {
+      document.body.style.overflow = "unset"
+    }
+  }, [isOpen])
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className={cn(
-        "relative z-50 w-full grid gap-4 border border-border bg-card p-6 shadow-lg duration-200 sm:rounded-3xl animate-in zoom-in-95 duration-200",
-        sizeClasses[size]
-      )}>
-        <div className="flex flex-col space-y-1.5 text-center sm:text-left">
-          {title && <h2 className="text-lg font-semibold leading-none tracking-tight text-text-primary">{title}</h2>}
-          {description && <p className="text-sm text-text-secondary">{description}</p>}
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          {/* Overlay */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/75 backdrop-blur-[4px]"
+          />
+
+          {/* Modal Container */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.96 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className={cn(
+              "relative z-[101] w-full bg-[#0f0f1a] border border-white/[0.08] rounded-[20px]",
+              "shadow-[0_8px_32px_rgba(0,0,0,0.6),0_2px_8px_rgba(0,0,0,0.4)]",
+              "p-7 flex flex-col"
+            )}
+            style={{ maxWidth }}
+          >
+            {/* Header */}
+            <div className="flex items-start justify-between mb-5">
+              <div className="flex flex-col gap-1">
+                {title && (
+                  <h2 className="text-[18px] font-semibold text-[#f1f5f9]">
+                    {title}
+                  </h2>
+                )}
+                {description && (
+                  <p className="text-[14px] text-[#64748b]">
+                    {description}
+                  </p>
+                )}
+              </div>
+              
+              <button
+                onClick={onClose}
+                className="w-8 h-8 flex items-center justify-center rounded-[8px] transition-colors hover:bg-white/0.06 text-[#64748b] hover:text-[#f1f5f9]"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="flex-1">
+              {children}
+            </div>
+          </motion.div>
         </div>
-        <div>
-          {children}
-        </div>
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-        >
-          <X className="h-4 w-4" />
-          <span className="sr-only">Close</span>
-        </button>
-      </div>
-    </div>
+      )}
+    </AnimatePresence>
   )
 }

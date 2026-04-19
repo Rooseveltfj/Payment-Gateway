@@ -1,5 +1,7 @@
 "use client";
 
+import { Card } from "@/components/ui/Card";
+
 interface PixConversionProps {
   rate: number; // 0–100
 }
@@ -10,13 +12,7 @@ export function PixConversion({ rate }: PixConversionProps) {
   const offset = circumference - (rate / 100) * circumference;
 
   return (
-    <div
-      className="flex flex-col gap-4 rounded-xl p-5 sm:flex-row sm:items-center sm:gap-8"
-      style={{
-        background: "#111113",
-        border: "0.5px solid rgba(255,255,255,0.08)",
-      }}
-    >
+    <Card className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
       {/* Ring */}
       <div className="relative mx-auto sm:mx-0">
         <svg width="96" height="96" viewBox="0 0 96 96" className="-rotate-90">
@@ -26,7 +22,7 @@ export function PixConversion({ rate }: PixConversionProps) {
             cy="48"
             r={radius}
             fill="none"
-            stroke="rgba(124,58,237,0.15)"
+            stroke="rgba(139,92,246,0.12)"
             strokeWidth="8"
           />
           {/* Progress */}
@@ -35,7 +31,7 @@ export function PixConversion({ rate }: PixConversionProps) {
             cy="48"
             r={radius}
             fill="none"
-            stroke="#7c3aed"
+            stroke="#8b5cf6"
             strokeWidth="8"
             strokeLinecap="round"
             strokeDasharray={circumference}
@@ -44,14 +40,14 @@ export function PixConversion({ rate }: PixConversionProps) {
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-xl font-bold text-text-primary">{rate}%</span>
+          <span className="text-xl font-bold text-[#f1f5f9]">{rate}%</span>
         </div>
       </div>
 
       {/* Info */}
       <div className="flex-1">
-        <h3 className="text-sm font-semibold text-text-primary">Conversão por PIX</h3>
-        <p className="mt-1 text-xs text-text-secondary leading-relaxed">
+        <h3 className="text-[14px] font-semibold text-[#f1f5f9]">Conversão por PIX</h3>
+        <p className="mt-1.5 text-[12px] text-[#64748b] leading-relaxed">
           {rate}% das transações via PIX foram concluídas com sucesso.
           {rate >= 75
             ? " Excelente taxa de conversão! 🚀"
@@ -59,26 +55,23 @@ export function PixConversion({ rate }: PixConversionProps) {
             ? " Taxa aceitável — há espaço para otimizar."
             : " Taxa baixa — revise o fluxo de checkout."}
         </p>
-        <div className="mt-3 flex items-center gap-4 text-xs">
+        <div className="mt-4 flex items-center gap-4 text-[11px] font-medium">
           <div className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full bg-primary" />
-            <span className="text-text-secondary">PIX aprovados</span>
+            <span className="h-2 w-2 rounded-full bg-[#8b5cf6]" />
+            <span className="text-[#64748b]">Aprovados</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full" style={{ background: "rgba(124,58,237,0.25)" }} />
-            <span className="text-text-secondary">Pendentes / falhos</span>
+            <span className="h-2 w-2 rounded-full bg-white/[0.12]" />
+            <span className="text-[#64748b]">Restante</span>
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
 
 export function PixConversionSkeleton() {
   return (
-    <div
-      className="h-36 animate-pulse rounded-xl"
-      style={{ background: "#111113", border: "0.5px solid rgba(255,255,255,0.08)" }}
-    />
+    <Card className="h-[136px] animate-pulse opacity-50" />
   );
 }

@@ -108,6 +108,21 @@ export type AdminLog = $Result.DefaultSelection<Prisma.$AdminLogPayload>
  * 
  */
 export type CustomDomain = $Result.DefaultSelection<Prisma.$CustomDomainPayload>
+/**
+ * Model AffiliateOffer
+ * 
+ */
+export type AffiliateOffer = $Result.DefaultSelection<Prisma.$AffiliateOfferPayload>
+/**
+ * Model Affiliation
+ * 
+ */
+export type Affiliation = $Result.DefaultSelection<Prisma.$AffiliationPayload>
+/**
+ * Model AffiliationSale
+ * 
+ */
+export type AffiliationSale = $Result.DefaultSelection<Prisma.$AffiliationSalePayload>
 
 /**
  * Enums
@@ -261,6 +276,43 @@ export const DomainStatus: {
 
 export type DomainStatus = (typeof DomainStatus)[keyof typeof DomainStatus]
 
+
+export const CommissionType: {
+  PERCENTAGE: 'PERCENTAGE',
+  FIXED: 'FIXED'
+};
+
+export type CommissionType = (typeof CommissionType)[keyof typeof CommissionType]
+
+
+export const OfferStatus: {
+  ACTIVE: 'ACTIVE',
+  PAUSED: 'PAUSED',
+  CLOSED: 'CLOSED'
+};
+
+export type OfferStatus = (typeof OfferStatus)[keyof typeof OfferStatus]
+
+
+export const AffiliationStatus: {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  SUSPENDED: 'SUSPENDED'
+};
+
+export type AffiliationStatus = (typeof AffiliationStatus)[keyof typeof AffiliationStatus]
+
+
+export const SaleCommissionStatus: {
+  PENDING: 'PENDING',
+  CLEARED: 'CLEARED',
+  PAID: 'PAID',
+  REFUNDED: 'REFUNDED'
+};
+
+export type SaleCommissionStatus = (typeof SaleCommissionStatus)[keyof typeof SaleCommissionStatus]
+
 }
 
 export type NotificationType = $Enums.NotificationType
@@ -322,6 +374,22 @@ export const TransactionType: typeof $Enums.TransactionType
 export type DomainStatus = $Enums.DomainStatus
 
 export const DomainStatus: typeof $Enums.DomainStatus
+
+export type CommissionType = $Enums.CommissionType
+
+export const CommissionType: typeof $Enums.CommissionType
+
+export type OfferStatus = $Enums.OfferStatus
+
+export const OfferStatus: typeof $Enums.OfferStatus
+
+export type AffiliationStatus = $Enums.AffiliationStatus
+
+export const AffiliationStatus: typeof $Enums.AffiliationStatus
+
+export type SaleCommissionStatus = $Enums.SaleCommissionStatus
+
+export const SaleCommissionStatus: typeof $Enums.SaleCommissionStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -633,6 +701,36 @@ export class PrismaClient<
     * ```
     */
   get customDomain(): Prisma.CustomDomainDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.affiliateOffer`: Exposes CRUD operations for the **AffiliateOffer** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AffiliateOffers
+    * const affiliateOffers = await prisma.affiliateOffer.findMany()
+    * ```
+    */
+  get affiliateOffer(): Prisma.AffiliateOfferDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.affiliation`: Exposes CRUD operations for the **Affiliation** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Affiliations
+    * const affiliations = await prisma.affiliation.findMany()
+    * ```
+    */
+  get affiliation(): Prisma.AffiliationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.affiliationSale`: Exposes CRUD operations for the **AffiliationSale** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AffiliationSales
+    * const affiliationSales = await prisma.affiliationSale.findMany()
+    * ```
+    */
+  get affiliationSale(): Prisma.AffiliationSaleDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1085,7 +1183,10 @@ export namespace Prisma {
     TwoFactorToken: 'TwoFactorToken',
     PasswordResetToken: 'PasswordResetToken',
     AdminLog: 'AdminLog',
-    CustomDomain: 'CustomDomain'
+    CustomDomain: 'CustomDomain',
+    AffiliateOffer: 'AffiliateOffer',
+    Affiliation: 'Affiliation',
+    AffiliationSale: 'AffiliationSale'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1101,7 +1202,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "notification" | "auditLog" | "product" | "order" | "pendingBalance" | "withdrawal" | "webhook" | "webhookLog" | "apiKey" | "kycDocument" | "userBadge" | "checkoutLink" | "transaction" | "platformSetting" | "twoFactorToken" | "passwordResetToken" | "adminLog" | "customDomain"
+      modelProps: "user" | "notification" | "auditLog" | "product" | "order" | "pendingBalance" | "withdrawal" | "webhook" | "webhookLog" | "apiKey" | "kycDocument" | "userBadge" | "checkoutLink" | "transaction" | "platformSetting" | "twoFactorToken" | "passwordResetToken" | "adminLog" | "customDomain" | "affiliateOffer" | "affiliation" | "affiliationSale"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2511,6 +2612,228 @@ export namespace Prisma {
           }
         }
       }
+      AffiliateOffer: {
+        payload: Prisma.$AffiliateOfferPayload<ExtArgs>
+        fields: Prisma.AffiliateOfferFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AffiliateOfferFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateOfferPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AffiliateOfferFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateOfferPayload>
+          }
+          findFirst: {
+            args: Prisma.AffiliateOfferFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateOfferPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AffiliateOfferFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateOfferPayload>
+          }
+          findMany: {
+            args: Prisma.AffiliateOfferFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateOfferPayload>[]
+          }
+          create: {
+            args: Prisma.AffiliateOfferCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateOfferPayload>
+          }
+          createMany: {
+            args: Prisma.AffiliateOfferCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AffiliateOfferCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateOfferPayload>[]
+          }
+          delete: {
+            args: Prisma.AffiliateOfferDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateOfferPayload>
+          }
+          update: {
+            args: Prisma.AffiliateOfferUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateOfferPayload>
+          }
+          deleteMany: {
+            args: Prisma.AffiliateOfferDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AffiliateOfferUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AffiliateOfferUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateOfferPayload>[]
+          }
+          upsert: {
+            args: Prisma.AffiliateOfferUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliateOfferPayload>
+          }
+          aggregate: {
+            args: Prisma.AffiliateOfferAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAffiliateOffer>
+          }
+          groupBy: {
+            args: Prisma.AffiliateOfferGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AffiliateOfferGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AffiliateOfferCountArgs<ExtArgs>
+            result: $Utils.Optional<AffiliateOfferCountAggregateOutputType> | number
+          }
+        }
+      }
+      Affiliation: {
+        payload: Prisma.$AffiliationPayload<ExtArgs>
+        fields: Prisma.AffiliationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AffiliationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AffiliationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationPayload>
+          }
+          findFirst: {
+            args: Prisma.AffiliationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AffiliationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationPayload>
+          }
+          findMany: {
+            args: Prisma.AffiliationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationPayload>[]
+          }
+          create: {
+            args: Prisma.AffiliationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationPayload>
+          }
+          createMany: {
+            args: Prisma.AffiliationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AffiliationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationPayload>[]
+          }
+          delete: {
+            args: Prisma.AffiliationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationPayload>
+          }
+          update: {
+            args: Prisma.AffiliationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationPayload>
+          }
+          deleteMany: {
+            args: Prisma.AffiliationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AffiliationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AffiliationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationPayload>[]
+          }
+          upsert: {
+            args: Prisma.AffiliationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationPayload>
+          }
+          aggregate: {
+            args: Prisma.AffiliationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAffiliation>
+          }
+          groupBy: {
+            args: Prisma.AffiliationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AffiliationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AffiliationCountArgs<ExtArgs>
+            result: $Utils.Optional<AffiliationCountAggregateOutputType> | number
+          }
+        }
+      }
+      AffiliationSale: {
+        payload: Prisma.$AffiliationSalePayload<ExtArgs>
+        fields: Prisma.AffiliationSaleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AffiliationSaleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationSalePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AffiliationSaleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationSalePayload>
+          }
+          findFirst: {
+            args: Prisma.AffiliationSaleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationSalePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AffiliationSaleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationSalePayload>
+          }
+          findMany: {
+            args: Prisma.AffiliationSaleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationSalePayload>[]
+          }
+          create: {
+            args: Prisma.AffiliationSaleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationSalePayload>
+          }
+          createMany: {
+            args: Prisma.AffiliationSaleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AffiliationSaleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationSalePayload>[]
+          }
+          delete: {
+            args: Prisma.AffiliationSaleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationSalePayload>
+          }
+          update: {
+            args: Prisma.AffiliationSaleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationSalePayload>
+          }
+          deleteMany: {
+            args: Prisma.AffiliationSaleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AffiliationSaleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AffiliationSaleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationSalePayload>[]
+          }
+          upsert: {
+            args: Prisma.AffiliationSaleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AffiliationSalePayload>
+          }
+          aggregate: {
+            args: Prisma.AffiliationSaleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAffiliationSale>
+          }
+          groupBy: {
+            args: Prisma.AffiliationSaleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AffiliationSaleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AffiliationSaleCountArgs<ExtArgs>
+            result: $Utils.Optional<AffiliationSaleCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2638,6 +2961,9 @@ export namespace Prisma {
     passwordResetToken?: PasswordResetTokenOmit
     adminLog?: AdminLogOmit
     customDomain?: CustomDomainOmit
+    affiliateOffer?: AffiliateOfferOmit
+    affiliation?: AffiliationOmit
+    affiliationSale?: AffiliationSaleOmit
   }
 
   /* Types for Logging */
@@ -2730,6 +3056,8 @@ export namespace Prisma {
     customDomains: number
     notifications: number
     auditLogs: number
+    affiliateOffers: number
+    affiliations: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2745,6 +3073,8 @@ export namespace Prisma {
     customDomains?: boolean | UserCountOutputTypeCountCustomDomainsArgs
     notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
     auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
+    affiliateOffers?: boolean | UserCountOutputTypeCountAffiliateOffersArgs
+    affiliations?: boolean | UserCountOutputTypeCountAffiliationsArgs
   }
 
   // Custom InputTypes
@@ -2842,6 +3172,20 @@ export namespace Prisma {
     where?: AuditLogWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAffiliateOffersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AffiliateOfferWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAffiliationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AffiliationWhereInput
+  }
+
 
   /**
    * Count Type ProductCountOutputType
@@ -2850,11 +3194,13 @@ export namespace Prisma {
   export type ProductCountOutputType = {
     orders: number
     checkoutLinks: number
+    affiliateOffers: number
   }
 
   export type ProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     orders?: boolean | ProductCountOutputTypeCountOrdersArgs
     checkoutLinks?: boolean | ProductCountOutputTypeCountCheckoutLinksArgs
+    affiliateOffers?: boolean | ProductCountOutputTypeCountAffiliateOffersArgs
   }
 
   // Custom InputTypes
@@ -2880,6 +3226,13 @@ export namespace Prisma {
    */
   export type ProductCountOutputTypeCountCheckoutLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CheckoutLinkWhereInput
+  }
+
+  /**
+   * ProductCountOutputType without action
+   */
+  export type ProductCountOutputTypeCountAffiliateOffersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AffiliateOfferWhereInput
   }
 
 
@@ -2911,6 +3264,77 @@ export namespace Prisma {
    */
   export type OrderCountOutputTypeCountPendingBalancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PendingBalanceWhereInput
+  }
+
+
+  /**
+   * Count Type AffiliateOfferCountOutputType
+   */
+
+  export type AffiliateOfferCountOutputType = {
+    affiliations: number
+  }
+
+  export type AffiliateOfferCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    affiliations?: boolean | AffiliateOfferCountOutputTypeCountAffiliationsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AffiliateOfferCountOutputType without action
+   */
+  export type AffiliateOfferCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOfferCountOutputType
+     */
+    select?: AffiliateOfferCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AffiliateOfferCountOutputType without action
+   */
+  export type AffiliateOfferCountOutputTypeCountAffiliationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AffiliationWhereInput
+  }
+
+
+  /**
+   * Count Type AffiliationCountOutputType
+   */
+
+  export type AffiliationCountOutputType = {
+    sales: number
+    orders: number
+  }
+
+  export type AffiliationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sales?: boolean | AffiliationCountOutputTypeCountSalesArgs
+    orders?: boolean | AffiliationCountOutputTypeCountOrdersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AffiliationCountOutputType without action
+   */
+  export type AffiliationCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationCountOutputType
+     */
+    select?: AffiliationCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AffiliationCountOutputType without action
+   */
+  export type AffiliationCountOutputTypeCountSalesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AffiliationSaleWhereInput
+  }
+
+  /**
+   * AffiliationCountOutputType without action
+   */
+  export type AffiliationCountOutputTypeCountOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrderWhereInput
   }
 
 
@@ -3324,6 +3748,8 @@ export namespace Prisma {
     customDomains?: boolean | User$customDomainsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
+    affiliateOffers?: boolean | User$affiliateOffersArgs<ExtArgs>
+    affiliations?: boolean | User$affiliationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3437,6 +3863,8 @@ export namespace Prisma {
     customDomains?: boolean | User$customDomainsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
     auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
+    affiliateOffers?: boolean | User$affiliateOffersArgs<ExtArgs>
+    affiliations?: boolean | User$affiliationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3457,6 +3885,8 @@ export namespace Prisma {
       customDomains: Prisma.$CustomDomainPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
       auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+      affiliateOffers: Prisma.$AffiliateOfferPayload<ExtArgs>[]
+      affiliations: Prisma.$AffiliationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3894,6 +4324,8 @@ export namespace Prisma {
     customDomains<T extends User$customDomainsArgs<ExtArgs> = {}>(args?: Subset<T, User$customDomainsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    affiliateOffers<T extends User$affiliateOffersArgs<ExtArgs> = {}>(args?: Subset<T, User$affiliateOffersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    affiliations<T extends User$affiliationsArgs<ExtArgs> = {}>(args?: Subset<T, User$affiliationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4630,6 +5062,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * User.affiliateOffers
+   */
+  export type User$affiliateOffersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOffer
+     */
+    select?: AffiliateOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateOffer
+     */
+    omit?: AffiliateOfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliateOfferInclude<ExtArgs> | null
+    where?: AffiliateOfferWhereInput
+    orderBy?: AffiliateOfferOrderByWithRelationInput | AffiliateOfferOrderByWithRelationInput[]
+    cursor?: AffiliateOfferWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AffiliateOfferScalarFieldEnum | AffiliateOfferScalarFieldEnum[]
+  }
+
+  /**
+   * User.affiliations
+   */
+  export type User$affiliationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationInclude<ExtArgs> | null
+    where?: AffiliationWhereInput
+    orderBy?: AffiliationOrderByWithRelationInput | AffiliationOrderByWithRelationInput[]
+    cursor?: AffiliationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AffiliationScalarFieldEnum | AffiliationScalarFieldEnum[]
   }
 
   /**
@@ -7122,6 +7602,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     orders?: boolean | Product$ordersArgs<ExtArgs>
     checkoutLinks?: boolean | Product$checkoutLinksArgs<ExtArgs>
+    affiliateOffers?: boolean | Product$affiliateOffersArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -7189,6 +7670,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     orders?: boolean | Product$ordersArgs<ExtArgs>
     checkoutLinks?: boolean | Product$checkoutLinksArgs<ExtArgs>
+    affiliateOffers?: boolean | Product$affiliateOffersArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7204,6 +7686,7 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
       orders: Prisma.$OrderPayload<ExtArgs>[]
       checkoutLinks: Prisma.$CheckoutLinkPayload<ExtArgs>[]
+      affiliateOffers: Prisma.$AffiliateOfferPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7619,6 +8102,7 @@ export namespace Prisma {
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     orders<T extends Product$ordersArgs<ExtArgs> = {}>(args?: Subset<T, Product$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     checkoutLinks<T extends Product$checkoutLinksArgs<ExtArgs> = {}>(args?: Subset<T, Product$checkoutLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CheckoutLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    affiliateOffers<T extends Product$affiliateOffersArgs<ExtArgs> = {}>(args?: Subset<T, Product$affiliateOffersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8113,6 +8597,30 @@ export namespace Prisma {
   }
 
   /**
+   * Product.affiliateOffers
+   */
+  export type Product$affiliateOffersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOffer
+     */
+    select?: AffiliateOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateOffer
+     */
+    omit?: AffiliateOfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliateOfferInclude<ExtArgs> | null
+    where?: AffiliateOfferWhereInput
+    orderBy?: AffiliateOfferOrderByWithRelationInput | AffiliateOfferOrderByWithRelationInput[]
+    cursor?: AffiliateOfferWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AffiliateOfferScalarFieldEnum | AffiliateOfferScalarFieldEnum[]
+  }
+
+  /**
    * Product without action
    */
   export type ProductDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8189,6 +8697,7 @@ export namespace Prisma {
     isMatured: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    affiliationId: string | null
   }
 
   export type OrderMaxAggregateOutputType = {
@@ -8223,6 +8732,7 @@ export namespace Prisma {
     isMatured: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    affiliationId: string | null
   }
 
   export type OrderCountAggregateOutputType = {
@@ -8259,6 +8769,7 @@ export namespace Prisma {
     statusHistory: number
     createdAt: number
     updatedAt: number
+    affiliationId: number
     _all: number
   }
 
@@ -8309,6 +8820,7 @@ export namespace Prisma {
     isMatured?: true
     createdAt?: true
     updatedAt?: true
+    affiliationId?: true
   }
 
   export type OrderMaxAggregateInputType = {
@@ -8343,6 +8855,7 @@ export namespace Prisma {
     isMatured?: true
     createdAt?: true
     updatedAt?: true
+    affiliationId?: true
   }
 
   export type OrderCountAggregateInputType = {
@@ -8379,6 +8892,7 @@ export namespace Prisma {
     statusHistory?: true
     createdAt?: true
     updatedAt?: true
+    affiliationId?: true
     _all?: true
   }
 
@@ -8502,6 +9016,7 @@ export namespace Prisma {
     statusHistory: JsonValue | null
     createdAt: Date
     updatedAt: Date
+    affiliationId: string | null
     _count: OrderCountAggregateOutputType | null
     _avg: OrderAvgAggregateOutputType | null
     _sum: OrderSumAggregateOutputType | null
@@ -8557,9 +9072,12 @@ export namespace Prisma {
     statusHistory?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    affiliationId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
     pendingBalances?: boolean | Order$pendingBalancesArgs<ExtArgs>
+    affiliation?: boolean | Order$affiliationArgs<ExtArgs>
+    affiliationSale?: boolean | Order$affiliationSaleArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
@@ -8597,8 +9115,10 @@ export namespace Prisma {
     statusHistory?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    affiliationId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
+    affiliation?: boolean | Order$affiliationArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8635,8 +9155,10 @@ export namespace Prisma {
     statusHistory?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    affiliationId?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
+    affiliation?: boolean | Order$affiliationArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectScalar = {
@@ -8673,22 +9195,27 @@ export namespace Prisma {
     statusHistory?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    affiliationId?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "productId" | "buyerName" | "buyerEmail" | "buyerCpf" | "buyerPhone" | "buyerData" | "amount" | "platformFee" | "netAmount" | "status" | "paymentMethod" | "pixQrCode" | "pixCopyPaste" | "boletoUrl" | "boletoBarcode" | "cardLastFour" | "cardBrand" | "installments" | "externalId" | "wooviCorrelationId" | "wooviTransactionId" | "wooviEndToEndId" | "pixQrCodeUrl" | "pixBrCode" | "pixExpiresAt" | "paidAt" | "refundedAt" | "isMatured" | "statusHistory" | "createdAt" | "updatedAt", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "productId" | "buyerName" | "buyerEmail" | "buyerCpf" | "buyerPhone" | "buyerData" | "amount" | "platformFee" | "netAmount" | "status" | "paymentMethod" | "pixQrCode" | "pixCopyPaste" | "boletoUrl" | "boletoBarcode" | "cardLastFour" | "cardBrand" | "installments" | "externalId" | "wooviCorrelationId" | "wooviTransactionId" | "wooviEndToEndId" | "pixQrCodeUrl" | "pixBrCode" | "pixExpiresAt" | "paidAt" | "refundedAt" | "isMatured" | "statusHistory" | "createdAt" | "updatedAt" | "affiliationId", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
     pendingBalances?: boolean | Order$pendingBalancesArgs<ExtArgs>
+    affiliation?: boolean | Order$affiliationArgs<ExtArgs>
+    affiliationSale?: boolean | Order$affiliationSaleArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
+    affiliation?: boolean | Order$affiliationArgs<ExtArgs>
   }
   export type OrderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     product?: boolean | ProductDefaultArgs<ExtArgs>
+    affiliation?: boolean | Order$affiliationArgs<ExtArgs>
   }
 
   export type $OrderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8697,6 +9224,8 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
       product: Prisma.$ProductPayload<ExtArgs>
       pendingBalances: Prisma.$PendingBalancePayload<ExtArgs>[]
+      affiliation: Prisma.$AffiliationPayload<ExtArgs> | null
+      affiliationSale: Prisma.$AffiliationSalePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8732,6 +9261,7 @@ export namespace Prisma {
       statusHistory: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
+      affiliationId: string | null
     }, ExtArgs["result"]["order"]>
     composites: {}
   }
@@ -9129,6 +9659,8 @@ export namespace Prisma {
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     pendingBalances<T extends Order$pendingBalancesArgs<ExtArgs> = {}>(args?: Subset<T, Order$pendingBalancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    affiliation<T extends Order$affiliationArgs<ExtArgs> = {}>(args?: Subset<T, Order$affiliationArgs<ExtArgs>>): Prisma__AffiliationClient<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    affiliationSale<T extends Order$affiliationSaleArgs<ExtArgs> = {}>(args?: Subset<T, Order$affiliationSaleArgs<ExtArgs>>): Prisma__AffiliationSaleClient<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9191,6 +9723,7 @@ export namespace Prisma {
     readonly statusHistory: FieldRef<"Order", 'Json'>
     readonly createdAt: FieldRef<"Order", 'DateTime'>
     readonly updatedAt: FieldRef<"Order", 'DateTime'>
+    readonly affiliationId: FieldRef<"Order", 'String'>
   }
     
 
@@ -9613,6 +10146,44 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PendingBalanceScalarFieldEnum | PendingBalanceScalarFieldEnum[]
+  }
+
+  /**
+   * Order.affiliation
+   */
+  export type Order$affiliationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationInclude<ExtArgs> | null
+    where?: AffiliationWhereInput
+  }
+
+  /**
+   * Order.affiliationSale
+   */
+  export type Order$affiliationSaleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationSale
+     */
+    select?: AffiliationSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliationSale
+     */
+    omit?: AffiliationSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationSaleInclude<ExtArgs> | null
+    where?: AffiliationSaleWhereInput
   }
 
   /**
@@ -24807,6 +25378,3800 @@ export namespace Prisma {
 
 
   /**
+   * Model AffiliateOffer
+   */
+
+  export type AggregateAffiliateOffer = {
+    _count: AffiliateOfferCountAggregateOutputType | null
+    _avg: AffiliateOfferAvgAggregateOutputType | null
+    _sum: AffiliateOfferSumAggregateOutputType | null
+    _min: AffiliateOfferMinAggregateOutputType | null
+    _max: AffiliateOfferMaxAggregateOutputType | null
+  }
+
+  export type AffiliateOfferAvgAggregateOutputType = {
+    commissionValue: number | null
+    cookieDays: number | null
+    maxAffiliates: number | null
+    totalAffiliates: number | null
+    totalSales: number | null
+    totalRevenue: number | null
+    conversionRate: number | null
+  }
+
+  export type AffiliateOfferSumAggregateOutputType = {
+    commissionValue: number | null
+    cookieDays: number | null
+    maxAffiliates: number | null
+    totalAffiliates: number | null
+    totalSales: number | null
+    totalRevenue: number | null
+    conversionRate: number | null
+  }
+
+  export type AffiliateOfferMinAggregateOutputType = {
+    id: string | null
+    productId: string | null
+    ownerId: string | null
+    title: string | null
+    description: string | null
+    commissionType: $Enums.CommissionType | null
+    commissionValue: number | null
+    cookieDays: number | null
+    maxAffiliates: number | null
+    requiresApproval: boolean | null
+    status: $Enums.OfferStatus | null
+    category: string | null
+    imageUrl: string | null
+    totalAffiliates: number | null
+    totalSales: number | null
+    totalRevenue: number | null
+    conversionRate: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AffiliateOfferMaxAggregateOutputType = {
+    id: string | null
+    productId: string | null
+    ownerId: string | null
+    title: string | null
+    description: string | null
+    commissionType: $Enums.CommissionType | null
+    commissionValue: number | null
+    cookieDays: number | null
+    maxAffiliates: number | null
+    requiresApproval: boolean | null
+    status: $Enums.OfferStatus | null
+    category: string | null
+    imageUrl: string | null
+    totalAffiliates: number | null
+    totalSales: number | null
+    totalRevenue: number | null
+    conversionRate: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AffiliateOfferCountAggregateOutputType = {
+    id: number
+    productId: number
+    ownerId: number
+    title: number
+    description: number
+    commissionType: number
+    commissionValue: number
+    cookieDays: number
+    maxAffiliates: number
+    requiresApproval: number
+    status: number
+    category: number
+    tags: number
+    imageUrl: number
+    totalAffiliates: number
+    totalSales: number
+    totalRevenue: number
+    conversionRate: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AffiliateOfferAvgAggregateInputType = {
+    commissionValue?: true
+    cookieDays?: true
+    maxAffiliates?: true
+    totalAffiliates?: true
+    totalSales?: true
+    totalRevenue?: true
+    conversionRate?: true
+  }
+
+  export type AffiliateOfferSumAggregateInputType = {
+    commissionValue?: true
+    cookieDays?: true
+    maxAffiliates?: true
+    totalAffiliates?: true
+    totalSales?: true
+    totalRevenue?: true
+    conversionRate?: true
+  }
+
+  export type AffiliateOfferMinAggregateInputType = {
+    id?: true
+    productId?: true
+    ownerId?: true
+    title?: true
+    description?: true
+    commissionType?: true
+    commissionValue?: true
+    cookieDays?: true
+    maxAffiliates?: true
+    requiresApproval?: true
+    status?: true
+    category?: true
+    imageUrl?: true
+    totalAffiliates?: true
+    totalSales?: true
+    totalRevenue?: true
+    conversionRate?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AffiliateOfferMaxAggregateInputType = {
+    id?: true
+    productId?: true
+    ownerId?: true
+    title?: true
+    description?: true
+    commissionType?: true
+    commissionValue?: true
+    cookieDays?: true
+    maxAffiliates?: true
+    requiresApproval?: true
+    status?: true
+    category?: true
+    imageUrl?: true
+    totalAffiliates?: true
+    totalSales?: true
+    totalRevenue?: true
+    conversionRate?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AffiliateOfferCountAggregateInputType = {
+    id?: true
+    productId?: true
+    ownerId?: true
+    title?: true
+    description?: true
+    commissionType?: true
+    commissionValue?: true
+    cookieDays?: true
+    maxAffiliates?: true
+    requiresApproval?: true
+    status?: true
+    category?: true
+    tags?: true
+    imageUrl?: true
+    totalAffiliates?: true
+    totalSales?: true
+    totalRevenue?: true
+    conversionRate?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AffiliateOfferAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AffiliateOffer to aggregate.
+     */
+    where?: AffiliateOfferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AffiliateOffers to fetch.
+     */
+    orderBy?: AffiliateOfferOrderByWithRelationInput | AffiliateOfferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AffiliateOfferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AffiliateOffers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AffiliateOffers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AffiliateOffers
+    **/
+    _count?: true | AffiliateOfferCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AffiliateOfferAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AffiliateOfferSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AffiliateOfferMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AffiliateOfferMaxAggregateInputType
+  }
+
+  export type GetAffiliateOfferAggregateType<T extends AffiliateOfferAggregateArgs> = {
+        [P in keyof T & keyof AggregateAffiliateOffer]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAffiliateOffer[P]>
+      : GetScalarType<T[P], AggregateAffiliateOffer[P]>
+  }
+
+
+
+
+  export type AffiliateOfferGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AffiliateOfferWhereInput
+    orderBy?: AffiliateOfferOrderByWithAggregationInput | AffiliateOfferOrderByWithAggregationInput[]
+    by: AffiliateOfferScalarFieldEnum[] | AffiliateOfferScalarFieldEnum
+    having?: AffiliateOfferScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AffiliateOfferCountAggregateInputType | true
+    _avg?: AffiliateOfferAvgAggregateInputType
+    _sum?: AffiliateOfferSumAggregateInputType
+    _min?: AffiliateOfferMinAggregateInputType
+    _max?: AffiliateOfferMaxAggregateInputType
+  }
+
+  export type AffiliateOfferGroupByOutputType = {
+    id: string
+    productId: string
+    ownerId: string
+    title: string
+    description: string | null
+    commissionType: $Enums.CommissionType
+    commissionValue: number
+    cookieDays: number
+    maxAffiliates: number | null
+    requiresApproval: boolean
+    status: $Enums.OfferStatus
+    category: string | null
+    tags: string[]
+    imageUrl: string | null
+    totalAffiliates: number
+    totalSales: number
+    totalRevenue: number
+    conversionRate: number
+    createdAt: Date
+    updatedAt: Date
+    _count: AffiliateOfferCountAggregateOutputType | null
+    _avg: AffiliateOfferAvgAggregateOutputType | null
+    _sum: AffiliateOfferSumAggregateOutputType | null
+    _min: AffiliateOfferMinAggregateOutputType | null
+    _max: AffiliateOfferMaxAggregateOutputType | null
+  }
+
+  type GetAffiliateOfferGroupByPayload<T extends AffiliateOfferGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AffiliateOfferGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AffiliateOfferGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AffiliateOfferGroupByOutputType[P]>
+            : GetScalarType<T[P], AffiliateOfferGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AffiliateOfferSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    ownerId?: boolean
+    title?: boolean
+    description?: boolean
+    commissionType?: boolean
+    commissionValue?: boolean
+    cookieDays?: boolean
+    maxAffiliates?: boolean
+    requiresApproval?: boolean
+    status?: boolean
+    category?: boolean
+    tags?: boolean
+    imageUrl?: boolean
+    totalAffiliates?: boolean
+    totalSales?: boolean
+    totalRevenue?: boolean
+    conversionRate?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    affiliations?: boolean | AffiliateOffer$affiliationsArgs<ExtArgs>
+    _count?: boolean | AffiliateOfferCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["affiliateOffer"]>
+
+  export type AffiliateOfferSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    ownerId?: boolean
+    title?: boolean
+    description?: boolean
+    commissionType?: boolean
+    commissionValue?: boolean
+    cookieDays?: boolean
+    maxAffiliates?: boolean
+    requiresApproval?: boolean
+    status?: boolean
+    category?: boolean
+    tags?: boolean
+    imageUrl?: boolean
+    totalAffiliates?: boolean
+    totalSales?: boolean
+    totalRevenue?: boolean
+    conversionRate?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["affiliateOffer"]>
+
+  export type AffiliateOfferSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    productId?: boolean
+    ownerId?: boolean
+    title?: boolean
+    description?: boolean
+    commissionType?: boolean
+    commissionValue?: boolean
+    cookieDays?: boolean
+    maxAffiliates?: boolean
+    requiresApproval?: boolean
+    status?: boolean
+    category?: boolean
+    tags?: boolean
+    imageUrl?: boolean
+    totalAffiliates?: boolean
+    totalSales?: boolean
+    totalRevenue?: boolean
+    conversionRate?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["affiliateOffer"]>
+
+  export type AffiliateOfferSelectScalar = {
+    id?: boolean
+    productId?: boolean
+    ownerId?: boolean
+    title?: boolean
+    description?: boolean
+    commissionType?: boolean
+    commissionValue?: boolean
+    cookieDays?: boolean
+    maxAffiliates?: boolean
+    requiresApproval?: boolean
+    status?: boolean
+    category?: boolean
+    tags?: boolean
+    imageUrl?: boolean
+    totalAffiliates?: boolean
+    totalSales?: boolean
+    totalRevenue?: boolean
+    conversionRate?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AffiliateOfferOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "ownerId" | "title" | "description" | "commissionType" | "commissionValue" | "cookieDays" | "maxAffiliates" | "requiresApproval" | "status" | "category" | "tags" | "imageUrl" | "totalAffiliates" | "totalSales" | "totalRevenue" | "conversionRate" | "createdAt" | "updatedAt", ExtArgs["result"]["affiliateOffer"]>
+  export type AffiliateOfferInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    affiliations?: boolean | AffiliateOffer$affiliationsArgs<ExtArgs>
+    _count?: boolean | AffiliateOfferCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AffiliateOfferIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AffiliateOfferIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AffiliateOfferPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AffiliateOffer"
+    objects: {
+      product: Prisma.$ProductPayload<ExtArgs>
+      owner: Prisma.$UserPayload<ExtArgs>
+      affiliations: Prisma.$AffiliationPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      productId: string
+      ownerId: string
+      title: string
+      description: string | null
+      commissionType: $Enums.CommissionType
+      commissionValue: number
+      cookieDays: number
+      maxAffiliates: number | null
+      requiresApproval: boolean
+      status: $Enums.OfferStatus
+      category: string | null
+      tags: string[]
+      imageUrl: string | null
+      totalAffiliates: number
+      totalSales: number
+      totalRevenue: number
+      conversionRate: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["affiliateOffer"]>
+    composites: {}
+  }
+
+  type AffiliateOfferGetPayload<S extends boolean | null | undefined | AffiliateOfferDefaultArgs> = $Result.GetResult<Prisma.$AffiliateOfferPayload, S>
+
+  type AffiliateOfferCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AffiliateOfferFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AffiliateOfferCountAggregateInputType | true
+    }
+
+  export interface AffiliateOfferDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AffiliateOffer'], meta: { name: 'AffiliateOffer' } }
+    /**
+     * Find zero or one AffiliateOffer that matches the filter.
+     * @param {AffiliateOfferFindUniqueArgs} args - Arguments to find a AffiliateOffer
+     * @example
+     * // Get one AffiliateOffer
+     * const affiliateOffer = await prisma.affiliateOffer.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AffiliateOfferFindUniqueArgs>(args: SelectSubset<T, AffiliateOfferFindUniqueArgs<ExtArgs>>): Prisma__AffiliateOfferClient<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AffiliateOffer that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AffiliateOfferFindUniqueOrThrowArgs} args - Arguments to find a AffiliateOffer
+     * @example
+     * // Get one AffiliateOffer
+     * const affiliateOffer = await prisma.affiliateOffer.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AffiliateOfferFindUniqueOrThrowArgs>(args: SelectSubset<T, AffiliateOfferFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AffiliateOfferClient<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AffiliateOffer that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliateOfferFindFirstArgs} args - Arguments to find a AffiliateOffer
+     * @example
+     * // Get one AffiliateOffer
+     * const affiliateOffer = await prisma.affiliateOffer.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AffiliateOfferFindFirstArgs>(args?: SelectSubset<T, AffiliateOfferFindFirstArgs<ExtArgs>>): Prisma__AffiliateOfferClient<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AffiliateOffer that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliateOfferFindFirstOrThrowArgs} args - Arguments to find a AffiliateOffer
+     * @example
+     * // Get one AffiliateOffer
+     * const affiliateOffer = await prisma.affiliateOffer.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AffiliateOfferFindFirstOrThrowArgs>(args?: SelectSubset<T, AffiliateOfferFindFirstOrThrowArgs<ExtArgs>>): Prisma__AffiliateOfferClient<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AffiliateOffers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliateOfferFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AffiliateOffers
+     * const affiliateOffers = await prisma.affiliateOffer.findMany()
+     * 
+     * // Get first 10 AffiliateOffers
+     * const affiliateOffers = await prisma.affiliateOffer.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const affiliateOfferWithIdOnly = await prisma.affiliateOffer.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AffiliateOfferFindManyArgs>(args?: SelectSubset<T, AffiliateOfferFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AffiliateOffer.
+     * @param {AffiliateOfferCreateArgs} args - Arguments to create a AffiliateOffer.
+     * @example
+     * // Create one AffiliateOffer
+     * const AffiliateOffer = await prisma.affiliateOffer.create({
+     *   data: {
+     *     // ... data to create a AffiliateOffer
+     *   }
+     * })
+     * 
+     */
+    create<T extends AffiliateOfferCreateArgs>(args: SelectSubset<T, AffiliateOfferCreateArgs<ExtArgs>>): Prisma__AffiliateOfferClient<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AffiliateOffers.
+     * @param {AffiliateOfferCreateManyArgs} args - Arguments to create many AffiliateOffers.
+     * @example
+     * // Create many AffiliateOffers
+     * const affiliateOffer = await prisma.affiliateOffer.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AffiliateOfferCreateManyArgs>(args?: SelectSubset<T, AffiliateOfferCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AffiliateOffers and returns the data saved in the database.
+     * @param {AffiliateOfferCreateManyAndReturnArgs} args - Arguments to create many AffiliateOffers.
+     * @example
+     * // Create many AffiliateOffers
+     * const affiliateOffer = await prisma.affiliateOffer.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AffiliateOffers and only return the `id`
+     * const affiliateOfferWithIdOnly = await prisma.affiliateOffer.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AffiliateOfferCreateManyAndReturnArgs>(args?: SelectSubset<T, AffiliateOfferCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AffiliateOffer.
+     * @param {AffiliateOfferDeleteArgs} args - Arguments to delete one AffiliateOffer.
+     * @example
+     * // Delete one AffiliateOffer
+     * const AffiliateOffer = await prisma.affiliateOffer.delete({
+     *   where: {
+     *     // ... filter to delete one AffiliateOffer
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AffiliateOfferDeleteArgs>(args: SelectSubset<T, AffiliateOfferDeleteArgs<ExtArgs>>): Prisma__AffiliateOfferClient<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AffiliateOffer.
+     * @param {AffiliateOfferUpdateArgs} args - Arguments to update one AffiliateOffer.
+     * @example
+     * // Update one AffiliateOffer
+     * const affiliateOffer = await prisma.affiliateOffer.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AffiliateOfferUpdateArgs>(args: SelectSubset<T, AffiliateOfferUpdateArgs<ExtArgs>>): Prisma__AffiliateOfferClient<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AffiliateOffers.
+     * @param {AffiliateOfferDeleteManyArgs} args - Arguments to filter AffiliateOffers to delete.
+     * @example
+     * // Delete a few AffiliateOffers
+     * const { count } = await prisma.affiliateOffer.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AffiliateOfferDeleteManyArgs>(args?: SelectSubset<T, AffiliateOfferDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AffiliateOffers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliateOfferUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AffiliateOffers
+     * const affiliateOffer = await prisma.affiliateOffer.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AffiliateOfferUpdateManyArgs>(args: SelectSubset<T, AffiliateOfferUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AffiliateOffers and returns the data updated in the database.
+     * @param {AffiliateOfferUpdateManyAndReturnArgs} args - Arguments to update many AffiliateOffers.
+     * @example
+     * // Update many AffiliateOffers
+     * const affiliateOffer = await prisma.affiliateOffer.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AffiliateOffers and only return the `id`
+     * const affiliateOfferWithIdOnly = await prisma.affiliateOffer.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AffiliateOfferUpdateManyAndReturnArgs>(args: SelectSubset<T, AffiliateOfferUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AffiliateOffer.
+     * @param {AffiliateOfferUpsertArgs} args - Arguments to update or create a AffiliateOffer.
+     * @example
+     * // Update or create a AffiliateOffer
+     * const affiliateOffer = await prisma.affiliateOffer.upsert({
+     *   create: {
+     *     // ... data to create a AffiliateOffer
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AffiliateOffer we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AffiliateOfferUpsertArgs>(args: SelectSubset<T, AffiliateOfferUpsertArgs<ExtArgs>>): Prisma__AffiliateOfferClient<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AffiliateOffers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliateOfferCountArgs} args - Arguments to filter AffiliateOffers to count.
+     * @example
+     * // Count the number of AffiliateOffers
+     * const count = await prisma.affiliateOffer.count({
+     *   where: {
+     *     // ... the filter for the AffiliateOffers we want to count
+     *   }
+     * })
+    **/
+    count<T extends AffiliateOfferCountArgs>(
+      args?: Subset<T, AffiliateOfferCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AffiliateOfferCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AffiliateOffer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliateOfferAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AffiliateOfferAggregateArgs>(args: Subset<T, AffiliateOfferAggregateArgs>): Prisma.PrismaPromise<GetAffiliateOfferAggregateType<T>>
+
+    /**
+     * Group by AffiliateOffer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliateOfferGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AffiliateOfferGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AffiliateOfferGroupByArgs['orderBy'] }
+        : { orderBy?: AffiliateOfferGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AffiliateOfferGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAffiliateOfferGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AffiliateOffer model
+   */
+  readonly fields: AffiliateOfferFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AffiliateOffer.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AffiliateOfferClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    affiliations<T extends AffiliateOffer$affiliationsArgs<ExtArgs> = {}>(args?: Subset<T, AffiliateOffer$affiliationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AffiliateOffer model
+   */
+  interface AffiliateOfferFieldRefs {
+    readonly id: FieldRef<"AffiliateOffer", 'String'>
+    readonly productId: FieldRef<"AffiliateOffer", 'String'>
+    readonly ownerId: FieldRef<"AffiliateOffer", 'String'>
+    readonly title: FieldRef<"AffiliateOffer", 'String'>
+    readonly description: FieldRef<"AffiliateOffer", 'String'>
+    readonly commissionType: FieldRef<"AffiliateOffer", 'CommissionType'>
+    readonly commissionValue: FieldRef<"AffiliateOffer", 'Float'>
+    readonly cookieDays: FieldRef<"AffiliateOffer", 'Int'>
+    readonly maxAffiliates: FieldRef<"AffiliateOffer", 'Int'>
+    readonly requiresApproval: FieldRef<"AffiliateOffer", 'Boolean'>
+    readonly status: FieldRef<"AffiliateOffer", 'OfferStatus'>
+    readonly category: FieldRef<"AffiliateOffer", 'String'>
+    readonly tags: FieldRef<"AffiliateOffer", 'String[]'>
+    readonly imageUrl: FieldRef<"AffiliateOffer", 'String'>
+    readonly totalAffiliates: FieldRef<"AffiliateOffer", 'Int'>
+    readonly totalSales: FieldRef<"AffiliateOffer", 'Int'>
+    readonly totalRevenue: FieldRef<"AffiliateOffer", 'Float'>
+    readonly conversionRate: FieldRef<"AffiliateOffer", 'Float'>
+    readonly createdAt: FieldRef<"AffiliateOffer", 'DateTime'>
+    readonly updatedAt: FieldRef<"AffiliateOffer", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AffiliateOffer findUnique
+   */
+  export type AffiliateOfferFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOffer
+     */
+    select?: AffiliateOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateOffer
+     */
+    omit?: AffiliateOfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliateOfferInclude<ExtArgs> | null
+    /**
+     * Filter, which AffiliateOffer to fetch.
+     */
+    where: AffiliateOfferWhereUniqueInput
+  }
+
+  /**
+   * AffiliateOffer findUniqueOrThrow
+   */
+  export type AffiliateOfferFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOffer
+     */
+    select?: AffiliateOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateOffer
+     */
+    omit?: AffiliateOfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliateOfferInclude<ExtArgs> | null
+    /**
+     * Filter, which AffiliateOffer to fetch.
+     */
+    where: AffiliateOfferWhereUniqueInput
+  }
+
+  /**
+   * AffiliateOffer findFirst
+   */
+  export type AffiliateOfferFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOffer
+     */
+    select?: AffiliateOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateOffer
+     */
+    omit?: AffiliateOfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliateOfferInclude<ExtArgs> | null
+    /**
+     * Filter, which AffiliateOffer to fetch.
+     */
+    where?: AffiliateOfferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AffiliateOffers to fetch.
+     */
+    orderBy?: AffiliateOfferOrderByWithRelationInput | AffiliateOfferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AffiliateOffers.
+     */
+    cursor?: AffiliateOfferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AffiliateOffers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AffiliateOffers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AffiliateOffers.
+     */
+    distinct?: AffiliateOfferScalarFieldEnum | AffiliateOfferScalarFieldEnum[]
+  }
+
+  /**
+   * AffiliateOffer findFirstOrThrow
+   */
+  export type AffiliateOfferFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOffer
+     */
+    select?: AffiliateOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateOffer
+     */
+    omit?: AffiliateOfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliateOfferInclude<ExtArgs> | null
+    /**
+     * Filter, which AffiliateOffer to fetch.
+     */
+    where?: AffiliateOfferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AffiliateOffers to fetch.
+     */
+    orderBy?: AffiliateOfferOrderByWithRelationInput | AffiliateOfferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AffiliateOffers.
+     */
+    cursor?: AffiliateOfferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AffiliateOffers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AffiliateOffers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AffiliateOffers.
+     */
+    distinct?: AffiliateOfferScalarFieldEnum | AffiliateOfferScalarFieldEnum[]
+  }
+
+  /**
+   * AffiliateOffer findMany
+   */
+  export type AffiliateOfferFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOffer
+     */
+    select?: AffiliateOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateOffer
+     */
+    omit?: AffiliateOfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliateOfferInclude<ExtArgs> | null
+    /**
+     * Filter, which AffiliateOffers to fetch.
+     */
+    where?: AffiliateOfferWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AffiliateOffers to fetch.
+     */
+    orderBy?: AffiliateOfferOrderByWithRelationInput | AffiliateOfferOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AffiliateOffers.
+     */
+    cursor?: AffiliateOfferWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AffiliateOffers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AffiliateOffers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AffiliateOffers.
+     */
+    distinct?: AffiliateOfferScalarFieldEnum | AffiliateOfferScalarFieldEnum[]
+  }
+
+  /**
+   * AffiliateOffer create
+   */
+  export type AffiliateOfferCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOffer
+     */
+    select?: AffiliateOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateOffer
+     */
+    omit?: AffiliateOfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliateOfferInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AffiliateOffer.
+     */
+    data: XOR<AffiliateOfferCreateInput, AffiliateOfferUncheckedCreateInput>
+  }
+
+  /**
+   * AffiliateOffer createMany
+   */
+  export type AffiliateOfferCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AffiliateOffers.
+     */
+    data: AffiliateOfferCreateManyInput | AffiliateOfferCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AffiliateOffer createManyAndReturn
+   */
+  export type AffiliateOfferCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOffer
+     */
+    select?: AffiliateOfferSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateOffer
+     */
+    omit?: AffiliateOfferOmit<ExtArgs> | null
+    /**
+     * The data used to create many AffiliateOffers.
+     */
+    data: AffiliateOfferCreateManyInput | AffiliateOfferCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliateOfferIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AffiliateOffer update
+   */
+  export type AffiliateOfferUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOffer
+     */
+    select?: AffiliateOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateOffer
+     */
+    omit?: AffiliateOfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliateOfferInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AffiliateOffer.
+     */
+    data: XOR<AffiliateOfferUpdateInput, AffiliateOfferUncheckedUpdateInput>
+    /**
+     * Choose, which AffiliateOffer to update.
+     */
+    where: AffiliateOfferWhereUniqueInput
+  }
+
+  /**
+   * AffiliateOffer updateMany
+   */
+  export type AffiliateOfferUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AffiliateOffers.
+     */
+    data: XOR<AffiliateOfferUpdateManyMutationInput, AffiliateOfferUncheckedUpdateManyInput>
+    /**
+     * Filter which AffiliateOffers to update
+     */
+    where?: AffiliateOfferWhereInput
+    /**
+     * Limit how many AffiliateOffers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AffiliateOffer updateManyAndReturn
+   */
+  export type AffiliateOfferUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOffer
+     */
+    select?: AffiliateOfferSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateOffer
+     */
+    omit?: AffiliateOfferOmit<ExtArgs> | null
+    /**
+     * The data used to update AffiliateOffers.
+     */
+    data: XOR<AffiliateOfferUpdateManyMutationInput, AffiliateOfferUncheckedUpdateManyInput>
+    /**
+     * Filter which AffiliateOffers to update
+     */
+    where?: AffiliateOfferWhereInput
+    /**
+     * Limit how many AffiliateOffers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliateOfferIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AffiliateOffer upsert
+   */
+  export type AffiliateOfferUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOffer
+     */
+    select?: AffiliateOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateOffer
+     */
+    omit?: AffiliateOfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliateOfferInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AffiliateOffer to update in case it exists.
+     */
+    where: AffiliateOfferWhereUniqueInput
+    /**
+     * In case the AffiliateOffer found by the `where` argument doesn't exist, create a new AffiliateOffer with this data.
+     */
+    create: XOR<AffiliateOfferCreateInput, AffiliateOfferUncheckedCreateInput>
+    /**
+     * In case the AffiliateOffer was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AffiliateOfferUpdateInput, AffiliateOfferUncheckedUpdateInput>
+  }
+
+  /**
+   * AffiliateOffer delete
+   */
+  export type AffiliateOfferDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOffer
+     */
+    select?: AffiliateOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateOffer
+     */
+    omit?: AffiliateOfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliateOfferInclude<ExtArgs> | null
+    /**
+     * Filter which AffiliateOffer to delete.
+     */
+    where: AffiliateOfferWhereUniqueInput
+  }
+
+  /**
+   * AffiliateOffer deleteMany
+   */
+  export type AffiliateOfferDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AffiliateOffers to delete
+     */
+    where?: AffiliateOfferWhereInput
+    /**
+     * Limit how many AffiliateOffers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AffiliateOffer.affiliations
+   */
+  export type AffiliateOffer$affiliationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationInclude<ExtArgs> | null
+    where?: AffiliationWhereInput
+    orderBy?: AffiliationOrderByWithRelationInput | AffiliationOrderByWithRelationInput[]
+    cursor?: AffiliationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AffiliationScalarFieldEnum | AffiliationScalarFieldEnum[]
+  }
+
+  /**
+   * AffiliateOffer without action
+   */
+  export type AffiliateOfferDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliateOffer
+     */
+    select?: AffiliateOfferSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliateOffer
+     */
+    omit?: AffiliateOfferOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliateOfferInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Affiliation
+   */
+
+  export type AggregateAffiliation = {
+    _count: AffiliationCountAggregateOutputType | null
+    _avg: AffiliationAvgAggregateOutputType | null
+    _sum: AffiliationSumAggregateOutputType | null
+    _min: AffiliationMinAggregateOutputType | null
+    _max: AffiliationMaxAggregateOutputType | null
+  }
+
+  export type AffiliationAvgAggregateOutputType = {
+    totalClicks: number | null
+    totalSales: number | null
+    totalEarned: number | null
+    pendingBalance: number | null
+    availableBalance: number | null
+  }
+
+  export type AffiliationSumAggregateOutputType = {
+    totalClicks: number | null
+    totalSales: number | null
+    totalEarned: number | null
+    pendingBalance: number | null
+    availableBalance: number | null
+  }
+
+  export type AffiliationMinAggregateOutputType = {
+    id: string | null
+    offerId: string | null
+    affiliateId: string | null
+    status: $Enums.AffiliationStatus | null
+    affiliateLink: string | null
+    affiliateCode: string | null
+    totalClicks: number | null
+    totalSales: number | null
+    totalEarned: number | null
+    pendingBalance: number | null
+    availableBalance: number | null
+    approvedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AffiliationMaxAggregateOutputType = {
+    id: string | null
+    offerId: string | null
+    affiliateId: string | null
+    status: $Enums.AffiliationStatus | null
+    affiliateLink: string | null
+    affiliateCode: string | null
+    totalClicks: number | null
+    totalSales: number | null
+    totalEarned: number | null
+    pendingBalance: number | null
+    availableBalance: number | null
+    approvedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AffiliationCountAggregateOutputType = {
+    id: number
+    offerId: number
+    affiliateId: number
+    status: number
+    affiliateLink: number
+    affiliateCode: number
+    totalClicks: number
+    totalSales: number
+    totalEarned: number
+    pendingBalance: number
+    availableBalance: number
+    approvedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AffiliationAvgAggregateInputType = {
+    totalClicks?: true
+    totalSales?: true
+    totalEarned?: true
+    pendingBalance?: true
+    availableBalance?: true
+  }
+
+  export type AffiliationSumAggregateInputType = {
+    totalClicks?: true
+    totalSales?: true
+    totalEarned?: true
+    pendingBalance?: true
+    availableBalance?: true
+  }
+
+  export type AffiliationMinAggregateInputType = {
+    id?: true
+    offerId?: true
+    affiliateId?: true
+    status?: true
+    affiliateLink?: true
+    affiliateCode?: true
+    totalClicks?: true
+    totalSales?: true
+    totalEarned?: true
+    pendingBalance?: true
+    availableBalance?: true
+    approvedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AffiliationMaxAggregateInputType = {
+    id?: true
+    offerId?: true
+    affiliateId?: true
+    status?: true
+    affiliateLink?: true
+    affiliateCode?: true
+    totalClicks?: true
+    totalSales?: true
+    totalEarned?: true
+    pendingBalance?: true
+    availableBalance?: true
+    approvedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AffiliationCountAggregateInputType = {
+    id?: true
+    offerId?: true
+    affiliateId?: true
+    status?: true
+    affiliateLink?: true
+    affiliateCode?: true
+    totalClicks?: true
+    totalSales?: true
+    totalEarned?: true
+    pendingBalance?: true
+    availableBalance?: true
+    approvedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AffiliationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Affiliation to aggregate.
+     */
+    where?: AffiliationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Affiliations to fetch.
+     */
+    orderBy?: AffiliationOrderByWithRelationInput | AffiliationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AffiliationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Affiliations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Affiliations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Affiliations
+    **/
+    _count?: true | AffiliationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AffiliationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AffiliationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AffiliationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AffiliationMaxAggregateInputType
+  }
+
+  export type GetAffiliationAggregateType<T extends AffiliationAggregateArgs> = {
+        [P in keyof T & keyof AggregateAffiliation]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAffiliation[P]>
+      : GetScalarType<T[P], AggregateAffiliation[P]>
+  }
+
+
+
+
+  export type AffiliationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AffiliationWhereInput
+    orderBy?: AffiliationOrderByWithAggregationInput | AffiliationOrderByWithAggregationInput[]
+    by: AffiliationScalarFieldEnum[] | AffiliationScalarFieldEnum
+    having?: AffiliationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AffiliationCountAggregateInputType | true
+    _avg?: AffiliationAvgAggregateInputType
+    _sum?: AffiliationSumAggregateInputType
+    _min?: AffiliationMinAggregateInputType
+    _max?: AffiliationMaxAggregateInputType
+  }
+
+  export type AffiliationGroupByOutputType = {
+    id: string
+    offerId: string
+    affiliateId: string
+    status: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks: number
+    totalSales: number
+    totalEarned: number
+    pendingBalance: number
+    availableBalance: number
+    approvedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: AffiliationCountAggregateOutputType | null
+    _avg: AffiliationAvgAggregateOutputType | null
+    _sum: AffiliationSumAggregateOutputType | null
+    _min: AffiliationMinAggregateOutputType | null
+    _max: AffiliationMaxAggregateOutputType | null
+  }
+
+  type GetAffiliationGroupByPayload<T extends AffiliationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AffiliationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AffiliationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AffiliationGroupByOutputType[P]>
+            : GetScalarType<T[P], AffiliationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AffiliationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    offerId?: boolean
+    affiliateId?: boolean
+    status?: boolean
+    affiliateLink?: boolean
+    affiliateCode?: boolean
+    totalClicks?: boolean
+    totalSales?: boolean
+    totalEarned?: boolean
+    pendingBalance?: boolean
+    availableBalance?: boolean
+    approvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
+    affiliate?: boolean | UserDefaultArgs<ExtArgs>
+    sales?: boolean | Affiliation$salesArgs<ExtArgs>
+    orders?: boolean | Affiliation$ordersArgs<ExtArgs>
+    _count?: boolean | AffiliationCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["affiliation"]>
+
+  export type AffiliationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    offerId?: boolean
+    affiliateId?: boolean
+    status?: boolean
+    affiliateLink?: boolean
+    affiliateCode?: boolean
+    totalClicks?: boolean
+    totalSales?: boolean
+    totalEarned?: boolean
+    pendingBalance?: boolean
+    availableBalance?: boolean
+    approvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
+    affiliate?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["affiliation"]>
+
+  export type AffiliationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    offerId?: boolean
+    affiliateId?: boolean
+    status?: boolean
+    affiliateLink?: boolean
+    affiliateCode?: boolean
+    totalClicks?: boolean
+    totalSales?: boolean
+    totalEarned?: boolean
+    pendingBalance?: boolean
+    availableBalance?: boolean
+    approvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
+    affiliate?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["affiliation"]>
+
+  export type AffiliationSelectScalar = {
+    id?: boolean
+    offerId?: boolean
+    affiliateId?: boolean
+    status?: boolean
+    affiliateLink?: boolean
+    affiliateCode?: boolean
+    totalClicks?: boolean
+    totalSales?: boolean
+    totalEarned?: boolean
+    pendingBalance?: boolean
+    availableBalance?: boolean
+    approvedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AffiliationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "offerId" | "affiliateId" | "status" | "affiliateLink" | "affiliateCode" | "totalClicks" | "totalSales" | "totalEarned" | "pendingBalance" | "availableBalance" | "approvedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["affiliation"]>
+  export type AffiliationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
+    affiliate?: boolean | UserDefaultArgs<ExtArgs>
+    sales?: boolean | Affiliation$salesArgs<ExtArgs>
+    orders?: boolean | Affiliation$ordersArgs<ExtArgs>
+    _count?: boolean | AffiliationCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AffiliationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
+    affiliate?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AffiliationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
+    affiliate?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AffiliationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Affiliation"
+    objects: {
+      offer: Prisma.$AffiliateOfferPayload<ExtArgs>
+      affiliate: Prisma.$UserPayload<ExtArgs>
+      sales: Prisma.$AffiliationSalePayload<ExtArgs>[]
+      orders: Prisma.$OrderPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      offerId: string
+      affiliateId: string
+      status: $Enums.AffiliationStatus
+      affiliateLink: string
+      affiliateCode: string
+      totalClicks: number
+      totalSales: number
+      totalEarned: number
+      pendingBalance: number
+      availableBalance: number
+      approvedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["affiliation"]>
+    composites: {}
+  }
+
+  type AffiliationGetPayload<S extends boolean | null | undefined | AffiliationDefaultArgs> = $Result.GetResult<Prisma.$AffiliationPayload, S>
+
+  type AffiliationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AffiliationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AffiliationCountAggregateInputType | true
+    }
+
+  export interface AffiliationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Affiliation'], meta: { name: 'Affiliation' } }
+    /**
+     * Find zero or one Affiliation that matches the filter.
+     * @param {AffiliationFindUniqueArgs} args - Arguments to find a Affiliation
+     * @example
+     * // Get one Affiliation
+     * const affiliation = await prisma.affiliation.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AffiliationFindUniqueArgs>(args: SelectSubset<T, AffiliationFindUniqueArgs<ExtArgs>>): Prisma__AffiliationClient<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Affiliation that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AffiliationFindUniqueOrThrowArgs} args - Arguments to find a Affiliation
+     * @example
+     * // Get one Affiliation
+     * const affiliation = await prisma.affiliation.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AffiliationFindUniqueOrThrowArgs>(args: SelectSubset<T, AffiliationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AffiliationClient<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Affiliation that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliationFindFirstArgs} args - Arguments to find a Affiliation
+     * @example
+     * // Get one Affiliation
+     * const affiliation = await prisma.affiliation.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AffiliationFindFirstArgs>(args?: SelectSubset<T, AffiliationFindFirstArgs<ExtArgs>>): Prisma__AffiliationClient<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Affiliation that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliationFindFirstOrThrowArgs} args - Arguments to find a Affiliation
+     * @example
+     * // Get one Affiliation
+     * const affiliation = await prisma.affiliation.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AffiliationFindFirstOrThrowArgs>(args?: SelectSubset<T, AffiliationFindFirstOrThrowArgs<ExtArgs>>): Prisma__AffiliationClient<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Affiliations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Affiliations
+     * const affiliations = await prisma.affiliation.findMany()
+     * 
+     * // Get first 10 Affiliations
+     * const affiliations = await prisma.affiliation.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const affiliationWithIdOnly = await prisma.affiliation.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AffiliationFindManyArgs>(args?: SelectSubset<T, AffiliationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Affiliation.
+     * @param {AffiliationCreateArgs} args - Arguments to create a Affiliation.
+     * @example
+     * // Create one Affiliation
+     * const Affiliation = await prisma.affiliation.create({
+     *   data: {
+     *     // ... data to create a Affiliation
+     *   }
+     * })
+     * 
+     */
+    create<T extends AffiliationCreateArgs>(args: SelectSubset<T, AffiliationCreateArgs<ExtArgs>>): Prisma__AffiliationClient<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Affiliations.
+     * @param {AffiliationCreateManyArgs} args - Arguments to create many Affiliations.
+     * @example
+     * // Create many Affiliations
+     * const affiliation = await prisma.affiliation.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AffiliationCreateManyArgs>(args?: SelectSubset<T, AffiliationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Affiliations and returns the data saved in the database.
+     * @param {AffiliationCreateManyAndReturnArgs} args - Arguments to create many Affiliations.
+     * @example
+     * // Create many Affiliations
+     * const affiliation = await prisma.affiliation.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Affiliations and only return the `id`
+     * const affiliationWithIdOnly = await prisma.affiliation.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AffiliationCreateManyAndReturnArgs>(args?: SelectSubset<T, AffiliationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Affiliation.
+     * @param {AffiliationDeleteArgs} args - Arguments to delete one Affiliation.
+     * @example
+     * // Delete one Affiliation
+     * const Affiliation = await prisma.affiliation.delete({
+     *   where: {
+     *     // ... filter to delete one Affiliation
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AffiliationDeleteArgs>(args: SelectSubset<T, AffiliationDeleteArgs<ExtArgs>>): Prisma__AffiliationClient<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Affiliation.
+     * @param {AffiliationUpdateArgs} args - Arguments to update one Affiliation.
+     * @example
+     * // Update one Affiliation
+     * const affiliation = await prisma.affiliation.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AffiliationUpdateArgs>(args: SelectSubset<T, AffiliationUpdateArgs<ExtArgs>>): Prisma__AffiliationClient<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Affiliations.
+     * @param {AffiliationDeleteManyArgs} args - Arguments to filter Affiliations to delete.
+     * @example
+     * // Delete a few Affiliations
+     * const { count } = await prisma.affiliation.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AffiliationDeleteManyArgs>(args?: SelectSubset<T, AffiliationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Affiliations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Affiliations
+     * const affiliation = await prisma.affiliation.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AffiliationUpdateManyArgs>(args: SelectSubset<T, AffiliationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Affiliations and returns the data updated in the database.
+     * @param {AffiliationUpdateManyAndReturnArgs} args - Arguments to update many Affiliations.
+     * @example
+     * // Update many Affiliations
+     * const affiliation = await prisma.affiliation.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Affiliations and only return the `id`
+     * const affiliationWithIdOnly = await prisma.affiliation.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AffiliationUpdateManyAndReturnArgs>(args: SelectSubset<T, AffiliationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Affiliation.
+     * @param {AffiliationUpsertArgs} args - Arguments to update or create a Affiliation.
+     * @example
+     * // Update or create a Affiliation
+     * const affiliation = await prisma.affiliation.upsert({
+     *   create: {
+     *     // ... data to create a Affiliation
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Affiliation we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AffiliationUpsertArgs>(args: SelectSubset<T, AffiliationUpsertArgs<ExtArgs>>): Prisma__AffiliationClient<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Affiliations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliationCountArgs} args - Arguments to filter Affiliations to count.
+     * @example
+     * // Count the number of Affiliations
+     * const count = await prisma.affiliation.count({
+     *   where: {
+     *     // ... the filter for the Affiliations we want to count
+     *   }
+     * })
+    **/
+    count<T extends AffiliationCountArgs>(
+      args?: Subset<T, AffiliationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AffiliationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Affiliation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AffiliationAggregateArgs>(args: Subset<T, AffiliationAggregateArgs>): Prisma.PrismaPromise<GetAffiliationAggregateType<T>>
+
+    /**
+     * Group by Affiliation.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AffiliationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AffiliationGroupByArgs['orderBy'] }
+        : { orderBy?: AffiliationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AffiliationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAffiliationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Affiliation model
+   */
+  readonly fields: AffiliationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Affiliation.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AffiliationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    offer<T extends AffiliateOfferDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AffiliateOfferDefaultArgs<ExtArgs>>): Prisma__AffiliateOfferClient<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    affiliate<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sales<T extends Affiliation$salesArgs<ExtArgs> = {}>(args?: Subset<T, Affiliation$salesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    orders<T extends Affiliation$ordersArgs<ExtArgs> = {}>(args?: Subset<T, Affiliation$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Affiliation model
+   */
+  interface AffiliationFieldRefs {
+    readonly id: FieldRef<"Affiliation", 'String'>
+    readonly offerId: FieldRef<"Affiliation", 'String'>
+    readonly affiliateId: FieldRef<"Affiliation", 'String'>
+    readonly status: FieldRef<"Affiliation", 'AffiliationStatus'>
+    readonly affiliateLink: FieldRef<"Affiliation", 'String'>
+    readonly affiliateCode: FieldRef<"Affiliation", 'String'>
+    readonly totalClicks: FieldRef<"Affiliation", 'Int'>
+    readonly totalSales: FieldRef<"Affiliation", 'Int'>
+    readonly totalEarned: FieldRef<"Affiliation", 'Float'>
+    readonly pendingBalance: FieldRef<"Affiliation", 'Float'>
+    readonly availableBalance: FieldRef<"Affiliation", 'Float'>
+    readonly approvedAt: FieldRef<"Affiliation", 'DateTime'>
+    readonly createdAt: FieldRef<"Affiliation", 'DateTime'>
+    readonly updatedAt: FieldRef<"Affiliation", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Affiliation findUnique
+   */
+  export type AffiliationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationInclude<ExtArgs> | null
+    /**
+     * Filter, which Affiliation to fetch.
+     */
+    where: AffiliationWhereUniqueInput
+  }
+
+  /**
+   * Affiliation findUniqueOrThrow
+   */
+  export type AffiliationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationInclude<ExtArgs> | null
+    /**
+     * Filter, which Affiliation to fetch.
+     */
+    where: AffiliationWhereUniqueInput
+  }
+
+  /**
+   * Affiliation findFirst
+   */
+  export type AffiliationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationInclude<ExtArgs> | null
+    /**
+     * Filter, which Affiliation to fetch.
+     */
+    where?: AffiliationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Affiliations to fetch.
+     */
+    orderBy?: AffiliationOrderByWithRelationInput | AffiliationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Affiliations.
+     */
+    cursor?: AffiliationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Affiliations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Affiliations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Affiliations.
+     */
+    distinct?: AffiliationScalarFieldEnum | AffiliationScalarFieldEnum[]
+  }
+
+  /**
+   * Affiliation findFirstOrThrow
+   */
+  export type AffiliationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationInclude<ExtArgs> | null
+    /**
+     * Filter, which Affiliation to fetch.
+     */
+    where?: AffiliationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Affiliations to fetch.
+     */
+    orderBy?: AffiliationOrderByWithRelationInput | AffiliationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Affiliations.
+     */
+    cursor?: AffiliationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Affiliations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Affiliations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Affiliations.
+     */
+    distinct?: AffiliationScalarFieldEnum | AffiliationScalarFieldEnum[]
+  }
+
+  /**
+   * Affiliation findMany
+   */
+  export type AffiliationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationInclude<ExtArgs> | null
+    /**
+     * Filter, which Affiliations to fetch.
+     */
+    where?: AffiliationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Affiliations to fetch.
+     */
+    orderBy?: AffiliationOrderByWithRelationInput | AffiliationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Affiliations.
+     */
+    cursor?: AffiliationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Affiliations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Affiliations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Affiliations.
+     */
+    distinct?: AffiliationScalarFieldEnum | AffiliationScalarFieldEnum[]
+  }
+
+  /**
+   * Affiliation create
+   */
+  export type AffiliationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Affiliation.
+     */
+    data: XOR<AffiliationCreateInput, AffiliationUncheckedCreateInput>
+  }
+
+  /**
+   * Affiliation createMany
+   */
+  export type AffiliationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Affiliations.
+     */
+    data: AffiliationCreateManyInput | AffiliationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Affiliation createManyAndReturn
+   */
+  export type AffiliationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * The data used to create many Affiliations.
+     */
+    data: AffiliationCreateManyInput | AffiliationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Affiliation update
+   */
+  export type AffiliationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Affiliation.
+     */
+    data: XOR<AffiliationUpdateInput, AffiliationUncheckedUpdateInput>
+    /**
+     * Choose, which Affiliation to update.
+     */
+    where: AffiliationWhereUniqueInput
+  }
+
+  /**
+   * Affiliation updateMany
+   */
+  export type AffiliationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Affiliations.
+     */
+    data: XOR<AffiliationUpdateManyMutationInput, AffiliationUncheckedUpdateManyInput>
+    /**
+     * Filter which Affiliations to update
+     */
+    where?: AffiliationWhereInput
+    /**
+     * Limit how many Affiliations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Affiliation updateManyAndReturn
+   */
+  export type AffiliationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * The data used to update Affiliations.
+     */
+    data: XOR<AffiliationUpdateManyMutationInput, AffiliationUncheckedUpdateManyInput>
+    /**
+     * Filter which Affiliations to update
+     */
+    where?: AffiliationWhereInput
+    /**
+     * Limit how many Affiliations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Affiliation upsert
+   */
+  export type AffiliationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Affiliation to update in case it exists.
+     */
+    where: AffiliationWhereUniqueInput
+    /**
+     * In case the Affiliation found by the `where` argument doesn't exist, create a new Affiliation with this data.
+     */
+    create: XOR<AffiliationCreateInput, AffiliationUncheckedCreateInput>
+    /**
+     * In case the Affiliation was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AffiliationUpdateInput, AffiliationUncheckedUpdateInput>
+  }
+
+  /**
+   * Affiliation delete
+   */
+  export type AffiliationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationInclude<ExtArgs> | null
+    /**
+     * Filter which Affiliation to delete.
+     */
+    where: AffiliationWhereUniqueInput
+  }
+
+  /**
+   * Affiliation deleteMany
+   */
+  export type AffiliationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Affiliations to delete
+     */
+    where?: AffiliationWhereInput
+    /**
+     * Limit how many Affiliations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Affiliation.sales
+   */
+  export type Affiliation$salesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationSale
+     */
+    select?: AffiliationSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliationSale
+     */
+    omit?: AffiliationSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationSaleInclude<ExtArgs> | null
+    where?: AffiliationSaleWhereInput
+    orderBy?: AffiliationSaleOrderByWithRelationInput | AffiliationSaleOrderByWithRelationInput[]
+    cursor?: AffiliationSaleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AffiliationSaleScalarFieldEnum | AffiliationSaleScalarFieldEnum[]
+  }
+
+  /**
+   * Affiliation.orders
+   */
+  export type Affiliation$ordersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    where?: OrderWhereInput
+    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
+    cursor?: OrderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+  }
+
+  /**
+   * Affiliation without action
+   */
+  export type AffiliationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Affiliation
+     */
+    select?: AffiliationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Affiliation
+     */
+    omit?: AffiliationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AffiliationSale
+   */
+
+  export type AggregateAffiliationSale = {
+    _count: AffiliationSaleCountAggregateOutputType | null
+    _avg: AffiliationSaleAvgAggregateOutputType | null
+    _sum: AffiliationSaleSumAggregateOutputType | null
+    _min: AffiliationSaleMinAggregateOutputType | null
+    _max: AffiliationSaleMaxAggregateOutputType | null
+  }
+
+  export type AffiliationSaleAvgAggregateOutputType = {
+    saleAmount: number | null
+    commission: number | null
+  }
+
+  export type AffiliationSaleSumAggregateOutputType = {
+    saleAmount: number | null
+    commission: number | null
+  }
+
+  export type AffiliationSaleMinAggregateOutputType = {
+    id: string | null
+    affiliationId: string | null
+    orderId: string | null
+    saleAmount: number | null
+    commission: number | null
+    status: $Enums.SaleCommissionStatus | null
+    paidAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type AffiliationSaleMaxAggregateOutputType = {
+    id: string | null
+    affiliationId: string | null
+    orderId: string | null
+    saleAmount: number | null
+    commission: number | null
+    status: $Enums.SaleCommissionStatus | null
+    paidAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type AffiliationSaleCountAggregateOutputType = {
+    id: number
+    affiliationId: number
+    orderId: number
+    saleAmount: number
+    commission: number
+    status: number
+    paidAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AffiliationSaleAvgAggregateInputType = {
+    saleAmount?: true
+    commission?: true
+  }
+
+  export type AffiliationSaleSumAggregateInputType = {
+    saleAmount?: true
+    commission?: true
+  }
+
+  export type AffiliationSaleMinAggregateInputType = {
+    id?: true
+    affiliationId?: true
+    orderId?: true
+    saleAmount?: true
+    commission?: true
+    status?: true
+    paidAt?: true
+    createdAt?: true
+  }
+
+  export type AffiliationSaleMaxAggregateInputType = {
+    id?: true
+    affiliationId?: true
+    orderId?: true
+    saleAmount?: true
+    commission?: true
+    status?: true
+    paidAt?: true
+    createdAt?: true
+  }
+
+  export type AffiliationSaleCountAggregateInputType = {
+    id?: true
+    affiliationId?: true
+    orderId?: true
+    saleAmount?: true
+    commission?: true
+    status?: true
+    paidAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AffiliationSaleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AffiliationSale to aggregate.
+     */
+    where?: AffiliationSaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AffiliationSales to fetch.
+     */
+    orderBy?: AffiliationSaleOrderByWithRelationInput | AffiliationSaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AffiliationSaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AffiliationSales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AffiliationSales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AffiliationSales
+    **/
+    _count?: true | AffiliationSaleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AffiliationSaleAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AffiliationSaleSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AffiliationSaleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AffiliationSaleMaxAggregateInputType
+  }
+
+  export type GetAffiliationSaleAggregateType<T extends AffiliationSaleAggregateArgs> = {
+        [P in keyof T & keyof AggregateAffiliationSale]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAffiliationSale[P]>
+      : GetScalarType<T[P], AggregateAffiliationSale[P]>
+  }
+
+
+
+
+  export type AffiliationSaleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AffiliationSaleWhereInput
+    orderBy?: AffiliationSaleOrderByWithAggregationInput | AffiliationSaleOrderByWithAggregationInput[]
+    by: AffiliationSaleScalarFieldEnum[] | AffiliationSaleScalarFieldEnum
+    having?: AffiliationSaleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AffiliationSaleCountAggregateInputType | true
+    _avg?: AffiliationSaleAvgAggregateInputType
+    _sum?: AffiliationSaleSumAggregateInputType
+    _min?: AffiliationSaleMinAggregateInputType
+    _max?: AffiliationSaleMaxAggregateInputType
+  }
+
+  export type AffiliationSaleGroupByOutputType = {
+    id: string
+    affiliationId: string
+    orderId: string
+    saleAmount: number
+    commission: number
+    status: $Enums.SaleCommissionStatus
+    paidAt: Date | null
+    createdAt: Date
+    _count: AffiliationSaleCountAggregateOutputType | null
+    _avg: AffiliationSaleAvgAggregateOutputType | null
+    _sum: AffiliationSaleSumAggregateOutputType | null
+    _min: AffiliationSaleMinAggregateOutputType | null
+    _max: AffiliationSaleMaxAggregateOutputType | null
+  }
+
+  type GetAffiliationSaleGroupByPayload<T extends AffiliationSaleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AffiliationSaleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AffiliationSaleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AffiliationSaleGroupByOutputType[P]>
+            : GetScalarType<T[P], AffiliationSaleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AffiliationSaleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    affiliationId?: boolean
+    orderId?: boolean
+    saleAmount?: boolean
+    commission?: boolean
+    status?: boolean
+    paidAt?: boolean
+    createdAt?: boolean
+    affiliation?: boolean | AffiliationDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["affiliationSale"]>
+
+  export type AffiliationSaleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    affiliationId?: boolean
+    orderId?: boolean
+    saleAmount?: boolean
+    commission?: boolean
+    status?: boolean
+    paidAt?: boolean
+    createdAt?: boolean
+    affiliation?: boolean | AffiliationDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["affiliationSale"]>
+
+  export type AffiliationSaleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    affiliationId?: boolean
+    orderId?: boolean
+    saleAmount?: boolean
+    commission?: boolean
+    status?: boolean
+    paidAt?: boolean
+    createdAt?: boolean
+    affiliation?: boolean | AffiliationDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["affiliationSale"]>
+
+  export type AffiliationSaleSelectScalar = {
+    id?: boolean
+    affiliationId?: boolean
+    orderId?: boolean
+    saleAmount?: boolean
+    commission?: boolean
+    status?: boolean
+    paidAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type AffiliationSaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "affiliationId" | "orderId" | "saleAmount" | "commission" | "status" | "paidAt" | "createdAt", ExtArgs["result"]["affiliationSale"]>
+  export type AffiliationSaleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    affiliation?: boolean | AffiliationDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }
+  export type AffiliationSaleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    affiliation?: boolean | AffiliationDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }
+  export type AffiliationSaleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    affiliation?: boolean | AffiliationDefaultArgs<ExtArgs>
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+  }
+
+  export type $AffiliationSalePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AffiliationSale"
+    objects: {
+      affiliation: Prisma.$AffiliationPayload<ExtArgs>
+      order: Prisma.$OrderPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      affiliationId: string
+      orderId: string
+      saleAmount: number
+      commission: number
+      status: $Enums.SaleCommissionStatus
+      paidAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["affiliationSale"]>
+    composites: {}
+  }
+
+  type AffiliationSaleGetPayload<S extends boolean | null | undefined | AffiliationSaleDefaultArgs> = $Result.GetResult<Prisma.$AffiliationSalePayload, S>
+
+  type AffiliationSaleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AffiliationSaleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AffiliationSaleCountAggregateInputType | true
+    }
+
+  export interface AffiliationSaleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AffiliationSale'], meta: { name: 'AffiliationSale' } }
+    /**
+     * Find zero or one AffiliationSale that matches the filter.
+     * @param {AffiliationSaleFindUniqueArgs} args - Arguments to find a AffiliationSale
+     * @example
+     * // Get one AffiliationSale
+     * const affiliationSale = await prisma.affiliationSale.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AffiliationSaleFindUniqueArgs>(args: SelectSubset<T, AffiliationSaleFindUniqueArgs<ExtArgs>>): Prisma__AffiliationSaleClient<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AffiliationSale that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AffiliationSaleFindUniqueOrThrowArgs} args - Arguments to find a AffiliationSale
+     * @example
+     * // Get one AffiliationSale
+     * const affiliationSale = await prisma.affiliationSale.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AffiliationSaleFindUniqueOrThrowArgs>(args: SelectSubset<T, AffiliationSaleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AffiliationSaleClient<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AffiliationSale that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliationSaleFindFirstArgs} args - Arguments to find a AffiliationSale
+     * @example
+     * // Get one AffiliationSale
+     * const affiliationSale = await prisma.affiliationSale.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AffiliationSaleFindFirstArgs>(args?: SelectSubset<T, AffiliationSaleFindFirstArgs<ExtArgs>>): Prisma__AffiliationSaleClient<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AffiliationSale that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliationSaleFindFirstOrThrowArgs} args - Arguments to find a AffiliationSale
+     * @example
+     * // Get one AffiliationSale
+     * const affiliationSale = await prisma.affiliationSale.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AffiliationSaleFindFirstOrThrowArgs>(args?: SelectSubset<T, AffiliationSaleFindFirstOrThrowArgs<ExtArgs>>): Prisma__AffiliationSaleClient<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AffiliationSales that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliationSaleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AffiliationSales
+     * const affiliationSales = await prisma.affiliationSale.findMany()
+     * 
+     * // Get first 10 AffiliationSales
+     * const affiliationSales = await prisma.affiliationSale.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const affiliationSaleWithIdOnly = await prisma.affiliationSale.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AffiliationSaleFindManyArgs>(args?: SelectSubset<T, AffiliationSaleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AffiliationSale.
+     * @param {AffiliationSaleCreateArgs} args - Arguments to create a AffiliationSale.
+     * @example
+     * // Create one AffiliationSale
+     * const AffiliationSale = await prisma.affiliationSale.create({
+     *   data: {
+     *     // ... data to create a AffiliationSale
+     *   }
+     * })
+     * 
+     */
+    create<T extends AffiliationSaleCreateArgs>(args: SelectSubset<T, AffiliationSaleCreateArgs<ExtArgs>>): Prisma__AffiliationSaleClient<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AffiliationSales.
+     * @param {AffiliationSaleCreateManyArgs} args - Arguments to create many AffiliationSales.
+     * @example
+     * // Create many AffiliationSales
+     * const affiliationSale = await prisma.affiliationSale.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AffiliationSaleCreateManyArgs>(args?: SelectSubset<T, AffiliationSaleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AffiliationSales and returns the data saved in the database.
+     * @param {AffiliationSaleCreateManyAndReturnArgs} args - Arguments to create many AffiliationSales.
+     * @example
+     * // Create many AffiliationSales
+     * const affiliationSale = await prisma.affiliationSale.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AffiliationSales and only return the `id`
+     * const affiliationSaleWithIdOnly = await prisma.affiliationSale.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AffiliationSaleCreateManyAndReturnArgs>(args?: SelectSubset<T, AffiliationSaleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AffiliationSale.
+     * @param {AffiliationSaleDeleteArgs} args - Arguments to delete one AffiliationSale.
+     * @example
+     * // Delete one AffiliationSale
+     * const AffiliationSale = await prisma.affiliationSale.delete({
+     *   where: {
+     *     // ... filter to delete one AffiliationSale
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AffiliationSaleDeleteArgs>(args: SelectSubset<T, AffiliationSaleDeleteArgs<ExtArgs>>): Prisma__AffiliationSaleClient<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AffiliationSale.
+     * @param {AffiliationSaleUpdateArgs} args - Arguments to update one AffiliationSale.
+     * @example
+     * // Update one AffiliationSale
+     * const affiliationSale = await prisma.affiliationSale.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AffiliationSaleUpdateArgs>(args: SelectSubset<T, AffiliationSaleUpdateArgs<ExtArgs>>): Prisma__AffiliationSaleClient<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AffiliationSales.
+     * @param {AffiliationSaleDeleteManyArgs} args - Arguments to filter AffiliationSales to delete.
+     * @example
+     * // Delete a few AffiliationSales
+     * const { count } = await prisma.affiliationSale.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AffiliationSaleDeleteManyArgs>(args?: SelectSubset<T, AffiliationSaleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AffiliationSales.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliationSaleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AffiliationSales
+     * const affiliationSale = await prisma.affiliationSale.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AffiliationSaleUpdateManyArgs>(args: SelectSubset<T, AffiliationSaleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AffiliationSales and returns the data updated in the database.
+     * @param {AffiliationSaleUpdateManyAndReturnArgs} args - Arguments to update many AffiliationSales.
+     * @example
+     * // Update many AffiliationSales
+     * const affiliationSale = await prisma.affiliationSale.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AffiliationSales and only return the `id`
+     * const affiliationSaleWithIdOnly = await prisma.affiliationSale.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AffiliationSaleUpdateManyAndReturnArgs>(args: SelectSubset<T, AffiliationSaleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AffiliationSale.
+     * @param {AffiliationSaleUpsertArgs} args - Arguments to update or create a AffiliationSale.
+     * @example
+     * // Update or create a AffiliationSale
+     * const affiliationSale = await prisma.affiliationSale.upsert({
+     *   create: {
+     *     // ... data to create a AffiliationSale
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AffiliationSale we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AffiliationSaleUpsertArgs>(args: SelectSubset<T, AffiliationSaleUpsertArgs<ExtArgs>>): Prisma__AffiliationSaleClient<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AffiliationSales.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliationSaleCountArgs} args - Arguments to filter AffiliationSales to count.
+     * @example
+     * // Count the number of AffiliationSales
+     * const count = await prisma.affiliationSale.count({
+     *   where: {
+     *     // ... the filter for the AffiliationSales we want to count
+     *   }
+     * })
+    **/
+    count<T extends AffiliationSaleCountArgs>(
+      args?: Subset<T, AffiliationSaleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AffiliationSaleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AffiliationSale.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliationSaleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AffiliationSaleAggregateArgs>(args: Subset<T, AffiliationSaleAggregateArgs>): Prisma.PrismaPromise<GetAffiliationSaleAggregateType<T>>
+
+    /**
+     * Group by AffiliationSale.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AffiliationSaleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AffiliationSaleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AffiliationSaleGroupByArgs['orderBy'] }
+        : { orderBy?: AffiliationSaleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AffiliationSaleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAffiliationSaleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AffiliationSale model
+   */
+  readonly fields: AffiliationSaleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AffiliationSale.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AffiliationSaleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    affiliation<T extends AffiliationDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AffiliationDefaultArgs<ExtArgs>>): Prisma__AffiliationClient<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AffiliationSale model
+   */
+  interface AffiliationSaleFieldRefs {
+    readonly id: FieldRef<"AffiliationSale", 'String'>
+    readonly affiliationId: FieldRef<"AffiliationSale", 'String'>
+    readonly orderId: FieldRef<"AffiliationSale", 'String'>
+    readonly saleAmount: FieldRef<"AffiliationSale", 'Float'>
+    readonly commission: FieldRef<"AffiliationSale", 'Float'>
+    readonly status: FieldRef<"AffiliationSale", 'SaleCommissionStatus'>
+    readonly paidAt: FieldRef<"AffiliationSale", 'DateTime'>
+    readonly createdAt: FieldRef<"AffiliationSale", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AffiliationSale findUnique
+   */
+  export type AffiliationSaleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationSale
+     */
+    select?: AffiliationSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliationSale
+     */
+    omit?: AffiliationSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationSaleInclude<ExtArgs> | null
+    /**
+     * Filter, which AffiliationSale to fetch.
+     */
+    where: AffiliationSaleWhereUniqueInput
+  }
+
+  /**
+   * AffiliationSale findUniqueOrThrow
+   */
+  export type AffiliationSaleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationSale
+     */
+    select?: AffiliationSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliationSale
+     */
+    omit?: AffiliationSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationSaleInclude<ExtArgs> | null
+    /**
+     * Filter, which AffiliationSale to fetch.
+     */
+    where: AffiliationSaleWhereUniqueInput
+  }
+
+  /**
+   * AffiliationSale findFirst
+   */
+  export type AffiliationSaleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationSale
+     */
+    select?: AffiliationSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliationSale
+     */
+    omit?: AffiliationSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationSaleInclude<ExtArgs> | null
+    /**
+     * Filter, which AffiliationSale to fetch.
+     */
+    where?: AffiliationSaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AffiliationSales to fetch.
+     */
+    orderBy?: AffiliationSaleOrderByWithRelationInput | AffiliationSaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AffiliationSales.
+     */
+    cursor?: AffiliationSaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AffiliationSales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AffiliationSales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AffiliationSales.
+     */
+    distinct?: AffiliationSaleScalarFieldEnum | AffiliationSaleScalarFieldEnum[]
+  }
+
+  /**
+   * AffiliationSale findFirstOrThrow
+   */
+  export type AffiliationSaleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationSale
+     */
+    select?: AffiliationSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliationSale
+     */
+    omit?: AffiliationSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationSaleInclude<ExtArgs> | null
+    /**
+     * Filter, which AffiliationSale to fetch.
+     */
+    where?: AffiliationSaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AffiliationSales to fetch.
+     */
+    orderBy?: AffiliationSaleOrderByWithRelationInput | AffiliationSaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AffiliationSales.
+     */
+    cursor?: AffiliationSaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AffiliationSales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AffiliationSales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AffiliationSales.
+     */
+    distinct?: AffiliationSaleScalarFieldEnum | AffiliationSaleScalarFieldEnum[]
+  }
+
+  /**
+   * AffiliationSale findMany
+   */
+  export type AffiliationSaleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationSale
+     */
+    select?: AffiliationSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliationSale
+     */
+    omit?: AffiliationSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationSaleInclude<ExtArgs> | null
+    /**
+     * Filter, which AffiliationSales to fetch.
+     */
+    where?: AffiliationSaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AffiliationSales to fetch.
+     */
+    orderBy?: AffiliationSaleOrderByWithRelationInput | AffiliationSaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AffiliationSales.
+     */
+    cursor?: AffiliationSaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AffiliationSales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AffiliationSales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AffiliationSales.
+     */
+    distinct?: AffiliationSaleScalarFieldEnum | AffiliationSaleScalarFieldEnum[]
+  }
+
+  /**
+   * AffiliationSale create
+   */
+  export type AffiliationSaleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationSale
+     */
+    select?: AffiliationSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliationSale
+     */
+    omit?: AffiliationSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationSaleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AffiliationSale.
+     */
+    data: XOR<AffiliationSaleCreateInput, AffiliationSaleUncheckedCreateInput>
+  }
+
+  /**
+   * AffiliationSale createMany
+   */
+  export type AffiliationSaleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AffiliationSales.
+     */
+    data: AffiliationSaleCreateManyInput | AffiliationSaleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AffiliationSale createManyAndReturn
+   */
+  export type AffiliationSaleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationSale
+     */
+    select?: AffiliationSaleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliationSale
+     */
+    omit?: AffiliationSaleOmit<ExtArgs> | null
+    /**
+     * The data used to create many AffiliationSales.
+     */
+    data: AffiliationSaleCreateManyInput | AffiliationSaleCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationSaleIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AffiliationSale update
+   */
+  export type AffiliationSaleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationSale
+     */
+    select?: AffiliationSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliationSale
+     */
+    omit?: AffiliationSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationSaleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AffiliationSale.
+     */
+    data: XOR<AffiliationSaleUpdateInput, AffiliationSaleUncheckedUpdateInput>
+    /**
+     * Choose, which AffiliationSale to update.
+     */
+    where: AffiliationSaleWhereUniqueInput
+  }
+
+  /**
+   * AffiliationSale updateMany
+   */
+  export type AffiliationSaleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AffiliationSales.
+     */
+    data: XOR<AffiliationSaleUpdateManyMutationInput, AffiliationSaleUncheckedUpdateManyInput>
+    /**
+     * Filter which AffiliationSales to update
+     */
+    where?: AffiliationSaleWhereInput
+    /**
+     * Limit how many AffiliationSales to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AffiliationSale updateManyAndReturn
+   */
+  export type AffiliationSaleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationSale
+     */
+    select?: AffiliationSaleSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliationSale
+     */
+    omit?: AffiliationSaleOmit<ExtArgs> | null
+    /**
+     * The data used to update AffiliationSales.
+     */
+    data: XOR<AffiliationSaleUpdateManyMutationInput, AffiliationSaleUncheckedUpdateManyInput>
+    /**
+     * Filter which AffiliationSales to update
+     */
+    where?: AffiliationSaleWhereInput
+    /**
+     * Limit how many AffiliationSales to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationSaleIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AffiliationSale upsert
+   */
+  export type AffiliationSaleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationSale
+     */
+    select?: AffiliationSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliationSale
+     */
+    omit?: AffiliationSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationSaleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AffiliationSale to update in case it exists.
+     */
+    where: AffiliationSaleWhereUniqueInput
+    /**
+     * In case the AffiliationSale found by the `where` argument doesn't exist, create a new AffiliationSale with this data.
+     */
+    create: XOR<AffiliationSaleCreateInput, AffiliationSaleUncheckedCreateInput>
+    /**
+     * In case the AffiliationSale was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AffiliationSaleUpdateInput, AffiliationSaleUncheckedUpdateInput>
+  }
+
+  /**
+   * AffiliationSale delete
+   */
+  export type AffiliationSaleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationSale
+     */
+    select?: AffiliationSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliationSale
+     */
+    omit?: AffiliationSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationSaleInclude<ExtArgs> | null
+    /**
+     * Filter which AffiliationSale to delete.
+     */
+    where: AffiliationSaleWhereUniqueInput
+  }
+
+  /**
+   * AffiliationSale deleteMany
+   */
+  export type AffiliationSaleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AffiliationSales to delete
+     */
+    where?: AffiliationSaleWhereInput
+    /**
+     * Limit how many AffiliationSales to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AffiliationSale without action
+   */
+  export type AffiliationSaleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AffiliationSale
+     */
+    select?: AffiliationSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AffiliationSale
+     */
+    omit?: AffiliationSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AffiliationSaleInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -24936,7 +29301,8 @@ export namespace Prisma {
     isMatured: 'isMatured',
     statusHistory: 'statusHistory',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    affiliationId: 'affiliationId'
   };
 
   export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
@@ -25123,6 +29489,66 @@ export namespace Prisma {
   };
 
   export type CustomDomainScalarFieldEnum = (typeof CustomDomainScalarFieldEnum)[keyof typeof CustomDomainScalarFieldEnum]
+
+
+  export const AffiliateOfferScalarFieldEnum: {
+    id: 'id',
+    productId: 'productId',
+    ownerId: 'ownerId',
+    title: 'title',
+    description: 'description',
+    commissionType: 'commissionType',
+    commissionValue: 'commissionValue',
+    cookieDays: 'cookieDays',
+    maxAffiliates: 'maxAffiliates',
+    requiresApproval: 'requiresApproval',
+    status: 'status',
+    category: 'category',
+    tags: 'tags',
+    imageUrl: 'imageUrl',
+    totalAffiliates: 'totalAffiliates',
+    totalSales: 'totalSales',
+    totalRevenue: 'totalRevenue',
+    conversionRate: 'conversionRate',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AffiliateOfferScalarFieldEnum = (typeof AffiliateOfferScalarFieldEnum)[keyof typeof AffiliateOfferScalarFieldEnum]
+
+
+  export const AffiliationScalarFieldEnum: {
+    id: 'id',
+    offerId: 'offerId',
+    affiliateId: 'affiliateId',
+    status: 'status',
+    affiliateLink: 'affiliateLink',
+    affiliateCode: 'affiliateCode',
+    totalClicks: 'totalClicks',
+    totalSales: 'totalSales',
+    totalEarned: 'totalEarned',
+    pendingBalance: 'pendingBalance',
+    availableBalance: 'availableBalance',
+    approvedAt: 'approvedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AffiliationScalarFieldEnum = (typeof AffiliationScalarFieldEnum)[keyof typeof AffiliationScalarFieldEnum]
+
+
+  export const AffiliationSaleScalarFieldEnum: {
+    id: 'id',
+    affiliationId: 'affiliationId',
+    orderId: 'orderId',
+    saleAmount: 'saleAmount',
+    commission: 'commission',
+    status: 'status',
+    paidAt: 'paidAt',
+    createdAt: 'createdAt'
+  };
+
+  export type AffiliationSaleScalarFieldEnum = (typeof AffiliationSaleScalarFieldEnum)[keyof typeof AffiliationSaleScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -25463,6 +29889,62 @@ export namespace Prisma {
    */
   export type ListEnumDomainStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DomainStatus[]'>
     
+
+
+  /**
+   * Reference to a field of type 'CommissionType'
+   */
+  export type EnumCommissionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommissionType'>
+    
+
+
+  /**
+   * Reference to a field of type 'CommissionType[]'
+   */
+  export type ListEnumCommissionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CommissionType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'OfferStatus'
+   */
+  export type EnumOfferStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OfferStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'OfferStatus[]'
+   */
+  export type ListEnumOfferStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'OfferStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AffiliationStatus'
+   */
+  export type EnumAffiliationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AffiliationStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AffiliationStatus[]'
+   */
+  export type ListEnumAffiliationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AffiliationStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SaleCommissionStatus'
+   */
+  export type EnumSaleCommissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SaleCommissionStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'SaleCommissionStatus[]'
+   */
+  export type ListEnumSaleCommissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SaleCommissionStatus[]'>
+    
   /**
    * Deep Input Types
    */
@@ -25513,6 +29995,8 @@ export namespace Prisma {
     customDomains?: CustomDomainListRelationFilter
     notifications?: NotificationListRelationFilter
     auditLogs?: AuditLogListRelationFilter
+    affiliateOffers?: AffiliateOfferListRelationFilter
+    affiliations?: AffiliationListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -25557,6 +30041,8 @@ export namespace Prisma {
     customDomains?: CustomDomainOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
     auditLogs?: AuditLogOrderByRelationAggregateInput
+    affiliateOffers?: AffiliateOfferOrderByRelationAggregateInput
+    affiliations?: AffiliationOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -25604,6 +30090,8 @@ export namespace Prisma {
     customDomains?: CustomDomainListRelationFilter
     notifications?: NotificationListRelationFilter
     auditLogs?: AuditLogListRelationFilter
+    affiliateOffers?: AffiliateOfferListRelationFilter
+    affiliations?: AffiliationListRelationFilter
   }, "id" | "email" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -25831,6 +30319,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     orders?: OrderListRelationFilter
     checkoutLinks?: CheckoutLinkListRelationFilter
+    affiliateOffers?: AffiliateOfferListRelationFilter
   }
 
   export type ProductOrderByWithRelationInput = {
@@ -25853,6 +30342,7 @@ export namespace Prisma {
     user?: UserOrderByWithRelationInput
     orders?: OrderOrderByRelationAggregateInput
     checkoutLinks?: CheckoutLinkOrderByRelationAggregateInput
+    affiliateOffers?: AffiliateOfferOrderByRelationAggregateInput
   }
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -25878,6 +30368,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     orders?: OrderListRelationFilter
     checkoutLinks?: CheckoutLinkListRelationFilter
+    affiliateOffers?: AffiliateOfferListRelationFilter
   }, "id" | "slug">
 
   export type ProductOrderByWithAggregationInput = {
@@ -25963,9 +30454,12 @@ export namespace Prisma {
     statusHistory?: JsonNullableFilter<"Order">
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
+    affiliationId?: StringNullableFilter<"Order"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
     pendingBalances?: PendingBalanceListRelationFilter
+    affiliation?: XOR<AffiliationNullableScalarRelationFilter, AffiliationWhereInput> | null
+    affiliationSale?: XOR<AffiliationSaleNullableScalarRelationFilter, AffiliationSaleWhereInput> | null
   }
 
   export type OrderOrderByWithRelationInput = {
@@ -26002,9 +30496,12 @@ export namespace Prisma {
     statusHistory?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    affiliationId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     product?: ProductOrderByWithRelationInput
     pendingBalances?: PendingBalanceOrderByRelationAggregateInput
+    affiliation?: AffiliationOrderByWithRelationInput
+    affiliationSale?: AffiliationSaleOrderByWithRelationInput
   }
 
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
@@ -26044,9 +30541,12 @@ export namespace Prisma {
     statusHistory?: JsonNullableFilter<"Order">
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
+    affiliationId?: StringNullableFilter<"Order"> | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
     pendingBalances?: PendingBalanceListRelationFilter
+    affiliation?: XOR<AffiliationNullableScalarRelationFilter, AffiliationWhereInput> | null
+    affiliationSale?: XOR<AffiliationSaleNullableScalarRelationFilter, AffiliationSaleWhereInput> | null
   }, "id" | "wooviCorrelationId">
 
   export type OrderOrderByWithAggregationInput = {
@@ -26083,6 +30583,7 @@ export namespace Prisma {
     statusHistory?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    affiliationId?: SortOrderInput | SortOrder
     _count?: OrderCountOrderByAggregateInput
     _avg?: OrderAvgOrderByAggregateInput
     _max?: OrderMaxOrderByAggregateInput
@@ -26127,6 +30628,7 @@ export namespace Prisma {
     statusHistory?: JsonNullableWithAggregatesFilter<"Order">
     createdAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
+    affiliationId?: StringNullableWithAggregatesFilter<"Order"> | string | null
   }
 
   export type PendingBalanceWhereInput = {
@@ -27044,6 +31546,330 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"CustomDomain"> | Date | string
   }
 
+  export type AffiliateOfferWhereInput = {
+    AND?: AffiliateOfferWhereInput | AffiliateOfferWhereInput[]
+    OR?: AffiliateOfferWhereInput[]
+    NOT?: AffiliateOfferWhereInput | AffiliateOfferWhereInput[]
+    id?: StringFilter<"AffiliateOffer"> | string
+    productId?: StringFilter<"AffiliateOffer"> | string
+    ownerId?: StringFilter<"AffiliateOffer"> | string
+    title?: StringFilter<"AffiliateOffer"> | string
+    description?: StringNullableFilter<"AffiliateOffer"> | string | null
+    commissionType?: EnumCommissionTypeFilter<"AffiliateOffer"> | $Enums.CommissionType
+    commissionValue?: FloatFilter<"AffiliateOffer"> | number
+    cookieDays?: IntFilter<"AffiliateOffer"> | number
+    maxAffiliates?: IntNullableFilter<"AffiliateOffer"> | number | null
+    requiresApproval?: BoolFilter<"AffiliateOffer"> | boolean
+    status?: EnumOfferStatusFilter<"AffiliateOffer"> | $Enums.OfferStatus
+    category?: StringNullableFilter<"AffiliateOffer"> | string | null
+    tags?: StringNullableListFilter<"AffiliateOffer">
+    imageUrl?: StringNullableFilter<"AffiliateOffer"> | string | null
+    totalAffiliates?: IntFilter<"AffiliateOffer"> | number
+    totalSales?: IntFilter<"AffiliateOffer"> | number
+    totalRevenue?: FloatFilter<"AffiliateOffer"> | number
+    conversionRate?: FloatFilter<"AffiliateOffer"> | number
+    createdAt?: DateTimeFilter<"AffiliateOffer"> | Date | string
+    updatedAt?: DateTimeFilter<"AffiliateOffer"> | Date | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    affiliations?: AffiliationListRelationFilter
+  }
+
+  export type AffiliateOfferOrderByWithRelationInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    ownerId?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    commissionType?: SortOrder
+    commissionValue?: SortOrder
+    cookieDays?: SortOrder
+    maxAffiliates?: SortOrderInput | SortOrder
+    requiresApproval?: SortOrder
+    status?: SortOrder
+    category?: SortOrderInput | SortOrder
+    tags?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    totalAffiliates?: SortOrder
+    totalSales?: SortOrder
+    totalRevenue?: SortOrder
+    conversionRate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    product?: ProductOrderByWithRelationInput
+    owner?: UserOrderByWithRelationInput
+    affiliations?: AffiliationOrderByRelationAggregateInput
+  }
+
+  export type AffiliateOfferWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AffiliateOfferWhereInput | AffiliateOfferWhereInput[]
+    OR?: AffiliateOfferWhereInput[]
+    NOT?: AffiliateOfferWhereInput | AffiliateOfferWhereInput[]
+    productId?: StringFilter<"AffiliateOffer"> | string
+    ownerId?: StringFilter<"AffiliateOffer"> | string
+    title?: StringFilter<"AffiliateOffer"> | string
+    description?: StringNullableFilter<"AffiliateOffer"> | string | null
+    commissionType?: EnumCommissionTypeFilter<"AffiliateOffer"> | $Enums.CommissionType
+    commissionValue?: FloatFilter<"AffiliateOffer"> | number
+    cookieDays?: IntFilter<"AffiliateOffer"> | number
+    maxAffiliates?: IntNullableFilter<"AffiliateOffer"> | number | null
+    requiresApproval?: BoolFilter<"AffiliateOffer"> | boolean
+    status?: EnumOfferStatusFilter<"AffiliateOffer"> | $Enums.OfferStatus
+    category?: StringNullableFilter<"AffiliateOffer"> | string | null
+    tags?: StringNullableListFilter<"AffiliateOffer">
+    imageUrl?: StringNullableFilter<"AffiliateOffer"> | string | null
+    totalAffiliates?: IntFilter<"AffiliateOffer"> | number
+    totalSales?: IntFilter<"AffiliateOffer"> | number
+    totalRevenue?: FloatFilter<"AffiliateOffer"> | number
+    conversionRate?: FloatFilter<"AffiliateOffer"> | number
+    createdAt?: DateTimeFilter<"AffiliateOffer"> | Date | string
+    updatedAt?: DateTimeFilter<"AffiliateOffer"> | Date | string
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    affiliations?: AffiliationListRelationFilter
+  }, "id">
+
+  export type AffiliateOfferOrderByWithAggregationInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    ownerId?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    commissionType?: SortOrder
+    commissionValue?: SortOrder
+    cookieDays?: SortOrder
+    maxAffiliates?: SortOrderInput | SortOrder
+    requiresApproval?: SortOrder
+    status?: SortOrder
+    category?: SortOrderInput | SortOrder
+    tags?: SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    totalAffiliates?: SortOrder
+    totalSales?: SortOrder
+    totalRevenue?: SortOrder
+    conversionRate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AffiliateOfferCountOrderByAggregateInput
+    _avg?: AffiliateOfferAvgOrderByAggregateInput
+    _max?: AffiliateOfferMaxOrderByAggregateInput
+    _min?: AffiliateOfferMinOrderByAggregateInput
+    _sum?: AffiliateOfferSumOrderByAggregateInput
+  }
+
+  export type AffiliateOfferScalarWhereWithAggregatesInput = {
+    AND?: AffiliateOfferScalarWhereWithAggregatesInput | AffiliateOfferScalarWhereWithAggregatesInput[]
+    OR?: AffiliateOfferScalarWhereWithAggregatesInput[]
+    NOT?: AffiliateOfferScalarWhereWithAggregatesInput | AffiliateOfferScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AffiliateOffer"> | string
+    productId?: StringWithAggregatesFilter<"AffiliateOffer"> | string
+    ownerId?: StringWithAggregatesFilter<"AffiliateOffer"> | string
+    title?: StringWithAggregatesFilter<"AffiliateOffer"> | string
+    description?: StringNullableWithAggregatesFilter<"AffiliateOffer"> | string | null
+    commissionType?: EnumCommissionTypeWithAggregatesFilter<"AffiliateOffer"> | $Enums.CommissionType
+    commissionValue?: FloatWithAggregatesFilter<"AffiliateOffer"> | number
+    cookieDays?: IntWithAggregatesFilter<"AffiliateOffer"> | number
+    maxAffiliates?: IntNullableWithAggregatesFilter<"AffiliateOffer"> | number | null
+    requiresApproval?: BoolWithAggregatesFilter<"AffiliateOffer"> | boolean
+    status?: EnumOfferStatusWithAggregatesFilter<"AffiliateOffer"> | $Enums.OfferStatus
+    category?: StringNullableWithAggregatesFilter<"AffiliateOffer"> | string | null
+    tags?: StringNullableListFilter<"AffiliateOffer">
+    imageUrl?: StringNullableWithAggregatesFilter<"AffiliateOffer"> | string | null
+    totalAffiliates?: IntWithAggregatesFilter<"AffiliateOffer"> | number
+    totalSales?: IntWithAggregatesFilter<"AffiliateOffer"> | number
+    totalRevenue?: FloatWithAggregatesFilter<"AffiliateOffer"> | number
+    conversionRate?: FloatWithAggregatesFilter<"AffiliateOffer"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"AffiliateOffer"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AffiliateOffer"> | Date | string
+  }
+
+  export type AffiliationWhereInput = {
+    AND?: AffiliationWhereInput | AffiliationWhereInput[]
+    OR?: AffiliationWhereInput[]
+    NOT?: AffiliationWhereInput | AffiliationWhereInput[]
+    id?: StringFilter<"Affiliation"> | string
+    offerId?: StringFilter<"Affiliation"> | string
+    affiliateId?: StringFilter<"Affiliation"> | string
+    status?: EnumAffiliationStatusFilter<"Affiliation"> | $Enums.AffiliationStatus
+    affiliateLink?: StringFilter<"Affiliation"> | string
+    affiliateCode?: StringFilter<"Affiliation"> | string
+    totalClicks?: IntFilter<"Affiliation"> | number
+    totalSales?: IntFilter<"Affiliation"> | number
+    totalEarned?: FloatFilter<"Affiliation"> | number
+    pendingBalance?: FloatFilter<"Affiliation"> | number
+    availableBalance?: FloatFilter<"Affiliation"> | number
+    approvedAt?: DateTimeNullableFilter<"Affiliation"> | Date | string | null
+    createdAt?: DateTimeFilter<"Affiliation"> | Date | string
+    updatedAt?: DateTimeFilter<"Affiliation"> | Date | string
+    offer?: XOR<AffiliateOfferScalarRelationFilter, AffiliateOfferWhereInput>
+    affiliate?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sales?: AffiliationSaleListRelationFilter
+    orders?: OrderListRelationFilter
+  }
+
+  export type AffiliationOrderByWithRelationInput = {
+    id?: SortOrder
+    offerId?: SortOrder
+    affiliateId?: SortOrder
+    status?: SortOrder
+    affiliateLink?: SortOrder
+    affiliateCode?: SortOrder
+    totalClicks?: SortOrder
+    totalSales?: SortOrder
+    totalEarned?: SortOrder
+    pendingBalance?: SortOrder
+    availableBalance?: SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    offer?: AffiliateOfferOrderByWithRelationInput
+    affiliate?: UserOrderByWithRelationInput
+    sales?: AffiliationSaleOrderByRelationAggregateInput
+    orders?: OrderOrderByRelationAggregateInput
+  }
+
+  export type AffiliationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    affiliateLink?: string
+    affiliateCode?: string
+    AND?: AffiliationWhereInput | AffiliationWhereInput[]
+    OR?: AffiliationWhereInput[]
+    NOT?: AffiliationWhereInput | AffiliationWhereInput[]
+    offerId?: StringFilter<"Affiliation"> | string
+    affiliateId?: StringFilter<"Affiliation"> | string
+    status?: EnumAffiliationStatusFilter<"Affiliation"> | $Enums.AffiliationStatus
+    totalClicks?: IntFilter<"Affiliation"> | number
+    totalSales?: IntFilter<"Affiliation"> | number
+    totalEarned?: FloatFilter<"Affiliation"> | number
+    pendingBalance?: FloatFilter<"Affiliation"> | number
+    availableBalance?: FloatFilter<"Affiliation"> | number
+    approvedAt?: DateTimeNullableFilter<"Affiliation"> | Date | string | null
+    createdAt?: DateTimeFilter<"Affiliation"> | Date | string
+    updatedAt?: DateTimeFilter<"Affiliation"> | Date | string
+    offer?: XOR<AffiliateOfferScalarRelationFilter, AffiliateOfferWhereInput>
+    affiliate?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sales?: AffiliationSaleListRelationFilter
+    orders?: OrderListRelationFilter
+  }, "id" | "affiliateLink" | "affiliateCode">
+
+  export type AffiliationOrderByWithAggregationInput = {
+    id?: SortOrder
+    offerId?: SortOrder
+    affiliateId?: SortOrder
+    status?: SortOrder
+    affiliateLink?: SortOrder
+    affiliateCode?: SortOrder
+    totalClicks?: SortOrder
+    totalSales?: SortOrder
+    totalEarned?: SortOrder
+    pendingBalance?: SortOrder
+    availableBalance?: SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AffiliationCountOrderByAggregateInput
+    _avg?: AffiliationAvgOrderByAggregateInput
+    _max?: AffiliationMaxOrderByAggregateInput
+    _min?: AffiliationMinOrderByAggregateInput
+    _sum?: AffiliationSumOrderByAggregateInput
+  }
+
+  export type AffiliationScalarWhereWithAggregatesInput = {
+    AND?: AffiliationScalarWhereWithAggregatesInput | AffiliationScalarWhereWithAggregatesInput[]
+    OR?: AffiliationScalarWhereWithAggregatesInput[]
+    NOT?: AffiliationScalarWhereWithAggregatesInput | AffiliationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Affiliation"> | string
+    offerId?: StringWithAggregatesFilter<"Affiliation"> | string
+    affiliateId?: StringWithAggregatesFilter<"Affiliation"> | string
+    status?: EnumAffiliationStatusWithAggregatesFilter<"Affiliation"> | $Enums.AffiliationStatus
+    affiliateLink?: StringWithAggregatesFilter<"Affiliation"> | string
+    affiliateCode?: StringWithAggregatesFilter<"Affiliation"> | string
+    totalClicks?: IntWithAggregatesFilter<"Affiliation"> | number
+    totalSales?: IntWithAggregatesFilter<"Affiliation"> | number
+    totalEarned?: FloatWithAggregatesFilter<"Affiliation"> | number
+    pendingBalance?: FloatWithAggregatesFilter<"Affiliation"> | number
+    availableBalance?: FloatWithAggregatesFilter<"Affiliation"> | number
+    approvedAt?: DateTimeNullableWithAggregatesFilter<"Affiliation"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Affiliation"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Affiliation"> | Date | string
+  }
+
+  export type AffiliationSaleWhereInput = {
+    AND?: AffiliationSaleWhereInput | AffiliationSaleWhereInput[]
+    OR?: AffiliationSaleWhereInput[]
+    NOT?: AffiliationSaleWhereInput | AffiliationSaleWhereInput[]
+    id?: StringFilter<"AffiliationSale"> | string
+    affiliationId?: StringFilter<"AffiliationSale"> | string
+    orderId?: StringFilter<"AffiliationSale"> | string
+    saleAmount?: FloatFilter<"AffiliationSale"> | number
+    commission?: FloatFilter<"AffiliationSale"> | number
+    status?: EnumSaleCommissionStatusFilter<"AffiliationSale"> | $Enums.SaleCommissionStatus
+    paidAt?: DateTimeNullableFilter<"AffiliationSale"> | Date | string | null
+    createdAt?: DateTimeFilter<"AffiliationSale"> | Date | string
+    affiliation?: XOR<AffiliationScalarRelationFilter, AffiliationWhereInput>
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+  }
+
+  export type AffiliationSaleOrderByWithRelationInput = {
+    id?: SortOrder
+    affiliationId?: SortOrder
+    orderId?: SortOrder
+    saleAmount?: SortOrder
+    commission?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    affiliation?: AffiliationOrderByWithRelationInput
+    order?: OrderOrderByWithRelationInput
+  }
+
+  export type AffiliationSaleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    orderId?: string
+    AND?: AffiliationSaleWhereInput | AffiliationSaleWhereInput[]
+    OR?: AffiliationSaleWhereInput[]
+    NOT?: AffiliationSaleWhereInput | AffiliationSaleWhereInput[]
+    affiliationId?: StringFilter<"AffiliationSale"> | string
+    saleAmount?: FloatFilter<"AffiliationSale"> | number
+    commission?: FloatFilter<"AffiliationSale"> | number
+    status?: EnumSaleCommissionStatusFilter<"AffiliationSale"> | $Enums.SaleCommissionStatus
+    paidAt?: DateTimeNullableFilter<"AffiliationSale"> | Date | string | null
+    createdAt?: DateTimeFilter<"AffiliationSale"> | Date | string
+    affiliation?: XOR<AffiliationScalarRelationFilter, AffiliationWhereInput>
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+  }, "id" | "orderId">
+
+  export type AffiliationSaleOrderByWithAggregationInput = {
+    id?: SortOrder
+    affiliationId?: SortOrder
+    orderId?: SortOrder
+    saleAmount?: SortOrder
+    commission?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: AffiliationSaleCountOrderByAggregateInput
+    _avg?: AffiliationSaleAvgOrderByAggregateInput
+    _max?: AffiliationSaleMaxOrderByAggregateInput
+    _min?: AffiliationSaleMinOrderByAggregateInput
+    _sum?: AffiliationSaleSumOrderByAggregateInput
+  }
+
+  export type AffiliationSaleScalarWhereWithAggregatesInput = {
+    AND?: AffiliationSaleScalarWhereWithAggregatesInput | AffiliationSaleScalarWhereWithAggregatesInput[]
+    OR?: AffiliationSaleScalarWhereWithAggregatesInput[]
+    NOT?: AffiliationSaleScalarWhereWithAggregatesInput | AffiliationSaleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AffiliationSale"> | string
+    affiliationId?: StringWithAggregatesFilter<"AffiliationSale"> | string
+    orderId?: StringWithAggregatesFilter<"AffiliationSale"> | string
+    saleAmount?: FloatWithAggregatesFilter<"AffiliationSale"> | number
+    commission?: FloatWithAggregatesFilter<"AffiliationSale"> | number
+    status?: EnumSaleCommissionStatusWithAggregatesFilter<"AffiliationSale"> | $Enums.SaleCommissionStatus
+    paidAt?: DateTimeNullableWithAggregatesFilter<"AffiliationSale"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"AffiliationSale"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name: string
@@ -27086,6 +31912,8 @@ export namespace Prisma {
     customDomains?: CustomDomainCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -27130,6 +31958,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserUpdateInput = {
@@ -27174,6 +32004,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -27218,6 +32050,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -27473,6 +32307,7 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutProductsInput
     orders?: OrderCreateNestedManyWithoutProductInput
     checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateInput = {
@@ -27494,6 +32329,7 @@ export namespace Prisma {
     showInShowcase?: boolean
     orders?: OrderUncheckedCreateNestedManyWithoutProductInput
     checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductUpdateInput = {
@@ -27515,6 +32351,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutProductsNestedInput
     orders?: OrderUpdateManyWithoutProductNestedInput
     checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateInput = {
@@ -27536,6 +32373,7 @@ export namespace Prisma {
     showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
     checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateManyInput = {
@@ -27629,6 +32467,8 @@ export namespace Prisma {
     user: UserCreateNestedOneWithoutOrdersInput
     product: ProductCreateNestedOneWithoutOrdersInput
     pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
+    affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
+    affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUncheckedCreateInput = {
@@ -27665,7 +32505,9 @@ export namespace Prisma {
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    affiliationId?: string | null
     pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
+    affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUpdateInput = {
@@ -27703,6 +32545,8 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
     pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
+    affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
+    affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateInput = {
@@ -27739,7 +32583,9 @@ export namespace Prisma {
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
     pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
+    affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderCreateManyInput = {
@@ -27776,6 +32622,7 @@ export namespace Prisma {
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    affiliationId?: string | null
   }
 
   export type OrderUpdateManyMutationInput = {
@@ -27846,6 +32693,7 @@ export namespace Prisma {
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PendingBalanceCreateInput = {
@@ -28825,6 +33673,369 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AffiliateOfferCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    commissionType?: $Enums.CommissionType
+    commissionValue: number
+    cookieDays?: number
+    maxAffiliates?: number | null
+    requiresApproval?: boolean
+    status?: $Enums.OfferStatus
+    category?: string | null
+    tags?: AffiliateOfferCreatetagsInput | string[]
+    imageUrl?: string | null
+    totalAffiliates?: number
+    totalSales?: number
+    totalRevenue?: number
+    conversionRate?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutAffiliateOffersInput
+    owner: UserCreateNestedOneWithoutAffiliateOffersInput
+    affiliations?: AffiliationCreateNestedManyWithoutOfferInput
+  }
+
+  export type AffiliateOfferUncheckedCreateInput = {
+    id?: string
+    productId: string
+    ownerId: string
+    title: string
+    description?: string | null
+    commissionType?: $Enums.CommissionType
+    commissionValue: number
+    cookieDays?: number
+    maxAffiliates?: number | null
+    requiresApproval?: boolean
+    status?: $Enums.OfferStatus
+    category?: string | null
+    tags?: AffiliateOfferCreatetagsInput | string[]
+    imageUrl?: string | null
+    totalAffiliates?: number
+    totalSales?: number
+    totalRevenue?: number
+    conversionRate?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutOfferInput
+  }
+
+  export type AffiliateOfferUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
+    commissionValue?: FloatFieldUpdateOperationsInput | number
+    cookieDays?: IntFieldUpdateOperationsInput | number
+    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: AffiliateOfferUpdatetagsInput | string[]
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAffiliates?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalRevenue?: FloatFieldUpdateOperationsInput | number
+    conversionRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutAffiliateOffersNestedInput
+    owner?: UserUpdateOneRequiredWithoutAffiliateOffersNestedInput
+    affiliations?: AffiliationUpdateManyWithoutOfferNestedInput
+  }
+
+  export type AffiliateOfferUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
+    commissionValue?: FloatFieldUpdateOperationsInput | number
+    cookieDays?: IntFieldUpdateOperationsInput | number
+    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: AffiliateOfferUpdatetagsInput | string[]
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAffiliates?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalRevenue?: FloatFieldUpdateOperationsInput | number
+    conversionRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliations?: AffiliationUncheckedUpdateManyWithoutOfferNestedInput
+  }
+
+  export type AffiliateOfferCreateManyInput = {
+    id?: string
+    productId: string
+    ownerId: string
+    title: string
+    description?: string | null
+    commissionType?: $Enums.CommissionType
+    commissionValue: number
+    cookieDays?: number
+    maxAffiliates?: number | null
+    requiresApproval?: boolean
+    status?: $Enums.OfferStatus
+    category?: string | null
+    tags?: AffiliateOfferCreatetagsInput | string[]
+    imageUrl?: string | null
+    totalAffiliates?: number
+    totalSales?: number
+    totalRevenue?: number
+    conversionRate?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AffiliateOfferUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
+    commissionValue?: FloatFieldUpdateOperationsInput | number
+    cookieDays?: IntFieldUpdateOperationsInput | number
+    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: AffiliateOfferUpdatetagsInput | string[]
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAffiliates?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalRevenue?: FloatFieldUpdateOperationsInput | number
+    conversionRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliateOfferUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
+    commissionValue?: FloatFieldUpdateOperationsInput | number
+    cookieDays?: IntFieldUpdateOperationsInput | number
+    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: AffiliateOfferUpdatetagsInput | string[]
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAffiliates?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalRevenue?: FloatFieldUpdateOperationsInput | number
+    conversionRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliationCreateInput = {
+    id?: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    offer: AffiliateOfferCreateNestedOneWithoutAffiliationsInput
+    affiliate: UserCreateNestedOneWithoutAffiliationsInput
+    sales?: AffiliationSaleCreateNestedManyWithoutAffiliationInput
+    orders?: OrderCreateNestedManyWithoutAffiliationInput
+  }
+
+  export type AffiliationUncheckedCreateInput = {
+    id?: string
+    offerId: string
+    affiliateId: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sales?: AffiliationSaleUncheckedCreateNestedManyWithoutAffiliationInput
+    orders?: OrderUncheckedCreateNestedManyWithoutAffiliationInput
+  }
+
+  export type AffiliationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    offer?: AffiliateOfferUpdateOneRequiredWithoutAffiliationsNestedInput
+    affiliate?: UserUpdateOneRequiredWithoutAffiliationsNestedInput
+    sales?: AffiliationSaleUpdateManyWithoutAffiliationNestedInput
+    orders?: OrderUpdateManyWithoutAffiliationNestedInput
+  }
+
+  export type AffiliationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    offerId?: StringFieldUpdateOperationsInput | string
+    affiliateId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sales?: AffiliationSaleUncheckedUpdateManyWithoutAffiliationNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutAffiliationNestedInput
+  }
+
+  export type AffiliationCreateManyInput = {
+    id?: string
+    offerId: string
+    affiliateId: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AffiliationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    offerId?: StringFieldUpdateOperationsInput | string
+    affiliateId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliationSaleCreateInput = {
+    id?: string
+    saleAmount: number
+    commission: number
+    status?: $Enums.SaleCommissionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+    affiliation: AffiliationCreateNestedOneWithoutSalesInput
+    order: OrderCreateNestedOneWithoutAffiliationSaleInput
+  }
+
+  export type AffiliationSaleUncheckedCreateInput = {
+    id?: string
+    affiliationId: string
+    orderId: string
+    saleAmount: number
+    commission: number
+    status?: $Enums.SaleCommissionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type AffiliationSaleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commission?: FloatFieldUpdateOperationsInput | number
+    status?: EnumSaleCommissionStatusFieldUpdateOperationsInput | $Enums.SaleCommissionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliation?: AffiliationUpdateOneRequiredWithoutSalesNestedInput
+    order?: OrderUpdateOneRequiredWithoutAffiliationSaleNestedInput
+  }
+
+  export type AffiliationSaleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    affiliationId?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commission?: FloatFieldUpdateOperationsInput | number
+    status?: EnumSaleCommissionStatusFieldUpdateOperationsInput | $Enums.SaleCommissionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliationSaleCreateManyInput = {
+    id?: string
+    affiliationId: string
+    orderId: string
+    saleAmount: number
+    commission: number
+    status?: $Enums.SaleCommissionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type AffiliationSaleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commission?: FloatFieldUpdateOperationsInput | number
+    status?: EnumSaleCommissionStatusFieldUpdateOperationsInput | $Enums.SaleCommissionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliationSaleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    affiliationId?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commission?: FloatFieldUpdateOperationsInput | number
+    status?: EnumSaleCommissionStatusFieldUpdateOperationsInput | $Enums.SaleCommissionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -29005,6 +34216,18 @@ export namespace Prisma {
     none?: AuditLogWhereInput
   }
 
+  export type AffiliateOfferListRelationFilter = {
+    every?: AffiliateOfferWhereInput
+    some?: AffiliateOfferWhereInput
+    none?: AffiliateOfferWhereInput
+  }
+
+  export type AffiliationListRelationFilter = {
+    every?: AffiliationWhereInput
+    some?: AffiliationWhereInput
+    none?: AffiliationWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -29055,6 +34278,14 @@ export namespace Prisma {
   }
 
   export type AuditLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AffiliateOfferOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AffiliationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -29554,6 +34785,16 @@ export namespace Prisma {
     isNot?: ProductWhereInput
   }
 
+  export type AffiliationNullableScalarRelationFilter = {
+    is?: AffiliationWhereInput | null
+    isNot?: AffiliationWhereInput | null
+  }
+
+  export type AffiliationSaleNullableScalarRelationFilter = {
+    is?: AffiliationSaleWhereInput | null
+    isNot?: AffiliationSaleWhereInput | null
+  }
+
   export type OrderCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -29588,6 +34829,7 @@ export namespace Prisma {
     statusHistory?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    affiliationId?: SortOrder
   }
 
   export type OrderAvgOrderByAggregateInput = {
@@ -29629,6 +34871,7 @@ export namespace Prisma {
     isMatured?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    affiliationId?: SortOrder
   }
 
   export type OrderMinOrderByAggregateInput = {
@@ -29663,6 +34906,7 @@ export namespace Prisma {
     isMatured?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    affiliationId?: SortOrder
   }
 
   export type OrderSumOrderByAggregateInput = {
@@ -30393,6 +35637,291 @@ export namespace Prisma {
     _max?: NestedEnumDomainStatusFilter<$PrismaModel>
   }
 
+  export type EnumCommissionTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CommissionType | EnumCommissionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CommissionType[] | ListEnumCommissionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CommissionType[] | ListEnumCommissionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCommissionTypeFilter<$PrismaModel> | $Enums.CommissionType
+  }
+
+  export type EnumOfferStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.OfferStatus | EnumOfferStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OfferStatus[] | ListEnumOfferStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OfferStatus[] | ListEnumOfferStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOfferStatusFilter<$PrismaModel> | $Enums.OfferStatus
+  }
+
+  export type AffiliateOfferCountOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    ownerId?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    commissionType?: SortOrder
+    commissionValue?: SortOrder
+    cookieDays?: SortOrder
+    maxAffiliates?: SortOrder
+    requiresApproval?: SortOrder
+    status?: SortOrder
+    category?: SortOrder
+    tags?: SortOrder
+    imageUrl?: SortOrder
+    totalAffiliates?: SortOrder
+    totalSales?: SortOrder
+    totalRevenue?: SortOrder
+    conversionRate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AffiliateOfferAvgOrderByAggregateInput = {
+    commissionValue?: SortOrder
+    cookieDays?: SortOrder
+    maxAffiliates?: SortOrder
+    totalAffiliates?: SortOrder
+    totalSales?: SortOrder
+    totalRevenue?: SortOrder
+    conversionRate?: SortOrder
+  }
+
+  export type AffiliateOfferMaxOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    ownerId?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    commissionType?: SortOrder
+    commissionValue?: SortOrder
+    cookieDays?: SortOrder
+    maxAffiliates?: SortOrder
+    requiresApproval?: SortOrder
+    status?: SortOrder
+    category?: SortOrder
+    imageUrl?: SortOrder
+    totalAffiliates?: SortOrder
+    totalSales?: SortOrder
+    totalRevenue?: SortOrder
+    conversionRate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AffiliateOfferMinOrderByAggregateInput = {
+    id?: SortOrder
+    productId?: SortOrder
+    ownerId?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    commissionType?: SortOrder
+    commissionValue?: SortOrder
+    cookieDays?: SortOrder
+    maxAffiliates?: SortOrder
+    requiresApproval?: SortOrder
+    status?: SortOrder
+    category?: SortOrder
+    imageUrl?: SortOrder
+    totalAffiliates?: SortOrder
+    totalSales?: SortOrder
+    totalRevenue?: SortOrder
+    conversionRate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AffiliateOfferSumOrderByAggregateInput = {
+    commissionValue?: SortOrder
+    cookieDays?: SortOrder
+    maxAffiliates?: SortOrder
+    totalAffiliates?: SortOrder
+    totalSales?: SortOrder
+    totalRevenue?: SortOrder
+    conversionRate?: SortOrder
+  }
+
+  export type EnumCommissionTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CommissionType | EnumCommissionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CommissionType[] | ListEnumCommissionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CommissionType[] | ListEnumCommissionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCommissionTypeWithAggregatesFilter<$PrismaModel> | $Enums.CommissionType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCommissionTypeFilter<$PrismaModel>
+    _max?: NestedEnumCommissionTypeFilter<$PrismaModel>
+  }
+
+  export type EnumOfferStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.OfferStatus | EnumOfferStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OfferStatus[] | ListEnumOfferStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OfferStatus[] | ListEnumOfferStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOfferStatusWithAggregatesFilter<$PrismaModel> | $Enums.OfferStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumOfferStatusFilter<$PrismaModel>
+    _max?: NestedEnumOfferStatusFilter<$PrismaModel>
+  }
+
+  export type EnumAffiliationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AffiliationStatus | EnumAffiliationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AffiliationStatus[] | ListEnumAffiliationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AffiliationStatus[] | ListEnumAffiliationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAffiliationStatusFilter<$PrismaModel> | $Enums.AffiliationStatus
+  }
+
+  export type AffiliateOfferScalarRelationFilter = {
+    is?: AffiliateOfferWhereInput
+    isNot?: AffiliateOfferWhereInput
+  }
+
+  export type AffiliationSaleListRelationFilter = {
+    every?: AffiliationSaleWhereInput
+    some?: AffiliationSaleWhereInput
+    none?: AffiliationSaleWhereInput
+  }
+
+  export type AffiliationSaleOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AffiliationCountOrderByAggregateInput = {
+    id?: SortOrder
+    offerId?: SortOrder
+    affiliateId?: SortOrder
+    status?: SortOrder
+    affiliateLink?: SortOrder
+    affiliateCode?: SortOrder
+    totalClicks?: SortOrder
+    totalSales?: SortOrder
+    totalEarned?: SortOrder
+    pendingBalance?: SortOrder
+    availableBalance?: SortOrder
+    approvedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AffiliationAvgOrderByAggregateInput = {
+    totalClicks?: SortOrder
+    totalSales?: SortOrder
+    totalEarned?: SortOrder
+    pendingBalance?: SortOrder
+    availableBalance?: SortOrder
+  }
+
+  export type AffiliationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    offerId?: SortOrder
+    affiliateId?: SortOrder
+    status?: SortOrder
+    affiliateLink?: SortOrder
+    affiliateCode?: SortOrder
+    totalClicks?: SortOrder
+    totalSales?: SortOrder
+    totalEarned?: SortOrder
+    pendingBalance?: SortOrder
+    availableBalance?: SortOrder
+    approvedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AffiliationMinOrderByAggregateInput = {
+    id?: SortOrder
+    offerId?: SortOrder
+    affiliateId?: SortOrder
+    status?: SortOrder
+    affiliateLink?: SortOrder
+    affiliateCode?: SortOrder
+    totalClicks?: SortOrder
+    totalSales?: SortOrder
+    totalEarned?: SortOrder
+    pendingBalance?: SortOrder
+    availableBalance?: SortOrder
+    approvedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AffiliationSumOrderByAggregateInput = {
+    totalClicks?: SortOrder
+    totalSales?: SortOrder
+    totalEarned?: SortOrder
+    pendingBalance?: SortOrder
+    availableBalance?: SortOrder
+  }
+
+  export type EnumAffiliationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AffiliationStatus | EnumAffiliationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AffiliationStatus[] | ListEnumAffiliationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AffiliationStatus[] | ListEnumAffiliationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAffiliationStatusWithAggregatesFilter<$PrismaModel> | $Enums.AffiliationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAffiliationStatusFilter<$PrismaModel>
+    _max?: NestedEnumAffiliationStatusFilter<$PrismaModel>
+  }
+
+  export type EnumSaleCommissionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SaleCommissionStatus | EnumSaleCommissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SaleCommissionStatus[] | ListEnumSaleCommissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SaleCommissionStatus[] | ListEnumSaleCommissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSaleCommissionStatusFilter<$PrismaModel> | $Enums.SaleCommissionStatus
+  }
+
+  export type AffiliationScalarRelationFilter = {
+    is?: AffiliationWhereInput
+    isNot?: AffiliationWhereInput
+  }
+
+  export type AffiliationSaleCountOrderByAggregateInput = {
+    id?: SortOrder
+    affiliationId?: SortOrder
+    orderId?: SortOrder
+    saleAmount?: SortOrder
+    commission?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AffiliationSaleAvgOrderByAggregateInput = {
+    saleAmount?: SortOrder
+    commission?: SortOrder
+  }
+
+  export type AffiliationSaleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    affiliationId?: SortOrder
+    orderId?: SortOrder
+    saleAmount?: SortOrder
+    commission?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AffiliationSaleMinOrderByAggregateInput = {
+    id?: SortOrder
+    affiliationId?: SortOrder
+    orderId?: SortOrder
+    saleAmount?: SortOrder
+    commission?: SortOrder
+    status?: SortOrder
+    paidAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AffiliationSaleSumOrderByAggregateInput = {
+    saleAmount?: SortOrder
+    commission?: SortOrder
+  }
+
+  export type EnumSaleCommissionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SaleCommissionStatus | EnumSaleCommissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SaleCommissionStatus[] | ListEnumSaleCommissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SaleCommissionStatus[] | ListEnumSaleCommissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSaleCommissionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SaleCommissionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSaleCommissionStatusFilter<$PrismaModel>
+    _max?: NestedEnumSaleCommissionStatusFilter<$PrismaModel>
+  }
+
   export type ProductCreateNestedManyWithoutUserInput = {
     create?: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput> | ProductCreateWithoutUserInput[] | ProductUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ProductCreateOrConnectWithoutUserInput | ProductCreateOrConnectWithoutUserInput[]
@@ -30477,6 +36006,20 @@ export namespace Prisma {
     connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
   }
 
+  export type AffiliateOfferCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<AffiliateOfferCreateWithoutOwnerInput, AffiliateOfferUncheckedCreateWithoutOwnerInput> | AffiliateOfferCreateWithoutOwnerInput[] | AffiliateOfferUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutOwnerInput | AffiliateOfferCreateOrConnectWithoutOwnerInput[]
+    createMany?: AffiliateOfferCreateManyOwnerInputEnvelope
+    connect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+  }
+
+  export type AffiliationCreateNestedManyWithoutAffiliateInput = {
+    create?: XOR<AffiliationCreateWithoutAffiliateInput, AffiliationUncheckedCreateWithoutAffiliateInput> | AffiliationCreateWithoutAffiliateInput[] | AffiliationUncheckedCreateWithoutAffiliateInput[]
+    connectOrCreate?: AffiliationCreateOrConnectWithoutAffiliateInput | AffiliationCreateOrConnectWithoutAffiliateInput[]
+    createMany?: AffiliationCreateManyAffiliateInputEnvelope
+    connect?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+  }
+
   export type ProductUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput> | ProductCreateWithoutUserInput[] | ProductUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ProductCreateOrConnectWithoutUserInput | ProductCreateOrConnectWithoutUserInput[]
@@ -30559,6 +36102,20 @@ export namespace Prisma {
     connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
     createMany?: AuditLogCreateManyUserInputEnvelope
     connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  }
+
+  export type AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<AffiliateOfferCreateWithoutOwnerInput, AffiliateOfferUncheckedCreateWithoutOwnerInput> | AffiliateOfferCreateWithoutOwnerInput[] | AffiliateOfferUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutOwnerInput | AffiliateOfferCreateOrConnectWithoutOwnerInput[]
+    createMany?: AffiliateOfferCreateManyOwnerInputEnvelope
+    connect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+  }
+
+  export type AffiliationUncheckedCreateNestedManyWithoutAffiliateInput = {
+    create?: XOR<AffiliationCreateWithoutAffiliateInput, AffiliationUncheckedCreateWithoutAffiliateInput> | AffiliationCreateWithoutAffiliateInput[] | AffiliationUncheckedCreateWithoutAffiliateInput[]
+    connectOrCreate?: AffiliationCreateOrConnectWithoutAffiliateInput | AffiliationCreateOrConnectWithoutAffiliateInput[]
+    createMany?: AffiliationCreateManyAffiliateInputEnvelope
+    connect?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -30769,6 +36326,34 @@ export namespace Prisma {
     deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
   }
 
+  export type AffiliateOfferUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<AffiliateOfferCreateWithoutOwnerInput, AffiliateOfferUncheckedCreateWithoutOwnerInput> | AffiliateOfferCreateWithoutOwnerInput[] | AffiliateOfferUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutOwnerInput | AffiliateOfferCreateOrConnectWithoutOwnerInput[]
+    upsert?: AffiliateOfferUpsertWithWhereUniqueWithoutOwnerInput | AffiliateOfferUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: AffiliateOfferCreateManyOwnerInputEnvelope
+    set?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    disconnect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    delete?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    connect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    update?: AffiliateOfferUpdateWithWhereUniqueWithoutOwnerInput | AffiliateOfferUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: AffiliateOfferUpdateManyWithWhereWithoutOwnerInput | AffiliateOfferUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: AffiliateOfferScalarWhereInput | AffiliateOfferScalarWhereInput[]
+  }
+
+  export type AffiliationUpdateManyWithoutAffiliateNestedInput = {
+    create?: XOR<AffiliationCreateWithoutAffiliateInput, AffiliationUncheckedCreateWithoutAffiliateInput> | AffiliationCreateWithoutAffiliateInput[] | AffiliationUncheckedCreateWithoutAffiliateInput[]
+    connectOrCreate?: AffiliationCreateOrConnectWithoutAffiliateInput | AffiliationCreateOrConnectWithoutAffiliateInput[]
+    upsert?: AffiliationUpsertWithWhereUniqueWithoutAffiliateInput | AffiliationUpsertWithWhereUniqueWithoutAffiliateInput[]
+    createMany?: AffiliationCreateManyAffiliateInputEnvelope
+    set?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    disconnect?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    delete?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    connect?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    update?: AffiliationUpdateWithWhereUniqueWithoutAffiliateInput | AffiliationUpdateWithWhereUniqueWithoutAffiliateInput[]
+    updateMany?: AffiliationUpdateManyWithWhereWithoutAffiliateInput | AffiliationUpdateManyWithWhereWithoutAffiliateInput[]
+    deleteMany?: AffiliationScalarWhereInput | AffiliationScalarWhereInput[]
+  }
+
   export type ProductUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput> | ProductCreateWithoutUserInput[] | ProductUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ProductCreateOrConnectWithoutUserInput | ProductCreateOrConnectWithoutUserInput[]
@@ -30937,6 +36522,34 @@ export namespace Prisma {
     deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
   }
 
+  export type AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<AffiliateOfferCreateWithoutOwnerInput, AffiliateOfferUncheckedCreateWithoutOwnerInput> | AffiliateOfferCreateWithoutOwnerInput[] | AffiliateOfferUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutOwnerInput | AffiliateOfferCreateOrConnectWithoutOwnerInput[]
+    upsert?: AffiliateOfferUpsertWithWhereUniqueWithoutOwnerInput | AffiliateOfferUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: AffiliateOfferCreateManyOwnerInputEnvelope
+    set?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    disconnect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    delete?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    connect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    update?: AffiliateOfferUpdateWithWhereUniqueWithoutOwnerInput | AffiliateOfferUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: AffiliateOfferUpdateManyWithWhereWithoutOwnerInput | AffiliateOfferUpdateManyWithWhereWithoutOwnerInput[]
+    deleteMany?: AffiliateOfferScalarWhereInput | AffiliateOfferScalarWhereInput[]
+  }
+
+  export type AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput = {
+    create?: XOR<AffiliationCreateWithoutAffiliateInput, AffiliationUncheckedCreateWithoutAffiliateInput> | AffiliationCreateWithoutAffiliateInput[] | AffiliationUncheckedCreateWithoutAffiliateInput[]
+    connectOrCreate?: AffiliationCreateOrConnectWithoutAffiliateInput | AffiliationCreateOrConnectWithoutAffiliateInput[]
+    upsert?: AffiliationUpsertWithWhereUniqueWithoutAffiliateInput | AffiliationUpsertWithWhereUniqueWithoutAffiliateInput[]
+    createMany?: AffiliationCreateManyAffiliateInputEnvelope
+    set?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    disconnect?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    delete?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    connect?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    update?: AffiliationUpdateWithWhereUniqueWithoutAffiliateInput | AffiliationUpdateWithWhereUniqueWithoutAffiliateInput[]
+    updateMany?: AffiliationUpdateManyWithWhereWithoutAffiliateInput | AffiliationUpdateManyWithWhereWithoutAffiliateInput[]
+    deleteMany?: AffiliationScalarWhereInput | AffiliationScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutNotificationsInput = {
     create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
@@ -30989,6 +36602,13 @@ export namespace Prisma {
     connect?: CheckoutLinkWhereUniqueInput | CheckoutLinkWhereUniqueInput[]
   }
 
+  export type AffiliateOfferCreateNestedManyWithoutProductInput = {
+    create?: XOR<AffiliateOfferCreateWithoutProductInput, AffiliateOfferUncheckedCreateWithoutProductInput> | AffiliateOfferCreateWithoutProductInput[] | AffiliateOfferUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutProductInput | AffiliateOfferCreateOrConnectWithoutProductInput[]
+    createMany?: AffiliateOfferCreateManyProductInputEnvelope
+    connect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+  }
+
   export type OrderUncheckedCreateNestedManyWithoutProductInput = {
     create?: XOR<OrderCreateWithoutProductInput, OrderUncheckedCreateWithoutProductInput> | OrderCreateWithoutProductInput[] | OrderUncheckedCreateWithoutProductInput[]
     connectOrCreate?: OrderCreateOrConnectWithoutProductInput | OrderCreateOrConnectWithoutProductInput[]
@@ -31001,6 +36621,13 @@ export namespace Prisma {
     connectOrCreate?: CheckoutLinkCreateOrConnectWithoutProductInput | CheckoutLinkCreateOrConnectWithoutProductInput[]
     createMany?: CheckoutLinkCreateManyProductInputEnvelope
     connect?: CheckoutLinkWhereUniqueInput | CheckoutLinkWhereUniqueInput[]
+  }
+
+  export type AffiliateOfferUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<AffiliateOfferCreateWithoutProductInput, AffiliateOfferUncheckedCreateWithoutProductInput> | AffiliateOfferCreateWithoutProductInput[] | AffiliateOfferUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutProductInput | AffiliateOfferCreateOrConnectWithoutProductInput[]
+    createMany?: AffiliateOfferCreateManyProductInputEnvelope
+    connect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
   }
 
   export type EnumProductTypeFieldUpdateOperationsInput = {
@@ -31055,6 +36682,20 @@ export namespace Prisma {
     deleteMany?: CheckoutLinkScalarWhereInput | CheckoutLinkScalarWhereInput[]
   }
 
+  export type AffiliateOfferUpdateManyWithoutProductNestedInput = {
+    create?: XOR<AffiliateOfferCreateWithoutProductInput, AffiliateOfferUncheckedCreateWithoutProductInput> | AffiliateOfferCreateWithoutProductInput[] | AffiliateOfferUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutProductInput | AffiliateOfferCreateOrConnectWithoutProductInput[]
+    upsert?: AffiliateOfferUpsertWithWhereUniqueWithoutProductInput | AffiliateOfferUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: AffiliateOfferCreateManyProductInputEnvelope
+    set?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    disconnect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    delete?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    connect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    update?: AffiliateOfferUpdateWithWhereUniqueWithoutProductInput | AffiliateOfferUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: AffiliateOfferUpdateManyWithWhereWithoutProductInput | AffiliateOfferUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: AffiliateOfferScalarWhereInput | AffiliateOfferScalarWhereInput[]
+  }
+
   export type OrderUncheckedUpdateManyWithoutProductNestedInput = {
     create?: XOR<OrderCreateWithoutProductInput, OrderUncheckedCreateWithoutProductInput> | OrderCreateWithoutProductInput[] | OrderUncheckedCreateWithoutProductInput[]
     connectOrCreate?: OrderCreateOrConnectWithoutProductInput | OrderCreateOrConnectWithoutProductInput[]
@@ -31083,6 +36724,20 @@ export namespace Prisma {
     deleteMany?: CheckoutLinkScalarWhereInput | CheckoutLinkScalarWhereInput[]
   }
 
+  export type AffiliateOfferUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<AffiliateOfferCreateWithoutProductInput, AffiliateOfferUncheckedCreateWithoutProductInput> | AffiliateOfferCreateWithoutProductInput[] | AffiliateOfferUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutProductInput | AffiliateOfferCreateOrConnectWithoutProductInput[]
+    upsert?: AffiliateOfferUpsertWithWhereUniqueWithoutProductInput | AffiliateOfferUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: AffiliateOfferCreateManyProductInputEnvelope
+    set?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    disconnect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    delete?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    connect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    update?: AffiliateOfferUpdateWithWhereUniqueWithoutProductInput | AffiliateOfferUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: AffiliateOfferUpdateManyWithWhereWithoutProductInput | AffiliateOfferUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: AffiliateOfferScalarWhereInput | AffiliateOfferScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutOrdersInput = {
     create?: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
     connectOrCreate?: UserCreateOrConnectWithoutOrdersInput
@@ -31102,11 +36757,29 @@ export namespace Prisma {
     connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
   }
 
+  export type AffiliationCreateNestedOneWithoutOrdersInput = {
+    create?: XOR<AffiliationCreateWithoutOrdersInput, AffiliationUncheckedCreateWithoutOrdersInput>
+    connectOrCreate?: AffiliationCreateOrConnectWithoutOrdersInput
+    connect?: AffiliationWhereUniqueInput
+  }
+
+  export type AffiliationSaleCreateNestedOneWithoutOrderInput = {
+    create?: XOR<AffiliationSaleCreateWithoutOrderInput, AffiliationSaleUncheckedCreateWithoutOrderInput>
+    connectOrCreate?: AffiliationSaleCreateOrConnectWithoutOrderInput
+    connect?: AffiliationSaleWhereUniqueInput
+  }
+
   export type PendingBalanceUncheckedCreateNestedManyWithoutOrderInput = {
     create?: XOR<PendingBalanceCreateWithoutOrderInput, PendingBalanceUncheckedCreateWithoutOrderInput> | PendingBalanceCreateWithoutOrderInput[] | PendingBalanceUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: PendingBalanceCreateOrConnectWithoutOrderInput | PendingBalanceCreateOrConnectWithoutOrderInput[]
     createMany?: PendingBalanceCreateManyOrderInputEnvelope
     connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+  }
+
+  export type AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput = {
+    create?: XOR<AffiliationSaleCreateWithoutOrderInput, AffiliationSaleUncheckedCreateWithoutOrderInput>
+    connectOrCreate?: AffiliationSaleCreateOrConnectWithoutOrderInput
+    connect?: AffiliationSaleWhereUniqueInput
   }
 
   export type EnumOrderStatusFieldUpdateOperationsInput = {
@@ -31151,6 +36824,26 @@ export namespace Prisma {
     deleteMany?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
   }
 
+  export type AffiliationUpdateOneWithoutOrdersNestedInput = {
+    create?: XOR<AffiliationCreateWithoutOrdersInput, AffiliationUncheckedCreateWithoutOrdersInput>
+    connectOrCreate?: AffiliationCreateOrConnectWithoutOrdersInput
+    upsert?: AffiliationUpsertWithoutOrdersInput
+    disconnect?: AffiliationWhereInput | boolean
+    delete?: AffiliationWhereInput | boolean
+    connect?: AffiliationWhereUniqueInput
+    update?: XOR<XOR<AffiliationUpdateToOneWithWhereWithoutOrdersInput, AffiliationUpdateWithoutOrdersInput>, AffiliationUncheckedUpdateWithoutOrdersInput>
+  }
+
+  export type AffiliationSaleUpdateOneWithoutOrderNestedInput = {
+    create?: XOR<AffiliationSaleCreateWithoutOrderInput, AffiliationSaleUncheckedCreateWithoutOrderInput>
+    connectOrCreate?: AffiliationSaleCreateOrConnectWithoutOrderInput
+    upsert?: AffiliationSaleUpsertWithoutOrderInput
+    disconnect?: AffiliationSaleWhereInput | boolean
+    delete?: AffiliationSaleWhereInput | boolean
+    connect?: AffiliationSaleWhereUniqueInput
+    update?: XOR<XOR<AffiliationSaleUpdateToOneWithWhereWithoutOrderInput, AffiliationSaleUpdateWithoutOrderInput>, AffiliationSaleUncheckedUpdateWithoutOrderInput>
+  }
+
   export type PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput = {
     create?: XOR<PendingBalanceCreateWithoutOrderInput, PendingBalanceUncheckedCreateWithoutOrderInput> | PendingBalanceCreateWithoutOrderInput[] | PendingBalanceUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: PendingBalanceCreateOrConnectWithoutOrderInput | PendingBalanceCreateOrConnectWithoutOrderInput[]
@@ -31163,6 +36856,16 @@ export namespace Prisma {
     update?: PendingBalanceUpdateWithWhereUniqueWithoutOrderInput | PendingBalanceUpdateWithWhereUniqueWithoutOrderInput[]
     updateMany?: PendingBalanceUpdateManyWithWhereWithoutOrderInput | PendingBalanceUpdateManyWithWhereWithoutOrderInput[]
     deleteMany?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
+  }
+
+  export type AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput = {
+    create?: XOR<AffiliationSaleCreateWithoutOrderInput, AffiliationSaleUncheckedCreateWithoutOrderInput>
+    connectOrCreate?: AffiliationSaleCreateOrConnectWithoutOrderInput
+    upsert?: AffiliationSaleUpsertWithoutOrderInput
+    disconnect?: AffiliationSaleWhereInput | boolean
+    delete?: AffiliationSaleWhereInput | boolean
+    connect?: AffiliationSaleWhereUniqueInput
+    update?: XOR<XOR<AffiliationSaleUpdateToOneWithWhereWithoutOrderInput, AffiliationSaleUpdateWithoutOrderInput>, AffiliationSaleUncheckedUpdateWithoutOrderInput>
   }
 
   export type UserCreateNestedOneWithoutPendingBalancesInput = {
@@ -31348,6 +37051,241 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutCustomDomainsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCustomDomainsInput, UserUpdateWithoutCustomDomainsInput>, UserUncheckedUpdateWithoutCustomDomainsInput>
+  }
+
+  export type AffiliateOfferCreatetagsInput = {
+    set: string[]
+  }
+
+  export type ProductCreateNestedOneWithoutAffiliateOffersInput = {
+    create?: XOR<ProductCreateWithoutAffiliateOffersInput, ProductUncheckedCreateWithoutAffiliateOffersInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutAffiliateOffersInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAffiliateOffersInput = {
+    create?: XOR<UserCreateWithoutAffiliateOffersInput, UserUncheckedCreateWithoutAffiliateOffersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAffiliateOffersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type AffiliationCreateNestedManyWithoutOfferInput = {
+    create?: XOR<AffiliationCreateWithoutOfferInput, AffiliationUncheckedCreateWithoutOfferInput> | AffiliationCreateWithoutOfferInput[] | AffiliationUncheckedCreateWithoutOfferInput[]
+    connectOrCreate?: AffiliationCreateOrConnectWithoutOfferInput | AffiliationCreateOrConnectWithoutOfferInput[]
+    createMany?: AffiliationCreateManyOfferInputEnvelope
+    connect?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+  }
+
+  export type AffiliationUncheckedCreateNestedManyWithoutOfferInput = {
+    create?: XOR<AffiliationCreateWithoutOfferInput, AffiliationUncheckedCreateWithoutOfferInput> | AffiliationCreateWithoutOfferInput[] | AffiliationUncheckedCreateWithoutOfferInput[]
+    connectOrCreate?: AffiliationCreateOrConnectWithoutOfferInput | AffiliationCreateOrConnectWithoutOfferInput[]
+    createMany?: AffiliationCreateManyOfferInputEnvelope
+    connect?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+  }
+
+  export type EnumCommissionTypeFieldUpdateOperationsInput = {
+    set?: $Enums.CommissionType
+  }
+
+  export type EnumOfferStatusFieldUpdateOperationsInput = {
+    set?: $Enums.OfferStatus
+  }
+
+  export type AffiliateOfferUpdatetagsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type ProductUpdateOneRequiredWithoutAffiliateOffersNestedInput = {
+    create?: XOR<ProductCreateWithoutAffiliateOffersInput, ProductUncheckedCreateWithoutAffiliateOffersInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutAffiliateOffersInput
+    upsert?: ProductUpsertWithoutAffiliateOffersInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutAffiliateOffersInput, ProductUpdateWithoutAffiliateOffersInput>, ProductUncheckedUpdateWithoutAffiliateOffersInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutAffiliateOffersNestedInput = {
+    create?: XOR<UserCreateWithoutAffiliateOffersInput, UserUncheckedCreateWithoutAffiliateOffersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAffiliateOffersInput
+    upsert?: UserUpsertWithoutAffiliateOffersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAffiliateOffersInput, UserUpdateWithoutAffiliateOffersInput>, UserUncheckedUpdateWithoutAffiliateOffersInput>
+  }
+
+  export type AffiliationUpdateManyWithoutOfferNestedInput = {
+    create?: XOR<AffiliationCreateWithoutOfferInput, AffiliationUncheckedCreateWithoutOfferInput> | AffiliationCreateWithoutOfferInput[] | AffiliationUncheckedCreateWithoutOfferInput[]
+    connectOrCreate?: AffiliationCreateOrConnectWithoutOfferInput | AffiliationCreateOrConnectWithoutOfferInput[]
+    upsert?: AffiliationUpsertWithWhereUniqueWithoutOfferInput | AffiliationUpsertWithWhereUniqueWithoutOfferInput[]
+    createMany?: AffiliationCreateManyOfferInputEnvelope
+    set?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    disconnect?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    delete?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    connect?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    update?: AffiliationUpdateWithWhereUniqueWithoutOfferInput | AffiliationUpdateWithWhereUniqueWithoutOfferInput[]
+    updateMany?: AffiliationUpdateManyWithWhereWithoutOfferInput | AffiliationUpdateManyWithWhereWithoutOfferInput[]
+    deleteMany?: AffiliationScalarWhereInput | AffiliationScalarWhereInput[]
+  }
+
+  export type AffiliationUncheckedUpdateManyWithoutOfferNestedInput = {
+    create?: XOR<AffiliationCreateWithoutOfferInput, AffiliationUncheckedCreateWithoutOfferInput> | AffiliationCreateWithoutOfferInput[] | AffiliationUncheckedCreateWithoutOfferInput[]
+    connectOrCreate?: AffiliationCreateOrConnectWithoutOfferInput | AffiliationCreateOrConnectWithoutOfferInput[]
+    upsert?: AffiliationUpsertWithWhereUniqueWithoutOfferInput | AffiliationUpsertWithWhereUniqueWithoutOfferInput[]
+    createMany?: AffiliationCreateManyOfferInputEnvelope
+    set?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    disconnect?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    delete?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    connect?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+    update?: AffiliationUpdateWithWhereUniqueWithoutOfferInput | AffiliationUpdateWithWhereUniqueWithoutOfferInput[]
+    updateMany?: AffiliationUpdateManyWithWhereWithoutOfferInput | AffiliationUpdateManyWithWhereWithoutOfferInput[]
+    deleteMany?: AffiliationScalarWhereInput | AffiliationScalarWhereInput[]
+  }
+
+  export type AffiliateOfferCreateNestedOneWithoutAffiliationsInput = {
+    create?: XOR<AffiliateOfferCreateWithoutAffiliationsInput, AffiliateOfferUncheckedCreateWithoutAffiliationsInput>
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutAffiliationsInput
+    connect?: AffiliateOfferWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAffiliationsInput = {
+    create?: XOR<UserCreateWithoutAffiliationsInput, UserUncheckedCreateWithoutAffiliationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAffiliationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type AffiliationSaleCreateNestedManyWithoutAffiliationInput = {
+    create?: XOR<AffiliationSaleCreateWithoutAffiliationInput, AffiliationSaleUncheckedCreateWithoutAffiliationInput> | AffiliationSaleCreateWithoutAffiliationInput[] | AffiliationSaleUncheckedCreateWithoutAffiliationInput[]
+    connectOrCreate?: AffiliationSaleCreateOrConnectWithoutAffiliationInput | AffiliationSaleCreateOrConnectWithoutAffiliationInput[]
+    createMany?: AffiliationSaleCreateManyAffiliationInputEnvelope
+    connect?: AffiliationSaleWhereUniqueInput | AffiliationSaleWhereUniqueInput[]
+  }
+
+  export type OrderCreateNestedManyWithoutAffiliationInput = {
+    create?: XOR<OrderCreateWithoutAffiliationInput, OrderUncheckedCreateWithoutAffiliationInput> | OrderCreateWithoutAffiliationInput[] | OrderUncheckedCreateWithoutAffiliationInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutAffiliationInput | OrderCreateOrConnectWithoutAffiliationInput[]
+    createMany?: OrderCreateManyAffiliationInputEnvelope
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
+  export type AffiliationSaleUncheckedCreateNestedManyWithoutAffiliationInput = {
+    create?: XOR<AffiliationSaleCreateWithoutAffiliationInput, AffiliationSaleUncheckedCreateWithoutAffiliationInput> | AffiliationSaleCreateWithoutAffiliationInput[] | AffiliationSaleUncheckedCreateWithoutAffiliationInput[]
+    connectOrCreate?: AffiliationSaleCreateOrConnectWithoutAffiliationInput | AffiliationSaleCreateOrConnectWithoutAffiliationInput[]
+    createMany?: AffiliationSaleCreateManyAffiliationInputEnvelope
+    connect?: AffiliationSaleWhereUniqueInput | AffiliationSaleWhereUniqueInput[]
+  }
+
+  export type OrderUncheckedCreateNestedManyWithoutAffiliationInput = {
+    create?: XOR<OrderCreateWithoutAffiliationInput, OrderUncheckedCreateWithoutAffiliationInput> | OrderCreateWithoutAffiliationInput[] | OrderUncheckedCreateWithoutAffiliationInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutAffiliationInput | OrderCreateOrConnectWithoutAffiliationInput[]
+    createMany?: OrderCreateManyAffiliationInputEnvelope
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
+  export type EnumAffiliationStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AffiliationStatus
+  }
+
+  export type AffiliateOfferUpdateOneRequiredWithoutAffiliationsNestedInput = {
+    create?: XOR<AffiliateOfferCreateWithoutAffiliationsInput, AffiliateOfferUncheckedCreateWithoutAffiliationsInput>
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutAffiliationsInput
+    upsert?: AffiliateOfferUpsertWithoutAffiliationsInput
+    connect?: AffiliateOfferWhereUniqueInput
+    update?: XOR<XOR<AffiliateOfferUpdateToOneWithWhereWithoutAffiliationsInput, AffiliateOfferUpdateWithoutAffiliationsInput>, AffiliateOfferUncheckedUpdateWithoutAffiliationsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutAffiliationsNestedInput = {
+    create?: XOR<UserCreateWithoutAffiliationsInput, UserUncheckedCreateWithoutAffiliationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAffiliationsInput
+    upsert?: UserUpsertWithoutAffiliationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAffiliationsInput, UserUpdateWithoutAffiliationsInput>, UserUncheckedUpdateWithoutAffiliationsInput>
+  }
+
+  export type AffiliationSaleUpdateManyWithoutAffiliationNestedInput = {
+    create?: XOR<AffiliationSaleCreateWithoutAffiliationInput, AffiliationSaleUncheckedCreateWithoutAffiliationInput> | AffiliationSaleCreateWithoutAffiliationInput[] | AffiliationSaleUncheckedCreateWithoutAffiliationInput[]
+    connectOrCreate?: AffiliationSaleCreateOrConnectWithoutAffiliationInput | AffiliationSaleCreateOrConnectWithoutAffiliationInput[]
+    upsert?: AffiliationSaleUpsertWithWhereUniqueWithoutAffiliationInput | AffiliationSaleUpsertWithWhereUniqueWithoutAffiliationInput[]
+    createMany?: AffiliationSaleCreateManyAffiliationInputEnvelope
+    set?: AffiliationSaleWhereUniqueInput | AffiliationSaleWhereUniqueInput[]
+    disconnect?: AffiliationSaleWhereUniqueInput | AffiliationSaleWhereUniqueInput[]
+    delete?: AffiliationSaleWhereUniqueInput | AffiliationSaleWhereUniqueInput[]
+    connect?: AffiliationSaleWhereUniqueInput | AffiliationSaleWhereUniqueInput[]
+    update?: AffiliationSaleUpdateWithWhereUniqueWithoutAffiliationInput | AffiliationSaleUpdateWithWhereUniqueWithoutAffiliationInput[]
+    updateMany?: AffiliationSaleUpdateManyWithWhereWithoutAffiliationInput | AffiliationSaleUpdateManyWithWhereWithoutAffiliationInput[]
+    deleteMany?: AffiliationSaleScalarWhereInput | AffiliationSaleScalarWhereInput[]
+  }
+
+  export type OrderUpdateManyWithoutAffiliationNestedInput = {
+    create?: XOR<OrderCreateWithoutAffiliationInput, OrderUncheckedCreateWithoutAffiliationInput> | OrderCreateWithoutAffiliationInput[] | OrderUncheckedCreateWithoutAffiliationInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutAffiliationInput | OrderCreateOrConnectWithoutAffiliationInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutAffiliationInput | OrderUpsertWithWhereUniqueWithoutAffiliationInput[]
+    createMany?: OrderCreateManyAffiliationInputEnvelope
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutAffiliationInput | OrderUpdateWithWhereUniqueWithoutAffiliationInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutAffiliationInput | OrderUpdateManyWithWhereWithoutAffiliationInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
+  export type AffiliationSaleUncheckedUpdateManyWithoutAffiliationNestedInput = {
+    create?: XOR<AffiliationSaleCreateWithoutAffiliationInput, AffiliationSaleUncheckedCreateWithoutAffiliationInput> | AffiliationSaleCreateWithoutAffiliationInput[] | AffiliationSaleUncheckedCreateWithoutAffiliationInput[]
+    connectOrCreate?: AffiliationSaleCreateOrConnectWithoutAffiliationInput | AffiliationSaleCreateOrConnectWithoutAffiliationInput[]
+    upsert?: AffiliationSaleUpsertWithWhereUniqueWithoutAffiliationInput | AffiliationSaleUpsertWithWhereUniqueWithoutAffiliationInput[]
+    createMany?: AffiliationSaleCreateManyAffiliationInputEnvelope
+    set?: AffiliationSaleWhereUniqueInput | AffiliationSaleWhereUniqueInput[]
+    disconnect?: AffiliationSaleWhereUniqueInput | AffiliationSaleWhereUniqueInput[]
+    delete?: AffiliationSaleWhereUniqueInput | AffiliationSaleWhereUniqueInput[]
+    connect?: AffiliationSaleWhereUniqueInput | AffiliationSaleWhereUniqueInput[]
+    update?: AffiliationSaleUpdateWithWhereUniqueWithoutAffiliationInput | AffiliationSaleUpdateWithWhereUniqueWithoutAffiliationInput[]
+    updateMany?: AffiliationSaleUpdateManyWithWhereWithoutAffiliationInput | AffiliationSaleUpdateManyWithWhereWithoutAffiliationInput[]
+    deleteMany?: AffiliationSaleScalarWhereInput | AffiliationSaleScalarWhereInput[]
+  }
+
+  export type OrderUncheckedUpdateManyWithoutAffiliationNestedInput = {
+    create?: XOR<OrderCreateWithoutAffiliationInput, OrderUncheckedCreateWithoutAffiliationInput> | OrderCreateWithoutAffiliationInput[] | OrderUncheckedCreateWithoutAffiliationInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutAffiliationInput | OrderCreateOrConnectWithoutAffiliationInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutAffiliationInput | OrderUpsertWithWhereUniqueWithoutAffiliationInput[]
+    createMany?: OrderCreateManyAffiliationInputEnvelope
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutAffiliationInput | OrderUpdateWithWhereUniqueWithoutAffiliationInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutAffiliationInput | OrderUpdateManyWithWhereWithoutAffiliationInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
+  export type AffiliationCreateNestedOneWithoutSalesInput = {
+    create?: XOR<AffiliationCreateWithoutSalesInput, AffiliationUncheckedCreateWithoutSalesInput>
+    connectOrCreate?: AffiliationCreateOrConnectWithoutSalesInput
+    connect?: AffiliationWhereUniqueInput
+  }
+
+  export type OrderCreateNestedOneWithoutAffiliationSaleInput = {
+    create?: XOR<OrderCreateWithoutAffiliationSaleInput, OrderUncheckedCreateWithoutAffiliationSaleInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutAffiliationSaleInput
+    connect?: OrderWhereUniqueInput
+  }
+
+  export type EnumSaleCommissionStatusFieldUpdateOperationsInput = {
+    set?: $Enums.SaleCommissionStatus
+  }
+
+  export type AffiliationUpdateOneRequiredWithoutSalesNestedInput = {
+    create?: XOR<AffiliationCreateWithoutSalesInput, AffiliationUncheckedCreateWithoutSalesInput>
+    connectOrCreate?: AffiliationCreateOrConnectWithoutSalesInput
+    upsert?: AffiliationUpsertWithoutSalesInput
+    connect?: AffiliationWhereUniqueInput
+    update?: XOR<XOR<AffiliationUpdateToOneWithWhereWithoutSalesInput, AffiliationUpdateWithoutSalesInput>, AffiliationUncheckedUpdateWithoutSalesInput>
+  }
+
+  export type OrderUpdateOneRequiredWithoutAffiliationSaleNestedInput = {
+    create?: XOR<OrderCreateWithoutAffiliationSaleInput, OrderUncheckedCreateWithoutAffiliationSaleInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutAffiliationSaleInput
+    upsert?: OrderUpsertWithoutAffiliationSaleInput
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutAffiliationSaleInput, OrderUpdateWithoutAffiliationSaleInput>, OrderUncheckedUpdateWithoutAffiliationSaleInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -31885,6 +37823,74 @@ export namespace Prisma {
     _max?: NestedEnumDomainStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumCommissionTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.CommissionType | EnumCommissionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CommissionType[] | ListEnumCommissionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CommissionType[] | ListEnumCommissionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCommissionTypeFilter<$PrismaModel> | $Enums.CommissionType
+  }
+
+  export type NestedEnumOfferStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.OfferStatus | EnumOfferStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OfferStatus[] | ListEnumOfferStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OfferStatus[] | ListEnumOfferStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOfferStatusFilter<$PrismaModel> | $Enums.OfferStatus
+  }
+
+  export type NestedEnumCommissionTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CommissionType | EnumCommissionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.CommissionType[] | ListEnumCommissionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CommissionType[] | ListEnumCommissionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumCommissionTypeWithAggregatesFilter<$PrismaModel> | $Enums.CommissionType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCommissionTypeFilter<$PrismaModel>
+    _max?: NestedEnumCommissionTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumOfferStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.OfferStatus | EnumOfferStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.OfferStatus[] | ListEnumOfferStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.OfferStatus[] | ListEnumOfferStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumOfferStatusWithAggregatesFilter<$PrismaModel> | $Enums.OfferStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumOfferStatusFilter<$PrismaModel>
+    _max?: NestedEnumOfferStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAffiliationStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AffiliationStatus | EnumAffiliationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AffiliationStatus[] | ListEnumAffiliationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AffiliationStatus[] | ListEnumAffiliationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAffiliationStatusFilter<$PrismaModel> | $Enums.AffiliationStatus
+  }
+
+  export type NestedEnumAffiliationStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AffiliationStatus | EnumAffiliationStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AffiliationStatus[] | ListEnumAffiliationStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AffiliationStatus[] | ListEnumAffiliationStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAffiliationStatusWithAggregatesFilter<$PrismaModel> | $Enums.AffiliationStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAffiliationStatusFilter<$PrismaModel>
+    _max?: NestedEnumAffiliationStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSaleCommissionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.SaleCommissionStatus | EnumSaleCommissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SaleCommissionStatus[] | ListEnumSaleCommissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SaleCommissionStatus[] | ListEnumSaleCommissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSaleCommissionStatusFilter<$PrismaModel> | $Enums.SaleCommissionStatus
+  }
+
+  export type NestedEnumSaleCommissionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SaleCommissionStatus | EnumSaleCommissionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.SaleCommissionStatus[] | ListEnumSaleCommissionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SaleCommissionStatus[] | ListEnumSaleCommissionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumSaleCommissionStatusWithAggregatesFilter<$PrismaModel> | $Enums.SaleCommissionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumSaleCommissionStatusFilter<$PrismaModel>
+    _max?: NestedEnumSaleCommissionStatusFilter<$PrismaModel>
+  }
+
   export type ProductCreateWithoutUserInput = {
     id?: string
     name: string
@@ -31903,6 +37909,7 @@ export namespace Prisma {
     showInShowcase?: boolean
     orders?: OrderCreateNestedManyWithoutProductInput
     checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutUserInput = {
@@ -31923,6 +37930,7 @@ export namespace Prisma {
     showInShowcase?: boolean
     orders?: OrderUncheckedCreateNestedManyWithoutProductInput
     checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutUserInput = {
@@ -31969,6 +37977,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     product: ProductCreateNestedOneWithoutOrdersInput
     pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
+    affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
+    affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutUserInput = {
@@ -32004,7 +38014,9 @@ export namespace Prisma {
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    affiliationId?: string | null
     pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
+    affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutUserInput = {
@@ -32293,6 +38305,108 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AffiliateOfferCreateWithoutOwnerInput = {
+    id?: string
+    title: string
+    description?: string | null
+    commissionType?: $Enums.CommissionType
+    commissionValue: number
+    cookieDays?: number
+    maxAffiliates?: number | null
+    requiresApproval?: boolean
+    status?: $Enums.OfferStatus
+    category?: string | null
+    tags?: AffiliateOfferCreatetagsInput | string[]
+    imageUrl?: string | null
+    totalAffiliates?: number
+    totalSales?: number
+    totalRevenue?: number
+    conversionRate?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutAffiliateOffersInput
+    affiliations?: AffiliationCreateNestedManyWithoutOfferInput
+  }
+
+  export type AffiliateOfferUncheckedCreateWithoutOwnerInput = {
+    id?: string
+    productId: string
+    title: string
+    description?: string | null
+    commissionType?: $Enums.CommissionType
+    commissionValue: number
+    cookieDays?: number
+    maxAffiliates?: number | null
+    requiresApproval?: boolean
+    status?: $Enums.OfferStatus
+    category?: string | null
+    tags?: AffiliateOfferCreatetagsInput | string[]
+    imageUrl?: string | null
+    totalAffiliates?: number
+    totalSales?: number
+    totalRevenue?: number
+    conversionRate?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutOfferInput
+  }
+
+  export type AffiliateOfferCreateOrConnectWithoutOwnerInput = {
+    where: AffiliateOfferWhereUniqueInput
+    create: XOR<AffiliateOfferCreateWithoutOwnerInput, AffiliateOfferUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type AffiliateOfferCreateManyOwnerInputEnvelope = {
+    data: AffiliateOfferCreateManyOwnerInput | AffiliateOfferCreateManyOwnerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AffiliationCreateWithoutAffiliateInput = {
+    id?: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    offer: AffiliateOfferCreateNestedOneWithoutAffiliationsInput
+    sales?: AffiliationSaleCreateNestedManyWithoutAffiliationInput
+    orders?: OrderCreateNestedManyWithoutAffiliationInput
+  }
+
+  export type AffiliationUncheckedCreateWithoutAffiliateInput = {
+    id?: string
+    offerId: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sales?: AffiliationSaleUncheckedCreateNestedManyWithoutAffiliationInput
+    orders?: OrderUncheckedCreateNestedManyWithoutAffiliationInput
+  }
+
+  export type AffiliationCreateOrConnectWithoutAffiliateInput = {
+    where: AffiliationWhereUniqueInput
+    create: XOR<AffiliationCreateWithoutAffiliateInput, AffiliationUncheckedCreateWithoutAffiliateInput>
+  }
+
+  export type AffiliationCreateManyAffiliateInputEnvelope = {
+    data: AffiliationCreateManyAffiliateInput | AffiliationCreateManyAffiliateInput[]
+    skipDuplicates?: boolean
+  }
+
   export type ProductUpsertWithWhereUniqueWithoutUserInput = {
     where: ProductWhereUniqueInput
     update: XOR<ProductUpdateWithoutUserInput, ProductUncheckedUpdateWithoutUserInput>
@@ -32384,6 +38498,7 @@ export namespace Prisma {
     statusHistory?: JsonNullableFilter<"Order">
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
+    affiliationId?: StringNullableFilter<"Order"> | string | null
   }
 
   export type WithdrawalUpsertWithWhereUniqueWithoutUserInput = {
@@ -32674,6 +38789,84 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"AuditLog"> | Date | string
   }
 
+  export type AffiliateOfferUpsertWithWhereUniqueWithoutOwnerInput = {
+    where: AffiliateOfferWhereUniqueInput
+    update: XOR<AffiliateOfferUpdateWithoutOwnerInput, AffiliateOfferUncheckedUpdateWithoutOwnerInput>
+    create: XOR<AffiliateOfferCreateWithoutOwnerInput, AffiliateOfferUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type AffiliateOfferUpdateWithWhereUniqueWithoutOwnerInput = {
+    where: AffiliateOfferWhereUniqueInput
+    data: XOR<AffiliateOfferUpdateWithoutOwnerInput, AffiliateOfferUncheckedUpdateWithoutOwnerInput>
+  }
+
+  export type AffiliateOfferUpdateManyWithWhereWithoutOwnerInput = {
+    where: AffiliateOfferScalarWhereInput
+    data: XOR<AffiliateOfferUpdateManyMutationInput, AffiliateOfferUncheckedUpdateManyWithoutOwnerInput>
+  }
+
+  export type AffiliateOfferScalarWhereInput = {
+    AND?: AffiliateOfferScalarWhereInput | AffiliateOfferScalarWhereInput[]
+    OR?: AffiliateOfferScalarWhereInput[]
+    NOT?: AffiliateOfferScalarWhereInput | AffiliateOfferScalarWhereInput[]
+    id?: StringFilter<"AffiliateOffer"> | string
+    productId?: StringFilter<"AffiliateOffer"> | string
+    ownerId?: StringFilter<"AffiliateOffer"> | string
+    title?: StringFilter<"AffiliateOffer"> | string
+    description?: StringNullableFilter<"AffiliateOffer"> | string | null
+    commissionType?: EnumCommissionTypeFilter<"AffiliateOffer"> | $Enums.CommissionType
+    commissionValue?: FloatFilter<"AffiliateOffer"> | number
+    cookieDays?: IntFilter<"AffiliateOffer"> | number
+    maxAffiliates?: IntNullableFilter<"AffiliateOffer"> | number | null
+    requiresApproval?: BoolFilter<"AffiliateOffer"> | boolean
+    status?: EnumOfferStatusFilter<"AffiliateOffer"> | $Enums.OfferStatus
+    category?: StringNullableFilter<"AffiliateOffer"> | string | null
+    tags?: StringNullableListFilter<"AffiliateOffer">
+    imageUrl?: StringNullableFilter<"AffiliateOffer"> | string | null
+    totalAffiliates?: IntFilter<"AffiliateOffer"> | number
+    totalSales?: IntFilter<"AffiliateOffer"> | number
+    totalRevenue?: FloatFilter<"AffiliateOffer"> | number
+    conversionRate?: FloatFilter<"AffiliateOffer"> | number
+    createdAt?: DateTimeFilter<"AffiliateOffer"> | Date | string
+    updatedAt?: DateTimeFilter<"AffiliateOffer"> | Date | string
+  }
+
+  export type AffiliationUpsertWithWhereUniqueWithoutAffiliateInput = {
+    where: AffiliationWhereUniqueInput
+    update: XOR<AffiliationUpdateWithoutAffiliateInput, AffiliationUncheckedUpdateWithoutAffiliateInput>
+    create: XOR<AffiliationCreateWithoutAffiliateInput, AffiliationUncheckedCreateWithoutAffiliateInput>
+  }
+
+  export type AffiliationUpdateWithWhereUniqueWithoutAffiliateInput = {
+    where: AffiliationWhereUniqueInput
+    data: XOR<AffiliationUpdateWithoutAffiliateInput, AffiliationUncheckedUpdateWithoutAffiliateInput>
+  }
+
+  export type AffiliationUpdateManyWithWhereWithoutAffiliateInput = {
+    where: AffiliationScalarWhereInput
+    data: XOR<AffiliationUpdateManyMutationInput, AffiliationUncheckedUpdateManyWithoutAffiliateInput>
+  }
+
+  export type AffiliationScalarWhereInput = {
+    AND?: AffiliationScalarWhereInput | AffiliationScalarWhereInput[]
+    OR?: AffiliationScalarWhereInput[]
+    NOT?: AffiliationScalarWhereInput | AffiliationScalarWhereInput[]
+    id?: StringFilter<"Affiliation"> | string
+    offerId?: StringFilter<"Affiliation"> | string
+    affiliateId?: StringFilter<"Affiliation"> | string
+    status?: EnumAffiliationStatusFilter<"Affiliation"> | $Enums.AffiliationStatus
+    affiliateLink?: StringFilter<"Affiliation"> | string
+    affiliateCode?: StringFilter<"Affiliation"> | string
+    totalClicks?: IntFilter<"Affiliation"> | number
+    totalSales?: IntFilter<"Affiliation"> | number
+    totalEarned?: FloatFilter<"Affiliation"> | number
+    pendingBalance?: FloatFilter<"Affiliation"> | number
+    availableBalance?: FloatFilter<"Affiliation"> | number
+    approvedAt?: DateTimeNullableFilter<"Affiliation"> | Date | string | null
+    createdAt?: DateTimeFilter<"Affiliation"> | Date | string
+    updatedAt?: DateTimeFilter<"Affiliation"> | Date | string
+  }
+
   export type UserCreateWithoutNotificationsInput = {
     id?: string
     name: string
@@ -32715,6 +38908,8 @@ export namespace Prisma {
     pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
     customDomains?: CustomDomainCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -32758,6 +38953,8 @@ export namespace Prisma {
     pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
     customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -32817,6 +39014,8 @@ export namespace Prisma {
     pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
     customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -32860,6 +39059,8 @@ export namespace Prisma {
     pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
     customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserCreateWithoutAuditLogsInput = {
@@ -32903,6 +39104,8 @@ export namespace Prisma {
     pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
     customDomains?: CustomDomainCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -32946,6 +39149,8 @@ export namespace Prisma {
     pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
     customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -33005,6 +39210,8 @@ export namespace Prisma {
     pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
     customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -33048,6 +39255,8 @@ export namespace Prisma {
     pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
     customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserCreateWithoutProductsInput = {
@@ -33091,6 +39300,8 @@ export namespace Prisma {
     customDomains?: CustomDomainCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserUncheckedCreateWithoutProductsInput = {
@@ -33134,6 +39345,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserCreateOrConnectWithoutProductsInput = {
@@ -33175,6 +39388,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutOrdersInput
     pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
+    affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
+    affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutProductInput = {
@@ -33210,7 +39425,9 @@ export namespace Prisma {
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    affiliationId?: string | null
     pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
+    affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutProductInput = {
@@ -33244,6 +39461,62 @@ export namespace Prisma {
 
   export type CheckoutLinkCreateManyProductInputEnvelope = {
     data: CheckoutLinkCreateManyProductInput | CheckoutLinkCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AffiliateOfferCreateWithoutProductInput = {
+    id?: string
+    title: string
+    description?: string | null
+    commissionType?: $Enums.CommissionType
+    commissionValue: number
+    cookieDays?: number
+    maxAffiliates?: number | null
+    requiresApproval?: boolean
+    status?: $Enums.OfferStatus
+    category?: string | null
+    tags?: AffiliateOfferCreatetagsInput | string[]
+    imageUrl?: string | null
+    totalAffiliates?: number
+    totalSales?: number
+    totalRevenue?: number
+    conversionRate?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    owner: UserCreateNestedOneWithoutAffiliateOffersInput
+    affiliations?: AffiliationCreateNestedManyWithoutOfferInput
+  }
+
+  export type AffiliateOfferUncheckedCreateWithoutProductInput = {
+    id?: string
+    ownerId: string
+    title: string
+    description?: string | null
+    commissionType?: $Enums.CommissionType
+    commissionValue: number
+    cookieDays?: number
+    maxAffiliates?: number | null
+    requiresApproval?: boolean
+    status?: $Enums.OfferStatus
+    category?: string | null
+    tags?: AffiliateOfferCreatetagsInput | string[]
+    imageUrl?: string | null
+    totalAffiliates?: number
+    totalSales?: number
+    totalRevenue?: number
+    conversionRate?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutOfferInput
+  }
+
+  export type AffiliateOfferCreateOrConnectWithoutProductInput = {
+    where: AffiliateOfferWhereUniqueInput
+    create: XOR<AffiliateOfferCreateWithoutProductInput, AffiliateOfferUncheckedCreateWithoutProductInput>
+  }
+
+  export type AffiliateOfferCreateManyProductInputEnvelope = {
+    data: AffiliateOfferCreateManyProductInput | AffiliateOfferCreateManyProductInput[]
     skipDuplicates?: boolean
   }
 
@@ -33299,6 +39572,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProductsInput = {
@@ -33342,6 +39617,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
   }
 
   export type OrderUpsertWithWhereUniqueWithoutProductInput = {
@@ -33387,6 +39664,22 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"CheckoutLink"> | Date | string
   }
 
+  export type AffiliateOfferUpsertWithWhereUniqueWithoutProductInput = {
+    where: AffiliateOfferWhereUniqueInput
+    update: XOR<AffiliateOfferUpdateWithoutProductInput, AffiliateOfferUncheckedUpdateWithoutProductInput>
+    create: XOR<AffiliateOfferCreateWithoutProductInput, AffiliateOfferUncheckedCreateWithoutProductInput>
+  }
+
+  export type AffiliateOfferUpdateWithWhereUniqueWithoutProductInput = {
+    where: AffiliateOfferWhereUniqueInput
+    data: XOR<AffiliateOfferUpdateWithoutProductInput, AffiliateOfferUncheckedUpdateWithoutProductInput>
+  }
+
+  export type AffiliateOfferUpdateManyWithWhereWithoutProductInput = {
+    where: AffiliateOfferScalarWhereInput
+    data: XOR<AffiliateOfferUpdateManyMutationInput, AffiliateOfferUncheckedUpdateManyWithoutProductInput>
+  }
+
   export type UserCreateWithoutOrdersInput = {
     id?: string
     name: string
@@ -33428,6 +39721,8 @@ export namespace Prisma {
     customDomains?: CustomDomainCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserUncheckedCreateWithoutOrdersInput = {
@@ -33471,6 +39766,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserCreateOrConnectWithoutOrdersInput = {
@@ -33496,6 +39793,7 @@ export namespace Prisma {
     showInShowcase?: boolean
     user: UserCreateNestedOneWithoutProductsInput
     checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutOrdersInput = {
@@ -33516,6 +39814,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     showInShowcase?: boolean
     checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutOrdersInput = {
@@ -33549,6 +39848,72 @@ export namespace Prisma {
   export type PendingBalanceCreateManyOrderInputEnvelope = {
     data: PendingBalanceCreateManyOrderInput | PendingBalanceCreateManyOrderInput[]
     skipDuplicates?: boolean
+  }
+
+  export type AffiliationCreateWithoutOrdersInput = {
+    id?: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    offer: AffiliateOfferCreateNestedOneWithoutAffiliationsInput
+    affiliate: UserCreateNestedOneWithoutAffiliationsInput
+    sales?: AffiliationSaleCreateNestedManyWithoutAffiliationInput
+  }
+
+  export type AffiliationUncheckedCreateWithoutOrdersInput = {
+    id?: string
+    offerId: string
+    affiliateId: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sales?: AffiliationSaleUncheckedCreateNestedManyWithoutAffiliationInput
+  }
+
+  export type AffiliationCreateOrConnectWithoutOrdersInput = {
+    where: AffiliationWhereUniqueInput
+    create: XOR<AffiliationCreateWithoutOrdersInput, AffiliationUncheckedCreateWithoutOrdersInput>
+  }
+
+  export type AffiliationSaleCreateWithoutOrderInput = {
+    id?: string
+    saleAmount: number
+    commission: number
+    status?: $Enums.SaleCommissionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+    affiliation: AffiliationCreateNestedOneWithoutSalesInput
+  }
+
+  export type AffiliationSaleUncheckedCreateWithoutOrderInput = {
+    id?: string
+    affiliationId: string
+    saleAmount: number
+    commission: number
+    status?: $Enums.SaleCommissionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type AffiliationSaleCreateOrConnectWithoutOrderInput = {
+    where: AffiliationSaleWhereUniqueInput
+    create: XOR<AffiliationSaleCreateWithoutOrderInput, AffiliationSaleUncheckedCreateWithoutOrderInput>
   }
 
   export type UserUpsertWithoutOrdersInput = {
@@ -33603,6 +39968,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -33646,6 +40013,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
   }
 
   export type ProductUpsertWithoutOrdersInput = {
@@ -33677,6 +40046,7 @@ export namespace Prisma {
     showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutProductsNestedInput
     checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutOrdersInput = {
@@ -33697,6 +40067,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type PendingBalanceUpsertWithWhereUniqueWithoutOrderInput = {
@@ -33713,6 +40084,84 @@ export namespace Prisma {
   export type PendingBalanceUpdateManyWithWhereWithoutOrderInput = {
     where: PendingBalanceScalarWhereInput
     data: XOR<PendingBalanceUpdateManyMutationInput, PendingBalanceUncheckedUpdateManyWithoutOrderInput>
+  }
+
+  export type AffiliationUpsertWithoutOrdersInput = {
+    update: XOR<AffiliationUpdateWithoutOrdersInput, AffiliationUncheckedUpdateWithoutOrdersInput>
+    create: XOR<AffiliationCreateWithoutOrdersInput, AffiliationUncheckedCreateWithoutOrdersInput>
+    where?: AffiliationWhereInput
+  }
+
+  export type AffiliationUpdateToOneWithWhereWithoutOrdersInput = {
+    where?: AffiliationWhereInput
+    data: XOR<AffiliationUpdateWithoutOrdersInput, AffiliationUncheckedUpdateWithoutOrdersInput>
+  }
+
+  export type AffiliationUpdateWithoutOrdersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    offer?: AffiliateOfferUpdateOneRequiredWithoutAffiliationsNestedInput
+    affiliate?: UserUpdateOneRequiredWithoutAffiliationsNestedInput
+    sales?: AffiliationSaleUpdateManyWithoutAffiliationNestedInput
+  }
+
+  export type AffiliationUncheckedUpdateWithoutOrdersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    offerId?: StringFieldUpdateOperationsInput | string
+    affiliateId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sales?: AffiliationSaleUncheckedUpdateManyWithoutAffiliationNestedInput
+  }
+
+  export type AffiliationSaleUpsertWithoutOrderInput = {
+    update: XOR<AffiliationSaleUpdateWithoutOrderInput, AffiliationSaleUncheckedUpdateWithoutOrderInput>
+    create: XOR<AffiliationSaleCreateWithoutOrderInput, AffiliationSaleUncheckedCreateWithoutOrderInput>
+    where?: AffiliationSaleWhereInput
+  }
+
+  export type AffiliationSaleUpdateToOneWithWhereWithoutOrderInput = {
+    where?: AffiliationSaleWhereInput
+    data: XOR<AffiliationSaleUpdateWithoutOrderInput, AffiliationSaleUncheckedUpdateWithoutOrderInput>
+  }
+
+  export type AffiliationSaleUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commission?: FloatFieldUpdateOperationsInput | number
+    status?: EnumSaleCommissionStatusFieldUpdateOperationsInput | $Enums.SaleCommissionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliation?: AffiliationUpdateOneRequiredWithoutSalesNestedInput
+  }
+
+  export type AffiliationSaleUncheckedUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    affiliationId?: StringFieldUpdateOperationsInput | string
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commission?: FloatFieldUpdateOperationsInput | number
+    status?: EnumSaleCommissionStatusFieldUpdateOperationsInput | $Enums.SaleCommissionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateWithoutPendingBalancesInput = {
@@ -33756,6 +40205,8 @@ export namespace Prisma {
     customDomains?: CustomDomainCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserUncheckedCreateWithoutPendingBalancesInput = {
@@ -33799,6 +40250,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserCreateOrConnectWithoutPendingBalancesInput = {
@@ -33840,6 +40293,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutOrdersInput
     product: ProductCreateNestedOneWithoutOrdersInput
+    affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
+    affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutPendingBalancesInput = {
@@ -33876,6 +40331,8 @@ export namespace Prisma {
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    affiliationId?: string | null
+    affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutPendingBalancesInput = {
@@ -33935,6 +40392,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPendingBalancesInput = {
@@ -33978,6 +40437,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
   }
 
   export type OrderUpsertWithoutPendingBalancesInput = {
@@ -34025,6 +40486,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
+    affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutPendingBalancesInput = {
@@ -34061,6 +40524,8 @@ export namespace Prisma {
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
+    affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
   }
 
   export type UserCreateWithoutWithdrawalsInput = {
@@ -34104,6 +40569,8 @@ export namespace Prisma {
     customDomains?: CustomDomainCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserUncheckedCreateWithoutWithdrawalsInput = {
@@ -34147,6 +40614,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserCreateOrConnectWithoutWithdrawalsInput = {
@@ -34206,6 +40675,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWithdrawalsInput = {
@@ -34249,6 +40720,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserCreateWithoutWebhooksInput = {
@@ -34292,6 +40765,8 @@ export namespace Prisma {
     customDomains?: CustomDomainCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserUncheckedCreateWithoutWebhooksInput = {
@@ -34335,6 +40810,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserCreateOrConnectWithoutWebhooksInput = {
@@ -34394,6 +40871,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWebhooksInput = {
@@ -34437,6 +40916,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserCreateWithoutApiKeysInput = {
@@ -34480,6 +40961,8 @@ export namespace Prisma {
     customDomains?: CustomDomainCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserUncheckedCreateWithoutApiKeysInput = {
@@ -34523,6 +41006,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserCreateOrConnectWithoutApiKeysInput = {
@@ -34582,6 +41067,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApiKeysInput = {
@@ -34625,6 +41112,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserCreateWithoutKycDocumentsInput = {
@@ -34668,6 +41157,8 @@ export namespace Prisma {
     customDomains?: CustomDomainCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserUncheckedCreateWithoutKycDocumentsInput = {
@@ -34711,6 +41202,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserCreateOrConnectWithoutKycDocumentsInput = {
@@ -34770,6 +41263,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutKycDocumentsInput = {
@@ -34813,6 +41308,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserCreateWithoutBadgesInput = {
@@ -34856,6 +41353,8 @@ export namespace Prisma {
     customDomains?: CustomDomainCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserUncheckedCreateWithoutBadgesInput = {
@@ -34899,6 +41398,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserCreateOrConnectWithoutBadgesInput = {
@@ -34958,6 +41459,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBadgesInput = {
@@ -35001,6 +41504,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
   }
 
   export type ProductCreateWithoutCheckoutLinksInput = {
@@ -35021,6 +41526,7 @@ export namespace Prisma {
     showInShowcase?: boolean
     user: UserCreateNestedOneWithoutProductsInput
     orders?: OrderCreateNestedManyWithoutProductInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutProductInput
   }
 
   export type ProductUncheckedCreateWithoutCheckoutLinksInput = {
@@ -35041,6 +41547,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     showInShowcase?: boolean
     orders?: OrderUncheckedCreateNestedManyWithoutProductInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCheckoutLinksInput = {
@@ -35077,6 +41584,7 @@ export namespace Prisma {
     showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     user?: UserUpdateOneRequiredWithoutProductsNestedInput
     orders?: OrderUpdateManyWithoutProductNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCheckoutLinksInput = {
@@ -35097,6 +41605,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserCreateWithoutTransactionsInput = {
@@ -35140,6 +41649,8 @@ export namespace Prisma {
     customDomains?: CustomDomainCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -35183,6 +41694,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserCreateOrConnectWithoutTransactionsInput = {
@@ -35242,6 +41755,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -35285,6 +41800,8 @@ export namespace Prisma {
     customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserCreateWithoutCustomDomainsInput = {
@@ -35328,6 +41845,8 @@ export namespace Prisma {
     pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserUncheckedCreateWithoutCustomDomainsInput = {
@@ -35371,6 +41890,8 @@ export namespace Prisma {
     pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
   }
 
   export type UserCreateOrConnectWithoutCustomDomainsInput = {
@@ -35430,6 +41951,8 @@ export namespace Prisma {
     pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCustomDomainsInput = {
@@ -35473,6 +41996,1088 @@ export namespace Prisma {
     pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
+  }
+
+  export type ProductCreateWithoutAffiliateOffersInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price: number
+    currency?: string
+    type?: $Enums.ProductType
+    status?: $Enums.ProductStatus
+    imageUrl?: string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug: string
+    salesCount?: number
+    revenue?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showInShowcase?: boolean
+    user: UserCreateNestedOneWithoutProductsInput
+    orders?: OrderCreateNestedManyWithoutProductInput
+    checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutAffiliateOffersInput = {
+    id?: string
+    userId: string
+    name: string
+    description?: string | null
+    price: number
+    currency?: string
+    type?: $Enums.ProductType
+    status?: $Enums.ProductStatus
+    imageUrl?: string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug: string
+    salesCount?: number
+    revenue?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showInShowcase?: boolean
+    orders?: OrderUncheckedCreateNestedManyWithoutProductInput
+    checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutAffiliateOffersInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutAffiliateOffersInput, ProductUncheckedCreateWithoutAffiliateOffersInput>
+  }
+
+  export type UserCreateWithoutAffiliateOffersInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
+    products?: ProductCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+  }
+
+  export type UserUncheckedCreateWithoutAffiliateOffersInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+  }
+
+  export type UserCreateOrConnectWithoutAffiliateOffersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAffiliateOffersInput, UserUncheckedCreateWithoutAffiliateOffersInput>
+  }
+
+  export type AffiliationCreateWithoutOfferInput = {
+    id?: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    affiliate: UserCreateNestedOneWithoutAffiliationsInput
+    sales?: AffiliationSaleCreateNestedManyWithoutAffiliationInput
+    orders?: OrderCreateNestedManyWithoutAffiliationInput
+  }
+
+  export type AffiliationUncheckedCreateWithoutOfferInput = {
+    id?: string
+    affiliateId: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sales?: AffiliationSaleUncheckedCreateNestedManyWithoutAffiliationInput
+    orders?: OrderUncheckedCreateNestedManyWithoutAffiliationInput
+  }
+
+  export type AffiliationCreateOrConnectWithoutOfferInput = {
+    where: AffiliationWhereUniqueInput
+    create: XOR<AffiliationCreateWithoutOfferInput, AffiliationUncheckedCreateWithoutOfferInput>
+  }
+
+  export type AffiliationCreateManyOfferInputEnvelope = {
+    data: AffiliationCreateManyOfferInput | AffiliationCreateManyOfferInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProductUpsertWithoutAffiliateOffersInput = {
+    update: XOR<ProductUpdateWithoutAffiliateOffersInput, ProductUncheckedUpdateWithoutAffiliateOffersInput>
+    create: XOR<ProductCreateWithoutAffiliateOffersInput, ProductUncheckedCreateWithoutAffiliateOffersInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutAffiliateOffersInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutAffiliateOffersInput, ProductUncheckedUpdateWithoutAffiliateOffersInput>
+  }
+
+  export type ProductUpdateWithoutAffiliateOffersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug?: StringFieldUpdateOperationsInput | string
+    salesCount?: IntFieldUpdateOperationsInput | number
+    revenue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
+    user?: UserUpdateOneRequiredWithoutProductsNestedInput
+    orders?: OrderUpdateManyWithoutProductNestedInput
+    checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutAffiliateOffersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug?: StringFieldUpdateOperationsInput | string
+    salesCount?: IntFieldUpdateOperationsInput | number
+    revenue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
+    orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
+    checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type UserUpsertWithoutAffiliateOffersInput = {
+    update: XOR<UserUpdateWithoutAffiliateOffersInput, UserUncheckedUpdateWithoutAffiliateOffersInput>
+    create: XOR<UserCreateWithoutAffiliateOffersInput, UserUncheckedCreateWithoutAffiliateOffersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAffiliateOffersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAffiliateOffersInput, UserUncheckedUpdateWithoutAffiliateOffersInput>
+  }
+
+  export type UserUpdateWithoutAffiliateOffersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    document?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKeyType?: NullableEnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAgency?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    platformFeePercent?: FloatFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    totalWithdrawn?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAffiliateOffersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    document?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKeyType?: NullableEnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAgency?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    platformFeePercent?: FloatFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    totalWithdrawn?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
+  }
+
+  export type AffiliationUpsertWithWhereUniqueWithoutOfferInput = {
+    where: AffiliationWhereUniqueInput
+    update: XOR<AffiliationUpdateWithoutOfferInput, AffiliationUncheckedUpdateWithoutOfferInput>
+    create: XOR<AffiliationCreateWithoutOfferInput, AffiliationUncheckedCreateWithoutOfferInput>
+  }
+
+  export type AffiliationUpdateWithWhereUniqueWithoutOfferInput = {
+    where: AffiliationWhereUniqueInput
+    data: XOR<AffiliationUpdateWithoutOfferInput, AffiliationUncheckedUpdateWithoutOfferInput>
+  }
+
+  export type AffiliationUpdateManyWithWhereWithoutOfferInput = {
+    where: AffiliationScalarWhereInput
+    data: XOR<AffiliationUpdateManyMutationInput, AffiliationUncheckedUpdateManyWithoutOfferInput>
+  }
+
+  export type AffiliateOfferCreateWithoutAffiliationsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    commissionType?: $Enums.CommissionType
+    commissionValue: number
+    cookieDays?: number
+    maxAffiliates?: number | null
+    requiresApproval?: boolean
+    status?: $Enums.OfferStatus
+    category?: string | null
+    tags?: AffiliateOfferCreatetagsInput | string[]
+    imageUrl?: string | null
+    totalAffiliates?: number
+    totalSales?: number
+    totalRevenue?: number
+    conversionRate?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    product: ProductCreateNestedOneWithoutAffiliateOffersInput
+    owner: UserCreateNestedOneWithoutAffiliateOffersInput
+  }
+
+  export type AffiliateOfferUncheckedCreateWithoutAffiliationsInput = {
+    id?: string
+    productId: string
+    ownerId: string
+    title: string
+    description?: string | null
+    commissionType?: $Enums.CommissionType
+    commissionValue: number
+    cookieDays?: number
+    maxAffiliates?: number | null
+    requiresApproval?: boolean
+    status?: $Enums.OfferStatus
+    category?: string | null
+    tags?: AffiliateOfferCreatetagsInput | string[]
+    imageUrl?: string | null
+    totalAffiliates?: number
+    totalSales?: number
+    totalRevenue?: number
+    conversionRate?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AffiliateOfferCreateOrConnectWithoutAffiliationsInput = {
+    where: AffiliateOfferWhereUniqueInput
+    create: XOR<AffiliateOfferCreateWithoutAffiliationsInput, AffiliateOfferUncheckedCreateWithoutAffiliationsInput>
+  }
+
+  export type UserCreateWithoutAffiliationsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
+    products?: ProductCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+  }
+
+  export type UserUncheckedCreateWithoutAffiliationsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    username?: string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: Date | string
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+  }
+
+  export type UserCreateOrConnectWithoutAffiliationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAffiliationsInput, UserUncheckedCreateWithoutAffiliationsInput>
+  }
+
+  export type AffiliationSaleCreateWithoutAffiliationInput = {
+    id?: string
+    saleAmount: number
+    commission: number
+    status?: $Enums.SaleCommissionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+    order: OrderCreateNestedOneWithoutAffiliationSaleInput
+  }
+
+  export type AffiliationSaleUncheckedCreateWithoutAffiliationInput = {
+    id?: string
+    orderId: string
+    saleAmount: number
+    commission: number
+    status?: $Enums.SaleCommissionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type AffiliationSaleCreateOrConnectWithoutAffiliationInput = {
+    where: AffiliationSaleWhereUniqueInput
+    create: XOR<AffiliationSaleCreateWithoutAffiliationInput, AffiliationSaleUncheckedCreateWithoutAffiliationInput>
+  }
+
+  export type AffiliationSaleCreateManyAffiliationInputEnvelope = {
+    data: AffiliationSaleCreateManyAffiliationInput | AffiliationSaleCreateManyAffiliationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OrderCreateWithoutAffiliationInput = {
+    id?: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutOrdersInput
+    product: ProductCreateNestedOneWithoutOrdersInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
+    affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
+  }
+
+  export type OrderUncheckedCreateWithoutAffiliationInput = {
+    id?: string
+    userId: string
+    productId: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
+    affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
+  }
+
+  export type OrderCreateOrConnectWithoutAffiliationInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutAffiliationInput, OrderUncheckedCreateWithoutAffiliationInput>
+  }
+
+  export type OrderCreateManyAffiliationInputEnvelope = {
+    data: OrderCreateManyAffiliationInput | OrderCreateManyAffiliationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AffiliateOfferUpsertWithoutAffiliationsInput = {
+    update: XOR<AffiliateOfferUpdateWithoutAffiliationsInput, AffiliateOfferUncheckedUpdateWithoutAffiliationsInput>
+    create: XOR<AffiliateOfferCreateWithoutAffiliationsInput, AffiliateOfferUncheckedCreateWithoutAffiliationsInput>
+    where?: AffiliateOfferWhereInput
+  }
+
+  export type AffiliateOfferUpdateToOneWithWhereWithoutAffiliationsInput = {
+    where?: AffiliateOfferWhereInput
+    data: XOR<AffiliateOfferUpdateWithoutAffiliationsInput, AffiliateOfferUncheckedUpdateWithoutAffiliationsInput>
+  }
+
+  export type AffiliateOfferUpdateWithoutAffiliationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
+    commissionValue?: FloatFieldUpdateOperationsInput | number
+    cookieDays?: IntFieldUpdateOperationsInput | number
+    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: AffiliateOfferUpdatetagsInput | string[]
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAffiliates?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalRevenue?: FloatFieldUpdateOperationsInput | number
+    conversionRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutAffiliateOffersNestedInput
+    owner?: UserUpdateOneRequiredWithoutAffiliateOffersNestedInput
+  }
+
+  export type AffiliateOfferUncheckedUpdateWithoutAffiliationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
+    commissionValue?: FloatFieldUpdateOperationsInput | number
+    cookieDays?: IntFieldUpdateOperationsInput | number
+    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: AffiliateOfferUpdatetagsInput | string[]
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAffiliates?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalRevenue?: FloatFieldUpdateOperationsInput | number
+    conversionRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutAffiliationsInput = {
+    update: XOR<UserUpdateWithoutAffiliationsInput, UserUncheckedUpdateWithoutAffiliationsInput>
+    create: XOR<UserCreateWithoutAffiliationsInput, UserUncheckedCreateWithoutAffiliationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAffiliationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAffiliationsInput, UserUncheckedUpdateWithoutAffiliationsInput>
+  }
+
+  export type UserUpdateWithoutAffiliationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    document?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKeyType?: NullableEnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAgency?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    platformFeePercent?: FloatFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    totalWithdrawn?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAffiliationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    document?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKeyType?: NullableEnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAgency?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    platformFeePercent?: FloatFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    totalWithdrawn?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type AffiliationSaleUpsertWithWhereUniqueWithoutAffiliationInput = {
+    where: AffiliationSaleWhereUniqueInput
+    update: XOR<AffiliationSaleUpdateWithoutAffiliationInput, AffiliationSaleUncheckedUpdateWithoutAffiliationInput>
+    create: XOR<AffiliationSaleCreateWithoutAffiliationInput, AffiliationSaleUncheckedCreateWithoutAffiliationInput>
+  }
+
+  export type AffiliationSaleUpdateWithWhereUniqueWithoutAffiliationInput = {
+    where: AffiliationSaleWhereUniqueInput
+    data: XOR<AffiliationSaleUpdateWithoutAffiliationInput, AffiliationSaleUncheckedUpdateWithoutAffiliationInput>
+  }
+
+  export type AffiliationSaleUpdateManyWithWhereWithoutAffiliationInput = {
+    where: AffiliationSaleScalarWhereInput
+    data: XOR<AffiliationSaleUpdateManyMutationInput, AffiliationSaleUncheckedUpdateManyWithoutAffiliationInput>
+  }
+
+  export type AffiliationSaleScalarWhereInput = {
+    AND?: AffiliationSaleScalarWhereInput | AffiliationSaleScalarWhereInput[]
+    OR?: AffiliationSaleScalarWhereInput[]
+    NOT?: AffiliationSaleScalarWhereInput | AffiliationSaleScalarWhereInput[]
+    id?: StringFilter<"AffiliationSale"> | string
+    affiliationId?: StringFilter<"AffiliationSale"> | string
+    orderId?: StringFilter<"AffiliationSale"> | string
+    saleAmount?: FloatFilter<"AffiliationSale"> | number
+    commission?: FloatFilter<"AffiliationSale"> | number
+    status?: EnumSaleCommissionStatusFilter<"AffiliationSale"> | $Enums.SaleCommissionStatus
+    paidAt?: DateTimeNullableFilter<"AffiliationSale"> | Date | string | null
+    createdAt?: DateTimeFilter<"AffiliationSale"> | Date | string
+  }
+
+  export type OrderUpsertWithWhereUniqueWithoutAffiliationInput = {
+    where: OrderWhereUniqueInput
+    update: XOR<OrderUpdateWithoutAffiliationInput, OrderUncheckedUpdateWithoutAffiliationInput>
+    create: XOR<OrderCreateWithoutAffiliationInput, OrderUncheckedCreateWithoutAffiliationInput>
+  }
+
+  export type OrderUpdateWithWhereUniqueWithoutAffiliationInput = {
+    where: OrderWhereUniqueInput
+    data: XOR<OrderUpdateWithoutAffiliationInput, OrderUncheckedUpdateWithoutAffiliationInput>
+  }
+
+  export type OrderUpdateManyWithWhereWithoutAffiliationInput = {
+    where: OrderScalarWhereInput
+    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutAffiliationInput>
+  }
+
+  export type AffiliationCreateWithoutSalesInput = {
+    id?: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    offer: AffiliateOfferCreateNestedOneWithoutAffiliationsInput
+    affiliate: UserCreateNestedOneWithoutAffiliationsInput
+    orders?: OrderCreateNestedManyWithoutAffiliationInput
+  }
+
+  export type AffiliationUncheckedCreateWithoutSalesInput = {
+    id?: string
+    offerId: string
+    affiliateId: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orders?: OrderUncheckedCreateNestedManyWithoutAffiliationInput
+  }
+
+  export type AffiliationCreateOrConnectWithoutSalesInput = {
+    where: AffiliationWhereUniqueInput
+    create: XOR<AffiliationCreateWithoutSalesInput, AffiliationUncheckedCreateWithoutSalesInput>
+  }
+
+  export type OrderCreateWithoutAffiliationSaleInput = {
+    id?: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutOrdersInput
+    product: ProductCreateNestedOneWithoutOrdersInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
+    affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
+  }
+
+  export type OrderUncheckedCreateWithoutAffiliationSaleInput = {
+    id?: string
+    userId: string
+    productId: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    affiliationId?: string | null
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderCreateOrConnectWithoutAffiliationSaleInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutAffiliationSaleInput, OrderUncheckedCreateWithoutAffiliationSaleInput>
+  }
+
+  export type AffiliationUpsertWithoutSalesInput = {
+    update: XOR<AffiliationUpdateWithoutSalesInput, AffiliationUncheckedUpdateWithoutSalesInput>
+    create: XOR<AffiliationCreateWithoutSalesInput, AffiliationUncheckedCreateWithoutSalesInput>
+    where?: AffiliationWhereInput
+  }
+
+  export type AffiliationUpdateToOneWithWhereWithoutSalesInput = {
+    where?: AffiliationWhereInput
+    data: XOR<AffiliationUpdateWithoutSalesInput, AffiliationUncheckedUpdateWithoutSalesInput>
+  }
+
+  export type AffiliationUpdateWithoutSalesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    offer?: AffiliateOfferUpdateOneRequiredWithoutAffiliationsNestedInput
+    affiliate?: UserUpdateOneRequiredWithoutAffiliationsNestedInput
+    orders?: OrderUpdateManyWithoutAffiliationNestedInput
+  }
+
+  export type AffiliationUncheckedUpdateWithoutSalesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    offerId?: StringFieldUpdateOperationsInput | string
+    affiliateId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orders?: OrderUncheckedUpdateManyWithoutAffiliationNestedInput
+  }
+
+  export type OrderUpsertWithoutAffiliationSaleInput = {
+    update: XOR<OrderUpdateWithoutAffiliationSaleInput, OrderUncheckedUpdateWithoutAffiliationSaleInput>
+    create: XOR<OrderCreateWithoutAffiliationSaleInput, OrderUncheckedCreateWithoutAffiliationSaleInput>
+    where?: OrderWhereInput
+  }
+
+  export type OrderUpdateToOneWithWhereWithoutAffiliationSaleInput = {
+    where?: OrderWhereInput
+    data: XOR<OrderUpdateWithoutAffiliationSaleInput, OrderUncheckedUpdateWithoutAffiliationSaleInput>
+  }
+
+  export type OrderUpdateWithoutAffiliationSaleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutOrdersNestedInput
+    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
+    affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutAffiliationSaleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type ProductCreateManyUserInput = {
@@ -35526,6 +43131,7 @@ export namespace Prisma {
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    affiliationId?: string | null
   }
 
   export type WithdrawalCreateManyUserInput = {
@@ -35616,6 +43222,44 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type AffiliateOfferCreateManyOwnerInput = {
+    id?: string
+    productId: string
+    title: string
+    description?: string | null
+    commissionType?: $Enums.CommissionType
+    commissionValue: number
+    cookieDays?: number
+    maxAffiliates?: number | null
+    requiresApproval?: boolean
+    status?: $Enums.OfferStatus
+    category?: string | null
+    tags?: AffiliateOfferCreatetagsInput | string[]
+    imageUrl?: string | null
+    totalAffiliates?: number
+    totalSales?: number
+    totalRevenue?: number
+    conversionRate?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AffiliationCreateManyAffiliateInput = {
+    id?: string
+    offerId: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type ProductUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -35634,6 +43278,7 @@ export namespace Prisma {
     showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     orders?: OrderUpdateManyWithoutProductNestedInput
     checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutUserInput = {
@@ -35654,6 +43299,7 @@ export namespace Prisma {
     showInShowcase?: BoolFieldUpdateOperationsInput | boolean
     orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
     checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductUncheckedUpdateManyWithoutUserInput = {
@@ -35708,6 +43354,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
     pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
+    affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
+    affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutUserInput = {
@@ -35743,7 +43391,9 @@ export namespace Prisma {
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
     pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
+    affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateManyWithoutUserInput = {
@@ -35779,6 +43429,7 @@ export namespace Prisma {
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WithdrawalUpdateWithoutUserInput = {
@@ -36045,6 +43696,126 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AffiliateOfferUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
+    commissionValue?: FloatFieldUpdateOperationsInput | number
+    cookieDays?: IntFieldUpdateOperationsInput | number
+    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: AffiliateOfferUpdatetagsInput | string[]
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAffiliates?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalRevenue?: FloatFieldUpdateOperationsInput | number
+    conversionRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    product?: ProductUpdateOneRequiredWithoutAffiliateOffersNestedInput
+    affiliations?: AffiliationUpdateManyWithoutOfferNestedInput
+  }
+
+  export type AffiliateOfferUncheckedUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
+    commissionValue?: FloatFieldUpdateOperationsInput | number
+    cookieDays?: IntFieldUpdateOperationsInput | number
+    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: AffiliateOfferUpdatetagsInput | string[]
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAffiliates?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalRevenue?: FloatFieldUpdateOperationsInput | number
+    conversionRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliations?: AffiliationUncheckedUpdateManyWithoutOfferNestedInput
+  }
+
+  export type AffiliateOfferUncheckedUpdateManyWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
+    commissionValue?: FloatFieldUpdateOperationsInput | number
+    cookieDays?: IntFieldUpdateOperationsInput | number
+    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: AffiliateOfferUpdatetagsInput | string[]
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAffiliates?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalRevenue?: FloatFieldUpdateOperationsInput | number
+    conversionRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliationUpdateWithoutAffiliateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    offer?: AffiliateOfferUpdateOneRequiredWithoutAffiliationsNestedInput
+    sales?: AffiliationSaleUpdateManyWithoutAffiliationNestedInput
+    orders?: OrderUpdateManyWithoutAffiliationNestedInput
+  }
+
+  export type AffiliationUncheckedUpdateWithoutAffiliateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    offerId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sales?: AffiliationSaleUncheckedUpdateManyWithoutAffiliationNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutAffiliationNestedInput
+  }
+
+  export type AffiliationUncheckedUpdateManyWithoutAffiliateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    offerId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type OrderCreateManyProductInput = {
     id?: string
     userId: string
@@ -36078,6 +43849,7 @@ export namespace Prisma {
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    affiliationId?: string | null
   }
 
   export type CheckoutLinkCreateManyProductInput = {
@@ -36085,6 +43857,28 @@ export namespace Prisma {
     slug: string
     active?: boolean
     createdAt?: Date | string
+  }
+
+  export type AffiliateOfferCreateManyProductInput = {
+    id?: string
+    ownerId: string
+    title: string
+    description?: string | null
+    commissionType?: $Enums.CommissionType
+    commissionValue: number
+    cookieDays?: number
+    maxAffiliates?: number | null
+    requiresApproval?: boolean
+    status?: $Enums.OfferStatus
+    category?: string | null
+    tags?: AffiliateOfferCreatetagsInput | string[]
+    imageUrl?: string | null
+    totalAffiliates?: number
+    totalSales?: number
+    totalRevenue?: number
+    conversionRate?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type OrderUpdateWithoutProductInput = {
@@ -36121,6 +43915,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
+    affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
+    affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutProductInput = {
@@ -36156,7 +43952,9 @@ export namespace Prisma {
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
     pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
+    affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateManyWithoutProductInput = {
@@ -36192,6 +43990,7 @@ export namespace Prisma {
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CheckoutLinkUpdateWithoutProductInput = {
@@ -36213,6 +44012,74 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliateOfferUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
+    commissionValue?: FloatFieldUpdateOperationsInput | number
+    cookieDays?: IntFieldUpdateOperationsInput | number
+    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: AffiliateOfferUpdatetagsInput | string[]
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAffiliates?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalRevenue?: FloatFieldUpdateOperationsInput | number
+    conversionRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    owner?: UserUpdateOneRequiredWithoutAffiliateOffersNestedInput
+    affiliations?: AffiliationUpdateManyWithoutOfferNestedInput
+  }
+
+  export type AffiliateOfferUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
+    commissionValue?: FloatFieldUpdateOperationsInput | number
+    cookieDays?: IntFieldUpdateOperationsInput | number
+    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: AffiliateOfferUpdatetagsInput | string[]
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAffiliates?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalRevenue?: FloatFieldUpdateOperationsInput | number
+    conversionRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliations?: AffiliationUncheckedUpdateManyWithoutOfferNestedInput
+  }
+
+  export type AffiliateOfferUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
+    commissionValue?: FloatFieldUpdateOperationsInput | number
+    cookieDays?: IntFieldUpdateOperationsInput | number
+    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: AffiliateOfferUpdatetagsInput | string[]
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAffiliates?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalRevenue?: FloatFieldUpdateOperationsInput | number
+    conversionRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PendingBalanceCreateManyOrderInput = {
@@ -36249,6 +44116,262 @@ export namespace Prisma {
     availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
     released?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliationCreateManyOfferInput = {
+    id?: string
+    affiliateId: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AffiliationUpdateWithoutOfferInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliate?: UserUpdateOneRequiredWithoutAffiliationsNestedInput
+    sales?: AffiliationSaleUpdateManyWithoutAffiliationNestedInput
+    orders?: OrderUpdateManyWithoutAffiliationNestedInput
+  }
+
+  export type AffiliationUncheckedUpdateWithoutOfferInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    affiliateId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sales?: AffiliationSaleUncheckedUpdateManyWithoutAffiliationNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutAffiliationNestedInput
+  }
+
+  export type AffiliationUncheckedUpdateManyWithoutOfferInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    affiliateId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliationSaleCreateManyAffiliationInput = {
+    id?: string
+    orderId: string
+    saleAmount: number
+    commission: number
+    status?: $Enums.SaleCommissionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type OrderCreateManyAffiliationInput = {
+    id?: string
+    userId: string
+    productId: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    wooviCorrelationId?: string | null
+    wooviTransactionId?: string | null
+    wooviEndToEndId?: string | null
+    pixQrCodeUrl?: string | null
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AffiliationSaleUpdateWithoutAffiliationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commission?: FloatFieldUpdateOperationsInput | number
+    status?: EnumSaleCommissionStatusFieldUpdateOperationsInput | $Enums.SaleCommissionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutAffiliationSaleNestedInput
+  }
+
+  export type AffiliationSaleUncheckedUpdateWithoutAffiliationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commission?: FloatFieldUpdateOperationsInput | number
+    status?: EnumSaleCommissionStatusFieldUpdateOperationsInput | $Enums.SaleCommissionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliationSaleUncheckedUpdateManyWithoutAffiliationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commission?: FloatFieldUpdateOperationsInput | number
+    status?: EnumSaleCommissionStatusFieldUpdateOperationsInput | $Enums.SaleCommissionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderUpdateWithoutAffiliationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutOrdersNestedInput
+    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
+    affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutAffiliationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
+    affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateManyWithoutAffiliationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

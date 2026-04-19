@@ -52,10 +52,10 @@ export async function getOnboardingStatus() {
     },
     {
       id: "share",
-      title: "Compartilhe seu link",
-      description: "Divulgue sua vitrine ou checkout para seus clientes.",
+      title: "Marketplace & Vendas",
+      description: "Divulgue seus produtos no Marketplace ou compartilhe seu checkout.",
       completed: user.username !== null || user.customDomains.length > 0,
-      href: "/dashboard/vitrine"
+      href: "/dashboard/marketplace"
     }
   ];
 

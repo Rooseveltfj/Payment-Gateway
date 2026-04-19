@@ -11,6 +11,31 @@ const UpdateProductSchema = z.object({
   imageUrl: z.string().url().optional().nullable(),
 });
 
+export async function GET(req: Request, { params }: { params: { id: string } }) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+  }
+
+  try {
+    const product = await prisma.product.findUnique({
+      where: {
+        id: params.id,
+        userId: session.user.id
+      }
+    });
+
+    if (!product) {
+      return NextResponse.json({ error: "Produto não encontrado" }, { status: 404 });
+    }
+
+    return NextResponse.json(product);
+  } catch (error) {
+    console.error("PRODUCT_GET_ERROR:", error);
+    return NextResponse.json({ error: "Erro ao carregar produto" }, { status: 500 });
+  }
+}
+
 export async function PATCH(req: Request, { params }: { params: { id: string } }) {
   const session = await auth();
   if (!session?.user?.id) {

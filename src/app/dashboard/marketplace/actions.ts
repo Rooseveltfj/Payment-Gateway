@@ -40,7 +40,7 @@ export async function updateShowcase(formData: FormData) {
     }
   });
 
-  revalidatePath("/dashboard/vitrine");
+  revalidatePath("/dashboard/marketplace");
   if (username) revalidatePath(`/${username}`);
 }
 
@@ -56,7 +56,7 @@ export async function toggleProductShowcase(productId: string, show: boolean) {
     data: { showInShowcase: show }
   });
 
-  revalidatePath("/dashboard/vitrine");
+  revalidatePath("/dashboard/marketplace");
 }
 
 

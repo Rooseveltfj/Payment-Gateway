@@ -49,6 +49,8 @@ model User {
   lastActiveAt       DateTime         @default(now())
   notifications      Notification[]
   auditLogs          AuditLog[]
+  affiliateOffers    AffiliateOffer[] @relation("AffiliateOfferOwner")
+  affiliations       Affiliation[]    @relation("AffiliateUser")
 }
 
 model Notification {
@@ -85,25 +87,26 @@ enum NotificationType {
 }
 
 model Product {
-  id             String         @id @default(cuid())
-  userId         String
-  user           User           @relation(fields: [userId], references: [id])
-  name           String
-  description    String?
-  price          Float
-  currency       String         @default("BRL")
-  type           ProductType    @default(SINGLE)
-  status         ProductStatus  @default(ACTIVE)
-  imageUrl       String?
-  checkoutConfig Json? // configuração completa do checkout builder
-  slug           String         @unique
-  salesCount     Int            @default(0)
-  revenue        Float          @default(0)
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-  showInShowcase Boolean        @default(true)
-  orders         Order[]
-  checkoutLinks  CheckoutLink[]
+  id              String           @id @default(cuid())
+  userId          String
+  user            User             @relation(fields: [userId], references: [id])
+  name            String
+  description     String?
+  price           Float
+  currency        String           @default("BRL")
+  type            ProductType      @default(SINGLE)
+  status          ProductStatus    @default(ACTIVE)
+  imageUrl        String?
+  checkoutConfig  Json? // configuração completa do checkout builder
+  slug            String           @unique
+  salesCount      Int              @default(0)
+  revenue         Float            @default(0)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  showInShowcase  Boolean          @default(true)
+  orders          Order[]
+  checkoutLinks   CheckoutLink[]
+  affiliateOffers AffiliateOffer[]
 
   @@index([userId])
   @@index([status])
@@ -147,6 +150,9 @@ model Order {
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
   pendingBalances    PendingBalance[]
+  affiliationId      String?
+  affiliation        Affiliation?     @relation(fields: [affiliationId], references: [id])
+  affiliationSale    AffiliationSale?
 
   @@index([userId, status])
   @@index([createdAt])
@@ -408,4 +414,100 @@ enum DomainStatus {
   VERIFIED
   ACTIVE
   ERROR
+}
+
+model AffiliateOffer {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  ownerId   String
+  owner     User    @relation("AffiliateOfferOwner", fields: [ownerId], references: [id])
+
+  title            String
+  description      String?
+  commissionType   CommissionType @default(PERCENTAGE)
+  commissionValue  Float // % ou valor fixo
+  cookieDays       Int            @default(30) // dias de rastreamento do cookie
+  maxAffiliates    Int? // null = ilimitado
+  requiresApproval Boolean        @default(false)
+  status           OfferStatus    @default(ACTIVE)
+
+  category String?
+  tags     String[]
+  imageUrl String?
+
+  totalAffiliates Int   @default(0)
+  totalSales      Int   @default(0)
+  totalRevenue    Float @default(0)
+  conversionRate  Float @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  affiliations Affiliation[]
+}
+
+model Affiliation {
+  id          String         @id @default(cuid())
+  offerId     String
+  offer       AffiliateOffer @relation(fields: [offerId], references: [id])
+  affiliateId String
+  affiliate   User           @relation("AffiliateUser", fields: [affiliateId], references: [id])
+
+  status        AffiliationStatus @default(PENDING)
+  affiliateLink String            @unique // ex: pay.pulsepay.com/c/[slug]?ref=[affiliateCode]
+  affiliateCode String            @unique // código único de rastreamento
+
+  totalClicks      Int   @default(0)
+  totalSales       Int   @default(0)
+  totalEarned      Float @default(0)
+  pendingBalance   Float @default(0)
+  availableBalance Float @default(0)
+
+  approvedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  sales  AffiliationSale[]
+  orders Order[]
+}
+
+model AffiliationSale {
+  id            String      @id @default(cuid())
+  affiliationId String
+  affiliation   Affiliation @relation(fields: [affiliationId], references: [id])
+  orderId       String      @unique
+  order         Order       @relation(fields: [orderId], references: [id])
+
+  saleAmount Float // valor total da venda
+  commission Float // comissão do afiliado nesta venda
+  status     SaleCommissionStatus @default(PENDING)
+
+  paidAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+enum CommissionType {
+  PERCENTAGE
+  FIXED
+}
+
+enum OfferStatus {
+  ACTIVE
+  PAUSED
+  CLOSED
+}
+
+enum AffiliationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum SaleCommissionStatus {
+  PENDING
+  CLEARED
+  PAID
+  REFUNDED
 }

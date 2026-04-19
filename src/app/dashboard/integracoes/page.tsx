@@ -1,7 +1,32 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Key, Plus, Copy, Trash2, AlertTriangle, Check, Zap, TestTube } from "lucide-react";
+import { 
+  Key, 
+  Plus, 
+  Copy, 
+  Trash2, 
+  AlertTriangle, 
+  Check, 
+  Zap, 
+  TestTube, 
+  Globe, 
+  Clock, 
+  ChevronDown, 
+  ChevronUp,
+  Settings,
+  MoreVertical,
+  Play
+} from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Card } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import { Switch } from "@/components/ui/Switch";
+import { Modal } from "@/components/ui/Modal";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ApiKey {
   id: string;
@@ -18,250 +43,267 @@ interface NewKeyResult {
   key: string;
 }
 
-
+interface Webhook {
+  id: string;
+  url: string;
+  events: string[];
+  active: boolean;
+  createdAt: string;
+}
 
 export default function IntegracoesPage() {
   const [keys, setKeys] = useState<ApiKey[]>([]);
+  const [webhooks, setWebhooks] = useState<Webhook[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showCreate, setShowCreate] = useState(false);
+  
+  // API Key State
+  const [showCreateKey, setShowCreateKey] = useState(false);
   const [newKeyName, setNewKeyName] = useState("");
-  const [newKeyEnv, setNewKeyEnv] = useState<"LIVE" | "TEST">("LIVE");
   const [createdKey, setCreatedKey] = useState<NewKeyResult | null>(null);
-  const [copied, setCopied] = useState(false);
-  const [creating, setCreating] = useState(false);
 
-  const fetchKeys = useCallback(async () => {
+  // Webhook State
+  const [showCreateWebhook, setShowCreateWebhook] = useState(false);
+
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const r = await fetch("/api/dashboard/integracoes/api-keys");
-      setKeys(await r.json());
+      const [keysRes, hooksRes] = await Promise.all([
+        fetch("/api/dashboard/integracoes/api-keys"),
+        fetch("/api/dashboard/integracoes/webhooks")
+      ]);
+      setKeys(await keysRes.json());
+      setWebhooks(await hooksRes.json());
+    } catch {
+      toast.error("Erro ao carregar integrações");
     } finally {
       setLoading(false);
     }
   }, []);
 
-  useEffect(() => { fetchKeys(); }, [fetchKeys]);
+  useEffect(() => { fetchData(); }, [fetchData]);
 
-  const handleCreate = async () => {
+  const handleCreateKey = async () => {
     if (!newKeyName.trim()) return;
-    setCreating(true);
     try {
       const r = await fetch("/api/dashboard/integracoes/api-keys", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newKeyName, environment: newKeyEnv }),
+        body: JSON.stringify({ name: newKeyName, environment: "LIVE" }),
       });
       const data = await r.json();
       setCreatedKey(data);
-      setShowCreate(false);
+      setShowCreateKey(false);
       setNewKeyName("");
-      fetchKeys();
-    } finally {
-      setCreating(false);
+      fetchData();
+      toast.success("API Key gerada!");
+    } catch {
+      toast.error("Erro ao gerar chave");
     }
   };
 
-  const handleRevoke = async (id: string) => {
+  const handleRevokeKey = async (id: string) => {
+    if (!confirm("Deseja revogar esta chave? Ela deixará de funcionar imediatamente.")) return;
     await fetch("/api/dashboard/integracoes/api-keys", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
     });
-    fetchKeys();
+    fetchData();
+    toast.success("Chave revogada");
   };
 
-  const copyKey = () => {
-    if (createdKey) {
-      navigator.clipboard.writeText(createdKey.key);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success("Copiado!");
   };
 
   return (
-    <div className="min-h-screen" style={{ background: "#09090b", color: "#e2e8f0" }}>
-      <div className="pl-60 pt-14">
-        <div className="px-8 py-8 max-w-5xl">
-
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-2xl font-black text-white tracking-tight">Integrações</h1>
-              <p className="text-slate-400 text-sm mt-1">Gerencie suas API Keys para integrar com sistemas externos.</p>
-            </div>
-            <button
-              onClick={() => setShowCreate(true)}
-              className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white text-sm font-bold px-4 py-2.5 rounded-xl transition-all hover:scale-105"
-            >
-              <Plus className="h-4 w-4" />
-              Nova API Key
-            </button>
+    <div className="space-y-12 animate-in fade-in duration-700">
+      
+      {/* SECTION: API KEYS */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-[#f1f5f9] tracking-tight">Chaves de API</h2>
+            <p className="text-sm text-[#64748b]">Integre seu checkout com sistemas externos via REST API.</p>
           </div>
-
-          {/* Auth info */}
-          <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-5 mb-7 flex items-start gap-4">
-            <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <Key className="h-5 w-5 text-primary" />
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-white mb-1">Autenticação via Bearer Token</p>
-              <code className="text-xs text-slate-400 font-mono bg-slate-800 px-2 py-1 rounded">
-                Authorization: Bearer bg_live_...
-              </code>
-              <p className="text-xs text-slate-500 mt-2">
-                Inclua este header em todas as requisições para <code className="text-primary">/api/v1/</code>.
-                Consulte a <a href="/docs" className="text-primary underline">documentação</a> completa.
-              </p>
-            </div>
-          </div>
-
-          {/* Keys list */}
-          <div className="space-y-3">
-            {loading ? (
-              Array.from({ length: 2 }).map((_, i) => (
-                <div key={i} className="h-20 bg-slate-900/40 rounded-2xl animate-pulse border border-slate-800" />
-              ))
-            ) : keys.length === 0 ? (
-              <div className="text-center py-16 text-slate-500">
-                <Key className="h-10 w-10 mx-auto mb-3 opacity-30" />
-                <p>Nenhuma API Key. Crie a primeira para começar a integrar.</p>
-              </div>
-            ) : (
-              keys.map((k) => (
-                <div key={k.id} className="bg-slate-900/40 border border-slate-800 rounded-2xl p-5 flex items-center justify-between hover:border-slate-700 transition-colors">
-                  <div className="flex items-center gap-4">
-                    <div className={`h-2.5 w-2.5 rounded-full ${k.active ? "bg-emerald-400" : "bg-red-500"}`} />
-                    <div>
-                      <p className="font-semibold text-white text-sm">{k.name}</p>
-                      <code className="text-xs text-slate-500 font-mono">{k.preview}</code>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-6">
-                    <div className="text-right">
-                      <p className="text-xs text-slate-500">Último uso</p>
-                      <p className="text-xs text-slate-300">
-                        {k.lastUsed ? new Date(k.lastUsed).toLocaleDateString("pt-BR") : "Nunca"}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-xs text-slate-500">Criado em</p>
-                      <p className="text-xs text-slate-300">{new Date(k.createdAt).toLocaleDateString("pt-BR")}</p>
-                    </div>
-                    {k.active && (
-                      <button
-                        onClick={() => handleRevoke(k.id)}
-                        className="flex items-center gap-1.5 text-xs text-red-400 hover:text-red-300 bg-red-500/10 hover:bg-red-500/20 px-3 py-1.5 rounded-lg transition-colors"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                        Revogar
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-
-          {/* Webhook link */}
-          <div className="mt-8 bg-slate-900/30 border border-dashed border-slate-700 rounded-2xl p-6 text-center">
-            <Zap className="h-8 w-8 text-amber-400 mx-auto mb-3" />
-            <p className="text-sm font-semibold text-white mb-1">Webhooks</p>
-            <p className="text-xs text-slate-500 mb-4">Configure endpoints para receber eventos em tempo real.</p>
-            <a
-              href="/dashboard/integracoes/webhooks"
-              className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline"
-            >
-              Gerenciar Webhooks →
-            </a>
-          </div>
+          <Button onClick={() => setShowCreateKey(true)} variant="primary" className="gap-2 h-11 px-6 font-bold">
+            <Plus className="h-5 w-5" />
+            Gerar nova API Key
+          </Button>
         </div>
-      </div>
 
-      {/* Create Key Modal */}
-      {showCreate && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl p-8 w-full max-w-md shadow-2xl">
-            <h2 className="text-lg font-black text-white mb-6">Gerar Nova API Key</h2>
+        <div className="grid grid-cols-1 gap-4">
+          {loading ? (
+             [1,2].map(i => <div key={i} className="h-24 bg-[#0f0f1a] border border-white/[0.05] rounded-2xl animate-pulse" />)
+          ) : keys.length === 0 ? (
+             <Card className="p-12 text-center bg-[#0f0f1a] border-white/[0.05] border-dashed">
+                <Key className="h-10 w-10 text-[#64748b] mx-auto mb-4 opacity-20" />
+                <p className="text-[#64748b] font-medium">Você ainda não gerou nenhuma API Key.</p>
+             </Card>
+          ) : (
+             keys.map((key) => (
+                <Card key={key.id} className="p-6 bg-[#0f0f1a] border-white/[0.05] hover:border-[#8b5cf633] transition-all group">
+                   <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-4">
+                         <div className="h-10 w-10 rounded-xl bg-[#8b5cf61a] flex items-center justify-center text-[#8b5cf6]">
+                            <Key className="w-5 h-5" />
+                         </div>
+                         <div>
+                            <div className="flex items-center gap-3">
+                               <p className="font-bold text-[#f1f5f9]">{key.name}</p>
+                               <Badge status="active" label="LIVE" className="bg-emerald-500/10 text-emerald-500 border-none" />
+                            </div>
+                            <div className="flex items-center gap-2 mt-1">
+                               <code className="text-xs text-[#64748b] font-mono select-all">{key.preview}</code>
+                               <button onClick={() => copyToClipboard(key.preview)} className="text-[#64748b] hover:text-[#f1f5f9]">
+                                  <Copy className="h-3 w-3" />
+                               </button>
+                            </div>
+                         </div>
+                      </div>
 
-            <div className="space-y-4">
-              <div>
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2 block">Nome da Key</label>
-                <input
-                  type="text"
-                  placeholder="ex: Produção, Testes, App Mobile"
-                  value={newKeyName}
-                  onChange={(e) => setNewKeyName(e.target.value)}
-                  className="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-2 block">Ambiente</label>
-                <div className="grid grid-cols-2 gap-3">
-                  {(["LIVE", "TEST"] as const).map((env) => (
-                    <button
-                      key={env}
-                      onClick={() => setNewKeyEnv(env)}
-                      className={`flex items-center gap-2 p-3 rounded-xl border text-sm font-bold transition-all ${
-                        newKeyEnv === env
-                          ? "border-primary bg-primary/10 text-primary"
-                          : "border-slate-700 text-slate-400 hover:border-slate-600"
-                      }`}
-                    >
-                      {env === "LIVE" ? <Zap className="h-4 w-4" /> : <TestTube className="h-4 w-4" />}
-                      {env}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex gap-3 mt-6">
-              <button onClick={() => setShowCreate(false)} className="flex-1 py-3 rounded-xl border border-slate-700 text-slate-400 text-sm font-bold hover:bg-slate-800 transition-colors">
-                Cancelar
-              </button>
-              <button onClick={handleCreate} disabled={creating || !newKeyName.trim()} className="flex-1 py-3 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary/90 disabled:opacity-50 transition-colors">
-                {creating ? "Gerando..." : "Gerar Key"}
-              </button>
-            </div>
-          </div>
+                      <div className="flex items-center gap-10">
+                         <div className="hidden sm:block text-right">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#64748b]">Último uso</p>
+                            <p className="text-xs text-[#f1f5f9] mt-0.5">{key.lastUsed ? new Date(key.lastUsed).toLocaleDateString() : "Nunca"}</p>
+                         </div>
+                         <div className="hidden sm:block text-right">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#64748b]">Criada em</p>
+                            <p className="text-xs text-[#f1f5f9] mt-0.5">{new Date(key.createdAt).toLocaleDateString()}</p>
+                         </div>
+                         <Button 
+                           variant="secondary" 
+                           onClick={() => handleRevokeKey(key.id)}
+                           className="text-red-500 hover:bg-red-500/10 border-white/[0.05] h-9 px-4 text-xs font-bold"
+                         >
+                           Revogar
+                         </Button>
+                      </div>
+                   </div>
+                </Card>
+             ))
+          )}
         </div>
-      )}
+      </section>
 
-      {/* Key Created Modal */}
-      {createdKey && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-slate-900 border border-amber-500/30 rounded-2xl p-8 w-full max-w-lg shadow-2xl">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                <AlertTriangle className="h-5 w-5 text-amber-400" />
-              </div>
-              <div>
-                <h2 className="text-lg font-black text-white">Copie agora!</h2>
-                <p className="text-xs text-amber-400">Esta chave não será exibida novamente.</p>
-              </div>
-            </div>
+      <div className="h-px bg-white/[0.05]" />
 
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 mb-4 flex items-center gap-3">
-              <code className="text-sm text-emerald-400 font-mono flex-1 break-all">{createdKey.key}</code>
-              <button onClick={copyKey} className="flex-shrink-0 p-2 hover:bg-slate-700 rounded-lg transition-colors">
-                {copied ? <Check className="h-4 w-4 text-emerald-400" /> : <Copy className="h-4 w-4 text-slate-400" />}
-              </button>
-            </div>
-
-            <p className="text-xs text-slate-500 mb-6">
-              Guarde esta chave em um local seguro como um gerenciador de senhas. Você não poderá visualizá-la novamente.
-            </p>
-
-            <button
-              onClick={() => setCreatedKey(null)}
-              className="w-full py-3 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-colors"
-            >
-              Já copiei, fechar
-            </button>
+      {/* SECTION: WEBHOOKS */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-[#f1f5f9] tracking-tight">Webhooks</h2>
+            <p className="text-sm text-[#64748b]">Receba notificações de eventos em tempo real no seu servidor.</p>
           </div>
+          <Button onClick={() => setShowCreateWebhook(true)} variant="primary" className="gap-2 h-11 px-6 font-bold">
+            <Plus className="h-5 w-5" />
+            Novo Webhook
+          </Button>
         </div>
-      )}
+
+        <div className="grid grid-cols-1 gap-4">
+          {loading ? (
+             [1].map(i => <div key={i} className="h-24 bg-[#0f0f1a] border border-white/[0.05] rounded-2xl animate-pulse" />)
+          ) : webhooks.length === 0 ? (
+             <Card className="p-12 text-center bg-[#0f0f1a] border-white/[0.05] border-dashed">
+                <Zap className="h-10 w-10 text-[#64748b] mx-auto mb-4 opacity-20" />
+                <p className="text-[#64748b] font-medium">Nenhum webhook configurado.</p>
+             </Card>
+          ) : (
+             webhooks.map((wh) => (
+                <Card key={wh.id} className="p-6 bg-[#0f0f1a] border-white/[0.05] hover:border-[#8b5cf633] transition-all">
+                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="flex items-start gap-4">
+                         <div className="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500">
+                            <Zap className="w-5 h-5" />
+                         </div>
+                         <div className="space-y-2">
+                            <div className="flex items-center gap-3">
+                               <p className="font-bold text-[#f1f5f9] max-w-[300px] truncate">{wh.url}</p>
+                               <Badge status={wh.active ? 'active' : 'inactive'} />
+                            </div>
+                            <div className="flex flex-wrap gap-1.5">
+                               {wh.events.slice(0, 3).map(e => (
+                                 <span key={e} className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white/[0.03] text-[#64748b] uppercase tracking-wider">{e}</span>
+                               ))}
+                               {wh.events.length > 3 && <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white/[0.03] text-[#64748b]">+ {wh.events.length - 3}</span>}
+                            </div>
+                         </div>
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                         <div className="flex flex-col items-center mr-6">
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-[#64748b] mb-1">Último disparo</p>
+                            <div className="flex items-center gap-1.5 text-emerald-500 font-bold text-xs bg-emerald-500/5 px-2 py-1 rounded-lg border border-emerald-500/10">
+                               <Check className="w-3 h-3" />
+                               200 OK
+                            </div>
+                         </div>
+                         <Button variant="secondary" className="h-9 px-4 text-xs font-bold border-white/[0.05] gap-2">
+                            <Play className="w-3 h-3" />
+                            Testar
+                         </Button>
+                         <Button variant="secondary" className="h-9 w-9 p-0 border-white/[0.05]">
+                            <Settings className="w-4 h-4" />
+                         </Button>
+                         <Button variant="secondary" className="h-9 w-9 p-0 border-white/[0.05] text-red-500 hover:bg-red-500/10">
+                            <Trash2 className="w-4 h-4" />
+                         </Button>
+                         <div className="h-8 w-px bg-white/[0.05] mx-2" />
+                         <Switch checked={wh.active} />
+                      </div>
+                   </div>
+                </Card>
+             ))
+          )}
+        </div>
+      </section>
+
+      {/* MODAL: NEW API KEY */}
+      <Modal isOpen={showCreateKey} onClose={() => setShowCreateKey(false)} title="Nova API Key">
+        <div className="space-y-6 py-4">
+           <div className="space-y-2">
+              <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Nome da Key</label>
+              <Input 
+                placeholder="Ex: Servidor Produção" 
+                value={newKeyName}
+                className="h-11"
+                onChange={e => setNewKeyName(e.target.value)}
+              />
+           </div>
+           <Button onClick={handleCreateKey} variant="primary" className="w-full h-12 font-bold">Gerar Chave</Button>
+        </div>
+      </Modal>
+
+      {/* MODAL: CREATED KEY (ONCE) */}
+      <Modal isOpen={!!createdKey} onClose={() => setCreatedKey(null)} title="Chave Gerada com Sucesso">
+         <div className="space-y-6 py-4">
+            <div className="p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl flex items-start gap-4">
+               <div className="h-10 w-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 shrink-0">
+                  <Check className="w-5 h-5" />
+               </div>
+               <div className="space-y-1">
+                  <p className="text-sm font-bold text-[#f1f5f9]">Copie sua chave agora</p>
+                  <p className="text-xs text-[#64748b]">Por questões de segurança, ela não será exibida novamente.</p>
+               </div>
+            </div>
+
+            <div className="relative group">
+               <div className="w-full bg-[#05050a] border-2 border-emerald-500/30 rounded-2xl p-6 font-mono text-sm text-[#22c55e] break-all leading-relaxed shadow-[0_0_30px_rgba(16,185,129,0.1)]">
+                  {createdKey?.key}
+               </div>
+               <button 
+                onClick={() => copyToClipboard(createdKey?.key || "")}
+                className="absolute top-4 right-4 h-10 w-10 bg-white/5 hover:bg-white/10 rounded-xl flex items-center justify-center text-white transition-all backdrop-blur-md"
+               >
+                 <Copy className="h-4 w-4" />
+               </button>
+            </div>
+
+            <Button onClick={() => setCreatedKey(null)} variant="primary" className="w-full h-12 font-bold">Já salvei, fechar</Button>
+         </div>
+      </Modal>
     </div>
   );
 }

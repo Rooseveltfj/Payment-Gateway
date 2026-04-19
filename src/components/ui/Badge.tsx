@@ -1,29 +1,90 @@
+"use client"
+
 import * as React from "react"
 import { cn } from "@/lib/utils"
+import { ds } from "@/styles/design-system"
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: "default" | "secondary" | "outline" | "success" | "error" | "warning"
+export type BadgeStatus = 'pending' | 'paid' | 'failed' | 'refunded' | 'active' | 'inactive' | 'processing'
+
+interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
+  status: BadgeStatus
+  label?: string
 }
 
-function Badge({ className, variant = "default", ...props }: BadgeProps) {
-  const variants = {
-    default: "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-    secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-    outline: "text-text-primary border-border",
-    success: "border-transparent bg-success/20 text-success",
-    error: "border-transparent bg-error/20 text-error",
-    warning: "border-transparent bg-warning/20 text-warning",
-  }
+const statusMap: Record<BadgeStatus, { label: string; color: string; bg: string; border: string; dot: string }> = {
+  pending: { 
+    label: "Pendente", 
+    color: "#facc15", 
+    bg: "rgba(234,179,8,0.12)", 
+    border: "rgba(234,179,8,0.25)",
+    dot: "#facc15"
+  },
+  paid: { 
+    label: "Pago", 
+    color: "#4ade80", 
+    bg: "rgba(34,197,94,0.12)", 
+    border: "rgba(34,197,94,0.25)",
+    dot: "#4ade80"
+  },
+  failed: { 
+    label: "Falhou", 
+    color: "#f87171", 
+    bg: "rgba(239,68,68,0.12)", 
+    border: "rgba(239,68,68,0.25)",
+    dot: "#f87171"
+  },
+  refunded: { 
+    label: "Estornado", 
+    color: "#60a5fa", 
+    bg: "rgba(59,130,246,0.12)", 
+    border: "rgba(59,130,246,0.25)",
+    dot: "#60a5fa"
+  },
+  active: { 
+    label: "Ativo", 
+    color: "#4ade80", 
+    bg: "rgba(34,197,94,0.12)", 
+    border: "rgba(34,197,94,0.25)",
+    dot: "#4ade80"
+  },
+  inactive: { 
+    label: "Inativo", 
+    color: "#94a3b8", 
+    bg: "rgba(100,116,139,0.12)", 
+    border: "rgba(100,116,139,0.2)",
+    dot: "#94a3b8"
+  },
+  processing: { 
+    label: "Processando", 
+    color: "#a78bfa", 
+    bg: "rgba(139,92,246,0.12)", 
+    border: "rgba(139,92,246,0.25)",
+    dot: "#a78bfa"
+  },
+}
+
+function Badge({ status, label, className, ...props }: BadgeProps) {
+  const config = statusMap[status] || statusMap.pending
 
   return (
     <div
       className={cn(
-        "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-        variants[variant],
+        "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-medium border transition-colors",
         className
       )}
+      style={{
+        backgroundColor: config.bg,
+        color: config.color,
+        borderColor: config.border,
+      }}
       {...props}
-    />
+    >
+      <span 
+        className="w-1 h-1 rounded-full" 
+        style={{ backgroundColor: config.dot }}
+      />
+      {label || config.label}
+    </div>
   )
 }
 

@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Badge } from "@/components/ui/Badge";
 import { KycReviewModal } from "@/components/admin/KycReviewModal";
 import { Button } from "@/components/ui/Button";
+import { DataTable, Column } from "@/components/ui/DataTable";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
 
 export default function AdminKycPage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,54 +31,52 @@ export default function AdminKycPage() {
     fetchQueue();
   }, []);
 
+  const columns = useMemo<Column<any>[]>(() => [
+    {
+      header: "Usuário",
+      accessor: (u) => (
+        <div className="flex flex-col">
+          <span className="font-semibold text-[#f1f5f9]">{u.name}</span>
+          <span className="text-[12px] text-[#64748b]">{u.email}</span>
+        </div>
+      )
+    },
+    {
+      header: "Status Atual",
+      accessor: () => <Badge status="pending" label="Pendente Análise" />
+    },
+    {
+      header: "Data Envio",
+      accessor: (u) => (
+        <span className="text-[#64748b]">
+          {new Date(u.updatedAt).toLocaleDateString("pt-BR")}
+        </span>
+      )
+    },
+    {
+      header: "Ação",
+      className: "text-right",
+      accessor: (u) => (
+        <Button variant="secondary" size="sm" onClick={() => setSelectedUser(u)}>
+          Revisar Anexos
+        </Button>
+      )
+    }
+  ], []);
+
   return (
     <div className="max-w-6xl mx-auto space-y-6 animate-in fade-in duration-500">
-      <div>
-        <h1 className="text-2xl font-bold text-text-primary">Fila de Análise de Contas (KYC)</h1>
-        <p className="text-sm text-text-secondary mt-1">Verifique as submissões documentais dos conteudistas.</p>
+      <div className="px-4 lg:px-0">
+        <h1 className="text-2xl font-bold text-[#f1f5f9] tracking-tight">Fila de Análise de Contas (KYC)</h1>
+        <p className="text-sm text-[#64748b] mt-1">Verifique as submissões documentais dos usuários pendentes.</p>
       </div>
 
-      <div className="bg-card border border-border shadow-md rounded-xl overflow-hidden">
-         {loading ? (
-           <div className="p-8 text-center text-text-secondary animate-pulse">Carregando fila...</div>
-         ) : users.length === 0 ? (
-           <div className="p-12 text-center text-text-secondary">Nenhuma submissão pendente no momento 🎉</div>
-         ) : (
-           <div className="overflow-x-auto">
-             <table className="w-full text-left text-sm text-text-secondary">
-               <thead className="bg-background/50 border-b border-border/50 text-xs uppercase text-text-primary">
-                 <tr>
-                    <th className="px-6 py-4">Usuário</th>
-                    <th className="px-6 py-4">Status Atual</th>
-                    <th className="px-6 py-4">Data Envio</th>
-                    <th className="px-6 py-4 text-right">Ação</th>
-                 </tr>
-               </thead>
-               <tbody className="divide-y divide-border/50">
-                 {users.map((u) => (
-                   <tr key={u.id} className="hover:bg-hover/30 transition-colors">
-                     <td className="px-6 py-4">
-                       <div className="font-semibold text-text-primary">{u.name}</div>
-                       <div className="text-xs">{u.email}</div>
-                     </td>
-                     <td className="px-6 py-4">
-                       <Badge variant="warning">Pendente Analise</Badge>
-                     </td>
-                     <td className="px-6 py-4">
-                       {new Date(u.updatedAt).toLocaleDateString()}
-                     </td>
-                     <td className="px-6 py-4 text-right">
-                       <Button variant="outline" size="sm" onClick={() => setSelectedUser(u)}>
-                         Revisar Anexos
-                       </Button>
-                     </td>
-                   </tr>
-                 ))}
-               </tbody>
-             </table>
-           </div>
-         )}
-      </div>
+      <DataTable 
+        columns={columns} 
+        data={users} 
+        loading={loading}
+        emptyMessage="Nenhuma submissão pendente no momento 🎉"
+      />
 
       {selectedUser && (
         <KycReviewModal 

@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { CheckoutBuilderClient } from "./CheckoutBuilderClient";
 
 export const metadata = { title: "Checkout Builder | PulsePay" };
 

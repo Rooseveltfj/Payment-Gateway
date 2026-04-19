@@ -64,7 +64,10 @@ async function handleChargePaid(payload: any) {
     where: { wooviCorrelationId: correlationID },
     include: { 
       user: { include: { badges: true } },
-      product: true 
+      product: true,
+      affiliation: {
+        include: { offer: true }
+      }
     }
   });
 
@@ -95,33 +98,101 @@ async function handleChargePaid(payload: any) {
   const maturityDate = new Date();
   maturityDate.setDate(maturityDate.getDate() + 14);
 
-  await prisma.$transaction([
-    // Create Pending Balance
-    prisma.pendingBalance.create({
+  // --- Affiliate Calculation ---
+  let affiliateCommission = 0;
+  const affiliation = order.affiliation;
+
+  if (affiliation && affiliation.status === "APPROVED") {
+    const offer = affiliation.offer;
+    if (offer.commissionType === "PERCENTAGE") {
+      affiliateCommission = order.amount * (offer.commissionValue / 100);
+    } else {
+      affiliateCommission = offer.commissionValue;
+    }
+    // Garantir que a comissão não exceda o valor líquido
+    affiliateCommission = Math.min(affiliateCommission, order.netAmount);
+  }
+
+  const finalSellerNetAmount = order.netAmount - affiliateCommission;
+
+  await prisma.$transaction(async (tx) => {
+    // 1. Create Pending Balance for Seller
+    await tx.pendingBalance.create({
       data: {
         userId: seller.id,
         orderId: order.id,
-        amount: order.netAmount,
+        amount: finalSellerNetAmount,
         availableAt: maturityDate
       }
-    }),
-    // Update Product Stats
-    prisma.product.update({
+    });
+
+    // 2. If Affiliate exists, credit them
+    if (affiliation && affiliateCommission > 0) {
+      await tx.affiliationSale.create({
+        data: {
+          affiliationId: affiliation.id,
+          orderId: order.id,
+          saleAmount: order.amount,
+          commission: affiliateCommission,
+          status: "PENDING"
+        }
+      });
+
+      await tx.affiliation.update({
+        where: { id: affiliation.id },
+        data: {
+          totalSales: { increment: 1 },
+          totalEarned: { increment: affiliateCommission },
+          pendingBalance: { increment: affiliateCommission }
+        }
+      });
+
+      await tx.affiliateOffer.update({
+        where: { id: affiliation.offerId },
+        data: {
+          totalSales: { increment: 1 },
+          totalRevenue: { increment: order.amount }
+        }
+      });
+
+      // Update Affiliate User balances
+      await tx.user.update({
+        where: { id: affiliation.affiliateId },
+        data: {
+          totalEarnings: { increment: affiliateCommission },
+          pendingBalance: { increment: affiliateCommission }
+        }
+      });
+      
+      // Create notification for affiliate
+      await tx.notification.create({
+        data: {
+          userId: affiliation.affiliateId,
+          title: "Comisso recebida! 💸",
+          content: `Voc ganhou R$ ${affiliateCommission.toFixed(2)} pela venda de ${product.name}.`,
+          type: "SUCCESS"
+        }
+      });
+    }
+
+    // 3. Update Product Stats
+    await tx.product.update({
       where: { id: product.id },
       data: {
         salesCount: { increment: 1 },
         revenue: { increment: order.amount }
       }
-    }),
-    // Update User cumulative earnings (Gross for badges as per user request)
-    prisma.user.update({
+    });
+
+    // 4. Update Seller cumulative earnings
+    await tx.user.update({
       where: { id: seller.id },
       data: {
         totalEarnings: { increment: order.amount },
-        pendingBalance: { increment: order.netAmount }
+        pendingBalance: { increment: finalSellerNetAmount }
       }
-    })
-  ]);
+    });
+  });
 
   // 4. Badge Logic (Gross Amount)
   await checkAndGrantBadges(seller.id, seller.totalEarnings + order.amount, seller.badges);
@@ -129,15 +200,16 @@ async function handleChargePaid(payload: any) {
   // 5. Emails
   await Promise.all([
     sendOrderConfirmationEmail({ email: order.buyerEmail, name: order.buyerName }, product.name, order.amount),
-    sendNewSaleEmail({ email: seller.email, name: seller.name }, product.name, order.amount, order.netAmount)
+    sendNewSaleEmail({ email: seller.email, name: seller.name }, product.name, order.amount, finalSellerNetAmount)
   ]).catch(err => console.error("Email sending Error:", err));
 
-  // 6. Create Dashboard Notification (Async)
+  // 6. Create Dashboard Notification for Seller (Async)
   prisma.notification.create({
     data: {
       userId: seller.id,
       title: "Pagamento recebido! 💰",
-      content: `Venda confirmada: ${product.name} no valor de R$ ${order.amount.toFixed(2)}.`,
+      content: `Venda confirmada: ${product.name} no valor de R$ ${order.amount.toFixed(2)}.` + 
+               (affiliateCommission > 0 ? ` (Comisso de R$ ${affiliateCommission.toFixed(2)} paga ao afiliado)` : ""),
       type: "SUCCESS"
     }
   }).catch(err => console.error("Error creating notification:", err));

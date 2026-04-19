@@ -8,13 +8,21 @@ import {
   ShoppingBag, 
   DollarSign, 
   Calendar,
-  ExternalLink,
-  ArrowRight
+  Eye,
+  History,
+  X,
+  User
 } from "lucide-react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
+import { DataTable, Column } from "@/components/ui/DataTable";
+import { Modal } from "@/components/ui/Modal";
+import { Card } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import { cn } from "@/lib/utils";
 
 interface ClientData {
+  id: string;
   name: string;
   email: string;
   totalOrders: number;
@@ -26,6 +34,7 @@ export default function ClientsPage() {
   const [clients, setClients] = useState<ClientData[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [selectedClient, setSelectedClient] = useState<ClientData | null>(null);
 
   const fetchClients = async () => {
     setLoading(true);
@@ -41,120 +50,185 @@ export default function ClientsPage() {
   };
 
   useEffect(() => {
-    fetchClients();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const timeout = setTimeout(() => {
+      fetchClients();
+    }, 300);
+    return () => clearTimeout(timeout);
+  }, [search]);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    fetchClients();
-  };
+  const columns: Column<ClientData>[] = [
+    {
+      header: "Cliente",
+      accessor: (row) => (
+        <div className="flex items-center gap-3">
+          <div className="h-9 w-9 rounded-full bg-[#8b5cf615] flex items-center justify-center text-[#8b5cf6] font-bold text-xs ring-1 ring-[#8b5cf633]">
+            {row.name.charAt(0).toUpperCase()}
+          </div>
+          <span className="font-bold text-[#f1f5f9]">{row.name}</span>
+        </div>
+      ),
+    },
+    {
+      header: "E-mail",
+      accessor: (row) => (
+        <div className="flex items-center gap-2 text-[#64748b]">
+          <Mail className="w-3.5 h-3.5 opacity-40" />
+          {row.email}
+        </div>
+      ),
+    },
+    {
+      header: "Compras",
+      accessor: (row) => (
+        <div className="flex items-center gap-2">
+          <ShoppingBag className="w-3.5 h-3.5 text-[#8b5cf6]" />
+          <span className="font-medium">{row.totalOrders} pedidos</span>
+        </div>
+      ),
+    },
+    {
+      header: "Total Gasto",
+      accessor: (row) => (
+        <span className="font-bold text-[#4ade80]">
+          R$ {row.totalSpent.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+        </span>
+      ),
+    },
+    {
+      header: "Última Compra",
+      accessor: (row) => (
+        <div className="flex items-center gap-2 text-[#64748b]">
+          <Calendar className="w-3.5 h-3.5 opacity-40" />
+          {new Date(row.lastOrderAt).toLocaleDateString("pt-BR")}
+        </div>
+      ),
+    },
+    {
+      header: "Ação",
+      accessor: (row) => (
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedClient(row);
+          }}
+          className="p-2 rounded-lg text-[#64748b] hover:text-[#8b5cf6] hover:bg-[#8b5cf61a] transition-all"
+        >
+          <Eye className="w-4 h-4" />
+        </button>
+      ),
+      className: "w-[80px] text-center",
+    },
+  ];
 
   return (
     <div className="space-y-8 animate-in fade-in duration-700">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-black text-text-primary tracking-tight">Meus Clientes</h1>
-          <p className="text-sm text-text-secondary mt-1">Veja quem são as pessoas que confiam no seu trabalho.</p>
-        </div>
-        <div className="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-xl border border-primary/20">
-           <Users className="h-5 w-5" />
-           <span className="font-bold">{clients.length} Clientes Únicos</span>
+        <div className="flex items-center gap-4">
+          <h1 className="text-[28px] font-bold text-[#f1f5f9] tracking-tight">Meus Clientes</h1>
+          <Badge status="active" label={`${clients.length} Clientes Únicos`} className="bg-[#8b5cf61a] text-[#a78bfa] border-none px-3 py-1" />
         </div>
       </div>
 
-      {/* Search */}
-      <form onSubmit={handleSearch} className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-secondary" />
-        <Input 
-          className="pl-11 h-12 bg-card border-border shadow-sm focus:border-primary" 
-          placeholder="Pesquisar por nome ou e-mail..." 
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-        />
-      </form>
+      {/* Filter */}
+      <div className="relative w-full">
+         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[#64748b]" />
+         <Input 
+           className="pl-12 h-13 bg-[#0f0f1a] border-white/[0.05] focus:border-[#8b5cf666] ring-offset-0 focus:ring-1 focus:ring-[#8b5cf633]" 
+           placeholder="Buscar por nome ou e-mail..." 
+           value={search}
+           onChange={e => setSearch(e.target.value)}
+         />
+      </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {loading ? (
-          [...Array(6)].map((_, i) => (
-            <div key={i} className="h-64 bg-card border border-border rounded-3xl animate-pulse" />
-          ))
-        ) : clients.length > 0 ? (
-          clients.map((c: ClientData) => (
-            <div key={c.email} className="bg-card border border-border rounded-3xl p-6 hover:border-primary/50 transition-all group relative overflow-hidden shadow-sm hover:shadow-xl hover:shadow-primary/5">
-              
-              {/* Header */}
-              <div className="flex items-start justify-between mb-6">
-                 <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20 group-hover:scale-110 transition-transform">
-                    <UserIcon name={c.name} />
-                 </div>
-                 <Button variant="ghost" size="sm" className="rounded-full">
-                    <ExternalLink className="h-4 w-4" />
-                 </Button>
-              </div>
+      {/* List */}
+      <DataTable 
+        columns={columns}
+        data={clients}
+        loading={loading}
+        emptyMessage="Nenhum cliente por aqui"
+        emptyIcon={<Users className="w-12 h-12 text-[#64748b] opacity-15" />}
+      />
 
-              {/* Info */}
-              <div className="space-y-1">
-                 <h3 className="text-lg font-bold text-text-primary truncate">{c.name}</h3>
-                 <p className="text-sm text-text-secondary flex items-center gap-1.5 truncate">
-                    <Mail className="h-3.5 w-3.5 opacity-50" />
-                    {c.email}
-                 </p>
-              </div>
-
-              <div className="h-px bg-border/50 my-6" />
-
-              {/* Stats */}
-              <div className="grid grid-cols-2 gap-4">
-                 <div className="space-y-1">
-                    <span className="text-[10px] font-black text-text-secondary uppercase tracking-widest">Compras</span>
-                    <div className="flex items-center gap-1 text-text-primary font-bold">
-                       <ShoppingBag className="h-4 w-4 text-primary" />
-                       {c.totalOrders}
-                    </div>
-                 </div>
-                 <div className="space-y-1">
-                    <span className="text-[10px] font-black text-text-secondary uppercase tracking-widest">Valor Gasto</span>
-                    <div className="flex items-center gap-1 text-text-primary font-bold">
-                       <DollarSign className="h-4 w-4 text-success" />
-                       R$ {c.totalSpent.toFixed(2)}
-                    </div>
-                 </div>
-              </div>
-
-              {/* Footer */}
-              <div className="mt-6 flex items-center justify-between">
-                 <div className="flex items-center gap-1.5 text-[10px] text-text-secondary font-medium">
-                    <Calendar className="h-3 w-3" />
-                    Última compra: {new Date(c.lastOrderAt).toLocaleDateString("pt-BR")}
-                 </div>
-                 <span className="text-primary opacity-0 group-hover:opacity-100 transition-all flex items-center gap-1 text-xs font-bold translate-x-4 group-hover:translate-x-0">
-                    Histórico <ArrowRight className="h-3 w-3" />
-                 </span>
-              </div>
-
-              {/* Decorative Background */}
-              <div className="absolute -right-4 -top-4 h-24 w-24 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors" />
+      {/* Empty State Custom Styles (via override if needed, but DataTable handles well) */}
+      
+      {/* Client History Modal */}
+      <Modal 
+        isOpen={!!selectedClient} 
+        onClose={() => setSelectedClient(null)}
+        title="Histórico do Cliente"
+      >
+        {selectedClient && (
+          <div className="space-y-6 py-4">
+            <div className="flex items-center gap-4 p-4 bg-white/[0.02] border border-white/[0.05] rounded-2xl">
+               <div className="h-12 w-12 rounded-full bg-[#8b5cf6] flex items-center justify-center text-white text-lg font-bold">
+                  {selectedClient.name.charAt(0).toUpperCase()}
+               </div>
+               <div>
+                  <h3 className="font-bold text-[#f1f5f9]">{selectedClient.name}</h3>
+                  <p className="text-xs text-[#64748b]">{selectedClient.email}</p>
+               </div>
             </div>
-          ))
-        ) : (
-          <div className="col-span-full py-24 text-center bg-card border border-border rounded-3xl">
-             <div className="h-20 w-20 bg-background rounded-full flex items-center justify-center mx-auto mb-6 border border-border shadow-inner">
-                <Users className="h-10 w-10 text-text-secondary opacity-30" />
-             </div>
-             <h3 className="text-xl font-bold text-text-primary">Nenhum cliente por aqui</h3>
-             <p className="text-text-secondary max-w-xs mx-auto mt-2">
-               Quando você realizar suas primeiras vendas, seus clientes aparecerão aqui automaticamente.
-             </p>
+
+            <div className="grid grid-cols-2 gap-4">
+               <div className="p-4 bg-white/[0.02] border border-white/[0.05] rounded-2xl">
+                  <p className="text-[10px] uppercase tracking-widest text-[#64748b] mb-1 font-bold">Total Gasto</p>
+                  <p className="text-xl font-bold text-[#4ade80]">R$ {selectedClient.totalSpent.toFixed(2)}</p>
+               </div>
+               <div className="p-4 bg-white/[0.02] border border-white/[0.05] rounded-2xl">
+                  <p className="text-[10px] uppercase tracking-widest text-[#64748b] mb-1 font-bold">Pedidos</p>
+                  <p className="text-xl font-bold text-[#f1f5f9]">{selectedClient.totalOrders}</p>
+               </div>
+            </div>
+
+            <div className="space-y-3">
+               <h4 className="text-[11px] uppercase tracking-widest text-[#64748b] font-bold flex items-center gap-2">
+                  <History className="w-3 h-3" />
+                  Atividades Recentes
+               </h4>
+               <div className="space-y-2 max-h-[300px] overflow-y-auto pr-2 scrollbar-thin">
+                  {/* Mock Activity List since API history might not be implemented yet */}
+                  {[1,2].map(i => (
+                    <div key={i} className="p-4 bg-white/[0.01] border border-white/[0.03] rounded-xl flex items-center justify-between">
+                       <div className="flex items-center gap-3">
+                          <div className="h-8 w-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+                             <CheckCircleIcon className="w-4 h-4" />
+                          </div>
+                          <div>
+                             <p className="text-sm font-bold text-[#f1f5f9]">Pedido Pago</p>
+                             <p className="text-[10px] text-[#64748b]">#{Math.floor(Math.random()*100000)}</p>
+                          </div>
+                       </div>
+                       <span className="text-xs font-medium text-[#64748b]">Há {i * 2} dias</span>
+                    </div>
+                  ))}
+               </div>
+            </div>
+
+            <Button onClick={() => setSelectedClient(null)} variant="primary" className="w-full h-12 font-bold mt-4">
+               Fechar Detalhes
+            </Button>
           </div>
         )}
-      </div>
+      </Modal>
     </div>
   );
 }
 
-function UserIcon({ name }: { name: string }) {
-  const initial = name?.charAt(0).toUpperCase() || "U";
-  return <span className="text-xl font-black">{initial}</span>;
+function CheckCircleIcon({ className }: { className?: string }) {
+  return (
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round" 
+      className={className}
+    >
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <polyline points="22 4 12 14.01 9 11.01" />
+    </svg>
+  );
 }

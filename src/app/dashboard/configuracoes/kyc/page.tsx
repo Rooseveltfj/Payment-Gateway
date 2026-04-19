@@ -1,26 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Stepper } from "@/components/ui/Stepper";
 import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
+import { 
+  AlertTriangle, 
+  Clock, 
+  CheckCircle2, 
+  XCircle, 
+  ArrowLeft, 
+  ArrowRight, 
+  ShieldCheck, 
+  FileText,
+  ChevronRight,
+  RefreshCw
+} from "lucide-react";
 import { PersonalDataStep } from "./steps/PersonalDataStep";
 import { IdentityDocStep } from "./steps/IdentityDocStep";
 import { SelfieStep } from "./steps/SelfieStep";
 import { ResidencyStep } from "./steps/ResidencyStep";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 const STEPS = [
   { id: "personal", title: "Dados Pessoais" },
-  { id: "identity", title: "Identificação" },
+  { id: "identity", title: "Documento" },
   { id: "selfie", title: "Selfie" },
-  { id: "residency", title: "Residência" }
+  { id: "residency", title: "Comprovante" }
 ];
 
-export default function KycWizard() {
+export default function KycPage() {
+  const [kycData, setKycData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  // Unified application state
+  
+  // Local form state for submission
   const [formData, setFormData] = useState({
     cpf: "",
     fullName: "",
@@ -38,27 +55,51 @@ export default function KycWizard() {
     residencyUrl: null as string | null,
   });
 
+  const fetchStatus = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/user/kyc/status");
+      const data = await res.json();
+      setKycData(data);
+      if (data.status === "NOT_SUBMITTED" || data.status === "REJECTED") {
+        setFormData(prev => ({ 
+          ...prev, 
+          fullName: data.userData?.name || "",
+          cpf: data.userData?.document || "",
+          phone: data.userData?.phone || ""
+        }));
+      }
+    } catch (e) {
+      toast.error("Erro ao carregar status do KYC");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchStatus();
+  }, []);
+
   const updateData = (payload: Partial<typeof formData>) => {
     setFormData(prev => ({ ...prev, ...payload }));
   };
 
   const handleNext = () => {
-    // Validation placeholders before proceeding
     if (currentStep === 0 && (!formData.fullName || formData.cpf.length < 14)) {
-       return alert("Preencha CPF válido e nome completo.");
+      return toast.error("Preencha nome completo e CPF válido.");
     }
     if (currentStep === 1 && (!formData.frontIdUrl || !formData.backIdUrl)) {
-       return alert("Faça o upload da frente e verso do seu documento.");
+      return toast.error("Envie a frente e o verso do seu documento.");
     }
     if (currentStep === 2 && !formData.selfieUrl) {
-       return alert("Você precisa enviar a selfie estruturada.");
+      return toast.error("A selfie é obrigatória para verificação.");
     }
     setCurrentStep(s => s + 1);
   };
 
   const handleSubmit = async () => {
     if (!formData.residencyUrl) {
-       return alert("Anexe um comprovante de residência antes de finalizar.");
+      return toast.error("Anexe o comprovante de residência.");
     }
     
     setIsSubmitting(true);
@@ -69,64 +110,174 @@ export default function KycWizard() {
         body: JSON.stringify(formData),
       });
 
-      if (!res.ok) throw new Error("Erro na submissão");
+      if (!res.ok) throw new Error();
       
-      setSubmitted(true);
+      toast.success("Documentos enviados com sucesso!");
+      fetchStatus();
     } catch {
-      alert("Houve um erra ao enviar seu processo de KYC.");
+      toast.error("Erro ao enviar seus documentos.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (submitted) {
+  if (loading) {
     return (
-      <div className="max-w-2xl mx-auto text-center py-24 bg-card border border-border shadow-lg rounded-xl mt-12 px-6">
-        <div className="h-20 w-20 bg-warning/20 text-warning mx-auto rounded-full flex items-center justify-center mb-6 ring-4 ring-warning/10">
-           <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        </div>
-        <h2 className="text-2xl font-bold text-text-primary">Processo em Análise</h2>
-        <p className="text-text-secondary mt-2 mb-8">
-          Recebemos seus documentos com sucesso. Nossa equipe de compliance revisará sua identidade dentro de 24-48h. Você receberá um e-mail confirmando o acesso aos saques.
-        </p>
-        <Button variant="outline" onClick={() => window.location.href = "/dashboard"}>Voltar ao Início</Button>
+      <div className="h-[600px] flex items-center justify-center">
+        <RefreshCw className="w-8 h-8 text-[#8b5cf6] animate-spin" />
       </div>
     );
   }
 
+  // Se já enviou e está PENDING, APPROVED ou REJECTED (e não clicou em reenviar)
+  const isFinalState = kycData?.status === "PENDING" || kycData?.status === "APPROVED" || kycData?.status === "REJECTED";
+
+  if (isFinalState) {
+    const statusInfo = {
+      PENDING: {
+        icon: Clock,
+        color: "text-amber-500",
+        bgColor: "bg-amber-500/10",
+        title: "Processo em Análise",
+        desc: "Sua documentação foi recebida e nossa equipe de compliance está revisando as informações. O prazo médio é de 24h a 48h úteis.",
+        badge: "Em análise"
+      },
+      APPROVED: {
+        icon: CheckCircle2,
+        color: "text-emerald-500",
+        bgColor: "bg-emerald-500/10",
+        title: "Identidade Verificada",
+        desc: "Parabéns! Sua conta está totalmente verificada e você já pode realizar saques na plataforma sem restrições.",
+        badge: "Aprovado"
+      },
+      REJECTED: {
+        icon: XCircle,
+        color: "text-red-500",
+        bgColor: "bg-red-500/10",
+        title: "Documentação Rejeitada",
+        desc: "Infelizmente sua verificação não pôde ser concluída. Verifique o motivo abaixo e realize o reenvio dos documentos.",
+        badge: "Rejeitado"
+      }
+    }[kycData.status as "PENDING" | "APPROVED" | "REJECTED"];
+
+    const Icon = statusInfo.icon;
+
+    return (
+      <div className="max-w-3xl mx-auto py-12 animate-in fade-in zoom-in-95 duration-500">
+        <Card className="p-12 text-center bg-[#0f0f1a] border-white/[0.05] rounded-[32px] shadow-2xl relative overflow-hidden">
+          <div className={cn("h-24 w-24 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner", statusInfo.bgColor, statusInfo.color)}>
+            <Icon className="h-12 w-12" />
+          </div>
+          
+          <h2 className="text-3xl font-bold text-[#f1f5f9] tracking-tight">{statusInfo.title}</h2>
+          <div className="mt-4 flex justify-center">
+             <Badge status={kycData.status === 'PENDING' ? 'pending' : kycData.status === 'APPROVED' ? 'active' : 'failed'} label={statusInfo.badge} />
+          </div>
+          
+          <p className="text-[#64748b] mt-6 max-w-md mx-auto leading-relaxed">
+            {statusInfo.desc}
+          </p>
+
+          {kycData.status === "REJECTED" && (
+            <div className="mt-10 p-6 bg-red-500/5 border border-red-500/20 rounded-[20px] text-left">
+              <div className="flex items-center gap-2 mb-2 text-red-500">
+                <AlertTriangle className="w-4 h-4" />
+                <span className="text-[12px] font-bold uppercase tracking-widest">Motivo da Rejeição</span>
+              </div>
+              <p className="text-[14px] text-[#f1f5f9]/80 font-medium">
+                {kycData.rejectionReason}
+              </p>
+            </div>
+          )}
+
+          <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
+            {kycData.status === "REJECTED" ? (
+              <Button 
+                variant="primary" 
+                className="h-12 px-10 font-bold gap-2"
+                onClick={() => setKycData({ ...kycData, status: "NOT_SUBMITTED" })}
+              >
+                Reenviar documentos
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            ) : (
+              <Button 
+                variant="secondary" 
+                className="h-12 px-10 font-bold border-white/[0.05]"
+                onClick={() => window.location.href = "/dashboard"}
+              >
+                Voltar à Dashboard
+              </Button>
+            )}
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  // Wizard Flow (NOT_SUBMITTED)
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-       <div>
-        <h1 className="text-2xl font-bold text-text-primary">Verificação de Conformidade (KYC)</h1>
-        <p className="text-sm text-text-secondary mt-1">Conclua as etapas abaixo para liberar os saques da sua conta.</p>
+    <div className="max-w-[880px] mx-auto space-y-8 animate-in fade-in duration-700">
+       <div className="space-y-1">
+         <h1 className="text-[28px] font-bold text-[#f1f5f9] tracking-tight">Meus Documentos</h1>
+         <p className="text-[14px] text-[#64748b]">Verificação necessária para realizar saques na plataforma.</p>
        </div>
 
-       <div className="bg-card border border-border shadow-md rounded-xl flex flex-col min-h-[500px]">
-          <div className="px-6 py-8 border-b border-border/50 flex justify-center bg-background/30 rounded-t-xl overflow-x-auto">
+       {/* Status Alert Banner (Optional but good) */}
+       <div className="p-4 bg-amber-500/5 border border-amber-500/20 rounded-2xl flex items-center gap-4">
+          <div className="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 shrink-0">
+            <ShieldCheck className="w-5 h-5" />
+          </div>
+          <div className="flex-1">
+             <p className="text-sm font-bold text-[#f1f5f9]">Sua conta ainda não foi verificada</p>
+             <p className="text-xs text-[#64748b]">Complete o envio dos dados abaixo para aumentar sua segurança.</p>
+          </div>
+       </div>
+
+       <Card className="bg-[#0f0f1a] border-white/[0.05] rounded-[24px] shadow-2xl overflow-hidden flex flex-col min-h-[600px]">
+          {/* Progress Header */}
+          <div className="px-8 py-10 border-b border-white/[0.05]">
              <Stepper steps={STEPS} currentStep={currentStep} />
           </div>
 
-          <div className="flex-1 p-6 sm:p-8 relative">
-             {currentStep === 0 && <PersonalDataStep data={formData} updateData={updateData} />}
-             {currentStep === 1 && <IdentityDocStep data={formData} updateData={updateData} />}
-             {currentStep === 2 && <SelfieStep data={formData} updateData={updateData} />}
-             {currentStep === 3 && <ResidencyStep data={formData} updateData={updateData} />}
+          {/* Content */}
+          <div className="flex-1 p-8 sm:p-10">
+             <div className="min-h-[400px]">
+                {currentStep === 0 && <PersonalDataStep data={formData} updateData={updateData} />}
+                {currentStep === 1 && <IdentityDocStep data={formData} updateData={updateData} />}
+                {currentStep === 2 && <SelfieStep data={formData} updateData={updateData} />}
+                {currentStep === 3 && <ResidencyStep data={formData} updateData={updateData} />}
+             </div>
           </div>
 
-          <div className="px-6 py-5 border-t border-border bg-background/30 rounded-b-xl flex items-center justify-between">
-             <Button variant="outline" onClick={() => setCurrentStep(s => s -1)} disabled={currentStep === 0 || isSubmitting}>
-               Etapa anterior
+          {/* Controls */}
+          <div className="p-8 border-t border-white/[0.05] flex items-center justify-between bg-white/[0.01]">
+             <Button 
+                variant="secondary" 
+                onClick={() => setCurrentStep(s => s - 1)} 
+                disabled={currentStep === 0 || isSubmitting}
+                className="h-11 px-8 border-white/[0.05]"
+              >
+                Voltar
              </Button>
              
              {currentStep === STEPS.length - 1 ? (
-               <Button onClick={handleSubmit} disabled={isSubmitting} variant="default" className="bg-success hover:bg-success/90">
-                 {isSubmitting ? "Enviando dossiê..." : "Assinar e Enviar"}
+               <Button 
+                onClick={handleSubmit} 
+                isLoading={isSubmitting} 
+                variant="primary"
+                className="h-12 px-10 font-bold bg-[#22c55e] hover:bg-[#16a34a] text-white"
+               >
+                 Enviar para Análise
                </Button>
              ) : (
-               <Button onClick={handleNext} variant="default">Próxima Etapa</Button>
+               <Button onClick={handleNext} variant="primary" className="h-12 px-10 font-bold gap-2">
+                 Próxima Etapa
+                 <ChevronRight className="w-4 h-4" />
+               </Button>
              )}
           </div>
-       </div>
+       </Card>
     </div>
   );
 }

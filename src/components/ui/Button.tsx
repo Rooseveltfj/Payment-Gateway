@@ -1,29 +1,53 @@
+"use client"
+
 import * as React from "react"
-import { cn } from "@/lib/utils"
 import { Loader2 } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "secondary" | "outline" | "ghost" | "danger"
-  size?: "default" | "sm" | "lg" | "icon"
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger'
+  size?: 'sm' | 'md' | 'lg' | 'icon'
   isLoading?: boolean
+  icon?: React.ReactNode
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = "default", size = "default", isLoading, children, disabled, ...props }, ref) => {
+  ({ 
+    className, 
+    variant = "primary", 
+    size = "md", 
+    isLoading, 
+    icon, 
+    children, 
+    disabled, 
+    ...props 
+  }, ref) => {
+    
     const variants = {
-      default: "bg-primary text-white hover:bg-primary/90 shadow-lg shadow-primary/20",
-      secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-      outline: "border border-border bg-transparent hover:bg-hover text-text-primary",
-      ghost: "hover:bg-hover hover:text-white text-text-secondary",
-      danger: "bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white border border-red-500/20",
+      primary: cn(
+        "bg-[#8b5cf6] text-white border-none",
+        "hover:bg-[#7c3aed] hover:shadow-[0_0_20px_rgba(139,92,246,0.3)]",
+      ),
+      secondary: cn(
+        "bg-white/[0.05] border border-white/[0.08] text-[#f1f5f9]",
+        "hover:bg-white/[0.08]"
+      ),
+      ghost: cn(
+        "bg-transparent border border-[#8b5cf64d] text-[#a78bfa]",
+        "hover:bg-[#8b5cf614]"
+      ),
+      danger: cn(
+        "bg-[#ef44441f] border border-[#ef444440] text-[#f87171]",
+        "hover:bg-[#ef44442e]"
+      ),
     }
 
     const sizes = {
-      default: "h-11 px-5 py-2.5",
-      sm: "h-9 rounded-md px-3 text-xs",
-      lg: "h-12 rounded-xl px-10 text-base",
-      icon: "h-10 w-10",
+      sm: "h-[32px] px-3 text-[13px] rounded-[8px]",
+      md: "h-[40px] px-4 text-[14px] rounded-[10px]",
+      lg: "h-[48px] px-[20px] text-[15px] rounded-[12px]",
+      icon: "w-10 h-10 rounded-[10px] p-0 flex items-center justify-center",
     }
 
     return (
@@ -31,15 +55,22 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={isLoading || disabled}
         className={cn(
-          "inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-bold ring-offset-background transition-all active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+          "inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium transition-all duration-150 active:scale-[0.98] outline-none",
+          "disabled:pointer-events-none disabled:opacity-50",
           variants[variant],
           sizes[size],
           className
         )}
         {...props}
       >
-        {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        {children}
+        {isLoading ? (
+          <Loader2 className="w-4 h-4 animate-spin" />
+        ) : (
+          <>
+            {icon && <span className="flex-shrink-0">{icon}</span>}
+            {children}
+          </>
+        )}
       </button>
     )
   }

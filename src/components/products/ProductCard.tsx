@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Edit, Trash, Play, CopyPlus } from "lucide-react";
+import { Copy, Edit, Trash, Play, CopyPlus, Package, MoreVertical } from "lucide-react";
 import { Switch } from "@/components/ui/Switch";
 import { DropdownMenu, DropdownMenuItem } from "@/components/ui/DropdownMenu";
 import { Badge } from "@/components/ui/Badge";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
   product: {
@@ -46,9 +48,10 @@ export function ProductCard({ product, onDelete, onDuplicate }: ProductCardProps
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus })
       });
+      toast.success(`Checkout ${checked ? 'ativado' : 'desativado'} com sucesso!`);
     } catch {
-      // Revert on error
       setIsActive(!checked);
+      toast.error("Erro ao atualizar status");
     } finally {
       setIsUpdating(false);
     }
@@ -65,91 +68,98 @@ export function ProductCard({ product, onDelete, onDuplicate }: ProductCardProps
   };
 
   const handleEdit = () => {
-    router.push(`/dashboard/produtos/${product.id}/checkout`);
+    router.push(`/dashboard/produtos/${product.id}/editar`);
   };
 
-  const statusVariant = isActive ? "success" : "secondary";
-
   return (
-    <div
-      className="group relative flex flex-col rounded-xl overflow-hidden transition-all duration-200 hover:translate-y-[-2px] hover:shadow-lg"
-      style={{
-        background: "#111113",
-        border: "0.5px solid rgba(255,255,255,0.08)",
-      }}
+    <motion.div
+      whileHover={{ y: -2 }}
+      className="group relative flex flex-col rounded-[16px] bg-[#0f0f1a] border border-white/[0.05] transition-all duration-250 hover:border-[#8b5cf633] hover:shadow-[0_4px_24px_rgba(0,0,0,0.3)]"
     >
-      {/* Image Cover */}
-      <div className="relative h-40 w-full bg-background/50 border-b border-border flex items-center justify-center overflow-hidden">
+      {/* Capa Area (160px) - Overflow hidden moved here */}
+      <div className="relative h-40 w-full overflow-hidden rounded-t-[16px]">
         {product.imageUrl ? (
           <img
             src={product.imageUrl}
             alt={product.name}
-            className="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="text-text-secondary/50 flex flex-col items-center">
-            <span className="text-sm font-medium">Sem capa</span>
+          <div className="w-full h-full bg-gradient-to-br from-[#141428] to-[#0d0d1e] flex flex-col items-center justify-center gap-2">
+            <Package className="w-8 h-8 text-white/[0.1]" />
+            <span className="text-[12px] font-medium text-white/[0.2]">Sem capa</span>
           </div>
         )}
-        <div className="absolute top-3 left-3">
-          <Badge variant={statusVariant} className="shadow-sm backdrop-blur-md">
-            {isActive ? "Ativo" : "Inativo"}
-          </Badge>
-        </div>
-        <div className="absolute top-3 right-3 bg-black/50 rounded flex items-center shadow-sm backdrop-blur-md">
-          <DropdownMenu>
-            <DropdownMenuItem icon={Edit} onClick={handleEdit}>Editar</DropdownMenuItem>
-            <DropdownMenuItem icon={Play} onClick={handleViewCheckout}>Ver checkout</DropdownMenuItem>
-            <DropdownMenuItem icon={Copy} onClick={handleCopyLink}>Copiar link</DropdownMenuItem>
-            <DropdownMenuItem icon={CopyPlus} onClick={() => onDuplicate?.(product.id)}>Duplicar</DropdownMenuItem>
-            <div className="my-1 h-px bg-border mx-2" />
-            <DropdownMenuItem icon={Trash} danger onClick={() => onDelete?.(product.id)}>Excluir</DropdownMenuItem>
-          </DropdownMenu>
+
+        {/* Status Badge (Top-Right) */}
+        <div className="absolute top-3 right-3 z-10">
+          <Badge status={isActive ? 'active' : 'inactive'} />
         </div>
       </div>
 
-      {/* Content */}
+      {/* Menu 3 Pontos (Top-Left) - Fixed positioning relative to card to avoid clipping */}
+      <div className="absolute top-3 left-3 z-20">
+           <DropdownMenu 
+             align="left"
+             trigger={
+               <div className="w-9 h-9 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md flex items-center justify-center transition-all border border-white/5 active:scale-90 shadow-lg">
+                  <MoreVertical className="h-4 w-4 text-white" />
+               </div>
+             }
+           >
+              <DropdownMenuItem icon={Edit} onClick={handleEdit}>Editar produto</DropdownMenuItem>
+              <DropdownMenuItem icon={Play} onClick={handleViewCheckout}>Ver checkout</DropdownMenuItem>
+              <DropdownMenuItem icon={Copy} onClick={handleCopyLink}>Copiar link</DropdownMenuItem>
+              <DropdownMenuItem icon={CopyPlus} onClick={() => onDuplicate?.(product.id)}>Duplicar</DropdownMenuItem>
+              <div className="my-1.5 h-px bg-white/[0.05] mx-2" />
+              <DropdownMenuItem icon={Trash} danger onClick={() => onDelete?.(product.id)}>Excluir</DropdownMenuItem>
+           </DropdownMenu>
+      </div>
+
+      {/* Info Area */}
       <div className="p-5 flex flex-col flex-1">
-        <div className="flex items-start justify-between gap-4 mb-3">
-          <div>
-            <h3 className="text-base font-bold text-text-primary line-clamp-1" title={product.name}>
-              {product.name}
-            </h3>
-            <p className="text-xs text-text-secondary font-medium mt-0.5">
-              {TYPE_MAP[product.type] || product.type}
-            </p>
+        <div className="flex items-start justify-between gap-4">
+          <h3 className="text-[15px] font-bold text-[#f1f5f9] line-clamp-1 flex-1">
+            {product.name}
+          </h3>
+          <span className="text-[15px] font-bold text-[#f1f5f9] shrink-0">
+            R$ {product.price.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+          </span>
+        </div>
+        <p className="text-[12px] text-[#64748b] mt-1">
+          {TYPE_MAP[product.type] || "Único"}
+        </p>
+
+        <div className="h-px bg-white/[0.05] my-4" />
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#64748b]">Vendas</span>
+            <span className="text-[20px] font-bold text-[#f1f5f9] tracking-tight">{product.salesCount}</span>
           </div>
-          <div className="text-right shrink-0">
-             <p className="text-sm font-bold text-primary">
-               {product.price.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-             </p>
+          <div className="flex flex-col">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#64748b]">Receita Gerada</span>
+            <span className={cn(
+              "text-[14px] font-bold mt-1.5",
+              product.revenue > 0 ? "text-[#4ade80]" : "text-[#64748b]"
+            )}>
+              R$ {product.revenue.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+            </span>
           </div>
         </div>
 
-        {/* Metrics Grid */}
-        <div className="grid grid-cols-2 gap-3 mt-auto pt-4 border-t border-border/50">
-          <div>
-            <p className="text-[10px] uppercase tracking-wider text-text-secondary font-semibold">Vendas</p>
-            <p className="text-sm font-semibold text-text-primary">{product.salesCount.toLocaleString("pt-BR")}</p>
-          </div>
-          <div>
-            <p className="text-[10px] uppercase tracking-wider text-text-secondary font-semibold">Receita gerada</p>
-            <p className="text-sm font-semibold text-success">
-               {product.revenue.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-            </p>
-          </div>
-        </div>
+        <div className="h-px bg-white/[0.05] my-4" />
 
-        {/* Footer Actions */}
-        <div className="mt-5 pt-3 flex items-center justify-between border-t border-border">
-          <span className="text-xs text-text-secondary font-medium">Status no checkout</span>
+        <div className="flex items-center justify-between">
+          <span className="text-[13px] font-medium text-[#64748b]">Status no checkout</span>
           <Switch 
             checked={isActive} 
             onCheckedChange={toggleStatus} 
             disabled={isUpdating}
+            className="data-[state=checked]:bg-[#8b5cf6]"
           />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

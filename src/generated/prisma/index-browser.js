@@ -224,7 +224,8 @@ exports.Prisma.OrderScalarFieldEnum = {
   isMatured: 'isMatured',
   statusHistory: 'statusHistory',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  affiliationId: 'affiliationId'
 };
 
 exports.Prisma.PendingBalanceScalarFieldEnum = {
@@ -368,6 +369,57 @@ exports.Prisma.CustomDomainScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AffiliateOfferScalarFieldEnum = {
+  id: 'id',
+  productId: 'productId',
+  ownerId: 'ownerId',
+  title: 'title',
+  description: 'description',
+  commissionType: 'commissionType',
+  commissionValue: 'commissionValue',
+  cookieDays: 'cookieDays',
+  maxAffiliates: 'maxAffiliates',
+  requiresApproval: 'requiresApproval',
+  status: 'status',
+  category: 'category',
+  tags: 'tags',
+  imageUrl: 'imageUrl',
+  totalAffiliates: 'totalAffiliates',
+  totalSales: 'totalSales',
+  totalRevenue: 'totalRevenue',
+  conversionRate: 'conversionRate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AffiliationScalarFieldEnum = {
+  id: 'id',
+  offerId: 'offerId',
+  affiliateId: 'affiliateId',
+  status: 'status',
+  affiliateLink: 'affiliateLink',
+  affiliateCode: 'affiliateCode',
+  totalClicks: 'totalClicks',
+  totalSales: 'totalSales',
+  totalEarned: 'totalEarned',
+  pendingBalance: 'pendingBalance',
+  availableBalance: 'availableBalance',
+  approvedAt: 'approvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AffiliationSaleScalarFieldEnum = {
+  id: 'id',
+  affiliationId: 'affiliationId',
+  orderId: 'orderId',
+  saleAmount: 'saleAmount',
+  commission: 'commission',
+  status: 'status',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -501,6 +553,31 @@ exports.DomainStatus = exports.$Enums.DomainStatus = {
   ERROR: 'ERROR'
 };
 
+exports.CommissionType = exports.$Enums.CommissionType = {
+  PERCENTAGE: 'PERCENTAGE',
+  FIXED: 'FIXED'
+};
+
+exports.OfferStatus = exports.$Enums.OfferStatus = {
+  ACTIVE: 'ACTIVE',
+  PAUSED: 'PAUSED',
+  CLOSED: 'CLOSED'
+};
+
+exports.AffiliationStatus = exports.$Enums.AffiliationStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  SUSPENDED: 'SUSPENDED'
+};
+
+exports.SaleCommissionStatus = exports.$Enums.SaleCommissionStatus = {
+  PENDING: 'PENDING',
+  CLEARED: 'CLEARED',
+  PAID: 'PAID',
+  REFUNDED: 'REFUNDED'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Notification: 'Notification',
@@ -520,7 +597,10 @@ exports.Prisma.ModelName = {
   TwoFactorToken: 'TwoFactorToken',
   PasswordResetToken: 'PasswordResetToken',
   AdminLog: 'AdminLog',
-  CustomDomain: 'CustomDomain'
+  CustomDomain: 'CustomDomain',
+  AffiliateOffer: 'AffiliateOffer',
+  Affiliation: 'Affiliation',
+  AffiliationSale: 'AffiliationSale'
 };
 
 /**

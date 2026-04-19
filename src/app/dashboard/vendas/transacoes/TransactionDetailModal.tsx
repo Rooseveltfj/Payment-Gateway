@@ -4,17 +4,19 @@ import { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/Modal";
 import { 
   User, 
-  Mail, 
   CreditCard, 
-  Smartphone, 
   CheckCircle2,
   Clock,
-  RotateCcw,
   Send,
-  Loader2
+  Loader2,
+  Mail,
+  Smartphone
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { Badge, BadgeStatus } from "@/components/ui/Badge";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 interface Props {
   orderId: string;
@@ -42,12 +44,12 @@ interface TransactionData {
   status: string;
   statusHistory: TransactionHistoryEntry[];
   product: { id: string; name: string };
+  createdAt: string;
 }
 
 export function TransactionDetailModal({ orderId, onClose, onRefund }: Props) {
   const [data, setData] = useState<TransactionData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [refunding, setRefunding] = useState(false);
 
   useEffect(() => {
     fetch(`/api/dashboard/transactions/${orderId}`)
@@ -56,155 +58,157 @@ export function TransactionDetailModal({ orderId, onClose, onRefund }: Props) {
       .finally(() => setLoading(false));
   }, [orderId]);
 
-  const handleRefund = async () => {
-    if (!confirm("Tem certeza que deseja estornar esta venda? O valor será debitado do seu saldo.")) return;
-    setRefunding(true);
-    try {
-      const res = await fetch(`/api/dashboard/transactions/${orderId}/refund`, { method: "POST" });
-      if (res.ok) {
-        onRefund();
-        onClose();
-      } else {
-        const err = await res.json();
-        alert(err.error || "Erro ao estornar");
-      }
-    } catch {
-      alert("Erro de rede");
-    } finally {
-      setRefunding(false);
-    }
-  };
+  if (loading || !data) {
+    return (
+      <Modal isOpen={true} onClose={onClose}>
+        <div className="flex items-center justify-center p-20">
+          <Loader2 className="w-8 h-8 animate-spin text-[#8b5cf6]" />
+        </div>
+      </Modal>
+    )
+  }
 
-  if (loading) return null;
-
-  const t = data!;
+  const t = data;
   const history = t.statusHistory || [];
+  const status = t.status.toLowerCase() as BadgeStatus;
+
+  const formattedDate = format(new Date(t.createdAt), "dd 'de' MMMM 'de' yyyy 'às' HH:mm", { locale: ptBR });
 
   return (
-    <Modal isOpen={true} onClose={onClose} title={`Detalhes do Pedido #${t.id.slice(-6).toUpperCase()}`} size="xl">
-      <div className="flex flex-col lg:flex-row gap-8 p-1">
-        
-        {/* Left: Info */}
-        <div className="flex-1 space-y-6">
-          
-          {/* Section: Buyer */}
-          <section className="space-y-4">
-             <h4 className="text-xs font-bold text-text-secondary uppercase tracking-widest flex items-center gap-2">
-                <User className="h-4 w-4" /> Dados do Comprador
-             </h4>
-             <div className="bg-background/50 border border-border rounded-xl p-4 space-y-3">
-                <div className="flex justify-between items-center text-sm">
-                   <span className="text-text-secondary">Nome:</span>
-                   <span className="font-bold text-text-primary">{t.buyerName}</span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                   <span className="text-text-secondary">E-mail:</span>
-                   <span className="font-bold text-text-primary flex items-center gap-1">
-                      {t.buyerEmail} <Mail className="h-3 w-3 opacity-50 capitalize" />
-                   </span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                   <span className="text-text-secondary">CPF:</span>
-                   <span className="font-medium text-text-primary">{t.buyerCpf || "Não informado"}</span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                   <span className="text-text-secondary">Telefone:</span>
-                   <span className="font-medium text-text-primary flex items-center gap-1">
-                      {t.buyerPhone || "Não informado"} <Smartphone className="h-3 w-3 opacity-50" />
-                   </span>
-                </div>
-                {/* Custom Fields */}
-                {Object.keys(t.buyerData || {}).length > 0 && (
-                  <div className="pt-2 mt-2 border-t border-border/50 space-y-2">
-                    {Object.entries(t.buyerData).map(([key, value]) => (
-                      <div key={key} className="flex justify-between items-start text-xs">
-                        <span className="text-text-secondary capitalize">{key}:</span>
-                        <span className="font-medium text-text-primary text-right">{String(value)}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-             </div>
-          </section>
+    <Modal isOpen={true} onClose={onClose} maxWidth="640px">
+      {/* Custom Header */}
+      <div className="mb-8">
+        <div className="flex items-center gap-3 mb-1.5">
+          <h2 className="text-[18px] font-semibold text-[#f1f5f9]">Detalhes do Pedido</h2>
+          <span className="px-2 py-0.5 rounded-full bg-[#8b5cf61a] border border-[#8b5cf633] text-[#a78bfa] text-[12px] font-mono font-medium">
+            #{t.id.slice(-8).toUpperCase()}
+          </span>
+        </div>
+        <p className="text-[14px] text-[#64748b]">
+          {formattedDate}
+        </p>
+      </div>
 
-          {/* Section: Product & Payment */}
-          <section className="space-y-4">
-             <h4 className="text-xs font-bold text-text-secondary uppercase tracking-widest flex items-center gap-2">
-                <CreditCard className="h-4 w-4" /> Pagamento
-             </h4>
-             <div className="bg-background/50 border border-border rounded-xl p-4 space-y-3">
-                <div className="flex justify-between items-center text-sm">
-                   <span className="text-text-secondary">Produto:</span>
-                   <span className="font-bold text-primary">{t.product.name}</span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                   <span className="text-text-secondary">Método:</span>
-                   <span className="font-bold text-text-primary">{t.paymentMethod}</span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                   <span className="text-text-secondary">Parcelas:</span>
-                   <span className="font-bold text-text-primary">{t.installments}x</span>
-                </div>
-                <div className="flex justify-between items-center pt-2 border-t border-border/50">
-                   <span className="text-sm font-bold text-text-primary">Total Pago:</span>
-                   <span className="text-xl font-black text-text-primary">R$ {t.amount.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between items-center text-xs opacity-70">
-                   <span className="text-text-secondary italic">Comissão Líquida:</span>
-                   <span className="font-bold text-success">R$ {t.netAmount.toFixed(2)}</span>
-                </div>
-             </div>
-          </section>
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_240px] gap-6">
+        {/* Left Column: Buyer Data */}
+        <div className="space-y-6">
+          <div className="bg-[#141422] border border-white/[0.05] rounded-[12px] p-4">
+            <h4 className="flex items-center gap-2 text-[11px] font-bold text-[#64748b] uppercase tracking-wider mb-4">
+              <User className="w-3.5 h-3.5" /> DADOS DO COMPRADOR
+            </h4>
+            
+            <div className="space-y-3">
+              <DataRow label="Nome" value={t.buyerName} />
+              <DataRow label="E-mail" value={t.buyerEmail} icon={<Mail className="w-3 h-3" />} />
+              <DataRow label="CPF" value={t.buyerCpf} />
+              <DataRow label="Telefone" value={t.buyerPhone} icon={<Smartphone className="w-3 h-3" />} />
+              
+              {/* Dynamic Buyer Data */}
+              {Object.entries(t.buyerData || {}).map(([key, val]) => (
+                <DataRow key={key} label={key.replace(/_/g, ' ')} value={String(val)} />
+              ))}
+            </div>
+          </div>
 
-          {/* Actions */}
-          <div className="flex gap-3 pt-4">
-             <Button variant="outline" className="flex-1 gap-2" onClick={() => alert("Função em desenvolvimento")}>
-                <Send className="h-4 w-4" /> Email Manual
-             </Button>
-             {t.status === "PAID" && (
-                <Button variant="outline" className="flex-1 gap-2 text-error border-error/30 hover:bg-error/10" onClick={handleRefund} disabled={refunding}>
-                   {refunding ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />} Estornar
-                </Button>
-             )}
+          {/* Bottom Card: Payment */}
+          <div className="bg-[#141422] border border-white/[0.05] rounded-[12px] p-4">
+            <h4 className="flex items-center gap-2 text-[11px] font-bold text-[#64748b] uppercase tracking-wider mb-4">
+              <CreditCard className="w-3.5 h-3.5" /> PAGAMENTO
+            </h4>
+            
+            <div className="space-y-3">
+              <DataRow label="Produto" value={t.product.name} valueClassName="text-[#a78bfa]" />
+              <DataRow label="Método" value={t.paymentMethod} />
+              <DataRow label="Parcelas" value={`${t.installments}x`} />
+              
+              <div className="pt-3 mt-3 border-t border-white/[0.05]">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[14px] font-bold text-[#f1f5f9]">Total Pago</span>
+                  <span className="text-[18px] font-bold text-[#f1f5f9]">
+                    R$ {t.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[12px] text-[#64748b] italic">Comissão Líquida</span>
+                  <span className="text-[14px] font-bold text-[#4ade80]">
+                    R$ {t.netAmount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Right: Timeline */}
-        <div className="w-full lg:w-72 border-l border-border pl-8 relative">
-           <h4 className="text-xs font-bold text-text-secondary uppercase tracking-widest mb-8 flex items-center gap-2">
-              <Clock className="h-4 w-4" /> Histórico
-           </h4>
-           
-           <div className="space-y-8 relative">
-              {/* Vertical line connector */}
-              <div className="absolute left-[11px] top-2 bottom-2 w-0.5 bg-border/50" />
+        {/* Right Column: Status and Timeline */}
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col items-center justify-center p-6 bg-[#141422] border border-white/[0.05] rounded-[12px]">
+            <span className="text-[10px] font-bold text-[#64748b] uppercase tracking-[0.1em] mb-3">Status Atual</span>
+            <Badge status={status === 'chargeback' ? 'failed' : status} className="scale-125 my-1" />
+          </div>
 
-              {history.map((step, idx: number) => (
-                <div key={idx} className="relative flex gap-4 animate-in slide-in-from-left duration-300" style={{ animationDelay: `${idx * 150}ms` }}>
+          <div className="flex-1 space-y-5 px-2">
+            <h4 className="flex items-center gap-2 text-[11px] font-bold text-[#64748b] uppercase tracking-wider mb-2">
+              <Clock className="w-3.5 h-3.5" /> HISTÓRICO
+            </h4>
+
+            <div className="space-y-6 relative ml-2">
+              {/* Timeline line */}
+              <div className="absolute left-[7px] top-2 bottom-2 w-[1px] bg-white/[0.05]" />
+
+              {history.map((item, idx) => (
+                <div key={idx} className="relative pl-6 flex flex-col gap-0.5">
                   <div className={cn(
-                    "relative z-10 w-6 h-6 rounded-full flex items-center justify-center shrink-0 border-2",
-                    step.status === "PAID" ? "bg-success border-success text-white shadow-lg shadow-success/20" : "bg-card border-border text-text-secondary"
+                    "absolute left-0 top-1.5 w-3.5 h-3.5 rounded-full border-2 border-[#0f0f1a] flex items-center justify-center",
+                    item.status === 'PAID' ? "bg-[#22c55e]" : "bg-[#1f1f2e]"
                   )}>
-                    {step.status === "PAID" ? <CheckCircle2 className="h-3 w-3" /> : <div className="h-1.5 w-1.5 rounded-full bg-current" />}
+                    {item.status === 'PAID' && <CheckCircle2 className="w-2 h-2 text-white" />}
                   </div>
-                  <div>
-                    <h5 className="text-sm font-bold text-text-primary leading-tight">{step.label}</h5>
-                    <p className="text-[10px] text-text-secondary mt-0.5">{new Date(step.date).toLocaleString("pt-BR")}</p>
-                  </div>
+                  <span className="text-[13px] font-medium text-[#f1f5f9]">{item.label}</span>
+                  <span className="text-[10px] text-[#64748b]">
+                    {format(new Date(item.date), "dd/MM - HH:mm", { locale: ptBR })}
+                  </span>
                 </div>
               ))}
-           </div>
-
-           {/* Current Status Banner */}
-           <div className={cn(
-             "mt-12 p-4 rounded-2xl border text-center",
-             t.status === "PAID" ? "bg-success/5 border-success/20" : "bg-warning/5 border-warning/20"
-           )}>
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] block mb-1 opacity-50">Status Atual</span>
-              <p className={cn("text-lg font-black", t.status === "PAID" ? "text-success" : "text-warning")}>{t.status}</p>
-           </div>
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <div className="flex items-center justify-end gap-3 mt-8 pt-6 border-t border-white/[0.05]">
+        <Button variant="ghost" size="sm" icon={<Send className="w-3.5 h-3.5" />}>
+          Email Manual
+        </Button>
+        <Button variant="secondary" size="sm" onClick={onClose}>
+          Fechar
+        </Button>
+      </div>
     </Modal>
+  );
+}
+
+function DataRow({ 
+  label, 
+  value, 
+  icon, 
+  valueClassName 
+}: { 
+  label: string; 
+  value?: string; 
+  icon?: React.ReactNode;
+  valueClassName?: string;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-4 text-[13px]">
+      <span className="text-[#64748b] capitalize min-w-[100px]">{label}:</span>
+      <span className={cn(
+        "font-medium text-[#f1f5f9] flex items-center gap-1.5 text-right",
+        !value && "italic text-[#334155]",
+        valueClassName
+      )}>
+        {value || "Não informado"}
+        {value && icon && <span className="opacity-50">{icon}</span>}
+      </span>
+    </div>
   );
 }

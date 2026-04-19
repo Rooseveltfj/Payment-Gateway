@@ -1,11 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Award, TrendingUp, Star, ChevronRight, Lock } from "lucide-react";
-import { BadgeIcon, BADGE_TIERS } from "@/components/badges/BadgeIcon";
-import { BadgeType } from "@/lib/constants/badges";
-import { CelebrationModal } from "@/components/badges/CelebrationModal";
-import { BADGE_ORDER } from "@/lib/constants/badges";
+import { 
+  Award, 
+  TrendingUp, 
+  Star, 
+  ChevronRight, 
+  Lock, 
+  Download,
+  Info,
+  CheckCircle2
+} from "lucide-react";
+import { BadgeType, BADGE_ORDER, BADGE_THRESHOLDS } from "@/lib/constants/badges";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 interface MetasStats {
   totalEarnings: number;
@@ -15,11 +25,43 @@ interface MetasStats {
   progress: number;
 }
 
+const BADGE_CONFIG: Record<BadgeType, { emoji: string; label: string; borderColor: string; glow?: string }> = {
+  [BadgeType.BADGE_10K]: { 
+    emoji: "🥈", 
+    label: "Plaquinha Prata", 
+    borderColor: "rgba(148,163,184,0.4)" 
+  },
+  [BadgeType.BADGE_50K]: { 
+    emoji: "🥇", 
+    label: "Plaquinha Ouro", 
+    borderColor: "rgba(251,191,36,0.4)" 
+  },
+  [BadgeType.BADGE_100K]: { 
+    emoji: "💎", 
+    label: "Diamante Azul", 
+    borderColor: "rgba(96,165,250,0.4)" 
+  },
+  [BadgeType.BADGE_500K]: { 
+    emoji: "💜", 
+    label: "Diamante Roxo", 
+    borderColor: "rgba(139,92,246,0.5)" 
+  },
+  [BadgeType.BADGE_1M]: { 
+    emoji: "⭐", 
+    label: "Plaquinha Platina", 
+    borderColor: "rgba(226,232,240,0.5)" 
+  },
+  [BadgeType.BADGE_5M]: { 
+    emoji: "👑", 
+    label: "Plaquinha Elite", 
+    borderColor: "rgba(251,191,36,0.6)",
+    glow: "0 0 20px rgba(251,191,36,0.3)"
+  },
+};
+
 export default function MetasPage() {
   const [stats, setStats] = useState<MetasStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [celebratingBadge, setCelebratingBadge] = useState<BadgeType | null>(null);
-  const [userName, setUserName] = useState("Player");
 
   const fetchData = async () => {
     setLoading(true);
@@ -27,11 +69,8 @@ export default function MetasPage() {
       const r = await fetch("/api/dashboard/metas");
       const data = await r.json();
       setStats(data);
-      
-      // Também pega o nome do usuário
-      const res = await fetch("/api/auth/session");
-      const session = await res.json();
-      if (session?.user?.name) setUserName(session.user.name);
+    } catch {
+      console.error("Erro ao carregar metas");
     } finally {
       setLoading(false);
     }
@@ -41,14 +80,10 @@ export default function MetasPage() {
 
   if (loading || !stats) {
     return (
-      <div className="min-h-screen pl-60 pt-20" style={{ background: "#09090b" }}>
-        <div className="p-8 animate-pulse">
-           <div className="h-40 bg-slate-900 rounded-3xl mb-8" />
-           <div className="grid grid-cols-3 gap-6">
-             {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-64 bg-slate-900 rounded-3xl" />
-             ))}
-           </div>
+      <div className="space-y-8 animate-pulse">
+        <div className="h-48 bg-[#0f0f1a] rounded-[32px]" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[1,2,3,4,5,6].map(i => <div key={i} className="h-64 bg-[#0f0f1a] rounded-[24px]" />)}
         </div>
       </div>
     );
@@ -58,123 +93,148 @@ export default function MetasPage() {
   const remainingToNext = stats.nextThreshold ? stats.nextThreshold - stats.totalEarnings : 0;
 
   return (
-    <div className="min-h-screen" style={{ background: "#060608", color: "#e2e8f0" }}>
-      <div className="pl-60 pt-16">
-        <div className="px-8 py-10 max-w-6xl">
-          
-          {/* Header Section */}
-          <div className="flex flex-col md:flex-row gap-8 mb-12">
-            
-            {/* Main Stats Card */}
-            <div className="flex-1 bg-gradient-to-br from-slate-900 to-black border border-slate-800 rounded-[32px] p-8 relative overflow-hidden group">
-               <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
-                 <TrendingUp className="h-32 w-32 text-primary" />
-               </div>
-               
-               <p className="text-slate-500 font-bold uppercase tracking-widest text-xs mb-2">Faturamento Total</p>
-               <h1 className="text-5xl font-black text-white mb-8">
+    <div className="space-y-12 animate-in fade-in duration-700">
+      
+      {/* HEADER SECTION */}
+      <div className="space-y-1">
+        <h1 className="text-[28px] font-bold text-[#f1f5f9] tracking-tight">Plaquinhas de Meta</h1>
+        <p className="text-[14px] text-[#64748b]">Conquistas que marcam sua jornada como player.</p>
+      </div>
+
+      {/* PROGRESS CARD (DESTAKE) */}
+      <Card className="p-8 bg-[#0f0f1a] border-[#8b5cf633] rounded-[32px] relative overflow-hidden shadow-2xl">
+         <div className="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
+            <TrendingUp className="h-48 w-48 text-[#8b5cf6]" />
+         </div>
+         
+         <div className="relative z-10 space-y-8">
+            <div className="space-y-2">
+               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#64748b]">Faturamento Total Atual</p>
+               <h2 className="text-[42px] font-bold text-[#f1f5f9] tracking-tight leading-none">
                  R$ {stats.totalEarnings.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
-               </h1>
-
-               {stats.nextBadge && (
-                 <div className="space-y-4">
-                   <div className="flex items-center justify-between text-sm">
-                     <span className="text-slate-400 font-semibold italic">Próximo Marco: {stats.nextBadge.replace("BADGE_", "")}</span>
-                     <span className="text-primary font-bold">Faltam R$ {remainingToNext.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}</span>
-                   </div>
-                   <div className="h-4 bg-slate-800 rounded-full overflow-hidden p-1 border border-slate-700/50">
-                     <div 
-                       className="h-full bg-gradient-to-r from-primary to-primary/40 rounded-full transition-all duration-1000"
-                       style={{ width: `${stats.progress}%` }}
-                     />
-                   </div>
-                 </div>
-               )}
+               </h2>
             </div>
 
-            {/* Quick Stats */}
-            <div className="w-full md:w-80 flex flex-col gap-4">
-              <a href="/dashboard/metas/ranking" className="flex-1 bg-slate-900/50 border border-slate-800 hover:border-primary/50 rounded-3xl p-6 flex items-center justify-between group transition-all">
-                <div>
-                  <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Ranking</p>
-                  <p className="text-white font-black text-xl flex items-center gap-2">
-                    Top 50 Players
-                    <Award className="h-4 w-4 text-amber-400" />
-                  </p>
-                </div>
-                <ChevronRight className="h-6 w-6 text-slate-600 group-hover:text-primary transition-colors" />
-              </a>
-              <div className="flex-1 bg-slate-900/50 border border-slate-800 rounded-3xl p-6">
-                <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Conquistas</p>
-                <div className="flex items-center gap-2">
-                  <span className="text-white font-black text-2xl">{stats.badges.length}</span>
-                  <span className="text-slate-500 text-sm">de 6 plaquinhas</span>
-                </div>
-              </div>
-            </div>
-          </div>
+            {stats.nextBadge && (
+               <div className="space-y-4">
+                  <div className="flex items-center justify-between text-sm">
+                     <div className="flex items-center gap-2">
+                        <Award className="h-4 w-4 text-[#a78bfa]" />
+                        <span className="text-[#f1f5f9] font-bold">Próxima meta: {BADGE_CONFIG[stats.nextBadge]?.label}</span>
+                     </div>
+                     <span className="text-[#8b5cf6] font-bold tracking-tighter">
+                        Faltam R$ {remainingToNext.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                     </span>
+                  </div>
+                  
+                  <div className="space-y-2">
+                     <div className="h-3 w-full bg-[#8b5cf615] rounded-full overflow-hidden border border-white/[0.03]">
+                        <motion.div 
+                          className="h-full bg-gradient-to-r from-[#8b5cf6] to-[#a78bfa] rounded-full"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${stats.progress}%` }}
+                          transition={{ duration: 1.5, ease: "easeOut" }}
+                        />
+                     </div>
+                     <p className="text-[11px] text-[#64748b] font-medium text-right">
+                        {stats.progress.toFixed(1)}% concluído
+                     </p>
+                  </div>
+               </div>
+            )}
+         </div>
+      </Card>
 
-          {/* Badges Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {BADGE_ORDER.map((badgeType) => {
-              const info = BADGE_TIERS[badgeType];
-              const isEarned = earnedBadgeTypes.has(badgeType);
-              const badgeData = stats.badges.find(b => b.badge === badgeType);
+      {/* BADGES GRID */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+         {BADGE_ORDER.map((badgeType) => {
+            const config = BADGE_CONFIG[badgeType];
+            const isEarned = earnedBadgeTypes.has(badgeType);
+            const badgeData = stats.badges.find(b => b.badge === badgeType);
+            const threshold = BADGE_THRESHOLDS[badgeType];
 
-              return (
-                <div 
+            return (
+               <Card 
                   key={badgeType}
-                  className={`relative bg-slate-900/40 border-2 rounded-[32px] p-8 flex flex-col items-center transition-all duration-500 hover:scale-[1.02] ${
-                    isEarned ? "border-slate-800" : "border-transparent bg-slate-900/20"
-                  }`}
-                >
-                  {/* Status Badge */}
+                  style={{ 
+                    borderColor: isEarned ? config.borderColor : "rgba(255,255,255,0.05)",
+                    boxShadow: isEarned ? config.glow : "none"
+                  }}
+                  className={cn(
+                    "relative p-8 flex flex-col items-center text-center transition-all duration-500 overflow-hidden",
+                    "bg-[#0f0f1a] rounded-[24px] border-2",
+                    !isEarned && "opacity-40 grayscale-[0.8]"
+                  )}
+               >
+                  {/* Status Overlay */}
                   {!isEarned && (
-                     <div className="absolute top-6 right-6 text-slate-700">
-                       <Lock className="h-5 w-5" />
+                     <div className="absolute top-4 right-4 h-7 px-3 bg-white/5 border border-white/5 rounded-full flex items-center justify-center gap-1.5 backdrop-blur-md">
+                        <Lock className="h-3 w-3 text-[#64748b]" />
+                        <span className="text-[10px] font-bold text-[#64748b] uppercase tracking-wider">Bloqueado</span>
                      </div>
                   )}
 
-                  <div className="mb-6">
-                    <BadgeIcon tier={badgeType} size={100} locked={!isEarned} />
+                  {isEarned && (
+                     <div className="absolute top-4 right-4">
+                        <CheckCircle2 className="h-6 w-6 text-emerald-500/50" />
+                     </div>
+                  )}
+
+                  <div className="mb-6 relative">
+                     <span className="text-[56px] leading-none drop-shadow-2xl select-none">{config.emoji}</span>
+                     {isEarned && (
+                        <div className="absolute inset-0 bg-white/20 blur-2xl opacity-20 -z-10" />
+                     )}
                   </div>
 
-                  <h3 className={`text-xl font-black mb-2 ${isEarned ? "text-white" : "text-slate-600"}`}>
-                    {info.label.split(" ").slice(1).join(" ")}
+                  <h3 className={cn(
+                    "text-xl font-bold tracking-tight mb-1",
+                    isEarned ? "text-[#f1f5f9]" : "text-[#64748b]"
+                  )}>
+                    {config.label}
                   </h3>
                   
-                  {isEarned ? (
-                    <>
-                      <p className="text-xs text-slate-500 font-bold uppercase tracking-widest mb-6">
-                        Conquistado em {new Date(badgeData!.earnedAt).toLocaleDateString("pt-BR")}
-                      </p>
-                      <button 
-                        onClick={() => setCelebratingBadge(badgeType)}
-                        className="mt-auto w-full py-4 rounded-2xl bg-slate-800 text-white text-sm font-black hover:bg-slate-700 transition-colors flex items-center justify-center gap-2"
-                      >
-                        Ver Detalhes
-                        <Star className="h-4 w-4 text-primary" />
-                      </button>
-                    </>
-                  ) : (
-                    <p className="text-slate-700 text-sm font-bold uppercase tracking-widest mt-4">Bloqueado</p>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                  <p className="text-[13px] font-bold text-[#8b5cf6]/80 font-mono mb-4">
+                     R$ {threshold >= 1000000 ? `${threshold/1000000}M` : `${threshold/1000}k`}
+                  </p>
 
-        </div>
+                  <div className="mt-auto w-full pt-4 space-y-4">
+                     {isEarned ? (
+                        <>
+                           <div className="text-[11px] text-[#64748b] space-y-0.5">
+                              <p>Conquistada em</p>
+                              <p className="font-bold text-[#f1f5f9]/60">{new Date(badgeData!.earnedAt).toLocaleDateString()}</p>
+                           </div>
+                           <Button variant="ghost" className="w-full text-[#a78bfa] hover:bg-[#8b5cf61a] hover:text-white h-10 font-bold gap-2 border border-transparent hover:border-[#8b5cf633] transition-all">
+                              <Download className="h-4 w-4" />
+                              Baixar plaquinha
+                           </Button>
+                        </>
+                     ) : (
+                        <div className="py-2">
+                           <p className="text-[10px] font-bold uppercase tracking-widest text-[#64748b] bg-white/5 px-4 py-1.5 rounded-full inline-block">
+                             Em progresso
+                           </p>
+                        </div>
+                     )}
+                  </div>
+               </Card>
+            );
+         })}
+      </section>
+
+      {/* FOOTER INFO */}
+      <div className="p-6 bg-white/[0.02] border border-white/[0.05] rounded-3xl flex items-start gap-4">
+         <div className="h-10 w-10 rounded-xl bg-[#8b5cf61a] flex items-center justify-center text-[#8b5cf6] shrink-0">
+            <Info className="h-5 w-5" />
+         </div>
+         <div className="space-y-1">
+            <p className="text-sm font-bold text-[#f1f5f9]">Sobre as Conquistas</p>
+            <p className="text-xs text-[#64748b] leading-relaxed">
+               As plaquinhas são enviadas digitalmente assim que você atinge o faturamento. Placas físicas para metas acima de R$ 500k podem ser solicitadas via suporte após a validação do compliance.
+            </p>
+         </div>
       </div>
-
-      {/* Celebration / Detail Modal */}
-      {celebratingBadge && (
-        <CelebrationModal 
-          userName={userName}
-          badgeType={celebratingBadge}
-          onClose={() => setCelebratingBadge(null)}
-        />
-      )}
     </div>
   );
 }

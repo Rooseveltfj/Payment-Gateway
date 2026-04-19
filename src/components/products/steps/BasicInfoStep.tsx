@@ -1,129 +1,224 @@
 "use client";
 
-import { useState } from "react";
-import { UploadCloud, Image as ImageIcon } from "lucide-react";
+import { useState, useEffect } from "react";
+import { RefreshCw, Sparkles, Check, X, Info } from "lucide-react";
 import { Input } from "@/components/ui/Input";
+import { Select } from "@/components/ui/Select";
+import { ImageUpload } from "@/components/ui/ImageUpload";
 import { slugify } from "@/lib/slugify";
+import { cn } from "@/lib/utils";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function BasicInfoStep({ data, updateData }: { data: any; updateData: (d: any) => void }) {
-  const [uploading, setUploading] = useState(false);
+interface BasicInfoStepProps {
+  data: any;
+  updateData: (d: any) => void;
+}
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.value;
-    updateData({ name, slug: slugify(name) });
+export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
+  const [slugStatus, setSlugStatus] = useState<"idle" | "valid" | "invalid">("idle");
+  const [formattedPrice, setFormattedPrice] = useState("");
+
+  // Initial Price Formatting
+  useEffect(() => {
+    if (data.price) {
+      setFormattedPrice(formatCurrency(data.price.toString()));
+    }
+  }, []);
+
+  const formatCurrency = (value: string) => {
+    const digits = value.replace(/\D/g, "");
+    const amount = parseInt(digits || "0") / 100;
+    return amount.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+    });
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files?.[0]) return;
-    setUploading(true);
-    try {
-      const file = e.target.files[0];
-      const formData = new FormData();
-      formData.append("file", file);
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, "");
+    const numericValue = parseInt(value || "0") / 100;
+    setFormattedPrice(formatCurrency(value));
+    updateData({ price: numericValue });
+  };
 
-      const res = await fetch("/api/products/upload-image", {
-        method: "POST",
-        body: formData,
-      });
-      const { url } = await res.json();
-      updateData({ imageUrl: url });
-    } catch {
-      alert("Falha no upload");
-    } finally {
-      setUploading(false);
-    }
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value.slice(0, 80);
+    const newSlug = slugify(name);
+    updateData({ 
+      name, 
+      slug: name ? newSlug : data.slug 
+    });
+    if (name) setSlugStatus("valid");
+  };
+
+  const handleSlugChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawVal = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "");
+    updateData({ slug: rawVal });
+    setSlugStatus(rawVal.length > 0 ? "valid" : "invalid");
+  };
+
+  const regenerateSlug = () => {
+    const newSlug = slugify(data.name || "produto");
+    updateData({ slug: newSlug });
+    setSlugStatus("valid");
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-       <div className="lg:col-span-3 space-y-5">
-         <div>
-           <label className="block text-sm font-medium text-text-secondary mb-1">Nome do Produto *</label>
-           <Input 
-             placeholder="Ex: Mentoria VIP 2024" 
-             value={data.name} 
-             onChange={handleNameChange}
-           />
-         </div>
-
-         <div className="grid grid-cols-2 gap-4">
-           <div>
-             <label className="block text-sm font-medium text-text-secondary mb-1">Preço Inicial (R$) *</label>
-             <Input 
-                 type="number" 
-                 min="0.00" 
-                 step="0.01" 
-                 placeholder="99,90" 
-                 value={data.price || ""} 
-                 onChange={e => updateData({ price: parseFloat(e.target.value) })}
-             />
-           </div>
-           <div>
-             <label className="block text-sm font-medium text-text-secondary mb-1">Tipo de Cobrança</label>
-             <select 
-               className="w-full flex h-10 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-               value={data.type}
-               onChange={e => updateData({ type: e.target.value })}
-             >
-               <option value="SINGLE">Pagamento Único</option>
-               <option value="SUBSCRIPTION">Assinatura Recorrente</option>
-             </select>
-           </div>
-         </div>
-
-         <div>
-           <label className="block text-sm font-medium text-text-secondary mb-1">Descrição do Produto (Opcional)</label>
-           <textarea 
-             rows={4}
-             placeholder="Explique o que o cliente receberá..."
-             className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-             value={data.description}
-             onChange={e => updateData({ description: e.target.value })}
-           />
-         </div>
-
-         <div>
-           <label className="block text-sm font-medium text-text-secondary mb-1">Slug URL</label>
-           <div className="flex border border-border rounded-md bg-background overflow-hidden items-center focus-within:ring-2 focus-within:ring-primary">
-              <span className="pl-3 text-text-secondary text-sm">pay.PulsePay.com/</span>
-              <input 
-                type="text" 
-                className="flex-1 bg-transparent border-0 px-2 py-2 text-sm text-text-primary focus:outline-none focus:ring-0" 
-                value={data.slug} 
-                onChange={e => updateData({ slug: e.target.value })}
-              />
-           </div>
-         </div>
-       </div>
-
-       {/* Right Column: Upload */}
-       <div className="lg:col-span-2 space-y-4">
-         <label className="block text-sm font-medium text-text-secondary">Capa do Produto</label>
-         <div className="border-2 border-dashed border-border rounded-xl p-8 flex flex-col items-center justify-center text-center bg-background/50 hover:bg-hover/50 transition relative overflow-hidden group">
-            {data.imageUrl ? (
-              <>
-                 <img src={data.imageUrl} alt="Preview" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-40 transition" />
-                 <div className="relative z-10 bg-black/60 p-3 rounded-full backdrop-blur-md cursor-pointer hover:scale-105 transition">
-                    <label className="cursor-pointer text-white flex items-center gap-2 text-sm font-medium">
-                       <ImageIcon className="h-4 w-4" />
-                       Trocar Imagem
-                       <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
-                    </label>
-                 </div>
-              </>
-            ) : (
-              <label className="cursor-pointer w-full h-full flex flex-col items-center">
-                 <div className="h-12 w-12 rounded-full bg-hover flex items-center justify-center mb-3">
-                    <UploadCloud className="h-6 w-6 text-text-secondary group-hover:text-primary transition-colors" />
-                 </div>
-                 <p className="text-sm font-medium text-text-primary">{uploading ? "Enviando..." : "Clique ou arraste uma imagem"}</p>
-                 <p className="text-xs text-text-secondary mt-1">PNG, JPG ou WEBP (Máx. 2MB)</p>
-                 <input type="file" className="hidden" accept="image/*" disabled={uploading} onChange={handleImageUpload} />
-              </label>
+    <div className="grid grid-cols-1 lg:grid-cols-10 gap-12 max-w-[900px] mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 pb-8">
+      {/* ─── Left Column (55%) ─── */}
+      <div className="lg:col-span-6 space-y-8">
+        {/* Nome do Produto */}
+        <div className="space-y-2">
+          <div className="flex items-center justify-between px-1">
+            <label className="text-[13px] font-medium text-[#94a3b8]">Nome do Produto *</label>
+            <span className={cn(
+              "text-[11px] font-medium transition-colors",
+              data.name?.length >= 80 ? "text-red-400" : "text-[#3d5166]"
+            )}>
+              {data.name?.length || 0}/80
+            </span>
+          </div>
+          <Input
+            placeholder="Ex: Mentoria VIP 2024"
+            className={cn(
+              "h-12 bg-[#09090b] border-white/5 focus:border-accent text-[15px]",
+              !data.name && "border-red-500/20"
             )}
-         </div>
-       </div>
+            value={data.name}
+            onChange={handleNameChange}
+            required
+          />
+        </div>
+
+        {/* Preço e Tipo */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label className="text-[13px] font-medium text-[#94a3b8] ml-1">Preço (R$) *</label>
+            <div className="relative group">
+              <Input
+                placeholder="0,00"
+                className="h-12 bg-[#09090b] border-white/5 pl-10 font-bold text-white placeholder:text-[#1e293b]"
+                value={formattedPrice}
+                onChange={handlePriceChange}
+                prefix={<span className="text-[#3d5166] font-bold text-sm">R$</span>}
+              />
+            </div>
+            {data.price > 0 && (
+              <p className="text-[12px] text-green-400 font-bold ml-1 animate-in fade-in slide-in-from-top-1">
+                R$ {data.price.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+              </p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-[13px] font-medium text-[#94a3b8] ml-1">Tipo de Cobrança</label>
+            <Select
+              value={data.type}
+              onChange={(val) => updateData({ type: val })}
+              options={[
+                { label: "💳 Pagamento Único", value: "SINGLE" },
+                { label: "🔁 Assinatura Recorrente", value: "SUBSCRIPTION" },
+                { label: "📦 Parcelado", value: "INSTALLMENT", disabled: true },
+              ]}
+            />
+            {data.type === "INSTALLMENT" && (
+              <span className="inline-flex px-2 py-0.5 rounded-full bg-accent/10 border border-accent/20 text-[9px] font-bold text-accent uppercase tracking-tighter">Em breve</span>
+            )}
+          </div>
+        </div>
+
+        {/* Descrição */}
+        <div className="space-y-2 relative">
+          <div className="flex items-center justify-between px-1">
+            <label className="text-[13px] font-medium text-[#94a3b8]">Descrição (Opcional)</label>
+            <span className="text-[11px] font-medium text-[#3d5166]">
+              {data.description?.length || 0}/500
+            </span>
+          </div>
+          <textarea
+            placeholder="Explique o que o cliente receberá ao adquirir este produto..."
+            className="w-full min-h-[140px] bg-[#09090b] border border-white/5 rounded-[12px] p-4 text-[14px] text-white placeholder:text-[#3d5166] focus:outline-none focus:border-accent/50 focus:ring-4 focus:ring-accent/5 transition-all resize-y"
+            value={data.description}
+            onChange={(e) => updateData({ description: e.target.value.slice(0, 500) })}
+          />
+        </div>
+
+        {/* Slug URL */}
+        <div className="space-y-2">
+          <label className="text-[13px] font-medium text-[#94a3b8] ml-1">Slug URL</label>
+          <div className="relative group">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1 text-[#3d5166] text-[14px] font-bold select-none pointer-events-none">
+              pay.PulsePay.com/
+            </div>
+            <Input
+              className={cn(
+                "h-12 bg-[#09090b] border-white/5 pl-[135px] pr-10 text-white font-medium",
+                slugStatus === "valid" && "border-green-500/20",
+                slugStatus === "invalid" && "border-red-500/20"
+              )}
+              value={data.slug}
+              onChange={handleSlugChange}
+            />
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+              {slugStatus === "valid" ? (
+                <Check className="w-4 h-4 text-green-500" />
+              ) : slugStatus === "invalid" ? (
+                <X className="w-4 h-4 text-red-500" />
+              ) : null}
+              <button
+                type="button"
+                onClick={regenerateSlug}
+                className="p-1.5 text-[#3d5166] hover:text-accent hover:rotate-180 transition-all duration-500"
+                title="Regenerar"
+              >
+                <RefreshCw className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+          {data.slug && (
+            <p className="text-[11px] text-[#3d5166] font-medium ml-1">
+              Visualização: <span className="text-accent underline cursor-pointer">pay.PulsePay.com/{data.slug}</span>
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* ─── Right Column (45%) ─── */}
+      <div className="lg:col-span-4 space-y-6">
+        <div className="space-y-4">
+          <ImageUpload
+            label="Capa do Produto"
+            value={data.imageUrl}
+            onChange={(url) => updateData({ imageUrl: url })}
+            aspectRatio="16/9"
+            hint="Recomendamos imagens 1280x720 para melhor visualização."
+          />
+
+          {/* Dica de Conversão */}
+          <div className="p-5 rounded-2xl bg-accent/[0.04] border border-accent/10 relative overflow-hidden group">
+            <div className="absolute -top-4 -right-4 w-12 h-12 bg-accent/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
+            <div className="flex gap-4 relative z-10">
+              <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
+                <Sparkles className="w-5 h-5 text-accent" />
+              </div>
+              <div className="space-y-1">
+                <p className="text-[13px] font-bold text-white leading-tight">
+                  Aumente suas vendas em até <span className="text-green-400">35%</span>
+                </p>
+                <p className="text-[11px] text-[#94a3b8] leading-relaxed">
+                  Produtos com capas de alta qualidade transmitem mais autoridade e segurança aos compradores.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Dica Adicional de Preço */}
+        <div className="p-4 rounded-xl bg-[#1e293b10] border border-white/5 flex items-start gap-3">
+          <Info className="w-4 h-4 text-[#3d5166] shrink-0 mt-0.5" />
+          <p className="text-[11px] text-[#64748b] leading-relaxed italic">
+            O preço final exibido ao cliente incluirá as taxas configuradas se você optar por repassar os custos.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

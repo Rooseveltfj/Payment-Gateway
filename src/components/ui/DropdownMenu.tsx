@@ -3,14 +3,18 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { MoreVertical } from "lucide-react";
+import { ds } from "@/styles/design-system";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface DropdownMenuProps {
   children: React.ReactNode;
+  trigger?: React.ReactNode;
+  align?: "left" | "right";
 }
 
-export function DropdownMenu({ children }: DropdownMenuProps) {
+export function DropdownMenu({ children, trigger, align = "right" }: DropdownMenuProps) {
   const [open, setOpen] = React.useState(false);
-  const triggerRef = React.useRef<HTMLButtonElement>(null);
+  const triggerRef = React.useRef<HTMLDivElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -30,45 +34,57 @@ export function DropdownMenu({ children }: DropdownMenuProps) {
 
   return (
     <div className="relative inline-block text-left">
-      <button
+      <div
         ref={triggerRef}
-        type="button"
         onClick={(e) => {
           e.stopPropagation();
           setOpen(!open);
         }}
-        className="flex items-center justify-center rounded-md p-1.5 text-text-secondary hover:bg-hover hover:text-text-primary transition-colors focus:outline-none focus:ring-1 focus:ring-primary focus:ring-offset-1 focus:ring-offset-background"
+        className="cursor-pointer"
       >
-        <MoreVertical className="h-4 w-4" />
-      </button>
+        {trigger || (
+          <button
+            type="button"
+            className="flex items-center justify-center rounded-lg p-2 text-[#64748b] hover:bg-white/5 hover:text-[#f1f5f9] transition-all duration-200 focus:outline-none"
+          >
+            <MoreVertical className="h-4 w-4" />
+          </button>
+        )}
+      </div>
 
-      {open && (
-        <div 
-          ref={menuRef}
-          onClick={(e) => e.stopPropagation()}
-          className="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-md border border-border bg-card shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none animate-in fade-in zoom-in-95 duration-100"
-        >
-          <div className="py-1">
-            {React.Children.map(children, (child) => {
-              if (React.isValidElement(child)) {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                return React.cloneElement(child as React.ReactElement<any>, {
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                  onClick: (e: any) => {
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                    const childOnClick = (child.props as any).onClick;
-                    if (childOnClick) {
-                      childOnClick(e);
+      <AnimatePresence>
+        {open && (
+          <motion.div 
+            ref={menuRef}
+            initial={{ opacity: 0, scale: 0.95, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -10 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
+            onClick={(e) => e.stopPropagation()}
+            className={cn(
+              "absolute z-[100] mt-2 w-52 origin-top rounded-[16px] border border-white/[0.08] bg-[#0f0f1acc] backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.5)] ring-1 ring-black/5 focus:outline-none",
+              align === "right" ? "right-0" : "left-0"
+            )}
+          >
+            <div className="py-2 px-1.5">
+              {React.Children.map(children, (child) => {
+                if (React.isValidElement(child)) {
+                  return React.cloneElement(child as React.ReactElement<any>, {
+                    onClick: (e: React.MouseEvent) => {
+                      const childOnClick = (child.props as any).onClick;
+                      if (childOnClick) {
+                        childOnClick(e);
+                      }
+                      setOpen(false);
                     }
-                    setOpen(false);
-                  }
-                });
-              }
-              return child;
-            })}
-          </div>
-        </div>
-      )}
+                  });
+                }
+                return child;
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -82,13 +98,15 @@ export function DropdownMenuItem({ children, icon: Icon, danger, className, ...p
   return (
     <button
       className={cn(
-        "flex w-full items-center px-4 py-2 text-sm transition-colors",
-        danger ? "text-error hover:bg-error/10" : "text-text-secondary hover:bg-hover hover:text-text-primary",
+        "flex w-full items-center px-3 py-2.5 text-[13px] font-medium rounded-[10px] transition-all duration-200",
+        danger 
+          ? "text-[#f87171] hover:bg-[#ef44441a]" 
+          : "text-[#94a3b8] hover:bg-white/[0.05] hover:text-[#f1f5f9]",
         className
       )}
       {...props}
     >
-      {Icon && <Icon className="mr-3 h-4 w-4" />}
+      {Icon && <Icon className={cn("mr-3 h-4 w-4", danger ? "text-[#f87171]" : "text-[#8b5cf6]")} />}
       {children}
     </button>
   );

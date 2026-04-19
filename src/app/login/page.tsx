@@ -24,6 +24,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      console.log("[Login] Checking status for:", formData.email);
       // 1. Proactively check user status
       const statusRes = await fetch("/api/auth/check-status", {
         method: "POST",
@@ -31,6 +32,7 @@ export default function LoginPage() {
         body: JSON.stringify({ email: formData.email }),
       });
       const { status } = await statusRes.json();
+      console.log("[Login] Status received:", status);
 
       if (status === "PENDING") {
         toast.info("Sua conta ainda não foi verificada. Redirecionando para o 2FA...");
@@ -40,12 +42,15 @@ export default function LoginPage() {
         return;
       }
 
+      console.log("[Login] Attempting sign-in...");
       // 2. Proceed with sign in if not pending
       const result = await signIn("credentials", {
         redirect: false,
         email: formData.email,
         password: formData.password,
       });
+
+      console.log("[Login] Sign-in result:", result);
 
       if (result?.error) {
         toast.error("Credenciais inválidas ou conta não encontrada.");
@@ -54,6 +59,7 @@ export default function LoginPage() {
         router.push("/dashboard");
       }
     } catch (error: unknown) {
+      console.error("[Login] Exception:", error);
       const message = error instanceof Error ? error.message : "Erro ao tentar entrar.";
       toast.error(message);
     } finally {

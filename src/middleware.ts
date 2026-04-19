@@ -61,6 +61,18 @@ export default auth(async (req) => {
     return NextResponse.redirect(new URL("/login", nextUrl))
   }
 
+  // 4. Affiliation Tracking
+  const affiliateRef = nextUrl.searchParams.get("ref")
+  if (nextUrl.pathname.startsWith("/c/") && affiliateRef) {
+    response.cookies.set("pulsepay_affiliate", affiliateRef, {
+      maxAge: 30 * 24 * 60 * 60,
+      path: "/",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    })
+  }
+
   return response
 })
 

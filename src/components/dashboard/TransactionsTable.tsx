@@ -1,8 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { cn } from "@/lib/utils";
-import { CreditCard, QrCode, FileText, ChevronDown, Loader2 } from "lucide-react";
+import { useState, useCallback, useMemo } from "react";
+import { CreditCard, QrCode, FileText, ChevronDown } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/Card";
+import { DataTable, Column } from "@/components/ui/DataTable";
+import { Badge, BadgeStatus } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
 
 type TxStatus = "PAID" | "PENDING" | "FAILED" | "REFUNDED" | "CHARGEBACK";
 type PayMethod = "PIX" | "CREDIT_CARD" | "BOLETO";
@@ -18,35 +21,25 @@ interface Transaction {
   createdAt: string;
 }
 
-const STATUS_MAP: Record<TxStatus, { label: string; cls: string }> = {
-  PAID: { label: "Pago", cls: "bg-success/15 text-success" },
-  PENDING: { label: "Pendente", cls: "bg-warning/15 text-warning" },
-  FAILED: { label: "Falhou", cls: "bg-error/15 text-error" },
-  REFUNDED: { label: "Reembolsado", cls: "bg-primary/15 text-primary" },
-  CHARGEBACK: { label: "Chargeback", cls: "bg-error/15 text-error" },
-};
-
 function MethodIcon({ method }: { method: PayMethod }) {
   if (method === "PIX")
     return (
-      <div className="flex h-7 w-7 items-center justify-center rounded-md bg-success/15">
-        <QrCode className="h-3.5 w-3.5 text-success" />
+      <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#22c55e1f]">
+        <QrCode className="h-3.5 w-3.5 text-[#22c55e]" />
       </div>
     );
   if (method === "CREDIT_CARD")
     return (
-      <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary/15">
-        <CreditCard className="h-3.5 w-3.5 text-primary" />
+      <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#8b5cf61f]">
+        <CreditCard className="h-3.5 w-3.5 text-[#a78bfa]" />
       </div>
     );
   return (
-    <div className="flex h-7 w-7 items-center justify-center rounded-md bg-warning/15">
-      <FileText className="h-3.5 w-3.5 text-warning" />
+    <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[#eab3081f]">
+      <FileText className="h-3.5 w-3.5 text-[#facc15]" />
     </div>
   );
 }
-
-
 
 interface TransactionsTableProps {
   initial: Transaction[];
@@ -73,149 +66,117 @@ export function TransactionsTable({ initial, initialHasMore }: TransactionsTable
     }
   }, [page]);
 
+  const columns = useMemo<Column<Transaction>[]>(() => [
+    {
+      header: "Método",
+      accessor: (tx) => <MethodIcon method={tx.method} />,
+      width: "48px"
+    },
+    {
+      header: "Produto",
+      accessor: (tx) => (
+        <div className="flex flex-col">
+          <span className="font-medium text-[#f1f5f9]">{tx.product.name}</span>
+          <span className="text-[12px] text-[#64748b] lg:hidden">{tx.buyerName}</span>
+        </div>
+      )
+    },
+    {
+      header: "Comprador",
+      className: "hidden lg:table-cell",
+      accessor: (tx) => (
+        <div className="flex flex-col">
+          <span className="text-[#f1f5f9]">{tx.buyerName}</span>
+          <span className="text-[12px] text-[#64748b]">{tx.buyerEmail}</span>
+        </div>
+      )
+    },
+    {
+      header: "Valor",
+      className: "text-right",
+      accessor: (tx) => (
+        <span className="font-semibold text-[#f1f5f9]">
+          {tx.amount.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+        </span>
+      )
+    },
+    {
+      header: "Status",
+      className: "text-center",
+      accessor: (tx) => {
+        const status = tx.status.toLowerCase() as BadgeStatus;
+        return <Badge status={status === 'chargeback' ? 'failed' : status} />
+      }
+    },
+    {
+      header: "Data",
+      className: "text-right hidden lg:table-cell",
+      accessor: (tx) => {
+        const date = new Date(tx.createdAt);
+        return (
+          <div className="flex flex-col items-end">
+            <span className="text-[#f1f5f9]">
+              {date.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })}
+            </span>
+            <span className="text-[10px] text-[#64748b]">
+              {date.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
+            </span>
+          </div>
+        )
+      }
+    }
+  ], []);
+
   return (
-    <div
-      className="rounded-xl overflow-hidden"
-      style={{
-        background: "#111113",
-        border: "0.5px solid rgba(255,255,255,0.08)",
-      }}
-    >
-      <div className="px-5 py-4" style={{ borderBottom: "0.5px solid rgba(255,255,255,0.08)" }}>
-        <h3 className="text-sm font-semibold text-text-primary">Últimas transações</h3>
-        <p className="text-xs text-text-secondary mt-0.5">Movimentações mais recentes da sua conta</p>
-      </div>
+    <Card padding={0} className="w-full">
+      <CardHeader className="px-6 py-5 border-b border-white/[0.05]">
+        <CardTitle>Últimas transações</CardTitle>
+        <CardDescription>Movimentações mais recentes da sua conta</CardDescription>
+      </CardHeader>
+      
+      <DataTable 
+        columns={columns} 
+        data={rows} 
+        loading={false} // Loading handled by "load more" button for pagination
+      />
 
-      {/* Table header */}
-      <div className="hidden lg:grid grid-cols-[48px_1fr_1fr_1fr_110px_110px_120px] gap-3 px-5 py-2.5 text-[11px] font-medium uppercase tracking-wider text-text-secondary"
-        style={{ borderBottom: "0.5px solid rgba(255,255,255,0.06)" }}>
-        <span>Método</span>
-        <span>Produto</span>
-        <span>Comprador</span>
-        <span>Email</span>
-        <span className="text-right">Valor</span>
-        <span className="text-center">Status</span>
-        <span className="text-right">Data</span>
-      </div>
-
-      {/* Rows */}
-      <div className="divide-y" style={{ borderColor: "rgba(255,255,255,0.04)" }}>
-        {rows.map((tx) => {
-          const status = STATUS_MAP[tx.status] ?? STATUS_MAP.PENDING;
-          const date = new Date(tx.createdAt);
-          const dateStr = date.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" });
-          const timeStr = date.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-
-          return (
-            <div
-              key={tx.id}
-              className="grid grid-cols-[48px_1fr] gap-3 px-5 py-3.5 transition-colors duration-150 cursor-pointer lg:grid-cols-[48px_1fr_1fr_1fr_110px_110px_120px] hover:bg-hover"
-            >
-              {/* Method */}
-              <div className="flex items-center gap-2">
-                <MethodIcon method={tx.method} />
-              </div>
-
-              {/* Product */}
-              <div className="flex flex-col justify-center lg:col-auto">
-                <span className="text-xs font-medium text-text-primary line-clamp-1">{tx.product.name}</span>
-                <span className="text-[10px] text-text-secondary mt-0.5 lg:hidden">{tx.buyerName}</span>
-                {/* Mobile: show all inline */}
-                <div className="flex items-center gap-2 mt-1 lg:hidden">
-                  <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-medium", status.cls)}>
-                    {status.label}
-                  </span>
-                  <span className="text-[10px] text-text-secondary">{dateStr}</span>
-                  <span className="ml-auto text-xs font-semibold text-text-primary">
-                    {tx.amount.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-                  </span>
-                </div>
-              </div>
-
-              {/* Buyer — desktop only */}
-              <div className="hidden lg:flex items-center">
-                <span className="text-xs text-text-secondary line-clamp-1">{tx.buyerName}</span>
-              </div>
-
-              {/* Email — desktop only */}
-              <div className="hidden lg:flex items-center">
-                <span className="text-xs text-text-secondary line-clamp-1">{tx.buyerEmail}</span>
-              </div>
-
-              {/* Amount — desktop only */}
-              <div className="hidden lg:flex items-center justify-end">
-                <span className="text-xs font-semibold text-text-primary">
-                  {tx.amount.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-                </span>
-              </div>
-
-              {/* Status — desktop only */}
-              <div className="hidden lg:flex items-center justify-center">
-                <span className={cn("rounded-full px-2.5 py-1 text-[11px] font-medium", status.cls)}>
-                  {status.label}
-                </span>
-              </div>
-
-              {/* Date — desktop only */}
-              <div className="hidden lg:flex flex-col items-end justify-center">
-                <span className="text-xs text-text-primary">{dateStr}</span>
-                <span className="text-[10px] text-text-secondary">{timeStr}</span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Load more */}
       {hasMore && (
-        <div
-          className="flex justify-center px-5 py-4"
-          style={{ borderTop: "0.5px solid rgba(255,255,255,0.06)" }}
-        >
-          <button
+        <div className="flex justify-center p-4 border-t border-white/[0.05]">
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={loadMore}
-            disabled={loading}
-            className="flex items-center gap-2 rounded-lg border border-border bg-hover px-4 py-2 text-xs font-medium text-text-secondary hover:text-text-primary hover:border-primary/30 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            isLoading={loading}
+            icon={<ChevronDown className="w-3.5 h-3.5" />}
           >
-            {loading ? (
-              <Loader2 className="h-3.5 w-3.5 animate-spin" />
-            ) : (
-              <ChevronDown className="h-3.5 w-3.5" />
-            )}
-            {loading ? "Carregando..." : "Ver mais transações"}
-          </button>
+            Ver mais transações
+          </Button>
         </div>
       )}
-    </div>
+    </Card>
   );
 }
 
 export function TransactionsTableSkeleton() {
   return (
-    <div
-      className="rounded-xl overflow-hidden"
-      style={{
-        background: "#111113",
-        border: "0.5px solid rgba(255,255,255,0.08)",
-      }}
-    >
-      <div className="px-5 py-4" style={{ borderBottom: "0.5px solid rgba(255,255,255,0.08)" }}>
-        <div className="h-4 w-40 animate-pulse rounded-md bg-hover" />
-        <div className="mt-1.5 h-3 w-64 animate-pulse rounded-md bg-hover" />
+    <Card padding={0}>
+      <CardHeader className="px-6 py-5 border-b border-white/[0.05]">
+        <div className="h-5 w-40 animate-pulse rounded-md bg-white/[0.04]" />
+        <div className="mt-1.5 h-3.5 w-64 animate-pulse rounded-md bg-white/[0.04]" />
+      </CardHeader>
+      <div className="p-1">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div
+            key={i}
+            className="flex items-center gap-4 px-6 py-4 border-b border-white/[0.03] last:border-0"
+          >
+            <div className="h-8 w-8 animate-pulse rounded-md bg-white/[0.04]" />
+            <div className="flex-1 h-4 animate-pulse rounded-md bg-white/[0.04]" />
+            <div className="h-4 w-24 animate-pulse rounded-md bg-white/[0.04]" />
+            <div className="h-4 w-20 animate-pulse rounded-full bg-white/[0.04]" />
+          </div>
+        ))}
       </div>
-      {Array.from({ length: 7 }).map((_, i) => (
-        <div
-          key={i}
-          className="flex items-center gap-4 px-5 py-3.5"
-          style={{ borderBottom: "0.5px solid rgba(255,255,255,0.04)" }}
-        >
-          <div className="h-7 w-7 animate-pulse rounded-md bg-hover" />
-          <div className="flex-1 h-4 animate-pulse rounded-md bg-hover" />
-          <div className="h-4 w-20 animate-pulse rounded-md bg-hover" />
-          <div className="h-4 w-16 animate-pulse rounded-full bg-hover" />
-          <div className="h-4 w-16 animate-pulse rounded-md bg-hover" />
-        </div>
-      ))}
-    </div>
+    </Card>
   );
 }

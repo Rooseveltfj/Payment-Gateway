@@ -15,6 +15,8 @@ export async function GET() {
       pendingBalance: true,
       totalWithdrawn: true,
       totalEarnings: true,
+      pixKey: true,
+      pixKeyType: true,
     }
   });
 
@@ -30,6 +32,8 @@ export async function GET() {
     available: user.availableBalance,
     pending: user.pendingBalance,
     withdrawn: user.totalWithdrawn,
-    total: user.totalEarnings
+    total: user.totalEarnings,
+    pixKey: user.pixKey,
+    pixKeyType: user.pixKeyType
   });
 }

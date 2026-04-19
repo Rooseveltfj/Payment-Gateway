@@ -5,33 +5,95 @@ import { Switch } from "@/components/ui/Switch";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
-import { Plus, Trash2, Star, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { 
+  Users, Bell, Star, Plus, Trash2, Wand2, 
+  ChevronDown, MessageSquare, UserCheck 
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
   config: SocialProofConfig;
   onChange: (data: Partial<SocialProofConfig>) => void;
 }
 
-const BR_NAMES = ["Ana Paula", "Carlos Silva", "Fernanda Lima", "João Souza", "Mariana Costa", "Pedro Alves", "Juliana Rocha", "Rafael Mendes", "Camila Ferreira", "Lucas Oliveira"];
-const BR_CITIES = ["São Paulo, SP", "Rio de Janeiro, RJ", "Belo Horizonte, MG", "Porto Alegre, RS", "Curitiba, PR", "Fortaleza, CE", "Salvador, BA", "Recife, PE", "Manaus, AM", "Goiânia, GO"];
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return <p className="text-[11px] font-semibold text-text-secondary uppercase tracking-wider mb-2 mt-5 first:mt-0">{children}</p>;
+interface AccordionSectionProps {
+  title: string;
+  icon: any;
+  enabled: boolean;
+  onToggle: (v: boolean) => void;
+  children: React.ReactNode;
 }
 
-function SectionCard({ title, enabled, onToggle, children }: {
-  title: string; enabled: boolean; onToggle: (v: boolean) => void; children: React.ReactNode
-}) {
+function AccordionSection({ title, icon: Icon, enabled, onToggle, children }: AccordionSectionProps) {
+  const [isOpen, setIsOpen] = useState(enabled);
+
   return (
-    <div className={cn("rounded-xl border transition-colors", enabled ? "border-primary/40 bg-primary/5" : "border-border bg-card")}>
-      <div className="flex items-center justify-between p-3">
-        <span className="text-sm font-semibold text-text-primary">{title}</span>
-        <Switch checked={enabled} onCheckedChange={onToggle} />
+    <div className={cn(
+      "border rounded-[20px] transition-all duration-300 overflow-hidden",
+      enabled ? "border-purple-500/30 bg-purple-500/[0.02]" : "border-white/5 bg-white/[0.01]"
+    )}>
+      <div 
+        className={cn(
+          "flex items-center justify-between p-4 cursor-pointer hover:bg-white/[0.02]",
+          isOpen && "border-b border-white/5"
+        )}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <div className="flex items-center gap-3">
+          <div className={cn(
+            "w-10 h-10 rounded-xl flex items-center justify-center transition-all",
+            enabled ? "bg-purple-500/20 text-purple-400" : "bg-white/5 text-[#475569]"
+          )}>
+            <Icon className="h-5 w-5" />
+          </div>
+          <span className={cn(
+            "text-[14px] font-bold tracking-tight transition-colors",
+            enabled ? "text-white" : "text-[#64748b]"
+          )}>{title}</span>
+        </div>
+        <div className="flex items-center gap-4">
+          <div onClick={(e) => e.stopPropagation()}>
+            <Switch checked={enabled} onCheckedChange={(v) => {
+              onToggle(v);
+              if (v) setIsOpen(true);
+            }} />
+          </div>
+          <ChevronDown className={cn("h-4 w-4 text-[#475569] transition-transform", isOpen && "rotate-180")} />
+        </div>
       </div>
-      {enabled && <div className="px-3 pb-3 space-y-2 border-t border-border/50 pt-3">{children}</div>}
+      
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+             <div className={cn("p-5 space-y-6", !enabled && "opacity-50 pointer-events-none")}>
+               {children}
+             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
+
+const BR_NAMES = ["Ana Paula", "Carlos Silva", "Fernanda Lima", "João Souza", "Mariana Costa", "Pedro Alves", "Juliana Rocha", "Rafael Mendes", "Camila Ferreira", "Lucas Oliveira"];
+const BR_CITIES = ["São Paulo, SP", "Rio de Janeiro, RJ", "Belo Horizonte, MG", "Porto Alegre, RS", "Curitiba, PR", "Fortaleza, CE", "Salvador, BA", "Recife, PE", "Manaus, AM", "Goiânia, GO"];
+
+const REVIEWS_POOL = [
+  "Melhor investimento que fiz este ano! Prático e eficiente.",
+  "Estava receosa, mas a qualidade do conteúdo me surpreendeu positivamente.",
+  "Suporte incrível, responderam todas as minhas dúvidas em minutos.",
+  "Vale cada centavo. Os resultados vieram mais rápido do que eu esperava.",
+  "Simplesmente o melhor do mercado. Design limpo e funcional.",
+  "Já usei outros, mas o PulsePay é imbatível na conversão.",
+  "Indico para todos os meus parceiros. Sensacional!",
+  "A facilidade de uso é o ponto forte. Meus clientes adoraram o novo checkout."
+];
 
 export function SocialProofTab({ config, onChange }: Props) {
   const updPopup = (d: Partial<typeof config.popup>) => onChange({ popup: { ...config.popup, ...d } });
@@ -41,28 +103,21 @@ export function SocialProofTab({ config, onChange }: Props) {
   const addReview = () => {
     const r: Review = {
       id: Date.now().toString(),
-      name: "Nome do Cliente",
+      name: "Novo Cliente",
       photoUrl: `https://i.pravatar.cc/150?u=${Date.now()}`,
       stars: 5,
-      text: "Excelente produto, valeu cada centavo!",
+      text: "Escreva aqui o depoimento...",
     };
     updReviews({ items: [...config.reviews.items, r] });
   };
 
-  const generateReviews = () => {
-    const generated: Review[] = Array.from({ length: 6 }, (_, i) => ({
-      id: `gen-${Date.now()}-${i}`,
-      name: `${BR_NAMES[Math.floor(Math.random() * BR_NAMES.length)]} (${BR_CITIES[Math.floor(Math.random() * BR_CITIES.length)]})`,
+  const generateAIViaLocal = () => {
+    const generated: Review[] = Array.from({ length: 3 }, (_, i) => ({
+      id: `ai-${Date.now()}-${i}`,
+      name: BR_NAMES[Math.floor(Math.random() * BR_NAMES.length)],
       photoUrl: `https://i.pravatar.cc/150?u=${Math.random()}`,
-      stars: (Math.random() > 0.2 ? 5 : 4) as Review["stars"],
-      text: [
-        "Melhor investimento que fiz! Recomendo para todos.",
-        "Superou minhas expectativas. Conteúdo incrível!",
-        "Produto excelente, suporte muito atencioso.",
-        "Valeu cada centavo. Já estou vendo resultados!",
-        "Comprei sem expectativas e me surpreendi positivamente.",
-        "O melhor do mercado, sem dúvidas. Nota 10!",
-      ][i % 6],
+      stars: (Math.random() > 0.1 ? 5 : 4) as 4|5,
+      text: REVIEWS_POOL[Math.floor(Math.random() * REVIEWS_POOL.length)],
     }));
     updReviews({ items: [...config.reviews.items, ...generated] });
   };
@@ -75,117 +130,194 @@ export function SocialProofTab({ config, onChange }: Props) {
     updReviews({ items: config.reviews.items.filter(r => r.id !== id) });
   };
 
-  const avgStars = config.reviews.items.length > 0
-    ? (config.reviews.items.reduce((s, r) => s + r.stars, 0) / config.reviews.items.length).toFixed(1)
-    : "0.0";
-
   return (
-    <div className="space-y-3">
-      <SectionLabel>🔔 Notificações de Compra</SectionLabel>
-      <SectionCard title="Popups de Compra (Social Proof)" enabled={config.popup.enabled} onToggle={v => updPopup({ enabled: v })}>
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <label className="text-xs text-text-secondary mb-1 block">Intervalo</label>
-            <select
-              className="w-full text-xs h-8 rounded border border-border bg-background px-2 text-text-primary"
-              value={config.popup.interval}
-              onChange={e => updPopup({ interval: Number(e.target.value) as PopupInterval })}
-            >
-              {([5, 10, 15, 30] as PopupInterval[]).map(v => (
-                <option key={v} value={v}>{v} segundos</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="text-xs text-text-secondary mb-1 block">Nº de compradores</label>
-            <Input type="number" value={config.popup.purchaseCount}
-              onChange={e => updPopup({ purchaseCount: Number(e.target.value) })} className="text-xs h-8" />
-          </div>
-        </div>
-        <div>
-          <label className="text-xs text-text-secondary mb-1 block">Texto (ex: compraram nas últimas 24h)</label>
-          <Input value={config.popup.purchaseCountText}
-            onChange={e => updPopup({ purchaseCountText: e.target.value })} className="text-xs h-8" />
-        </div>
-      </SectionCard>
-
-      <SectionLabel>⭐ Avaliações de Clientes</SectionLabel>
-      <SectionCard title="Exibir Avaliações" enabled={config.reviews.enabled} onToggle={v => updReviews({ enabled: v })}>
-        {config.reviews.items.length > 0 && (
-          <div className="flex items-center gap-2 py-2 px-3 bg-warning/10 border border-warning/20 rounded-lg">
-            <Star className="h-4 w-4 text-warning fill-warning" />
-            <span className="text-sm font-bold text-warning">{avgStars}</span>
-            <span className="text-xs text-text-secondary">média de {config.reviews.items.length} avaliações</span>
-          </div>
-        )}
-
-        <div className="grid grid-cols-2 gap-1.5">
-          <button
-            onClick={() => updReviews({ display: "carousel" })}
-            className={cn("py-1.5 text-xs rounded border transition-all",
-              config.reviews.display === "carousel" ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border text-text-secondary"
-            )}
-          >Carrossel</button>
-          <button
-            onClick={() => updReviews({ display: "list" })}
-            className={cn("py-1.5 text-xs rounded border transition-all",
-              config.reviews.display === "list" ? "border-primary bg-primary/10 text-primary font-semibold" : "border-border text-text-secondary"
-            )}
-          >Lista</button>
-        </div>
-
-        <div className="grid grid-cols-2 gap-2">
-          <Button variant="outline" size="sm" onClick={addReview} className="text-xs">
-            <Plus className="h-3 w-3 mr-1" /> Adicionar
-          </Button>
-          <Button variant="outline" size="sm" onClick={generateReviews} className="text-xs">
-            <Sparkles className="h-3 w-3 mr-1" /> Gerar (IA)
-          </Button>
-        </div>
-
-        <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
-          {config.reviews.items.map(r => (
-            <div key={r.id} className="bg-background border border-border/50 rounded-lg p-2.5 space-y-1.5">
-              <div className="flex items-center justify-between">
-                <Input value={r.name} onChange={e => updateReview(r.id, { name: e.target.value })}
-                  className="text-xs h-7 flex-1 mr-2" placeholder="Nome" />
-                <button onClick={() => deleteReview(r.id)} className="text-error hover:text-error/80 shrink-0">
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
+    <div className="space-y-4 animate-in fade-in duration-500">
+      
+      {/* ─── Notificações de Venda ─── */}
+      <AccordionSection
+        title="Notificações de Venda"
+        icon={Bell}
+        enabled={config.popup.enabled}
+        onToggle={v => updPopup({ enabled: v })}
+      >
+        <div className="space-y-5">
+           <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-[12px] font-medium text-[#94a3b8] ml-1">Intervalo (Segundos)</label>
+                <div className="relative">
+                  <select
+                    className="w-full h-10 bg-black/40 border border-white/5 rounded-xl px-4 text-[13px] text-white appearance-none outline-none focus:border-purple-500/50"
+                    value={config.popup.interval}
+                    onChange={e => updPopup({ interval: Number(e.target.value) as PopupInterval })}
+                  >
+                    {[5, 10, 15, 30].map(v => (
+                      <option key={v} value={v}>{v} segundos</option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#475569] pointer-events-none" />
+                </div>
               </div>
-              <div className="flex gap-1">
-                {[1, 2, 3, 4, 5].map(n => (
-                  <button key={n} onClick={() => updateReview(r.id, { stars: n as Review["stars"] })}>
-                    <Star className={cn("h-4 w-4 transition-colors", n <= r.stars ? "fill-warning text-warning" : "text-border")} />
-                  </button>
+              <div className="space-y-2">
+                <label className="text-[12px] font-medium text-[#94a3b8] ml-1">Simular Nº Vendas</label>
+                <Input 
+                  type="number" 
+                  value={config.popup.purchaseCount}
+                  onChange={e => updPopup({ purchaseCount: Number(e.target.value) })}
+                  className="h-10 text-[13px] bg-black/40"
+                />
+              </div>
+           </div>
+
+           <div className="space-y-2">
+             <label className="text-[12px] font-medium text-[#94a3b8] ml-1">Texto de Apoio</label>
+             <Input 
+                value={config.popup.purchaseCountText}
+                onChange={e => updPopup({ purchaseCountText: e.target.value })}
+                placeholder="Ex: pessoas compraram nas últimas 24h"
+                className="h-10 text-[13px] bg-black/40"
+             />
+           </div>
+
+           {/* Preview da Notificação */}
+           <div className="p-4 bg-white/[0.03] border border-white/5 rounded-2xl">
+             <span className="text-[10px] font-bold text-[#475569] uppercase tracking-widest mb-3 block">Preview do Popup</span>
+             <div className="bg-[#0d0d12] border border-white/10 rounded-xl p-3 flex items-center gap-3 shadow-xl max-w-[280px]">
+                <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center border border-green-500/20">
+                   <UserCheck className="h-5 w-5 text-green-500" />
+                </div>
+                <div className="flex-1">
+                   <p className="text-[12px] font-bold text-white leading-tight">Ana Paula de São Paulo...</p>
+                   <p className="text-[10px] text-green-500 font-medium">acabou de comprar!</p>
+                </div>
+             </div>
+           </div>
+        </div>
+      </AccordionSection>
+
+      {/* ─── Avaliações Reais ─── */}
+      <AccordionSection
+        title="Avaliações & Estrelas"
+        icon={Star}
+        enabled={config.reviews.enabled}
+        onToggle={v => updReviews({ enabled: v })}
+      >
+        <div className="space-y-6">
+           {/* Display Mode */}
+           <div className="space-y-2">
+              <label className="text-[12px] font-medium text-[#94a3b8] ml-1">Formato de Exibição</label>
+              <div className="flex gap-2 p-1 bg-black/40 rounded-xl border border-white/5">
+                {[
+                  { id: "carousel", label: "Carrossel" },
+                  { id: "list", label: "Lista Vertical" }
+                ].map(s => (
+                  <button
+                    key={s.id}
+                    onClick={() => updReviews({ display: s.id as any })}
+                    className={cn(
+                      "flex-1 py-1.5 text-[11px] font-bold transition-all rounded-lg",
+                      config.reviews.display === s.id
+                        ? "bg-purple-600 text-white shadow-lg"
+                        : "text-[#64748b] hover:text-white"
+                    )}
+                  >{s.label}</button>
                 ))}
               </div>
-              <textarea rows={2}
-                className="w-full text-xs rounded border border-border/50 bg-background/50 px-2 py-1 text-text-primary focus:outline-none resize-none"
-                value={r.text}
-                onChange={e => updateReview(r.id, { text: e.target.value })}
-                placeholder="Texto da avaliação..."
-              />
-            </div>
-          ))}
-        </div>
-      </SectionCard>
+           </div>
 
-      <SectionLabel>👥 Contador de Compradores</SectionLabel>
-      <SectionCard title="Exibir Contador" enabled={config.buyerCount.enabled} onToggle={v => updBuyerCount({ enabled: v })}>
-        <div className="grid grid-cols-2 gap-2">
-          <div>
-            <label className="text-xs text-text-secondary mb-1 block">Número</label>
-            <Input type="number" value={config.buyerCount.count}
-              onChange={e => updBuyerCount({ count: Number(e.target.value) })} className="text-xs h-8" />
-          </div>
-          <div>
-            <label className="text-xs text-text-secondary mb-1 block">Termo</label>
-            <Input value={config.buyerCount.label}
-              onChange={e => updBuyerCount({ label: e.target.value })} className="text-xs h-8" placeholder="alunos" />
-          </div>
+           {/* Actions */}
+           <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                className="flex-1 h-10 border-white/5 bg-white/[0.02] text-[#f1f5f9] hover:bg-white/5 text-[12px] gap-2 font-bold rounded-xl"
+                onClick={addReview}
+              >
+                <Plus className="h-4 w-4 text-purple-400" /> Adicionar Avaliação
+              </Button>
+              <Button 
+                variant="outline"
+                className="flex-1 h-10 border-purple-500/20 bg-purple-500/5 text-purple-400 hover:bg-purple-500/10 text-[12px] gap-2 font-bold rounded-xl"
+                onClick={generateAIViaLocal}
+              >
+                <Wand2 className="h-4 w-4" /> Gerar com IA
+              </Button>
+           </div>
+
+           {/* Reviews List */}
+           <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 no-scrollbar">
+              {config.reviews.items.map((r, idx) => (
+                <div key={r.id} className="p-4 bg-white/[0.02] border border-white/5 rounded-2xl relative group">
+                   <div className="flex items-center gap-3 mb-4">
+                      <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 overflow-hidden shrink-0">
+                         <img src={r.photoUrl} alt="Avatar" className="w-full h-full object-cover" />
+                      </div>
+                      <div className="flex-1">
+                         <Input 
+                            value={r.name} 
+                            onChange={e => updateReview(r.id, { name: e.target.value })}
+                            className="h-8 bg-transparent border-none p-0 focus-visible:ring-0 text-[13px] font-bold placeholder:text-[#475569]"
+                            placeholder="Nome do Cliente"
+                         />
+                         <div className="flex gap-0.5 mt-0.5">
+                            {[1,2,3,4,5].map(star => (
+                               <Star 
+                                  key={star} 
+                                  onClick={() => updateReview(r.id, { stars: star as any })}
+                                  className={cn(
+                                     "h-3.5 w-3.5 cursor-pointer transition-colors",
+                                     star <= r.stars ? "fill-yellow-500 text-yellow-500" : "text-[#1e1b4b]"
+                                  )}
+                               />
+                            ))}
+                         </div>
+                      </div>
+                      <button 
+                        onClick={() => deleteReview(r.id)}
+                        className="opacity-0 group-hover:opacity-100 p-2 text-[#475569] hover:text-red-400 transition-all absolute top-2 right-2"
+                      >
+                         <Trash2 className="h-4 w-4" />
+                      </button>
+                   </div>
+                   <textarea 
+                      value={r.text}
+                      onChange={e => updateReview(r.id, { text: e.target.value })}
+                      className="w-full bg-black/20 border border-white/5 rounded-xl p-3 text-[12px] text-[#94a3b8] placeholder:text-[#3d5166] focus:outline-none focus:border-purple-500/30 transition-all resize-none leading-relaxed"
+                      rows={2}
+                      placeholder="Depoimento do cliente..."
+                   />
+                </div>
+              ))}
+           </div>
         </div>
-      </SectionCard>
+      </AccordionSection>
+
+      {/* ─── Contador de Alunos ─── */}
+      <AccordionSection
+        title="Contador de Alunos"
+        icon={Users}
+        enabled={config.buyerCount.enabled}
+        onToggle={v => updBuyerCount({ enabled: v })}
+      >
+        <div className="grid grid-cols-2 gap-4">
+           <div className="space-y-2">
+             <label className="text-[12px] font-medium text-[#94a3b8] ml-1">Nº Compradores</label>
+             <Input 
+                type="number"
+                value={config.buyerCount.count}
+                onChange={e => updBuyerCount({ count: Number(e.target.value) })}
+                className="h-10 text-[13px] bg-black/40"
+             />
+           </div>
+           <div className="space-y-2">
+             <label className="text-[12px] font-medium text-[#94a3b8] ml-1">Termo (Ex: alunos)</label>
+             <Input 
+                value={config.buyerCount.label}
+                onChange={e => updBuyerCount({ label: e.target.value })}
+                className="h-10 text-[13px] bg-black/40"
+             />
+           </div>
+        </div>
+      </AccordionSection>
+
     </div>
   );
 }

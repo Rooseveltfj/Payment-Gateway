@@ -2,9 +2,10 @@
 // PulsePay — Checkout Config Type System
 // ============================================================
 
-export type ButtonStyle = "rounded" | "square" | "pill";
+export type ThemePreset = "dark" | "light" | "gradient" | "neon" | "minimalist" | "elegant" | "urgency" | "clean" | "ocean";
 export type FontFamily = "Geist" | "Inter" | "Poppins" | "Montserrat";
-export type ThemePreset = "dark" | "light" | "gradient";
+export type ButtonStyle = "rounded" | "square" | "pill";
+export type TemplateId = "classic" | "minimalist" | "gradient" | "neon" | "elegant" | "urgency" | "clean" | "ocean";
 export type TimerDuration = "10min" | "30min" | "1h" | "24h" | "custom";
 export type TimerStyle = "minimal" | "urgent";
 export type ReviewDisplay = "carousel" | "list";

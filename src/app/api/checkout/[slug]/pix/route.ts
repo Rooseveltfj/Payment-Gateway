@@ -1,8 +1,5 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { wooviRequest } from "@/lib/woovi";
-import { sendPixGeneratedEmail } from "@/lib/email";
 import crypto from "crypto";
+import { cookies } from "next/headers";
 
 export async function POST(
   req: Request,
@@ -34,7 +31,27 @@ export async function POST(
     // 3. Generate IDs
     const correlationID = `order_${crypto.randomUUID()}`;
 
-    // 4. Create Order in DB
+    // 4. Check for Affiliate
+    const affCode = cookies().get("pulsepay_affiliate")?.value;
+    let affiliationId = null;
+
+    if (affCode) {
+      const aff = await prisma.affiliation.findUnique({
+        where: { affiliateCode: affCode },
+        select: { id: true, status: true }
+      });
+      
+      if (aff && aff.status === "APPROVED") {
+        affiliationId = aff.id;
+        // Increment clicks in background
+        prisma.affiliation.update({
+          where: { id: aff.id },
+          data: { totalClicks: { increment: 1 } }
+        }).catch(() => {});
+      }
+    }
+
+    // 5. Create Order in DB
     const order = await prisma.order.create({
       data: {
         userId: seller.id,
@@ -49,6 +66,7 @@ export async function POST(
         status: "PENDING",
         paymentMethod: "PIX",
         wooviCorrelationId: correlationID,
+        affiliationId,
         statusHistory: [
           { status: "PENDING", label: "Aguardando Pagamento (PIX)", date: new Date().toISOString() }
         ]

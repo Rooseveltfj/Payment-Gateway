@@ -4,21 +4,41 @@ import { useState } from "react";
 import { updateProfile, disable2FA } from "./actions";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/Card";
-import { Shield, Smartphone, Key, User, Save, RefreshCw, CheckCircle2, AlertCircle } from "lucide-react";
+import { Select } from "@/components/ui/Select";
+import { Card } from "@/components/ui/Card";
+import { 
+  User, 
+  Shield, 
+  Wallet, 
+  Bell, 
+  Lock, 
+  Smartphone, 
+  CheckCircle2, 
+  Key, 
+  Camera,
+  LogOut,
+  Save,
+  RefreshCw,
+  Eye,
+  EyeOff
+} from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Props {
   user: any;
 }
 
+type TabType = "personal" | "security" | "pix" | "notifications";
+
 export function PerfilClient({ user }: Props) {
+  const [activeTab, setActiveTab] = useState<TabType>("personal");
   const [loading, setLoading] = useState(false);
   const [setup2FA, setSetup2FA] = useState(false);
   const [twoFactorData, setTwoFactorData] = useState<any>(null);
   const [token, setToken] = useState("");
-  const [step, setStep] = useState(1);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,8 +47,9 @@ export function PerfilClient({ user }: Props) {
       const formData = new FormData(e.currentTarget);
       await updateProfile(formData);
       toast.success("Perfil atualizado com sucesso!");
+      window.location.reload(); // Refresh to catch updated session
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.message || "Erro ao atualizar perfil");
     } finally {
       setLoading(false);
     }
@@ -41,8 +62,7 @@ export function PerfilClient({ user }: Props) {
       const data = await res.json();
       setTwoFactorData(data);
       setSetup2FA(true);
-      setStep(1);
-    } catch (err: any) {
+    } catch {
       toast.error("Erro ao gerar 2FA");
     } finally {
       setLoading(false);
@@ -64,181 +84,346 @@ export function PerfilClient({ user }: Props) {
       } else {
         toast.error(data.error);
       }
-    } catch (err: any) {
+    } catch {
       toast.error("Erro ao ativar 2FA");
     } finally {
       setLoading(false);
     }
   };
 
+  const menuItems = [
+    { id: "personal", label: "Dados Pessoais", icon: User },
+    { id: "security", label: "Segurança", icon: Lock },
+    { id: "pix", label: "Chave PIX", icon: Wallet },
+    { id: "notifications", label: "Notificações", icon: Bell },
+  ];
+
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="space-y-1">
-        <h1 className="text-3xl font-extrabold tracking-tight">Meu Perfil</h1>
-        <p className="text-text-secondary">Gerencie suas informações pessoais e segurança da conta.</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2 space-y-8">
-          {/* Main Info */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <User className="w-5 h-5 text-primary" />
-                Dados Pessoais
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleUpdate} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-text-secondary">Nome Completo</label>
-                    <Input name="name" defaultValue={user.name} required />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-text-secondary">E-mail (Login)</label>
-                    <Input value={user.email} disabled className="opacity-60 bg-white/5" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-text-secondary">WhatsApp</label>
-                    <Input name="phone" defaultValue={user.phone || ""} placeholder="(00) 00000-0000" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-widest text-text-secondary">Chave PIX (Para Saques)</label>
-                    <Input name="pixKey" defaultValue={user.pixKey || ""} placeholder="CPF, e-mail ou chave aleatória" />
-                  </div>
-                </div>
-                
-                <div className="flex justify-end pt-4">
-                  <Button type="submit" isLoading={loading} className="gap-2">
-                    <Save className="w-4 h-4" />
-                    Salvar Alterações
-                  </Button>
-                </div>
-              </form>
-            </CardContent>
+    <div className="max-w-6xl mx-auto animate-in fade-in duration-700">
+      <div className="flex flex-col md:flex-row gap-8">
+        
+        {/* SIDEBAR NAVEGAÇÃO */}
+        <aside className="w-full md:w-[280px] shrink-0">
+          <Card className="p-2 bg-[#0f0f1a] border-white/[0.05] rounded-2xl">
+            <nav className="space-y-1">
+              {menuItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = activeTab === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => setActiveTab(item.id as TabType)}
+                    className={cn(
+                      "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm font-bold border-l-2",
+                      isActive 
+                        ? "bg-[#8b5cf61f] text-[#a78bfa] border-[#8b5cf6]" 
+                        : "text-[#64748b] border-transparent hover:text-[#f1f5f9] hover:bg-white/[0.02]"
+                    )}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {item.label}
+                  </button>
+                );
+              })}
+            </nav>
+            <div className="h-px bg-white/[0.05] my-2 mx-2" />
+            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-red-500 hover:bg-red-500/10 transition-all">
+               <LogOut className="w-4 h-4" />
+               Sair da Conta
+            </button>
           </Card>
+        </aside>
 
-          {/* Security / 2FA */}
-          <Card className={cn(
-            "relative overflow-hidden transition-all duration-500",
-            user.twoFactorEnabled ? "border-green-500/20" : "border-border"
-          )}>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="w-5 h-5 text-primary" />
-                Segurança (2FA)
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="flex items-start gap-4 p-4 rounded-2xl bg-white/[0.02] border border-white/5">
-                <div className={cn(
-                  "p-3 rounded-xl",
-                  user.twoFactorEnabled ? "bg-green-500/10 text-green-500" : "bg-primary/10 text-primary"
+        {/* CONTEÚDO PRINCIPAL */}
+        <div className="flex-1">
+          <AnimatePresence mode="wait">
+            {activeTab === "personal" && (
+              <motion.div
+                key="personal"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-6"
+              >
+                <Card className="overflow-hidden bg-[#0f0f1a] border-white/[0.05] rounded-[24px]">
+                  <div className="p-8 border-b border-white/[0.05] flex items-center gap-4">
+                    <div className="h-12 w-12 rounded-2xl bg-[#8b5cf61a] flex items-center justify-center text-[#8b5cf6]">
+                      <User className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-[#f1f5f9]">Dados Pessoais</h2>
+                      <p className="text-sm text-[#64748b]">Gerencie suas informações de contato e identificação.</p>
+                    </div>
+                  </div>
+                  
+                  <div className="p-8 space-y-8">
+                    {/* Avatar Section */}
+                    <div className="flex flex-col items-center sm:items-start gap-4">
+                       <div className="relative group">
+                          <div className="h-24 w-24 rounded-full bg-[#8b5cf6] flex items-center justify-center text-white text-3xl font-bold shadow-[0_0_20px_rgba(139,92,246,0.2)]">
+                            {user.name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
+                          </div>
+                          <button className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                             <Camera className="w-6 h-6 text-white" />
+                          </button>
+                       </div>
+                       <div className="text-center sm:text-left">
+                          <button className="text-[13px] font-bold text-[#a78bfa] hover:text-[#8b5cf6] transition-colors">Alterar foto do perfil</button>
+                          <p className="text-[11px] text-[#64748b] mt-1">PNG, JPG ou WEBP. Máx 2MB.</p>
+                       </div>
+                    </div>
+
+                    <form onSubmit={handleUpdate} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                       <div className="space-y-2">
+                          <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Nome Completo</label>
+                          <Input name="name" defaultValue={user.name} className="h-11" required />
+                       </div>
+                       <div className="space-y-2">
+                          <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">E-mail (Login)</label>
+                          <Input value={user.email} disabled className="h-11 bg-white/[0.02] border-white/[0.05] text-[#64748b]" />
+                       </div>
+                       <div className="space-y-2">
+                          <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">CPF / Documento</label>
+                          <Input value={user.document || "Não informado"} disabled className="h-11 bg-white/[0.02] border-white/[0.05] text-[#64748b]" />
+                       </div>
+                       <div className="space-y-2">
+                          <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Telefone (WhatsApp)</label>
+                          <Input name="phone" defaultValue={user.phone || ""} className="h-11" placeholder="(00) 00000-0000" />
+                       </div>
+                       
+                       <div className="md:col-span-2 flex justify-end pt-4">
+                          <Button type="submit" isLoading={loading} variant="primary" className="h-11 px-8 font-bold gap-2">
+                            <Save className="w-4 h-4" />
+                            Salvar Alterações
+                          </Button>
+                       </div>
+                    </form>
+                  </div>
+                </Card>
+              </motion.div>
+            )}
+
+            {activeTab === "pix" && (
+              <motion.div
+                key="pix"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-6"
+              >
+                <Card className="bg-[#0f0f1a] border-white/[0.05] rounded-[24px]">
+                  <div className="p-8 border-b border-white/[0.05] flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+                        <Wallet className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <h2 className="text-xl font-bold text-[#f1f5f9]">Chave PIX para Saque</h2>
+                        <p className="text-sm text-[#64748b]">Esta é a chave que receberá seus saques automaticamente.</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="p-8 space-y-8">
+                     <form onSubmit={handleUpdate} className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                           <div className="space-y-2">
+                             <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Tipo de Chave</label>
+                             <Select 
+                                name="pixKeyType" 
+                                defaultValue={user.pixKeyType || "CPF"}
+                                options={[
+                                  { label: "CPF", value: "CPF" },
+                                  { label: "CNPJ", value: "CNPJ" },
+                                  { label: "E-mail", value: "EMAIL" },
+                                  { label: "Telefone", value: "PHONE" },
+                                  { label: "Chave Aleatória", value: "RANDOM" },
+                                ]}
+                             />
+                           </div>
+                           <div className="space-y-2">
+                             <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Chave PIX</label>
+                             <Input name="pixKey" defaultValue={user.pixKey || ""} placeholder="Digite sua chave" className="h-11" required />
+                           </div>
+                        </div>
+
+                        {user.pixKey && (
+                          <div className="p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl flex items-center gap-3">
+                             <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                             <span className="text-sm font-bold text-emerald-500">Chave cadastrada e pronta para uso!</span>
+                          </div>
+                        )}
+
+                        <div className="flex justify-end">
+                           <Button type="submit" isLoading={loading} variant="primary" className="h-11 px-8 font-bold">
+                              Salvar Chave PIX
+                           </Button>
+                        </div>
+                     </form>
+                  </div>
+                </Card>
+              </motion.div>
+            )}
+
+            {activeTab === "security" && (
+              <motion.div
+                key="security"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-6"
+              >
+                {/* Alterar Senha */}
+                <Card className="bg-[#0f0f1a] border-white/[0.05] rounded-[24px]">
+                  <div className="p-8 border-b border-white/[0.05] flex items-center gap-4">
+                    <div className="h-12 w-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500">
+                      <Lock className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-[#f1f5f9]">Alterar Senha</h2>
+                      <p className="text-sm text-[#64748b]">Mantenha sua conta segura com uma senha forte.</p>
+                    </div>
+                  </div>
+                  <div className="p-8">
+                     <form className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="space-y-2">
+                          <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Senha Atual</label>
+                          <Input type="password" placeholder="••••••••" className="h-11" />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Nova Senha</label>
+                          <Input type="password" placeholder="••••••••" className="h-11" />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Confirmar Senha</label>
+                          <Input type="password" placeholder="••••••••" className="h-11" />
+                        </div>
+                        <div className="md:col-span-3 flex justify-end">
+                           <Button type="button" variant="secondary" className="h-11 px-8 font-bold border-white/[0.05]">Atualizar Senha</Button>
+                        </div>
+                     </form>
+                  </div>
+                </Card>
+
+                {/* 2FA */}
+                <Card className={cn(
+                  "bg-[#0f0f1a] border-white/[0.05] rounded-[24px] overflow-hidden",
+                  user.twoFactorEnabled && "border-emerald-500/20"
                 )}>
-                  <Smartphone className="w-6 h-6" />
-                </div>
-                <div className="flex-1 space-y-1">
-                  <h4 className="font-bold">Autenticação de Dois Fatores</h4>
-                  <p className="text-xs text-text-secondary leading-relaxed">
-                    Proteja sua conta PulsePay com uma camada extra de segurança. Ao ativar, você precisará de um código do seu celular para entrar ou realizar saques.
-                  </p>
-                </div>
-                <div className="flex flex-col items-end gap-2">
-                  <span className={cn(
-                    "text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider",
-                    user.twoFactorEnabled ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"
-                  )}>
-                    {user.twoFactorEnabled ? "ATIVADO" : "DESATIVADO"}
-                  </span>
-                </div>
-              </div>
-
-              {!user.twoFactorEnabled && !setup2FA && (
-                <Button variant="outline" onClick={generate2FA} className="w-full h-12 gap-2 text-primary border-primary/20 hover:bg-primary/5">
-                  <Key className="w-4 h-4" />
-                  Configurar 2FA (Google Authenticator)
-                </Button>
-              )}
-
-              {setup2FA && (
-                <div className="space-y-6 pt-4 animate-in zoom-in-95 duration-300">
-                  <div className="flex flex-col md:flex-row items-center gap-8">
-                    <div className="p-3 bg-white rounded-2xl border-4 border-primary/20">
-                       <img src={twoFactorData.qrCode} alt="2FA QR Code" className="w-40 h-40" />
+                  <div className="p-8 border-b border-white/[0.05] flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className={cn(
+                        "h-12 w-12 rounded-2xl flex items-center justify-center",
+                        user.twoFactorEnabled ? "bg-emerald-500/10 text-emerald-500" : "bg-[#8b5cf61a] text-[#8b5cf6]"
+                      )}>
+                        <Smartphone className="w-6 h-6" />
+                      </div>
+                      <div>
+                        <h2 className="text-xl font-bold text-[#f1f5f9]">Segurança (2FA)</h2>
+                        <p className="text-sm text-[#64748b]">Proteja seus saques com autenticação por app.</p>
+                      </div>
                     </div>
-                    <div className="flex-1 space-y-4">
-                      <div className="space-y-1">
-                        <p className="text-xs font-bold text-primary flex items-center gap-1">
-                          <CheckCircle2 className="w-3 h-3" />
-                          Passo 1: Escaneie o código
-                        </p>
-                        <p className="text-xs text-text-secondary">Use o Google Authenticator ou Authy no seu celular.</p>
+                    <Badge status={user.twoFactorEnabled ? 'active' : 'inactive'} label={user.twoFactorEnabled ? 'Ativado' : 'Desativado'} />
+                  </div>
+                  <div className="p-8 space-y-6">
+                    {!user.twoFactorEnabled && !setup2FA && (
+                       <Button onClick={generate2FA} isLoading={loading} variant="primary" className="h-12 w-full font-bold gap-2">
+                          <Smartphone className="w-4 h-4" />
+                          Configurar Google Authenticator
+                       </Button>
+                    )}
+
+                    {setup2FA && (
+                      <div className="animate-in fade-in zoom-in-95 duration-500 flex flex-col md:flex-row items-center gap-8 bg-white/[0.02] p-8 rounded-[20px] border border-white/[0.05]">
+                         <div className="p-4 bg-white rounded-2xl shadow-xl">
+                            <img src={twoFactorData.qrCode} alt="QR Code" className="w-40 h-40" />
+                         </div>
+                         <div className="flex-1 space-y-6">
+                            <div className="space-y-2">
+                               <p className="text-sm font-bold text-[#f1f5f9]">Escaneie o QR Code acima</p>
+                               <p className="text-xs text-[#64748b]">No app Authenticator, adicione uma nova conta e carregue este código.</p>
+                            </div>
+                            <div className="space-y-4">
+                               <div className="space-y-2">
+                                  <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Código de 6 dígitos</label>
+                                  <Input 
+                                    className="text-center text-lg font-mono tracking-[0.5em] h-12"
+                                    maxLength={6}
+                                    placeholder="000000"
+                                    value={token}
+                                    onChange={e => setToken(e.target.value.replace(/\D/g, ""))}
+                                  />
+                               </div>
+                               <div className="flex gap-3">
+                                  <Button onClick={activate2FA} isLoading={loading} variant="primary" className="flex-1 h-11 font-bold">Ativar Agora</Button>
+                                  <Button onClick={() => setSetup2FA(false)} variant="secondary" className="h-11 font-bold border-white/[0.05]">Cancelar</Button>
+                               </div>
+                            </div>
+                         </div>
                       </div>
-                      <div className="space-y-1.5 pt-2">
-                        <p className="text-xs font-bold text-primary">Passo 2: Digite o código de 6 dígitos</p>
-                        <Input 
-                          placeholder="000 000" 
-                          maxLength={6} 
-                          value={token}
-                          onChange={e => setToken(e.target.value.replace(/\D/g, ""))}
-                          className="text-center text-lg font-mono tracking-[0.5em]"
-                        />
+                    )}
+
+                    {user.twoFactorEnabled && (
+                      <div className="flex items-center justify-between p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl">
+                         <div className="flex items-center gap-3">
+                            <Shield className="w-5 h-5 text-emerald-500" />
+                            <span className="text-sm font-medium text-emerald-500">Sua conta está protegida!</span>
+                         </div>
+                         <button 
+                           onClick={() => { if(confirm("Deseja desativar o 2FA?")) disable2FA() }}
+                           className="text-xs font-bold text-red-500 hover:text-red-400 underline transition-colors"
+                         >
+                           Desativar 2FA
+                         </button>
                       </div>
-                      <div className="flex gap-2">
-                        <Button onClick={activate2FA} isLoading={loading} className="flex-1">Confirmar e Ativar</Button>
-                        <Button variant="outline" onClick={() => setSetup2FA(false)}>Cancelar</Button>
-                      </div>
+                    )}
+                  </div>
+                </Card>
+              </motion.div>
+            )}
+
+            {activeTab === "notifications" && (
+               <motion.div
+                key="notifications"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="space-y-6"
+              >
+                <Card className="bg-[#0f0f1a] border-white/[0.05] rounded-[24px]">
+                  <div className="p-8 border-b border-white/[0.05] flex items-center gap-4">
+                    <div className="h-12 w-12 rounded-2xl bg-[#8b5cf61a] flex items-center justify-center text-[#8b5cf6]">
+                      <Bell className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-[#f1f5f9]">Configurações de Notificação</h2>
+                      <p className="text-sm text-[#64748b]">Escolha como você deseja ser avisado sobre suas vendas.</p>
                     </div>
                   </div>
-                </div>
-              )}
-
-              {user.twoFactorEnabled && (
-                <div className="flex justify-between items-center p-4 bg-green-500/5 border border-green-500/10 rounded-2xl">
-                   <p className="text-xs text-green-500 font-medium">Sua conta está protegida com autenticação de dois fatores.</p>
-                   <button 
-                     onClick={() => { if(confirm("Deseja realmente desativar o 2FA?")) disable2FA() }}
-                     className="text-xs font-bold text-red-500 hover:underline"
-                   >
-                     Desativar Segurança
-                   </button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Info Sidebar */}
-        <div className="space-y-6">
-          <Card className="bg-gradient-to-br from-primary/10 via-transparent to-transparent">
-            <CardContent className="pt-6 space-y-4">
-              <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center text-primary">
-                <AlertCircle className="w-6 h-6" />
-              </div>
-              <h4 className="font-bold">Por que configurar?</h4>
-              <p className="text-xs text-text-secondary leading-relaxed">
-                Dados completos e segurança em dia (2FA) aumentam sua confiabilidade na plataforma e garantem saques mais rápidos.
-              </p>
-            </CardContent>
-          </Card>
-
-          <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl space-y-4">
-             <h4 className="text-xs font-bold uppercase tracking-widest text-text-secondary">Status da Conta</h4>
-             <div className="flex items-center justify-between">
-               <span className="text-sm font-medium">KYC</span>
-               <span className={cn(
-                 "text-[10px] font-bold px-2 py-0.5 rounded-full uppercase",
-                 user.kycStatus === "APPROVED" ? "bg-green-500/10 text-green-500" : "bg-yellow-500/10 text-yellow-500"
-               )}>
-                 {user.kycStatus === "APPROVED" ? "Aprovado" : "Pendente"}
-               </span>
-             </div>
-             <div className="flex items-center justify-between">
-               <span className="text-sm font-medium">Membro desde</span>
-               <span className="text-xs text-text-secondary">{new Date(user.createdAt).toLocaleDateString()}</span>
-             </div>
-          </div>
+                  <div className="p-8 space-y-4">
+                     {[
+                       { id: "sales", label: "Novas Vendas", desc: "Receba alertas instantâneos de cada pedido pago." },
+                       { id: "withdrawals", label: "Saques Concluídos", desc: "Avisos quando o dinheiro cair na sua conta PIX." },
+                       { id: "marketing", label: "Campanhas e Dicas", desc: "Novas funcionalidades e estratégias de venda." }
+                     ].map((item) => (
+                       <div key={item.id} className="flex items-center justify-between p-4 bg-white/[0.02] border border-white/[0.05] rounded-2xl hover:bg-white/[0.04] transition-colors">
+                          <div className="space-y-1">
+                             <p className="text-[14px] font-bold text-[#f1f5f9]">{item.label}</p>
+                             <p className="text-[12px] text-[#64748b]">{item.desc}</p>
+                          </div>
+                          <div className="h-6 w-11 rounded-full bg-[#8b5cf6] relative">
+                             <div className="absolute top-1 right-1 h-4 w-4 rounded-full bg-white shadow-sm" />
+                          </div>
+                       </div>
+                     ))}
+                     <div className="flex justify-end pt-4">
+                        <Button variant="primary" disabled className="h-11 px-8 font-bold opacity-50">Salvar Notificações</Button>
+                     </div>
+                  </div>
+                </Card>
+               </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>

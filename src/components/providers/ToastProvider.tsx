@@ -7,17 +7,15 @@ export function ToastProvider() {
     <Toaster 
       position="top-right"
       theme="dark"
-      expand={false}
       richColors
+      expand
       closeButton
       toastOptions={{
         style: {
-          background: "#0a0b11",
-          border: "1px solid rgba(255,255,255,0.08)",
-          color: "#fff",
-          borderRadius: "16px",
+          background: '#0d1117',
+          border: '1px solid rgba(191, 0, 255, 0.2)',
+          color: '#f0f4f8',
         },
-        className: "font-sans",
       }}
     />
   );
