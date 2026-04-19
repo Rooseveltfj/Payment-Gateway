@@ -62,13 +62,13 @@ export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-10 gap-12 max-w-[900px] mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500 pb-8">
-      {/* ─── Left Column (55%) ─── */}
-      <div className="lg:col-span-6 space-y-8">
+    <div className="grid grid-cols-1 lg:grid-cols-12 gap-x-12 gap-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-8">
+      {/* ─── Left Column (7/12) ─── */}
+      <div className="lg:col-span-7 space-y-8">
         {/* Nome do Produto */}
         <div className="space-y-2">
           <div className="flex items-center justify-between px-1">
-            <label className="text-[13px] font-medium text-[#94a3b8]">Nome do Produto *</label>
+            <label className="text-[14px] font-semibold text-[#f1f5f9]">Nome do Produto *</label>
             <span className={cn(
               "text-[11px] font-medium transition-colors",
               data.name?.length >= 80 ? "text-red-400" : "text-[#3d5166]"
@@ -79,8 +79,8 @@ export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
           <Input
             placeholder="Ex: Mentoria VIP 2024"
             className={cn(
-              "h-12 bg-[#09090b] border-white/5 focus:border-accent text-[15px]",
-              !data.name && "border-red-500/20"
+              "h-12 bg-black/40 border-white/[0.05] focus:border-accent text-[15px] rounded-[14px]",
+              !data.name && "border-red-500/10"
             )}
             value={data.name}
             onChange={handleNameChange}
@@ -91,7 +91,7 @@ export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
         {/* Preço e Tipo */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label className="text-[13px] font-medium text-[#94a3b8] ml-1">Preço (R$) *</label>
+            <label className="text-[14px] font-semibold text-[#f1f5f9] ml-1">Preço (R$) *</label>
             <div className="relative group">
               <Input
                 placeholder="0,00"
@@ -109,7 +109,7 @@ export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
           </div>
 
           <div className="space-y-2">
-            <label className="text-[13px] font-medium text-[#94a3b8] ml-1">Tipo de Cobrança</label>
+            <label className="text-[14px] font-semibold text-[#f1f5f9] ml-1">Tipo de Cobrança</label>
             <Select
               value={data.type}
               onChange={(val) => updateData({ type: val })}
@@ -181,8 +181,8 @@ export function BasicInfoStep({ data, updateData }: BasicInfoStepProps) {
         </div>
       </div>
 
-      {/* ─── Right Column (45%) ─── */}
-      <div className="lg:col-span-4 space-y-6">
+      {/* ─── Right Column (5/12) ─── */}
+      <div className="lg:col-span-5 space-y-6">
         <div className="space-y-4">
           <ImageUpload
             label="Capa do Produto"

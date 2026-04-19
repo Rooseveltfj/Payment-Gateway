@@ -34,10 +34,15 @@ export function IdentityDocStep({ data, updateData }: { data: any; updateData: (
         else updateData({ backIdUrl: result.url });
         toast.success("Documento enviado!");
       } else {
-        throw new Error(result.error);
+        const errorMsg = result.error || "Erro desconhecido";
+        toast.error(`Falha no upload: ${errorMsg}`);
+        throw new Error(errorMsg);
       }
-    } catch {
-      toast.error("Falha no upload");
+    } catch (err: any) {
+      console.error("KYC_UPLOAD_ERROR:", err);
+      if (!err.message?.includes("upload")) {
+        toast.error(`Erro: ${err.message || "Falha na conexão com o servidor"}`);
+      }
     } finally {
       if (isFront) setFrontUploading(false); else setBackUploading(false);
     }

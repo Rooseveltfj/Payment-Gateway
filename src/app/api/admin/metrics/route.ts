@@ -36,6 +36,10 @@ export async function GET() {
       where: { createdAt: { gte: today } }
     });
 
+    const pendingKyc = await prisma.user.count({
+      where: { kycStatus: "PENDING" }
+    });
+
     // 2. Volume Timeline (30 days)
     const salesTimeline = await prisma.order.groupBy({
       by: ['createdAt'],
@@ -101,7 +105,8 @@ export async function GET() {
         platformRevenue: volumeData._sum.platformFee || 0,
         pendingWithdrawals: pendingWithdrawals._sum.amount || 0,
         transactionsToday,
-        newUsersToday
+        newUsersToday,
+        pendingKyc
       },
       charts: {
         timeline: chartTimeline,

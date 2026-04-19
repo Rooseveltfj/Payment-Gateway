@@ -97,15 +97,16 @@ export default function ProductWizard() {
   };
 
   return (
-    <div className="max-w-[880px] mx-auto w-full pb-20">
-      <Card className="p-8 bg-[#0f0f1a] border-white/[0.05] rounded-[24px] shadow-2xl relative overflow-hidden">
+    <div className="max-w-[1040px] mx-auto w-full pb-20 pt-4">
+
+      <Card className="p-0 sm:p-2 bg-[#0f0f1a] border-white/[0.05] rounded-[32px] shadow-2xl relative overflow-hidden">
         {/* Step Progress */}
-        <div className="mb-12 border-b border-white/[0.05] pb-10">
+        <div className="px-6 sm:px-12 pt-10 pb-8 border-b border-white/[0.05]">
           <Stepper steps={STEPS} currentStep={currentStep} />
         </div>
 
         {/* Step Content */}
-        <div className="min-h-[400px]">
+        <div className="px-6 sm:px-12 py-10 min-h-[450px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
@@ -125,7 +126,7 @@ export default function ProductWizard() {
         </div>
 
         {/* Action Bar */}
-        <div className="mt-12 pt-8 border-t border-white/[0.05] flex items-center justify-between">
+        <div className="px-6 sm:px-12 py-8 border-t border-white/[0.05] flex items-center justify-between bg-black/20">
           <div>
             {currentStep > 0 && (
               <Button variant="secondary" onClick={handleBack} disabled={isSubmitting} className="border-white/[0.05] h-11 px-8">

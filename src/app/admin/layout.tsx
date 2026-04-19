@@ -7,6 +7,7 @@ import {
   Package, 
   Settings, 
   ShieldAlert,
+  ShieldCheck,
   Search,
   LogOut,
   ChevronRight,
@@ -30,6 +31,7 @@ export default async function AdminLayout({
 
   const menuItems = [
     { label: "Visão Geral", icon: LayoutDashboard, href: "/admin" },
+    { label: "Fila KYC", icon: ShieldCheck, href: "/admin/kyc" },
     { label: "Gestão de Usuários", icon: Users, href: "/admin/usuarios" },
     { label: "Gestão de Saques", icon: DollarSign, href: "/admin/saques" },
     { label: "Produtos Globais", icon: Package, href: "/admin/produtos" },

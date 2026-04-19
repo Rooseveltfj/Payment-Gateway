@@ -31,6 +31,7 @@ interface Stats {
   pendingWithdrawals: number;
   transactionsToday: number;
   newUsersToday: number;
+  pendingKyc: number;
 }
 
 interface ChartData {
@@ -83,7 +84,7 @@ export default function AdminOverview() {
          <StatCard label="Receita App" value={`R$ ${stats?.platformRevenue.toFixed(2)}`} icon={ShieldCheck} highlight color="text-primary" />
          <StatCard label="Saques Pendentes" value={`R$ ${stats?.pendingWithdrawals.toFixed(2)}`} icon={Clock} color="text-yellow-500" />
          <StatCard label="Vendas Hoje" value={stats?.transactionsToday.toString()} icon={TrendingUp} trend="Live" />
-         <StatCard label="Novos Players" value={stats?.newUsersToday.toString()} icon={ArrowUpRight} trend="Hoje" />
+         <StatCard label="Pendências KYC" value={stats?.pendingKyc.toString()} icon={ShieldCheck} trend="Urgente" color="text-orange-500" highlight={stats && stats.pendingKyc > 0 ? true : false} />
       </div>
 
       {/* Charts Grid */}

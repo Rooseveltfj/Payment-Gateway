@@ -8,13 +8,16 @@ import { motion, AnimatePresence } from "framer-motion"
 export interface SelectOption {
   label: string
   value: string
+  disabled?: boolean
 }
 
 interface SelectProps {
   label?: string
+  name?: string
   options: SelectOption[]
   value?: string
-  onChange: (value: string) => void
+  defaultValue?: string
+  onChange?: (value: string) => void
   placeholder?: string
   error?: string
   className?: string
@@ -22,16 +25,20 @@ interface SelectProps {
 
 export function Select({
   label,
+  name,
   options,
-  value,
+  value: controlledValue,
+  defaultValue,
   onChange,
   placeholder = "Selecione uma opção",
   error,
   className
 }: SelectProps) {
+  const [internalValue, setInternalValue] = React.useState(defaultValue || "")
   const [isOpen, setIsOpen] = React.useState(false)
   const containerRef = React.useRef<HTMLDivElement>(null)
   
+  const value = controlledValue !== undefined ? controlledValue : internalValue
   const selectedOption = options.find(opt => opt.value === value)
 
   // Close dropdown when clicking outside
@@ -54,6 +61,8 @@ export function Select({
       )}
 
       <div className="relative">
+        <input type="hidden" name={name} value={value} />
+        
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
@@ -85,13 +94,18 @@ export function Select({
                   <button
                     key={option.value}
                     type="button"
+                    disabled={option.disabled}
                     onClick={() => {
-                      onChange(option.value)
+                      if (option.disabled) return
+                      setInternalValue(option.value)
+                      onChange?.(option.value)
                       setIsOpen(false)
                     }}
                     className={cn(
                       "flex items-center justify-between w-full px-3 py-2 text-[14px] rounded-[8px] transition-colors",
-                      "hover:bg-[#8b5cf60a]",
+                      option.disabled 
+                        ? "opacity-40 cursor-not-allowed" 
+                        : "hover:bg-[#8b5cf60a]",
                       value === option.value 
                         ? "bg-[#8b5cf60f] text-[#a78bfa]" 
                         : "text-[#f1f5f9]"
