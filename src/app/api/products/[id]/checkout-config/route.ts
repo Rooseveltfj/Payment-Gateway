@@ -19,6 +19,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     });
 
     // Invalidate the public checkout page cache immediately
+    revalidatePath(`/c/${product.slug}`, 'page');
     revalidatePath(`/c/${product.slug}`);
     revalidatePath(`/api/products/${params.id}/checkout-config`);
 

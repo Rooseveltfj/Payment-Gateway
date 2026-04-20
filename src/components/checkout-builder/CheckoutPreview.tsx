@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 interface Props {
   config: CheckoutConfig;
+  isMobile?: boolean;
 }
 
 const FONT_IMPORTS: Record<string, string> = {
@@ -25,7 +26,7 @@ function getVideoEmbed(url: string): string | null {
   return null;
 }
 
-export function CheckoutPreview({ config }: Props) {
+export function CheckoutPreview({ config, isMobile }: Props) {
   const { appearance: a, content: c, triggers: t, socialProof: sp, form: f, bumpUpsell: bu } = config;
 
   // @ts-ignore
@@ -189,10 +190,10 @@ export function CheckoutPreview({ config }: Props) {
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
         
         {/* Mobile: Stack vertically. Desktop: Side by side */}
-        <div className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-12 gap-8">
+        <div className={cn("flex flex-col gap-8", !isMobile && "lg:grid lg:grid-cols-12 lg:gap-12")}>
           
           {/* ─── LEFT: Hero Content ─── */}
-          <div className="lg:col-span-7 space-y-6 sm:space-y-8">
+          <div className={cn("space-y-6 sm:space-y-8", !isMobile && "lg:col-span-7")}>
 
             {/* Brand & Social Context */}
             <div className="flex items-center justify-between flex-wrap gap-3">
@@ -304,9 +305,12 @@ export function CheckoutPreview({ config }: Props) {
           </div>
 
           {/* ─── RIGHT: Payment Form ─── */}
-          <div className="lg:col-span-5 w-full">
+          <div className={cn("w-full", !isMobile && "lg:col-span-5")}>
             <div
-              className="w-full rounded-[24px] sm:rounded-[32px] p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-2xl lg:sticky lg:top-8 transition-all duration-500"
+              className={cn(
+                "w-full rounded-[24px] sm:rounded-[32px] p-5 sm:p-8 space-y-5 sm:space-y-6 shadow-2xl transition-all duration-500",
+                !isMobile && "lg:sticky lg:top-8"
+              )}
               style={{
                 background: ts.cardBg,
                 border: `1px solid ${ts.cardBorder}`,

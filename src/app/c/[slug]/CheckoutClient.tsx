@@ -43,7 +43,7 @@ export function CheckoutClient({ product, config }: Props) {
     buyerEmail: "",
     buyerCpf: "",
     buyerPhone: "",
-    buyerData: {}
+    buyerData: {} as Record<string, string>
   });
   const [loading, setLoading] = useState(false);
   const [orderBump, setOrderBump] = useState(false);
@@ -73,13 +73,31 @@ export function CheckoutClient({ product, config }: Props) {
   // 3. Destructuring
   const { appearance: a, content: c, triggers: t, socialProof: sp, form: f, bumpUpsell: bu } = config;
 
+  const templateId = a.templateId || "classic";
   const fontFamily = a.fontFamily === "Geist" ? "inherit" : a.fontFamily;
-  const isDark = a.themePreset !== "light";
+  const userAccent = a.primaryColor || "#7c3aed";
 
-  const textPrimary = isDark ? "#f4f4f5" : "#09090b";
-  const textSecondary = isDark ? "#a1a1aa" : "#71717a";
-  const cardBg = isDark ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,1)";
-  const cardBorder = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)";
+  const getTemplateStyles = () => {
+    switch (templateId) {
+      case "minimalist": return { bg: "#050505", cardBg: "rgba(255,255,255,0.02)", cardBorder: "rgba(255,255,255,0.05)", text: "#ffffff", subtext: "#71717a", accent: userAccent, fieldBg: "rgba(255,255,255,0.03)", fieldBorder: "rgba(255,255,255,0.07)", labelColor: "rgba(255,255,255,0.4)", isDark: true };
+      case "neon": return { bg: "#000000", cardBg: "rgba(0,255,159,0.02)", cardBorder: "rgba(0,255,159,0.1)", text: "#ffffff", subtext: "#00ff9f90", accent: "#00ff9f", fieldBg: "rgba(0,255,159,0.03)", fieldBorder: "rgba(0,255,159,0.08)", labelColor: "rgba(255,255,255,0.4)", isDark: true };
+      case "gradient": return { bg: `linear-gradient(135deg, #1e1b4b 0%, #4c1d95 100%)`, cardBg: "rgba(255,255,255,0.07)", cardBorder: "rgba(255,255,255,0.12)", text: "#ffffff", subtext: "#c4b5fd", accent: userAccent, fieldBg: "rgba(255,255,255,0.05)", fieldBorder: "rgba(255,255,255,0.1)", labelColor: "rgba(255,255,255,0.5)", isDark: true };
+      case "elegant": return { bg: "#0d0d10", cardBg: "#16161a", cardBorder: "rgba(255,255,255,0.04)", text: "#ffffff", subtext: "#94a3b8", accent: userAccent, fieldBg: "rgba(255,255,255,0.03)", fieldBorder: "rgba(255,255,255,0.06)", labelColor: "rgba(255,255,255,0.4)", isDark: true };
+      case "urgency": return { bg: "#09090b", cardBg: "rgba(239,68,68,0.04)", cardBorder: "rgba(239,68,68,0.2)", text: "#ffffff", subtext: "#f87171", accent: "#ef4444", fieldBg: "rgba(255,255,255,0.03)", fieldBorder: "rgba(239,68,68,0.15)", labelColor: "rgba(255,255,255,0.4)", isDark: true };
+      case "clean": return { bg: "#ffffff", cardBg: "#f8fafc", cardBorder: "#e2e8f0", text: "#0f172a", subtext: "#64748b", accent: userAccent, fieldBg: "#ffffff", fieldBorder: "#e2e8f0", labelColor: "#475569", isDark: false };
+      case "ocean": return { bg: "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)", cardBg: "#ffffff", cardBorder: "#bfdbfe", text: "#1e3a5f", subtext: "#3b82f6", accent: "#2563eb", fieldBg: "#f0f7ff", fieldBorder: "#bfdbfe", labelColor: "#475569", isDark: false };
+      default: return { bg: a.bgColor || "#07070f", cardBg: "rgba(255,255,255,0.03)", cardBorder: "rgba(255,255,255,0.06)", text: "#f8fafc", subtext: "#64748b", accent: userAccent, fieldBg: "rgba(255,255,255,0.03)", fieldBorder: "rgba(255,255,255,0.06)", labelColor: "rgba(255,255,255,0.4)", isDark: true };
+    }
+  };
+
+  const ts = getTemplateStyles();
+  const btnRadius = a.buttonStyle === "pill" ? "9999px" : a.buttonStyle === "square" ? "4px" : "12px";
+
+  const fieldStyle = {
+    background: ts.fieldBg,
+    border: `1px solid ${ts.fieldBorder}`,
+    color: ts.text,
+  };
 
   const handleCreateOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,11 +143,9 @@ export function CheckoutClient({ product, config }: Props) {
     <div
       className="min-h-screen relative"
       style={{
-        background: a.themePreset === "gradient"
-          ? `linear-gradient(135deg, #1e1b4b, ${a.bgColor})`
-          : a.bgColor,
+        background: ts.bg,
         fontFamily,
-        color: textPrimary,
+        color: ts.text,
       }}
     >
       {/* Font loader */}
@@ -152,15 +168,35 @@ export function CheckoutClient({ product, config }: Props) {
         
         {/* Left Column Content - 7 cols */}
         <div className="lg:col-span-7 space-y-8">
-          {a.logoUrl && (
-            <img src={a.logoUrl} alt="Logo" className="h-10 object-contain" />
-          )}
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            {a.logoUrl && (
+              <img src={a.logoUrl} alt="Logo" className="h-10 object-contain drop-shadow-lg" />
+            )}
+            {sp.buyerCount?.enabled && (
+              <div
+                className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md"
+                style={{ background: ts.isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.04)", border: `1px solid ${ts.fieldBorder}` }}
+              >
+                <div className="flex -space-x-1.5">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="w-5 h-5 rounded-full border-2 flex items-center justify-center text-[7px] font-bold text-white"
+                      style={{ borderColor: ts.isDark ? "#09090b" : "#fff", background: ts.accent }}>
+                      {String.fromCharCode(64 + i)}
+                    </div>
+                  ))}
+                </div>
+                <span className="text-[11px] font-bold" style={{ color: ts.accent }}>
+                  +{sp.buyerCount.count.toLocaleString("pt-BR")} {sp.buyerCount.label}
+                </span>
+              </div>
+            )}
+          </div>
 
           <div className="space-y-4">
-            <h1 className="text-4xl font-extrabold tracking-tight leading-tight" style={{ color: textPrimary }}>
+            <h1 className="text-4xl font-extrabold tracking-tight leading-tight" style={{ color: ts.text }}>
               {c.headline}
             </h1>
-            <p className="text-xl" style={{ color: textSecondary }}>
+            <p className="text-xl" style={{ color: ts.subtext }}>
               {c.subheadline}
             </p>
           </div>
@@ -194,11 +230,11 @@ export function CheckoutClient({ product, config }: Props) {
             <h3 className="text-lg font-bold uppercase tracking-widest opacity-50">O que você vai receber:</h3>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {c.benefits.map(b => (
-                <li key={b.id} className="flex items-start gap-3 p-4 rounded-xl" style={{ background: cardBg, border: `1px solid ${cardBorder}` }}>
-                  <div className="h-6 w-6 rounded-full flex items-center justify-center shrink-0" style={{ background: a.primaryColor }}>
+                <li key={b.id} className="flex items-center gap-3 p-4 rounded-xl" style={{ background: ts.fieldBg, border: `1px solid ${ts.fieldBorder}` }}>
+                  <div className="h-6 w-6 rounded-full flex items-center justify-center shrink-0" style={{ background: ts.accent }}>
                     <CheckCircle2 className="h-4 w-4 text-white" />
                   </div>
-                  <span className="text-sm font-medium">{b.text}</span>
+                  <span className="text-sm font-bold" style={{ color: ts.text }}>{b.text}</span>
                 </li>
               ))}
             </ul>
@@ -207,17 +243,17 @@ export function CheckoutClient({ product, config }: Props) {
           {/* Reviews */}
           {sp.reviews.enabled && sp.reviews.items.length > 0 && (
             <div className="py-8 border-t border-white/5">
-               <ReviewCarousel reviews={sp.reviews.items} display={sp.reviews.display} primaryColor={a.primaryColor} />
+               <ReviewCarousel reviews={sp.reviews.items} display={sp.reviews.display} primaryColor={ts.accent} />
             </div>
           )}
 
           {/* Guarantee */}
           {t.guarantee.enabled && (
-             <div className="flex items-center gap-6 p-6 rounded-2xl" style={{ background: cardBg, border: `1px solid ${cardBorder}` }}>
+             <div className="flex items-center gap-6 p-6 rounded-2xl" style={{ background: ts.cardBg, border: `1px solid ${ts.cardBorder}` }}>
                <img src="https://cdn-icons-png.flaticon.com/512/755/755191.png" className="h-20 w-20 grayscale brightness-150 opacity-50" alt="Garantia" />
                <div>
-                  <h4 className="text-xl font-bold">Garantia Incondicional de {t.guarantee.days} Dias</h4>
-                  <p className="text-sm opacity-70 mt-1">{t.guarantee.text}</p>
+                  <h4 className="text-xl font-bold" style={{ color: ts.text }}>Garantia Incondicional de {t.guarantee.days} Dias</h4>
+                  <p className="text-sm mt-1" style={{ color: ts.subtext }}>{t.guarantee.text}</p>
                </div>
              </div>
           )}
@@ -226,13 +262,13 @@ export function CheckoutClient({ product, config }: Props) {
         {/* Right Column Form - 5 cols */}
         <div className="lg:col-span-5">
           <div className="sticky top-20">
-            <form onSubmit={handleCreateOrder} className="rounded-3xl p-8 space-y-6 shadow-2xl ring-1 ring-white/10" style={{ background: cardBg }}>
+            <form onSubmit={handleCreateOrder} className="rounded-3xl p-8 space-y-6 shadow-2xl ring-1 ring-white/10" style={{ background: ts.cardBg, border: `1px solid ${ts.cardBorder}` }}>
               
               {!pixData ? (
                 <>
                   <div className="space-y-2">
-                    <h2 className="text-2xl font-bold">Checkout Seguro</h2>
-                    <p className="text-sm opacity-60">Complete seus dados para continuar</p>
+                    <h2 className="text-2xl font-bold" style={{ color: ts.text }}>Checkout Seguro</h2>
+                    <p className="text-sm" style={{ color: ts.subtext }}>Complete seus dados para continuar</p>
                   </div>
 
                   {/* Form Fields */}
@@ -243,7 +279,8 @@ export function CheckoutClient({ product, config }: Props) {
                         required 
                         value={formData.buyerName}
                         onChange={e => setFormData({...formData, buyerName: e.target.value})}
-                        className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-sm focus:ring-2 focus:ring-primary outline-none transition-all" 
+                        style={fieldStyle}
+                        className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
                         placeholder="Seu nome"
                       />
                     </div>
@@ -254,22 +291,104 @@ export function CheckoutClient({ product, config }: Props) {
                         type="email"
                         value={formData.buyerEmail}
                         onChange={e => setFormData({...formData, buyerEmail: e.target.value})}
-                        className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-sm focus:ring-2 focus:ring-primary outline-none transition-all" 
+                        style={fieldStyle}
+                        className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
                         placeholder="seu@email.com"
                       />
                     </div>
                     {f.optionalFields.cpf && (
                       <div>
-                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">CPF</label>
+                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">CPF / CNPJ</label>
                         <input 
                           required 
                           value={formData.buyerCpf}
                           onChange={e => setFormData({...formData, buyerCpf: e.target.value})}
-                          className="w-full h-12 bg-white/5 border border-white/10 rounded-xl px-4 text-sm focus:ring-2 focus:ring-primary outline-none transition-all" 
+                          style={fieldStyle}
+                          className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
                           placeholder="000.000.000-00"
                         />
                       </div>
                     )}
+                    {f.optionalFields.phone && (
+                      <div>
+                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Telefone / WhatsApp</label>
+                        <input 
+                          required 
+                          type="tel"
+                          value={formData.buyerPhone}
+                          onChange={e => setFormData({...formData, buyerPhone: e.target.value})}
+                          style={fieldStyle}
+                          className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                          placeholder="(00) 00000-0000"
+                        />
+                      </div>
+                    )}
+                    {f.optionalFields.birthDate && (
+                      <div>
+                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Data de Nascimento</label>
+                        <input 
+                          required 
+                          type="date"
+                          value={formData.buyerData.birthDate || ''}
+                          onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, birthDate: e.target.value }})}
+                          style={fieldStyle}
+                          className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                        />
+                      </div>
+                    )}
+                    {f.optionalFields.address && (
+                      <div>
+                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Endereço Completo</label>
+                        <input 
+                          required 
+                          value={formData.buyerData.address || ''}
+                          onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, address: e.target.value }})}
+                          style={fieldStyle}
+                          className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                          placeholder="Rua, Número, Bairro"
+                        />
+                      </div>
+                    )}
+                    {f.optionalFields.zipCode && (
+                      <div>
+                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">CEP</label>
+                        <input 
+                          required 
+                          value={formData.buyerData.zipCode || ''}
+                          onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, zipCode: e.target.value }})}
+                          style={fieldStyle}
+                          className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                          placeholder="00000-000"
+                        />
+                      </div>
+                    )}
+                    {f.optionalFields.company && (
+                      <div>
+                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Nome da Empresa</label>
+                        <input 
+                          required 
+                          value={formData.buyerData.company || ''}
+                          onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, company: e.target.value }})}
+                          style={fieldStyle}
+                          className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                          placeholder="Sua Empresa"
+                        />
+                      </div>
+                    )}
+
+                    {f.customFields?.map(field => (
+                      <div key={field.id}>
+                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">{field.label}</label>
+                        <input 
+                          required={field.required}
+                          value={formData.buyerData[field.id] || ''}
+                          onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, [field.id]: e.target.value }})}
+                          style={fieldStyle}
+                          className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                          placeholder={field.placeholder || "..."}
+                        />
+                      </div>
+                    ))}
                   </div>
 
                   {/* Order Bump */}
@@ -338,12 +457,22 @@ export function CheckoutClient({ product, config }: Props) {
                     )}
                   </button>
 
-                  <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 pt-4 opacity-30">
-                    <img src="https://checkout.perfectpay.com.br/assets/images/gateways/visa.svg" alt="Visa" className="h-4" />
-                    <img src="https://checkout.perfectpay.com.br/assets/images/gateways/mastercard.svg" alt="Mastercard" className="h-4" />
-                    <img src="https://checkout.perfectpay.com.br/assets/images/gateways/pix.svg" alt="Pix" className="h-4" />
-                    <img src="https://checkout.perfectpay.com.br/assets/images/gateways/encryption.svg" alt="SSL" className="h-4" />
-                  </div>
+                  {t.authority.showPaymentLogos && (
+                    <div className="flex flex-wrap items-center justify-center gap-2 pt-4 opacity-40">
+                      {["Visa", "Mastercard", "Pix", "Elo", "SSL"].map(brand => (
+                        <span
+                          key={brand}
+                          className="text-[9px] font-black uppercase tracking-tighter px-1.5 py-0.5 rounded"
+                          style={{
+                            border: `1px solid ${ts.isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)"}`,
+                            color: ts.text
+                          }}
+                        >
+                          {brand}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </>
               ) : (
                 /* PIX Display Area */

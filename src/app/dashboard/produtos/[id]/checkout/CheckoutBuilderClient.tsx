@@ -13,7 +13,7 @@ import { GeneralTab } from "@/components/checkout-builder/tabs/GeneralTab";
 import { CheckoutPreview } from "@/components/checkout-builder/CheckoutPreview";
 import { 
   ChevronLeft, Layers, Monitor, Smartphone, ExternalLink, Save, Check, Loader2,
-  Settings2, Palette, Type, Zap, Users, ClipboardList
+  Settings2, Palette, Type, Zap, Users, ClipboardList, Minus, Plus, Search
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
@@ -34,6 +34,7 @@ export function CheckoutBuilderClient({ productId, initialProduct }: { productId
   const [previewMode, setPreviewMode] = useState<"desktop" | "mobile">("desktop");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [mobileZoom, setMobileZoom] = useState(0.85); // Zoom Padrão aumentado
   
   // States to keep track of changes
   const [config, setConfig] = useState<CheckoutConfig>(
@@ -258,7 +259,7 @@ export function CheckoutBuilderClient({ productId, initialProduct }: { productId
                    </div>
                 </div>
                 <div className="flex-1 overflow-y-auto no-scrollbar">
-                   <CheckoutPreview config={config} />
+                   <CheckoutPreview config={config} isMobile={false} />
                 </div>
               </motion.div>
             ) : (
@@ -283,7 +284,7 @@ export function CheckoutBuilderClient({ productId, initialProduct }: { productId
                     // Scale the entire phone to fit available height
                     // Phone at real size: 390px wide × 850px tall (with bezel)
                     // We scale to fit within ~580px height  
-                    transform: "scale(0.65)",
+                    transform: `scale(${mobileZoom})`,
                     transformOrigin: "center center",
                     width: "414px",
                     height: "896px",
@@ -344,7 +345,7 @@ export function CheckoutBuilderClient({ productId, initialProduct }: { productId
                           msOverflowStyle: "none",
                         }}
                       >
-                        <CheckoutPreview config={config} />
+                        <CheckoutPreview config={config} isMobile={true} />
                       </div>
 
                       {/* Home indicator */}
@@ -354,6 +355,30 @@ export function CheckoutBuilderClient({ productId, initialProduct }: { productId
                     </div>
                   </div>
                 </div>
+
+                {/* --- ZOOM CONTROLS --- */}
+                <div className="absolute bottom-6 right-6 z-50 flex items-center bg-[#09090b] border border-white/10 rounded-xl shadow-2xl overflow-hidden backdrop-blur-md">
+                   <div className="flex items-center px-4 py-2 border-r border-white/10 text-[#64748b] bg-white/5">
+                     <Search className="w-3.5 h-3.5 mr-2" />
+                     <span className="text-[10px] font-bold uppercase tracking-widest">Zoom</span>
+                   </div>
+                   <button 
+                     onClick={() => setMobileZoom(z => Math.max(0.4, Number((z - 0.05).toFixed(2))))} 
+                     className="px-3 py-2 text-white/50 hover:bg-white/5 hover:text-white transition-colors flex items-center justify-center"
+                   >
+                     <Minus className="w-4 h-4" />
+                   </button>
+                   <div className="px-3 py-2 text-xs font-bold font-mono text-white/80 min-w-[50px] text-center bg-black/20">
+                     {Math.round(mobileZoom * 100)}%
+                   </div>
+                   <button 
+                     onClick={() => setMobileZoom(z => Math.min(1.5, Number((z + 0.05).toFixed(2))))} 
+                     className="px-3 py-2 text-white/50 hover:bg-white/5 hover:text-white transition-colors flex items-center justify-center"
+                   >
+                     <Plus className="w-4 h-4" />
+                   </button>
+                </div>
+
               </motion.div>
             )}
           </AnimatePresence>
