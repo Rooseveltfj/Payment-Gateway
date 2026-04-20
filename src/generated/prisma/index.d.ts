@@ -104,6 +104,11 @@ export type PasswordResetToken = $Result.DefaultSelection<Prisma.$PasswordResetT
  */
 export type AdminLog = $Result.DefaultSelection<Prisma.$AdminLogPayload>
 /**
+ * Model TrustedDevice
+ * 
+ */
+export type TrustedDevice = $Result.DefaultSelection<Prisma.$TrustedDevicePayload>
+/**
  * Model CustomDomain
  * 
  */
@@ -313,6 +318,14 @@ export const SaleCommissionStatus: {
 
 export type SaleCommissionStatus = (typeof SaleCommissionStatus)[keyof typeof SaleCommissionStatus]
 
+
+export const TwoFactorMethod: {
+  TOTP: 'TOTP',
+  EMAIL: 'EMAIL'
+};
+
+export type TwoFactorMethod = (typeof TwoFactorMethod)[keyof typeof TwoFactorMethod]
+
 }
 
 export type NotificationType = $Enums.NotificationType
@@ -390,6 +403,10 @@ export const AffiliationStatus: typeof $Enums.AffiliationStatus
 export type SaleCommissionStatus = $Enums.SaleCommissionStatus
 
 export const SaleCommissionStatus: typeof $Enums.SaleCommissionStatus
+
+export type TwoFactorMethod = $Enums.TwoFactorMethod
+
+export const TwoFactorMethod: typeof $Enums.TwoFactorMethod
 
 /**
  * ##  Prisma Client ʲˢ
@@ -691,6 +708,16 @@ export class PrismaClient<
     * ```
     */
   get adminLog(): Prisma.AdminLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.trustedDevice`: Exposes CRUD operations for the **TrustedDevice** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TrustedDevices
+    * const trustedDevices = await prisma.trustedDevice.findMany()
+    * ```
+    */
+  get trustedDevice(): Prisma.TrustedDeviceDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.customDomain`: Exposes CRUD operations for the **CustomDomain** model.
@@ -1183,6 +1210,7 @@ export namespace Prisma {
     TwoFactorToken: 'TwoFactorToken',
     PasswordResetToken: 'PasswordResetToken',
     AdminLog: 'AdminLog',
+    TrustedDevice: 'TrustedDevice',
     CustomDomain: 'CustomDomain',
     AffiliateOffer: 'AffiliateOffer',
     Affiliation: 'Affiliation',
@@ -1202,7 +1230,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "notification" | "auditLog" | "product" | "order" | "pendingBalance" | "withdrawal" | "webhook" | "webhookLog" | "apiKey" | "kycDocument" | "userBadge" | "checkoutLink" | "transaction" | "platformSetting" | "twoFactorToken" | "passwordResetToken" | "adminLog" | "customDomain" | "affiliateOffer" | "affiliation" | "affiliationSale"
+      modelProps: "user" | "notification" | "auditLog" | "product" | "order" | "pendingBalance" | "withdrawal" | "webhook" | "webhookLog" | "apiKey" | "kycDocument" | "userBadge" | "checkoutLink" | "transaction" | "platformSetting" | "twoFactorToken" | "passwordResetToken" | "adminLog" | "trustedDevice" | "customDomain" | "affiliateOffer" | "affiliation" | "affiliationSale"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2538,6 +2566,80 @@ export namespace Prisma {
           }
         }
       }
+      TrustedDevice: {
+        payload: Prisma.$TrustedDevicePayload<ExtArgs>
+        fields: Prisma.TrustedDeviceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TrustedDeviceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrustedDevicePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TrustedDeviceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrustedDevicePayload>
+          }
+          findFirst: {
+            args: Prisma.TrustedDeviceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrustedDevicePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TrustedDeviceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrustedDevicePayload>
+          }
+          findMany: {
+            args: Prisma.TrustedDeviceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrustedDevicePayload>[]
+          }
+          create: {
+            args: Prisma.TrustedDeviceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrustedDevicePayload>
+          }
+          createMany: {
+            args: Prisma.TrustedDeviceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TrustedDeviceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrustedDevicePayload>[]
+          }
+          delete: {
+            args: Prisma.TrustedDeviceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrustedDevicePayload>
+          }
+          update: {
+            args: Prisma.TrustedDeviceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrustedDevicePayload>
+          }
+          deleteMany: {
+            args: Prisma.TrustedDeviceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TrustedDeviceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TrustedDeviceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrustedDevicePayload>[]
+          }
+          upsert: {
+            args: Prisma.TrustedDeviceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TrustedDevicePayload>
+          }
+          aggregate: {
+            args: Prisma.TrustedDeviceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTrustedDevice>
+          }
+          groupBy: {
+            args: Prisma.TrustedDeviceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TrustedDeviceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TrustedDeviceCountArgs<ExtArgs>
+            result: $Utils.Optional<TrustedDeviceCountAggregateOutputType> | number
+          }
+        }
+      }
       CustomDomain: {
         payload: Prisma.$CustomDomainPayload<ExtArgs>
         fields: Prisma.CustomDomainFieldRefs
@@ -2960,6 +3062,7 @@ export namespace Prisma {
     twoFactorToken?: TwoFactorTokenOmit
     passwordResetToken?: PasswordResetTokenOmit
     adminLog?: AdminLogOmit
+    trustedDevice?: TrustedDeviceOmit
     customDomain?: CustomDomainOmit
     affiliateOffer?: AffiliateOfferOmit
     affiliation?: AffiliationOmit
@@ -3044,37 +3147,39 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    products: number
-    orders: number
-    withdrawals: number
-    transactions: number
-    webhooks: number
-    apiKeys: number
-    kycDocuments: number
-    badges: number
-    pendingBalances: number
-    customDomains: number
-    notifications: number
-    auditLogs: number
+    trustedDevices: number
     affiliateOffers: number
     affiliations: number
+    apiKeys: number
+    auditLogs: number
+    customDomains: number
+    kycDocuments: number
+    notifications: number
+    orders: number
+    pendingBalances: number
+    products: number
+    transactions: number
+    badges: number
+    webhooks: number
+    withdrawals: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    products?: boolean | UserCountOutputTypeCountProductsArgs
-    orders?: boolean | UserCountOutputTypeCountOrdersArgs
-    withdrawals?: boolean | UserCountOutputTypeCountWithdrawalsArgs
-    transactions?: boolean | UserCountOutputTypeCountTransactionsArgs
-    webhooks?: boolean | UserCountOutputTypeCountWebhooksArgs
-    apiKeys?: boolean | UserCountOutputTypeCountApiKeysArgs
-    kycDocuments?: boolean | UserCountOutputTypeCountKycDocumentsArgs
-    badges?: boolean | UserCountOutputTypeCountBadgesArgs
-    pendingBalances?: boolean | UserCountOutputTypeCountPendingBalancesArgs
-    customDomains?: boolean | UserCountOutputTypeCountCustomDomainsArgs
-    notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
-    auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
+    trustedDevices?: boolean | UserCountOutputTypeCountTrustedDevicesArgs
     affiliateOffers?: boolean | UserCountOutputTypeCountAffiliateOffersArgs
     affiliations?: boolean | UserCountOutputTypeCountAffiliationsArgs
+    apiKeys?: boolean | UserCountOutputTypeCountApiKeysArgs
+    auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
+    customDomains?: boolean | UserCountOutputTypeCountCustomDomainsArgs
+    kycDocuments?: boolean | UserCountOutputTypeCountKycDocumentsArgs
+    notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+    orders?: boolean | UserCountOutputTypeCountOrdersArgs
+    pendingBalances?: boolean | UserCountOutputTypeCountPendingBalancesArgs
+    products?: boolean | UserCountOutputTypeCountProductsArgs
+    transactions?: boolean | UserCountOutputTypeCountTransactionsArgs
+    badges?: boolean | UserCountOutputTypeCountBadgesArgs
+    webhooks?: boolean | UserCountOutputTypeCountWebhooksArgs
+    withdrawals?: boolean | UserCountOutputTypeCountWithdrawalsArgs
   }
 
   // Custom InputTypes
@@ -3091,85 +3196,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ProductWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrderWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountWithdrawalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WithdrawalWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: TransactionWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountWebhooksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: WebhookWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountApiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ApiKeyWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountKycDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: KycDocumentWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserBadgeWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountPendingBalancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: PendingBalanceWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountCustomDomainsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CustomDomainWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: NotificationWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AuditLogWhereInput
+  export type UserCountOutputTypeCountTrustedDevicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrustedDeviceWhereInput
   }
 
   /**
@@ -3186,21 +3214,105 @@ export namespace Prisma {
     where?: AffiliationWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountApiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ApiKeyWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditLogWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCustomDomainsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CustomDomainWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountKycDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: KycDocumentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrderWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPendingBalancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PendingBalanceWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountProductsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProductWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTransactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TransactionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountBadgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserBadgeWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountWebhooksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WebhookWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountWithdrawalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WithdrawalWhereInput
+  }
+
 
   /**
    * Count Type ProductCountOutputType
    */
 
   export type ProductCountOutputType = {
-    orders: number
-    checkoutLinks: number
     affiliateOffers: number
+    checkoutLinks: number
+    orders: number
   }
 
   export type ProductCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    orders?: boolean | ProductCountOutputTypeCountOrdersArgs
-    checkoutLinks?: boolean | ProductCountOutputTypeCountCheckoutLinksArgs
     affiliateOffers?: boolean | ProductCountOutputTypeCountAffiliateOffersArgs
+    checkoutLinks?: boolean | ProductCountOutputTypeCountCheckoutLinksArgs
+    orders?: boolean | ProductCountOutputTypeCountOrdersArgs
   }
 
   // Custom InputTypes
@@ -3217,8 +3329,8 @@ export namespace Prisma {
   /**
    * ProductCountOutputType without action
    */
-  export type ProductCountOutputTypeCountOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: OrderWhereInput
+  export type ProductCountOutputTypeCountAffiliateOffersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AffiliateOfferWhereInput
   }
 
   /**
@@ -3231,8 +3343,8 @@ export namespace Prisma {
   /**
    * ProductCountOutputType without action
    */
-  export type ProductCountOutputTypeCountAffiliateOffersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AffiliateOfferWhereInput
+  export type ProductCountOutputTypeCountOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrderWhereInput
   }
 
 
@@ -3394,9 +3506,10 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     username: string | null
+    lastActiveAt: Date | null
     twoFactorEnabled: boolean | null
     twoFactorSecret: string | null
-    lastActiveAt: Date | null
+    twoFactorMethod: $Enums.TwoFactorMethod | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -3423,9 +3536,10 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     username: string | null
+    lastActiveAt: Date | null
     twoFactorEnabled: boolean | null
     twoFactorSecret: string | null
-    lastActiveAt: Date | null
+    twoFactorMethod: $Enums.TwoFactorMethod | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -3451,13 +3565,14 @@ export namespace Prisma {
     pendingBalance: number
     createdAt: number
     updatedAt: number
-    username: number
     showcaseConfig: number
     socialLinks: number
+    username: number
+    lastActiveAt: number
+    onboardingSteps: number
     twoFactorEnabled: number
     twoFactorSecret: number
-    onboardingSteps: number
-    lastActiveAt: number
+    twoFactorMethod: number
     _all: number
   }
 
@@ -3502,9 +3617,10 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     username?: true
+    lastActiveAt?: true
     twoFactorEnabled?: true
     twoFactorSecret?: true
-    lastActiveAt?: true
+    twoFactorMethod?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -3531,9 +3647,10 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     username?: true
+    lastActiveAt?: true
     twoFactorEnabled?: true
     twoFactorSecret?: true
-    lastActiveAt?: true
+    twoFactorMethod?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -3559,13 +3676,14 @@ export namespace Prisma {
     pendingBalance?: true
     createdAt?: true
     updatedAt?: true
-    username?: true
     showcaseConfig?: true
     socialLinks?: true
+    username?: true
+    lastActiveAt?: true
+    onboardingSteps?: true
     twoFactorEnabled?: true
     twoFactorSecret?: true
-    onboardingSteps?: true
-    lastActiveAt?: true
+    twoFactorMethod?: true
     _all?: true
   }
 
@@ -3678,13 +3796,14 @@ export namespace Prisma {
     pendingBalance: number
     createdAt: Date
     updatedAt: Date
-    username: string | null
     showcaseConfig: JsonValue | null
     socialLinks: JsonValue | null
+    username: string | null
+    lastActiveAt: Date
+    onboardingSteps: JsonValue | null
     twoFactorEnabled: boolean
     twoFactorSecret: string | null
-    onboardingSteps: JsonValue | null
-    lastActiveAt: Date
+    twoFactorMethod: $Enums.TwoFactorMethod | null
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -3729,27 +3848,29 @@ export namespace Prisma {
     pendingBalance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    username?: boolean
     showcaseConfig?: boolean
     socialLinks?: boolean
+    username?: boolean
+    lastActiveAt?: boolean
+    onboardingSteps?: boolean
     twoFactorEnabled?: boolean
     twoFactorSecret?: boolean
-    onboardingSteps?: boolean
-    lastActiveAt?: boolean
-    products?: boolean | User$productsArgs<ExtArgs>
-    orders?: boolean | User$ordersArgs<ExtArgs>
-    withdrawals?: boolean | User$withdrawalsArgs<ExtArgs>
-    transactions?: boolean | User$transactionsArgs<ExtArgs>
-    webhooks?: boolean | User$webhooksArgs<ExtArgs>
-    apiKeys?: boolean | User$apiKeysArgs<ExtArgs>
-    kycDocuments?: boolean | User$kycDocumentsArgs<ExtArgs>
-    badges?: boolean | User$badgesArgs<ExtArgs>
-    pendingBalances?: boolean | User$pendingBalancesArgs<ExtArgs>
-    customDomains?: boolean | User$customDomainsArgs<ExtArgs>
-    notifications?: boolean | User$notificationsArgs<ExtArgs>
-    auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
+    twoFactorMethod?: boolean
+    trustedDevices?: boolean | User$trustedDevicesArgs<ExtArgs>
     affiliateOffers?: boolean | User$affiliateOffersArgs<ExtArgs>
     affiliations?: boolean | User$affiliationsArgs<ExtArgs>
+    apiKeys?: boolean | User$apiKeysArgs<ExtArgs>
+    auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
+    customDomains?: boolean | User$customDomainsArgs<ExtArgs>
+    kycDocuments?: boolean | User$kycDocumentsArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
+    orders?: boolean | User$ordersArgs<ExtArgs>
+    pendingBalances?: boolean | User$pendingBalancesArgs<ExtArgs>
+    products?: boolean | User$productsArgs<ExtArgs>
+    transactions?: boolean | User$transactionsArgs<ExtArgs>
+    badges?: boolean | User$badgesArgs<ExtArgs>
+    webhooks?: boolean | User$webhooksArgs<ExtArgs>
+    withdrawals?: boolean | User$withdrawalsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3776,13 +3897,14 @@ export namespace Prisma {
     pendingBalance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    username?: boolean
     showcaseConfig?: boolean
     socialLinks?: boolean
+    username?: boolean
+    lastActiveAt?: boolean
+    onboardingSteps?: boolean
     twoFactorEnabled?: boolean
     twoFactorSecret?: boolean
-    onboardingSteps?: boolean
-    lastActiveAt?: boolean
+    twoFactorMethod?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3808,13 +3930,14 @@ export namespace Prisma {
     pendingBalance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    username?: boolean
     showcaseConfig?: boolean
     socialLinks?: boolean
+    username?: boolean
+    lastActiveAt?: boolean
+    onboardingSteps?: boolean
     twoFactorEnabled?: boolean
     twoFactorSecret?: boolean
-    onboardingSteps?: boolean
-    lastActiveAt?: boolean
+    twoFactorMethod?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -3840,31 +3963,33 @@ export namespace Prisma {
     pendingBalance?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    username?: boolean
     showcaseConfig?: boolean
     socialLinks?: boolean
+    username?: boolean
+    lastActiveAt?: boolean
+    onboardingSteps?: boolean
     twoFactorEnabled?: boolean
     twoFactorSecret?: boolean
-    onboardingSteps?: boolean
-    lastActiveAt?: boolean
+    twoFactorMethod?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "status" | "kycStatus" | "document" | "phone" | "pixKey" | "pixKeyType" | "bankName" | "bankAgency" | "bankAccount" | "avatarUrl" | "platformFeePercent" | "totalEarnings" | "totalWithdrawn" | "availableBalance" | "pendingBalance" | "createdAt" | "updatedAt" | "username" | "showcaseConfig" | "socialLinks" | "twoFactorEnabled" | "twoFactorSecret" | "onboardingSteps" | "lastActiveAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "status" | "kycStatus" | "document" | "phone" | "pixKey" | "pixKeyType" | "bankName" | "bankAgency" | "bankAccount" | "avatarUrl" | "platformFeePercent" | "totalEarnings" | "totalWithdrawn" | "availableBalance" | "pendingBalance" | "createdAt" | "updatedAt" | "showcaseConfig" | "socialLinks" | "username" | "lastActiveAt" | "onboardingSteps" | "twoFactorEnabled" | "twoFactorSecret" | "twoFactorMethod", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    products?: boolean | User$productsArgs<ExtArgs>
-    orders?: boolean | User$ordersArgs<ExtArgs>
-    withdrawals?: boolean | User$withdrawalsArgs<ExtArgs>
-    transactions?: boolean | User$transactionsArgs<ExtArgs>
-    webhooks?: boolean | User$webhooksArgs<ExtArgs>
-    apiKeys?: boolean | User$apiKeysArgs<ExtArgs>
-    kycDocuments?: boolean | User$kycDocumentsArgs<ExtArgs>
-    badges?: boolean | User$badgesArgs<ExtArgs>
-    pendingBalances?: boolean | User$pendingBalancesArgs<ExtArgs>
-    customDomains?: boolean | User$customDomainsArgs<ExtArgs>
-    notifications?: boolean | User$notificationsArgs<ExtArgs>
-    auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
+    trustedDevices?: boolean | User$trustedDevicesArgs<ExtArgs>
     affiliateOffers?: boolean | User$affiliateOffersArgs<ExtArgs>
     affiliations?: boolean | User$affiliationsArgs<ExtArgs>
+    apiKeys?: boolean | User$apiKeysArgs<ExtArgs>
+    auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
+    customDomains?: boolean | User$customDomainsArgs<ExtArgs>
+    kycDocuments?: boolean | User$kycDocumentsArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
+    orders?: boolean | User$ordersArgs<ExtArgs>
+    pendingBalances?: boolean | User$pendingBalancesArgs<ExtArgs>
+    products?: boolean | User$productsArgs<ExtArgs>
+    transactions?: boolean | User$transactionsArgs<ExtArgs>
+    badges?: boolean | User$badgesArgs<ExtArgs>
+    webhooks?: boolean | User$webhooksArgs<ExtArgs>
+    withdrawals?: boolean | User$withdrawalsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3873,20 +3998,21 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      products: Prisma.$ProductPayload<ExtArgs>[]
-      orders: Prisma.$OrderPayload<ExtArgs>[]
-      withdrawals: Prisma.$WithdrawalPayload<ExtArgs>[]
-      transactions: Prisma.$TransactionPayload<ExtArgs>[]
-      webhooks: Prisma.$WebhookPayload<ExtArgs>[]
-      apiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
-      kycDocuments: Prisma.$KycDocumentPayload<ExtArgs>[]
-      badges: Prisma.$UserBadgePayload<ExtArgs>[]
-      pendingBalances: Prisma.$PendingBalancePayload<ExtArgs>[]
-      customDomains: Prisma.$CustomDomainPayload<ExtArgs>[]
-      notifications: Prisma.$NotificationPayload<ExtArgs>[]
-      auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+      trustedDevices: Prisma.$TrustedDevicePayload<ExtArgs>[]
       affiliateOffers: Prisma.$AffiliateOfferPayload<ExtArgs>[]
       affiliations: Prisma.$AffiliationPayload<ExtArgs>[]
+      apiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
+      auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+      customDomains: Prisma.$CustomDomainPayload<ExtArgs>[]
+      kycDocuments: Prisma.$KycDocumentPayload<ExtArgs>[]
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
+      orders: Prisma.$OrderPayload<ExtArgs>[]
+      pendingBalances: Prisma.$PendingBalancePayload<ExtArgs>[]
+      products: Prisma.$ProductPayload<ExtArgs>[]
+      transactions: Prisma.$TransactionPayload<ExtArgs>[]
+      badges: Prisma.$UserBadgePayload<ExtArgs>[]
+      webhooks: Prisma.$WebhookPayload<ExtArgs>[]
+      withdrawals: Prisma.$WithdrawalPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3911,13 +4037,14 @@ export namespace Prisma {
       pendingBalance: number
       createdAt: Date
       updatedAt: Date
-      username: string | null
       showcaseConfig: Prisma.JsonValue | null
       socialLinks: Prisma.JsonValue | null
+      username: string | null
+      lastActiveAt: Date
+      onboardingSteps: Prisma.JsonValue | null
       twoFactorEnabled: boolean
       twoFactorSecret: string | null
-      onboardingSteps: Prisma.JsonValue | null
-      lastActiveAt: Date
+      twoFactorMethod: $Enums.TwoFactorMethod | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -4312,20 +4439,21 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    products<T extends User$productsArgs<ExtArgs> = {}>(args?: Subset<T, User$productsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    orders<T extends User$ordersArgs<ExtArgs> = {}>(args?: Subset<T, User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    withdrawals<T extends User$withdrawalsArgs<ExtArgs> = {}>(args?: Subset<T, User$withdrawalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    transactions<T extends User$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    webhooks<T extends User$webhooksArgs<ExtArgs> = {}>(args?: Subset<T, User$webhooksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebhookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    apiKeys<T extends User$apiKeysArgs<ExtArgs> = {}>(args?: Subset<T, User$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    kycDocuments<T extends User$kycDocumentsArgs<ExtArgs> = {}>(args?: Subset<T, User$kycDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KycDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    badges<T extends User$badgesArgs<ExtArgs> = {}>(args?: Subset<T, User$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    pendingBalances<T extends User$pendingBalancesArgs<ExtArgs> = {}>(args?: Subset<T, User$pendingBalancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    customDomains<T extends User$customDomainsArgs<ExtArgs> = {}>(args?: Subset<T, User$customDomainsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    trustedDevices<T extends User$trustedDevicesArgs<ExtArgs> = {}>(args?: Subset<T, User$trustedDevicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrustedDevicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     affiliateOffers<T extends User$affiliateOffersArgs<ExtArgs> = {}>(args?: Subset<T, User$affiliateOffersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     affiliations<T extends User$affiliationsArgs<ExtArgs> = {}>(args?: Subset<T, User$affiliationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    apiKeys<T extends User$apiKeysArgs<ExtArgs> = {}>(args?: Subset<T, User$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    customDomains<T extends User$customDomainsArgs<ExtArgs> = {}>(args?: Subset<T, User$customDomainsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomDomainPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    kycDocuments<T extends User$kycDocumentsArgs<ExtArgs> = {}>(args?: Subset<T, User$kycDocumentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$KycDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    orders<T extends User$ordersArgs<ExtArgs> = {}>(args?: Subset<T, User$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pendingBalances<T extends User$pendingBalancesArgs<ExtArgs> = {}>(args?: Subset<T, User$pendingBalancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    products<T extends User$productsArgs<ExtArgs> = {}>(args?: Subset<T, User$productsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    transactions<T extends User$transactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    badges<T extends User$badgesArgs<ExtArgs> = {}>(args?: Subset<T, User$badgesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserBadgePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    webhooks<T extends User$webhooksArgs<ExtArgs> = {}>(args?: Subset<T, User$webhooksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WebhookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    withdrawals<T extends User$withdrawalsArgs<ExtArgs> = {}>(args?: Subset<T, User$withdrawalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WithdrawalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4377,13 +4505,14 @@ export namespace Prisma {
     readonly pendingBalance: FieldRef<"User", 'Float'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
-    readonly username: FieldRef<"User", 'String'>
     readonly showcaseConfig: FieldRef<"User", 'Json'>
     readonly socialLinks: FieldRef<"User", 'Json'>
+    readonly username: FieldRef<"User", 'String'>
+    readonly lastActiveAt: FieldRef<"User", 'DateTime'>
+    readonly onboardingSteps: FieldRef<"User", 'Json'>
     readonly twoFactorEnabled: FieldRef<"User", 'Boolean'>
     readonly twoFactorSecret: FieldRef<"User", 'String'>
-    readonly onboardingSteps: FieldRef<"User", 'Json'>
-    readonly lastActiveAt: FieldRef<"User", 'DateTime'>
+    readonly twoFactorMethod: FieldRef<"User", 'TwoFactorMethod'>
   }
     
 
@@ -4777,291 +4906,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.products
+   * User.trustedDevices
    */
-  export type User$productsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$trustedDevicesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Product
+     * Select specific fields to fetch from the TrustedDevice
      */
-    select?: ProductSelect<ExtArgs> | null
+    select?: TrustedDeviceSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Product
+     * Omit specific fields from the TrustedDevice
      */
-    omit?: ProductOmit<ExtArgs> | null
+    omit?: TrustedDeviceOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ProductInclude<ExtArgs> | null
-    where?: ProductWhereInput
-    orderBy?: ProductOrderByWithRelationInput | ProductOrderByWithRelationInput[]
-    cursor?: ProductWhereUniqueInput
+    include?: TrustedDeviceInclude<ExtArgs> | null
+    where?: TrustedDeviceWhereInput
+    orderBy?: TrustedDeviceOrderByWithRelationInput | TrustedDeviceOrderByWithRelationInput[]
+    cursor?: TrustedDeviceWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
-  }
-
-  /**
-   * User.orders
-   */
-  export type User$ordersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Order
-     */
-    select?: OrderSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Order
-     */
-    omit?: OrderOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: OrderInclude<ExtArgs> | null
-    where?: OrderWhereInput
-    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
-    cursor?: OrderWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
-  }
-
-  /**
-   * User.withdrawals
-   */
-  export type User$withdrawalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Withdrawal
-     */
-    select?: WithdrawalSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Withdrawal
-     */
-    omit?: WithdrawalOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WithdrawalInclude<ExtArgs> | null
-    where?: WithdrawalWhereInput
-    orderBy?: WithdrawalOrderByWithRelationInput | WithdrawalOrderByWithRelationInput[]
-    cursor?: WithdrawalWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: WithdrawalScalarFieldEnum | WithdrawalScalarFieldEnum[]
-  }
-
-  /**
-   * User.transactions
-   */
-  export type User$transactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Transaction
-     */
-    select?: TransactionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Transaction
-     */
-    omit?: TransactionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: TransactionInclude<ExtArgs> | null
-    where?: TransactionWhereInput
-    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
-    cursor?: TransactionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
-  }
-
-  /**
-   * User.webhooks
-   */
-  export type User$webhooksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Webhook
-     */
-    select?: WebhookSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Webhook
-     */
-    omit?: WebhookOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: WebhookInclude<ExtArgs> | null
-    where?: WebhookWhereInput
-    orderBy?: WebhookOrderByWithRelationInput | WebhookOrderByWithRelationInput[]
-    cursor?: WebhookWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: WebhookScalarFieldEnum | WebhookScalarFieldEnum[]
-  }
-
-  /**
-   * User.apiKeys
-   */
-  export type User$apiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ApiKey
-     */
-    select?: ApiKeySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ApiKey
-     */
-    omit?: ApiKeyOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ApiKeyInclude<ExtArgs> | null
-    where?: ApiKeyWhereInput
-    orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
-    cursor?: ApiKeyWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
-  }
-
-  /**
-   * User.kycDocuments
-   */
-  export type User$kycDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the KycDocument
-     */
-    select?: KycDocumentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the KycDocument
-     */
-    omit?: KycDocumentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: KycDocumentInclude<ExtArgs> | null
-    where?: KycDocumentWhereInput
-    orderBy?: KycDocumentOrderByWithRelationInput | KycDocumentOrderByWithRelationInput[]
-    cursor?: KycDocumentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: KycDocumentScalarFieldEnum | KycDocumentScalarFieldEnum[]
-  }
-
-  /**
-   * User.badges
-   */
-  export type User$badgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserBadge
-     */
-    select?: UserBadgeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserBadge
-     */
-    omit?: UserBadgeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserBadgeInclude<ExtArgs> | null
-    where?: UserBadgeWhereInput
-    orderBy?: UserBadgeOrderByWithRelationInput | UserBadgeOrderByWithRelationInput[]
-    cursor?: UserBadgeWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserBadgeScalarFieldEnum | UserBadgeScalarFieldEnum[]
-  }
-
-  /**
-   * User.pendingBalances
-   */
-  export type User$pendingBalancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the PendingBalance
-     */
-    select?: PendingBalanceSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the PendingBalance
-     */
-    omit?: PendingBalanceOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: PendingBalanceInclude<ExtArgs> | null
-    where?: PendingBalanceWhereInput
-    orderBy?: PendingBalanceOrderByWithRelationInput | PendingBalanceOrderByWithRelationInput[]
-    cursor?: PendingBalanceWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: PendingBalanceScalarFieldEnum | PendingBalanceScalarFieldEnum[]
-  }
-
-  /**
-   * User.customDomains
-   */
-  export type User$customDomainsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CustomDomain
-     */
-    select?: CustomDomainSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CustomDomain
-     */
-    omit?: CustomDomainOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CustomDomainInclude<ExtArgs> | null
-    where?: CustomDomainWhereInput
-    orderBy?: CustomDomainOrderByWithRelationInput | CustomDomainOrderByWithRelationInput[]
-    cursor?: CustomDomainWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CustomDomainScalarFieldEnum | CustomDomainScalarFieldEnum[]
-  }
-
-  /**
-   * User.notifications
-   */
-  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Notification
-     */
-    select?: NotificationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Notification
-     */
-    omit?: NotificationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: NotificationInclude<ExtArgs> | null
-    where?: NotificationWhereInput
-    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
-    cursor?: NotificationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
-  }
-
-  /**
-   * User.auditLogs
-   */
-  export type User$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AuditLog
-     */
-    select?: AuditLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the AuditLog
-     */
-    omit?: AuditLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AuditLogInclude<ExtArgs> | null
-    where?: AuditLogWhereInput
-    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
-    cursor?: AuditLogWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+    distinct?: TrustedDeviceScalarFieldEnum | TrustedDeviceScalarFieldEnum[]
   }
 
   /**
@@ -5110,6 +4975,294 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AffiliationScalarFieldEnum | AffiliationScalarFieldEnum[]
+  }
+
+  /**
+   * User.apiKeys
+   */
+  export type User$apiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ApiKey
+     */
+    select?: ApiKeySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ApiKey
+     */
+    omit?: ApiKeyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ApiKeyInclude<ExtArgs> | null
+    where?: ApiKeyWhereInput
+    orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
+    cursor?: ApiKeyWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
+  }
+
+  /**
+   * User.auditLogs
+   */
+  export type User$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    where?: AuditLogWhereInput
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    cursor?: AuditLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * User.customDomains
+   */
+  export type User$customDomainsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomDomain
+     */
+    select?: CustomDomainSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CustomDomain
+     */
+    omit?: CustomDomainOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomDomainInclude<ExtArgs> | null
+    where?: CustomDomainWhereInput
+    orderBy?: CustomDomainOrderByWithRelationInput | CustomDomainOrderByWithRelationInput[]
+    cursor?: CustomDomainWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CustomDomainScalarFieldEnum | CustomDomainScalarFieldEnum[]
+  }
+
+  /**
+   * User.kycDocuments
+   */
+  export type User$kycDocumentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the KycDocument
+     */
+    select?: KycDocumentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the KycDocument
+     */
+    omit?: KycDocumentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: KycDocumentInclude<ExtArgs> | null
+    where?: KycDocumentWhereInput
+    orderBy?: KycDocumentOrderByWithRelationInput | KycDocumentOrderByWithRelationInput[]
+    cursor?: KycDocumentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: KycDocumentScalarFieldEnum | KycDocumentScalarFieldEnum[]
+  }
+
+  /**
+   * User.notifications
+   */
+  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.orders
+   */
+  export type User$ordersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Order
+     */
+    select?: OrderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Order
+     */
+    omit?: OrderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderInclude<ExtArgs> | null
+    where?: OrderWhereInput
+    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
+    cursor?: OrderWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+  }
+
+  /**
+   * User.pendingBalances
+   */
+  export type User$pendingBalancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PendingBalance
+     */
+    select?: PendingBalanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PendingBalance
+     */
+    omit?: PendingBalanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PendingBalanceInclude<ExtArgs> | null
+    where?: PendingBalanceWhereInput
+    orderBy?: PendingBalanceOrderByWithRelationInput | PendingBalanceOrderByWithRelationInput[]
+    cursor?: PendingBalanceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PendingBalanceScalarFieldEnum | PendingBalanceScalarFieldEnum[]
+  }
+
+  /**
+   * User.products
+   */
+  export type User$productsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product
+     */
+    select?: ProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product
+     */
+    omit?: ProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductInclude<ExtArgs> | null
+    where?: ProductWhereInput
+    orderBy?: ProductOrderByWithRelationInput | ProductOrderByWithRelationInput[]
+    cursor?: ProductWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProductScalarFieldEnum | ProductScalarFieldEnum[]
+  }
+
+  /**
+   * User.transactions
+   */
+  export type User$transactionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null
+    where?: TransactionWhereInput
+    orderBy?: TransactionOrderByWithRelationInput | TransactionOrderByWithRelationInput[]
+    cursor?: TransactionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TransactionScalarFieldEnum | TransactionScalarFieldEnum[]
+  }
+
+  /**
+   * User.badges
+   */
+  export type User$badgesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserBadge
+     */
+    select?: UserBadgeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserBadge
+     */
+    omit?: UserBadgeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserBadgeInclude<ExtArgs> | null
+    where?: UserBadgeWhereInput
+    orderBy?: UserBadgeOrderByWithRelationInput | UserBadgeOrderByWithRelationInput[]
+    cursor?: UserBadgeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserBadgeScalarFieldEnum | UserBadgeScalarFieldEnum[]
+  }
+
+  /**
+   * User.webhooks
+   */
+  export type User$webhooksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Webhook
+     */
+    select?: WebhookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Webhook
+     */
+    omit?: WebhookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WebhookInclude<ExtArgs> | null
+    where?: WebhookWhereInput
+    orderBy?: WebhookOrderByWithRelationInput | WebhookOrderByWithRelationInput[]
+    cursor?: WebhookWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WebhookScalarFieldEnum | WebhookScalarFieldEnum[]
+  }
+
+  /**
+   * User.withdrawals
+   */
+  export type User$withdrawalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Withdrawal
+     */
+    select?: WithdrawalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Withdrawal
+     */
+    omit?: WithdrawalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WithdrawalInclude<ExtArgs> | null
+    where?: WithdrawalWhereInput
+    orderBy?: WithdrawalOrderByWithRelationInput | WithdrawalOrderByWithRelationInput[]
+    cursor?: WithdrawalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WithdrawalScalarFieldEnum | WithdrawalScalarFieldEnum[]
   }
 
   /**
@@ -7599,10 +7752,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     showInShowcase?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    orders?: boolean | Product$ordersArgs<ExtArgs>
-    checkoutLinks?: boolean | Product$checkoutLinksArgs<ExtArgs>
     affiliateOffers?: boolean | Product$affiliateOffersArgs<ExtArgs>
+    checkoutLinks?: boolean | Product$checkoutLinksArgs<ExtArgs>
+    orders?: boolean | Product$ordersArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["product"]>
 
@@ -7667,10 +7820,10 @@ export namespace Prisma {
 
   export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "description" | "price" | "currency" | "type" | "status" | "imageUrl" | "checkoutConfig" | "slug" | "salesCount" | "revenue" | "createdAt" | "updatedAt" | "showInShowcase", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    orders?: boolean | Product$ordersArgs<ExtArgs>
-    checkoutLinks?: boolean | Product$checkoutLinksArgs<ExtArgs>
     affiliateOffers?: boolean | Product$affiliateOffersArgs<ExtArgs>
+    checkoutLinks?: boolean | Product$checkoutLinksArgs<ExtArgs>
+    orders?: boolean | Product$ordersArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | ProductCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProductIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7683,10 +7836,10 @@ export namespace Prisma {
   export type $ProductPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Product"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      orders: Prisma.$OrderPayload<ExtArgs>[]
-      checkoutLinks: Prisma.$CheckoutLinkPayload<ExtArgs>[]
       affiliateOffers: Prisma.$AffiliateOfferPayload<ExtArgs>[]
+      checkoutLinks: Prisma.$CheckoutLinkPayload<ExtArgs>[]
+      orders: Prisma.$OrderPayload<ExtArgs>[]
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8099,10 +8252,10 @@ export namespace Prisma {
    */
   export interface Prisma__ProductClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    orders<T extends Product$ordersArgs<ExtArgs> = {}>(args?: Subset<T, Product$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    checkoutLinks<T extends Product$checkoutLinksArgs<ExtArgs> = {}>(args?: Subset<T, Product$checkoutLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CheckoutLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     affiliateOffers<T extends Product$affiliateOffersArgs<ExtArgs> = {}>(args?: Subset<T, Product$affiliateOffersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    checkoutLinks<T extends Product$checkoutLinksArgs<ExtArgs> = {}>(args?: Subset<T, Product$checkoutLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CheckoutLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    orders<T extends Product$ordersArgs<ExtArgs> = {}>(args?: Subset<T, Product$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8549,27 +8702,27 @@ export namespace Prisma {
   }
 
   /**
-   * Product.orders
+   * Product.affiliateOffers
    */
-  export type Product$ordersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Product$affiliateOffersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the Order
+     * Select specific fields to fetch from the AffiliateOffer
      */
-    select?: OrderSelect<ExtArgs> | null
+    select?: AffiliateOfferSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the Order
+     * Omit specific fields from the AffiliateOffer
      */
-    omit?: OrderOmit<ExtArgs> | null
+    omit?: AffiliateOfferOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: OrderInclude<ExtArgs> | null
-    where?: OrderWhereInput
-    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
-    cursor?: OrderWhereUniqueInput
+    include?: AffiliateOfferInclude<ExtArgs> | null
+    where?: AffiliateOfferWhereInput
+    orderBy?: AffiliateOfferOrderByWithRelationInput | AffiliateOfferOrderByWithRelationInput[]
+    cursor?: AffiliateOfferWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
+    distinct?: AffiliateOfferScalarFieldEnum | AffiliateOfferScalarFieldEnum[]
   }
 
   /**
@@ -8597,27 +8750,27 @@ export namespace Prisma {
   }
 
   /**
-   * Product.affiliateOffers
+   * Product.orders
    */
-  export type Product$affiliateOffersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Product$ordersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the AffiliateOffer
+     * Select specific fields to fetch from the Order
      */
-    select?: AffiliateOfferSelect<ExtArgs> | null
+    select?: OrderSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the AffiliateOffer
+     * Omit specific fields from the Order
      */
-    omit?: AffiliateOfferOmit<ExtArgs> | null
+    omit?: OrderOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AffiliateOfferInclude<ExtArgs> | null
-    where?: AffiliateOfferWhereInput
-    orderBy?: AffiliateOfferOrderByWithRelationInput | AffiliateOfferOrderByWithRelationInput[]
-    cursor?: AffiliateOfferWhereUniqueInput
+    include?: OrderInclude<ExtArgs> | null
+    where?: OrderWhereInput
+    orderBy?: OrderOrderByWithRelationInput | OrderOrderByWithRelationInput[]
+    cursor?: OrderWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: AffiliateOfferScalarFieldEnum | AffiliateOfferScalarFieldEnum[]
+    distinct?: OrderScalarFieldEnum | OrderScalarFieldEnum[]
   }
 
   /**
@@ -8686,17 +8839,17 @@ export namespace Prisma {
     cardBrand: string | null
     installments: number | null
     externalId: string | null
-    wooviCorrelationId: string | null
-    wooviTransactionId: string | null
-    wooviEndToEndId: string | null
-    pixQrCodeUrl: string | null
-    pixBrCode: string | null
-    pixExpiresAt: Date | null
     paidAt: Date | null
     refundedAt: Date | null
     isMatured: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    pixBrCode: string | null
+    pixExpiresAt: Date | null
+    pixQrCodeUrl: string | null
+    wooviCorrelationId: string | null
+    wooviEndToEndId: string | null
+    wooviTransactionId: string | null
     affiliationId: string | null
   }
 
@@ -8721,17 +8874,17 @@ export namespace Prisma {
     cardBrand: string | null
     installments: number | null
     externalId: string | null
-    wooviCorrelationId: string | null
-    wooviTransactionId: string | null
-    wooviEndToEndId: string | null
-    pixQrCodeUrl: string | null
-    pixBrCode: string | null
-    pixExpiresAt: Date | null
     paidAt: Date | null
     refundedAt: Date | null
     isMatured: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
+    pixBrCode: string | null
+    pixExpiresAt: Date | null
+    pixQrCodeUrl: string | null
+    wooviCorrelationId: string | null
+    wooviEndToEndId: string | null
+    wooviTransactionId: string | null
     affiliationId: string | null
   }
 
@@ -8757,18 +8910,18 @@ export namespace Prisma {
     cardBrand: number
     installments: number
     externalId: number
-    wooviCorrelationId: number
-    wooviTransactionId: number
-    wooviEndToEndId: number
-    pixQrCodeUrl: number
-    pixBrCode: number
-    pixExpiresAt: number
     paidAt: number
     refundedAt: number
     isMatured: number
     statusHistory: number
     createdAt: number
     updatedAt: number
+    pixBrCode: number
+    pixExpiresAt: number
+    pixQrCodeUrl: number
+    wooviCorrelationId: number
+    wooviEndToEndId: number
+    wooviTransactionId: number
     affiliationId: number
     _all: number
   }
@@ -8809,17 +8962,17 @@ export namespace Prisma {
     cardBrand?: true
     installments?: true
     externalId?: true
-    wooviCorrelationId?: true
-    wooviTransactionId?: true
-    wooviEndToEndId?: true
-    pixQrCodeUrl?: true
-    pixBrCode?: true
-    pixExpiresAt?: true
     paidAt?: true
     refundedAt?: true
     isMatured?: true
     createdAt?: true
     updatedAt?: true
+    pixBrCode?: true
+    pixExpiresAt?: true
+    pixQrCodeUrl?: true
+    wooviCorrelationId?: true
+    wooviEndToEndId?: true
+    wooviTransactionId?: true
     affiliationId?: true
   }
 
@@ -8844,17 +8997,17 @@ export namespace Prisma {
     cardBrand?: true
     installments?: true
     externalId?: true
-    wooviCorrelationId?: true
-    wooviTransactionId?: true
-    wooviEndToEndId?: true
-    pixQrCodeUrl?: true
-    pixBrCode?: true
-    pixExpiresAt?: true
     paidAt?: true
     refundedAt?: true
     isMatured?: true
     createdAt?: true
     updatedAt?: true
+    pixBrCode?: true
+    pixExpiresAt?: true
+    pixQrCodeUrl?: true
+    wooviCorrelationId?: true
+    wooviEndToEndId?: true
+    wooviTransactionId?: true
     affiliationId?: true
   }
 
@@ -8880,18 +9033,18 @@ export namespace Prisma {
     cardBrand?: true
     installments?: true
     externalId?: true
-    wooviCorrelationId?: true
-    wooviTransactionId?: true
-    wooviEndToEndId?: true
-    pixQrCodeUrl?: true
-    pixBrCode?: true
-    pixExpiresAt?: true
     paidAt?: true
     refundedAt?: true
     isMatured?: true
     statusHistory?: true
     createdAt?: true
     updatedAt?: true
+    pixBrCode?: true
+    pixExpiresAt?: true
+    pixQrCodeUrl?: true
+    wooviCorrelationId?: true
+    wooviEndToEndId?: true
+    wooviTransactionId?: true
     affiliationId?: true
     _all?: true
   }
@@ -9004,18 +9157,18 @@ export namespace Prisma {
     cardBrand: string | null
     installments: number
     externalId: string | null
-    wooviCorrelationId: string | null
-    wooviTransactionId: string | null
-    wooviEndToEndId: string | null
-    pixQrCodeUrl: string | null
-    pixBrCode: string | null
-    pixExpiresAt: Date | null
     paidAt: Date | null
     refundedAt: Date | null
     isMatured: boolean
     statusHistory: JsonValue | null
     createdAt: Date
     updatedAt: Date
+    pixBrCode: string | null
+    pixExpiresAt: Date | null
+    pixQrCodeUrl: string | null
+    wooviCorrelationId: string | null
+    wooviEndToEndId: string | null
+    wooviTransactionId: string | null
     affiliationId: string | null
     _count: OrderCountAggregateOutputType | null
     _avg: OrderAvgAggregateOutputType | null
@@ -9060,24 +9213,24 @@ export namespace Prisma {
     cardBrand?: boolean
     installments?: boolean
     externalId?: boolean
-    wooviCorrelationId?: boolean
-    wooviTransactionId?: boolean
-    wooviEndToEndId?: boolean
-    pixQrCodeUrl?: boolean
-    pixBrCode?: boolean
-    pixExpiresAt?: boolean
     paidAt?: boolean
     refundedAt?: boolean
     isMatured?: boolean
     statusHistory?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    pixBrCode?: boolean
+    pixExpiresAt?: boolean
+    pixQrCodeUrl?: boolean
+    wooviCorrelationId?: boolean
+    wooviEndToEndId?: boolean
+    wooviTransactionId?: boolean
     affiliationId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
-    pendingBalances?: boolean | Order$pendingBalancesArgs<ExtArgs>
-    affiliation?: boolean | Order$affiliationArgs<ExtArgs>
     affiliationSale?: boolean | Order$affiliationSaleArgs<ExtArgs>
+    affiliation?: boolean | Order$affiliationArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    pendingBalances?: boolean | Order$pendingBalancesArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
@@ -9103,22 +9256,22 @@ export namespace Prisma {
     cardBrand?: boolean
     installments?: boolean
     externalId?: boolean
-    wooviCorrelationId?: boolean
-    wooviTransactionId?: boolean
-    wooviEndToEndId?: boolean
-    pixQrCodeUrl?: boolean
-    pixBrCode?: boolean
-    pixExpiresAt?: boolean
     paidAt?: boolean
     refundedAt?: boolean
     isMatured?: boolean
     statusHistory?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    pixBrCode?: boolean
+    pixExpiresAt?: boolean
+    pixQrCodeUrl?: boolean
+    wooviCorrelationId?: boolean
+    wooviEndToEndId?: boolean
+    wooviTransactionId?: boolean
     affiliationId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
     affiliation?: boolean | Order$affiliationArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9143,22 +9296,22 @@ export namespace Prisma {
     cardBrand?: boolean
     installments?: boolean
     externalId?: boolean
-    wooviCorrelationId?: boolean
-    wooviTransactionId?: boolean
-    wooviEndToEndId?: boolean
-    pixQrCodeUrl?: boolean
-    pixBrCode?: boolean
-    pixExpiresAt?: boolean
     paidAt?: boolean
     refundedAt?: boolean
     isMatured?: boolean
     statusHistory?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    pixBrCode?: boolean
+    pixExpiresAt?: boolean
+    pixQrCodeUrl?: boolean
+    wooviCorrelationId?: boolean
+    wooviEndToEndId?: boolean
+    wooviTransactionId?: boolean
     affiliationId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
     affiliation?: boolean | Order$affiliationArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
   export type OrderSelectScalar = {
@@ -9183,49 +9336,49 @@ export namespace Prisma {
     cardBrand?: boolean
     installments?: boolean
     externalId?: boolean
-    wooviCorrelationId?: boolean
-    wooviTransactionId?: boolean
-    wooviEndToEndId?: boolean
-    pixQrCodeUrl?: boolean
-    pixBrCode?: boolean
-    pixExpiresAt?: boolean
     paidAt?: boolean
     refundedAt?: boolean
     isMatured?: boolean
     statusHistory?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    pixBrCode?: boolean
+    pixExpiresAt?: boolean
+    pixQrCodeUrl?: boolean
+    wooviCorrelationId?: boolean
+    wooviEndToEndId?: boolean
+    wooviTransactionId?: boolean
     affiliationId?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "productId" | "buyerName" | "buyerEmail" | "buyerCpf" | "buyerPhone" | "buyerData" | "amount" | "platformFee" | "netAmount" | "status" | "paymentMethod" | "pixQrCode" | "pixCopyPaste" | "boletoUrl" | "boletoBarcode" | "cardLastFour" | "cardBrand" | "installments" | "externalId" | "wooviCorrelationId" | "wooviTransactionId" | "wooviEndToEndId" | "pixQrCodeUrl" | "pixBrCode" | "pixExpiresAt" | "paidAt" | "refundedAt" | "isMatured" | "statusHistory" | "createdAt" | "updatedAt" | "affiliationId", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "productId" | "buyerName" | "buyerEmail" | "buyerCpf" | "buyerPhone" | "buyerData" | "amount" | "platformFee" | "netAmount" | "status" | "paymentMethod" | "pixQrCode" | "pixCopyPaste" | "boletoUrl" | "boletoBarcode" | "cardLastFour" | "cardBrand" | "installments" | "externalId" | "paidAt" | "refundedAt" | "isMatured" | "statusHistory" | "createdAt" | "updatedAt" | "pixBrCode" | "pixExpiresAt" | "pixQrCodeUrl" | "wooviCorrelationId" | "wooviEndToEndId" | "wooviTransactionId" | "affiliationId", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
-    pendingBalances?: boolean | Order$pendingBalancesArgs<ExtArgs>
-    affiliation?: boolean | Order$affiliationArgs<ExtArgs>
     affiliationSale?: boolean | Order$affiliationSaleArgs<ExtArgs>
+    affiliation?: boolean | Order$affiliationArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    pendingBalances?: boolean | Order$pendingBalancesArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
     affiliation?: boolean | Order$affiliationArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type OrderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
     affiliation?: boolean | Order$affiliationArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $OrderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Order"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-      product: Prisma.$ProductPayload<ExtArgs>
-      pendingBalances: Prisma.$PendingBalancePayload<ExtArgs>[]
-      affiliation: Prisma.$AffiliationPayload<ExtArgs> | null
       affiliationSale: Prisma.$AffiliationSalePayload<ExtArgs> | null
+      affiliation: Prisma.$AffiliationPayload<ExtArgs> | null
+      product: Prisma.$ProductPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+      pendingBalances: Prisma.$PendingBalancePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9249,18 +9402,18 @@ export namespace Prisma {
       cardBrand: string | null
       installments: number
       externalId: string | null
-      wooviCorrelationId: string | null
-      wooviTransactionId: string | null
-      wooviEndToEndId: string | null
-      pixQrCodeUrl: string | null
-      pixBrCode: string | null
-      pixExpiresAt: Date | null
       paidAt: Date | null
       refundedAt: Date | null
       isMatured: boolean
       statusHistory: Prisma.JsonValue | null
       createdAt: Date
       updatedAt: Date
+      pixBrCode: string | null
+      pixExpiresAt: Date | null
+      pixQrCodeUrl: string | null
+      wooviCorrelationId: string | null
+      wooviEndToEndId: string | null
+      wooviTransactionId: string | null
       affiliationId: string | null
     }, ExtArgs["result"]["order"]>
     composites: {}
@@ -9656,11 +9809,11 @@ export namespace Prisma {
    */
   export interface Prisma__OrderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    pendingBalances<T extends Order$pendingBalancesArgs<ExtArgs> = {}>(args?: Subset<T, Order$pendingBalancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    affiliation<T extends Order$affiliationArgs<ExtArgs> = {}>(args?: Subset<T, Order$affiliationArgs<ExtArgs>>): Prisma__AffiliationClient<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     affiliationSale<T extends Order$affiliationSaleArgs<ExtArgs> = {}>(args?: Subset<T, Order$affiliationSaleArgs<ExtArgs>>): Prisma__AffiliationSaleClient<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    affiliation<T extends Order$affiliationArgs<ExtArgs> = {}>(args?: Subset<T, Order$affiliationArgs<ExtArgs>>): Prisma__AffiliationClient<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    pendingBalances<T extends Order$pendingBalancesArgs<ExtArgs> = {}>(args?: Subset<T, Order$pendingBalancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9711,18 +9864,18 @@ export namespace Prisma {
     readonly cardBrand: FieldRef<"Order", 'String'>
     readonly installments: FieldRef<"Order", 'Int'>
     readonly externalId: FieldRef<"Order", 'String'>
-    readonly wooviCorrelationId: FieldRef<"Order", 'String'>
-    readonly wooviTransactionId: FieldRef<"Order", 'String'>
-    readonly wooviEndToEndId: FieldRef<"Order", 'String'>
-    readonly pixQrCodeUrl: FieldRef<"Order", 'String'>
-    readonly pixBrCode: FieldRef<"Order", 'String'>
-    readonly pixExpiresAt: FieldRef<"Order", 'DateTime'>
     readonly paidAt: FieldRef<"Order", 'DateTime'>
     readonly refundedAt: FieldRef<"Order", 'DateTime'>
     readonly isMatured: FieldRef<"Order", 'Boolean'>
     readonly statusHistory: FieldRef<"Order", 'Json'>
     readonly createdAt: FieldRef<"Order", 'DateTime'>
     readonly updatedAt: FieldRef<"Order", 'DateTime'>
+    readonly pixBrCode: FieldRef<"Order", 'String'>
+    readonly pixExpiresAt: FieldRef<"Order", 'DateTime'>
+    readonly pixQrCodeUrl: FieldRef<"Order", 'String'>
+    readonly wooviCorrelationId: FieldRef<"Order", 'String'>
+    readonly wooviEndToEndId: FieldRef<"Order", 'String'>
+    readonly wooviTransactionId: FieldRef<"Order", 'String'>
     readonly affiliationId: FieldRef<"Order", 'String'>
   }
     
@@ -10125,27 +10278,22 @@ export namespace Prisma {
   }
 
   /**
-   * Order.pendingBalances
+   * Order.affiliationSale
    */
-  export type Order$pendingBalancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Order$affiliationSaleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the PendingBalance
+     * Select specific fields to fetch from the AffiliationSale
      */
-    select?: PendingBalanceSelect<ExtArgs> | null
+    select?: AffiliationSaleSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the PendingBalance
+     * Omit specific fields from the AffiliationSale
      */
-    omit?: PendingBalanceOmit<ExtArgs> | null
+    omit?: AffiliationSaleOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: PendingBalanceInclude<ExtArgs> | null
-    where?: PendingBalanceWhereInput
-    orderBy?: PendingBalanceOrderByWithRelationInput | PendingBalanceOrderByWithRelationInput[]
-    cursor?: PendingBalanceWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: PendingBalanceScalarFieldEnum | PendingBalanceScalarFieldEnum[]
+    include?: AffiliationSaleInclude<ExtArgs> | null
+    where?: AffiliationSaleWhereInput
   }
 
   /**
@@ -10168,22 +10316,27 @@ export namespace Prisma {
   }
 
   /**
-   * Order.affiliationSale
+   * Order.pendingBalances
    */
-  export type Order$affiliationSaleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Order$pendingBalancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the AffiliationSale
+     * Select specific fields to fetch from the PendingBalance
      */
-    select?: AffiliationSaleSelect<ExtArgs> | null
+    select?: PendingBalanceSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the AffiliationSale
+     * Omit specific fields from the PendingBalance
      */
-    omit?: AffiliationSaleOmit<ExtArgs> | null
+    omit?: PendingBalanceOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AffiliationSaleInclude<ExtArgs> | null
-    where?: AffiliationSaleWhereInput
+    include?: PendingBalanceInclude<ExtArgs> | null
+    where?: PendingBalanceWhereInput
+    orderBy?: PendingBalanceOrderByWithRelationInput | PendingBalanceOrderByWithRelationInput[]
+    cursor?: PendingBalanceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PendingBalanceScalarFieldEnum | PendingBalanceScalarFieldEnum[]
   }
 
   /**
@@ -10419,8 +10572,8 @@ export namespace Prisma {
     availableAt?: boolean
     released?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     order?: boolean | OrderDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pendingBalance"]>
 
   export type PendingBalanceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10431,8 +10584,8 @@ export namespace Prisma {
     availableAt?: boolean
     released?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     order?: boolean | OrderDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pendingBalance"]>
 
   export type PendingBalanceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10443,8 +10596,8 @@ export namespace Prisma {
     availableAt?: boolean
     released?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     order?: boolean | OrderDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pendingBalance"]>
 
   export type PendingBalanceSelectScalar = {
@@ -10459,23 +10612,23 @@ export namespace Prisma {
 
   export type PendingBalanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "orderId" | "amount" | "availableAt" | "released" | "createdAt", ExtArgs["result"]["pendingBalance"]>
   export type PendingBalanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     order?: boolean | OrderDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type PendingBalanceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     order?: boolean | OrderDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type PendingBalanceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     order?: boolean | OrderDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $PendingBalancePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PendingBalance"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       order: Prisma.$OrderPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -10879,8 +11032,8 @@ export namespace Prisma {
    */
   export interface Prisma__PendingBalanceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -24302,6 +24455,1082 @@ export namespace Prisma {
 
 
   /**
+   * Model TrustedDevice
+   */
+
+  export type AggregateTrustedDevice = {
+    _count: TrustedDeviceCountAggregateOutputType | null
+    _min: TrustedDeviceMinAggregateOutputType | null
+    _max: TrustedDeviceMaxAggregateOutputType | null
+  }
+
+  export type TrustedDeviceMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    expires: Date | null
+    createdAt: Date | null
+  }
+
+  export type TrustedDeviceMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    expires: Date | null
+    createdAt: Date | null
+  }
+
+  export type TrustedDeviceCountAggregateOutputType = {
+    id: number
+    userId: number
+    ipAddress: number
+    userAgent: number
+    expires: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type TrustedDeviceMinAggregateInputType = {
+    id?: true
+    userId?: true
+    ipAddress?: true
+    userAgent?: true
+    expires?: true
+    createdAt?: true
+  }
+
+  export type TrustedDeviceMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    ipAddress?: true
+    userAgent?: true
+    expires?: true
+    createdAt?: true
+  }
+
+  export type TrustedDeviceCountAggregateInputType = {
+    id?: true
+    userId?: true
+    ipAddress?: true
+    userAgent?: true
+    expires?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type TrustedDeviceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrustedDevice to aggregate.
+     */
+    where?: TrustedDeviceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrustedDevices to fetch.
+     */
+    orderBy?: TrustedDeviceOrderByWithRelationInput | TrustedDeviceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TrustedDeviceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrustedDevices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrustedDevices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TrustedDevices
+    **/
+    _count?: true | TrustedDeviceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TrustedDeviceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TrustedDeviceMaxAggregateInputType
+  }
+
+  export type GetTrustedDeviceAggregateType<T extends TrustedDeviceAggregateArgs> = {
+        [P in keyof T & keyof AggregateTrustedDevice]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTrustedDevice[P]>
+      : GetScalarType<T[P], AggregateTrustedDevice[P]>
+  }
+
+
+
+
+  export type TrustedDeviceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TrustedDeviceWhereInput
+    orderBy?: TrustedDeviceOrderByWithAggregationInput | TrustedDeviceOrderByWithAggregationInput[]
+    by: TrustedDeviceScalarFieldEnum[] | TrustedDeviceScalarFieldEnum
+    having?: TrustedDeviceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TrustedDeviceCountAggregateInputType | true
+    _min?: TrustedDeviceMinAggregateInputType
+    _max?: TrustedDeviceMaxAggregateInputType
+  }
+
+  export type TrustedDeviceGroupByOutputType = {
+    id: string
+    userId: string
+    ipAddress: string
+    userAgent: string | null
+    expires: Date
+    createdAt: Date
+    _count: TrustedDeviceCountAggregateOutputType | null
+    _min: TrustedDeviceMinAggregateOutputType | null
+    _max: TrustedDeviceMaxAggregateOutputType | null
+  }
+
+  type GetTrustedDeviceGroupByPayload<T extends TrustedDeviceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TrustedDeviceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TrustedDeviceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TrustedDeviceGroupByOutputType[P]>
+            : GetScalarType<T[P], TrustedDeviceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TrustedDeviceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    expires?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trustedDevice"]>
+
+  export type TrustedDeviceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    expires?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trustedDevice"]>
+
+  export type TrustedDeviceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    expires?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["trustedDevice"]>
+
+  export type TrustedDeviceSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    expires?: boolean
+    createdAt?: boolean
+  }
+
+  export type TrustedDeviceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "ipAddress" | "userAgent" | "expires" | "createdAt", ExtArgs["result"]["trustedDevice"]>
+  export type TrustedDeviceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TrustedDeviceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type TrustedDeviceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $TrustedDevicePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TrustedDevice"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      ipAddress: string
+      userAgent: string | null
+      expires: Date
+      createdAt: Date
+    }, ExtArgs["result"]["trustedDevice"]>
+    composites: {}
+  }
+
+  type TrustedDeviceGetPayload<S extends boolean | null | undefined | TrustedDeviceDefaultArgs> = $Result.GetResult<Prisma.$TrustedDevicePayload, S>
+
+  type TrustedDeviceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TrustedDeviceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TrustedDeviceCountAggregateInputType | true
+    }
+
+  export interface TrustedDeviceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TrustedDevice'], meta: { name: 'TrustedDevice' } }
+    /**
+     * Find zero or one TrustedDevice that matches the filter.
+     * @param {TrustedDeviceFindUniqueArgs} args - Arguments to find a TrustedDevice
+     * @example
+     * // Get one TrustedDevice
+     * const trustedDevice = await prisma.trustedDevice.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TrustedDeviceFindUniqueArgs>(args: SelectSubset<T, TrustedDeviceFindUniqueArgs<ExtArgs>>): Prisma__TrustedDeviceClient<$Result.GetResult<Prisma.$TrustedDevicePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TrustedDevice that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TrustedDeviceFindUniqueOrThrowArgs} args - Arguments to find a TrustedDevice
+     * @example
+     * // Get one TrustedDevice
+     * const trustedDevice = await prisma.trustedDevice.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TrustedDeviceFindUniqueOrThrowArgs>(args: SelectSubset<T, TrustedDeviceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TrustedDeviceClient<$Result.GetResult<Prisma.$TrustedDevicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrustedDevice that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrustedDeviceFindFirstArgs} args - Arguments to find a TrustedDevice
+     * @example
+     * // Get one TrustedDevice
+     * const trustedDevice = await prisma.trustedDevice.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TrustedDeviceFindFirstArgs>(args?: SelectSubset<T, TrustedDeviceFindFirstArgs<ExtArgs>>): Prisma__TrustedDeviceClient<$Result.GetResult<Prisma.$TrustedDevicePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TrustedDevice that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrustedDeviceFindFirstOrThrowArgs} args - Arguments to find a TrustedDevice
+     * @example
+     * // Get one TrustedDevice
+     * const trustedDevice = await prisma.trustedDevice.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TrustedDeviceFindFirstOrThrowArgs>(args?: SelectSubset<T, TrustedDeviceFindFirstOrThrowArgs<ExtArgs>>): Prisma__TrustedDeviceClient<$Result.GetResult<Prisma.$TrustedDevicePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TrustedDevices that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrustedDeviceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TrustedDevices
+     * const trustedDevices = await prisma.trustedDevice.findMany()
+     * 
+     * // Get first 10 TrustedDevices
+     * const trustedDevices = await prisma.trustedDevice.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const trustedDeviceWithIdOnly = await prisma.trustedDevice.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TrustedDeviceFindManyArgs>(args?: SelectSubset<T, TrustedDeviceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrustedDevicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TrustedDevice.
+     * @param {TrustedDeviceCreateArgs} args - Arguments to create a TrustedDevice.
+     * @example
+     * // Create one TrustedDevice
+     * const TrustedDevice = await prisma.trustedDevice.create({
+     *   data: {
+     *     // ... data to create a TrustedDevice
+     *   }
+     * })
+     * 
+     */
+    create<T extends TrustedDeviceCreateArgs>(args: SelectSubset<T, TrustedDeviceCreateArgs<ExtArgs>>): Prisma__TrustedDeviceClient<$Result.GetResult<Prisma.$TrustedDevicePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TrustedDevices.
+     * @param {TrustedDeviceCreateManyArgs} args - Arguments to create many TrustedDevices.
+     * @example
+     * // Create many TrustedDevices
+     * const trustedDevice = await prisma.trustedDevice.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TrustedDeviceCreateManyArgs>(args?: SelectSubset<T, TrustedDeviceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TrustedDevices and returns the data saved in the database.
+     * @param {TrustedDeviceCreateManyAndReturnArgs} args - Arguments to create many TrustedDevices.
+     * @example
+     * // Create many TrustedDevices
+     * const trustedDevice = await prisma.trustedDevice.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TrustedDevices and only return the `id`
+     * const trustedDeviceWithIdOnly = await prisma.trustedDevice.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TrustedDeviceCreateManyAndReturnArgs>(args?: SelectSubset<T, TrustedDeviceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrustedDevicePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TrustedDevice.
+     * @param {TrustedDeviceDeleteArgs} args - Arguments to delete one TrustedDevice.
+     * @example
+     * // Delete one TrustedDevice
+     * const TrustedDevice = await prisma.trustedDevice.delete({
+     *   where: {
+     *     // ... filter to delete one TrustedDevice
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TrustedDeviceDeleteArgs>(args: SelectSubset<T, TrustedDeviceDeleteArgs<ExtArgs>>): Prisma__TrustedDeviceClient<$Result.GetResult<Prisma.$TrustedDevicePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TrustedDevice.
+     * @param {TrustedDeviceUpdateArgs} args - Arguments to update one TrustedDevice.
+     * @example
+     * // Update one TrustedDevice
+     * const trustedDevice = await prisma.trustedDevice.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TrustedDeviceUpdateArgs>(args: SelectSubset<T, TrustedDeviceUpdateArgs<ExtArgs>>): Prisma__TrustedDeviceClient<$Result.GetResult<Prisma.$TrustedDevicePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TrustedDevices.
+     * @param {TrustedDeviceDeleteManyArgs} args - Arguments to filter TrustedDevices to delete.
+     * @example
+     * // Delete a few TrustedDevices
+     * const { count } = await prisma.trustedDevice.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TrustedDeviceDeleteManyArgs>(args?: SelectSubset<T, TrustedDeviceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrustedDevices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrustedDeviceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TrustedDevices
+     * const trustedDevice = await prisma.trustedDevice.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TrustedDeviceUpdateManyArgs>(args: SelectSubset<T, TrustedDeviceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TrustedDevices and returns the data updated in the database.
+     * @param {TrustedDeviceUpdateManyAndReturnArgs} args - Arguments to update many TrustedDevices.
+     * @example
+     * // Update many TrustedDevices
+     * const trustedDevice = await prisma.trustedDevice.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TrustedDevices and only return the `id`
+     * const trustedDeviceWithIdOnly = await prisma.trustedDevice.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TrustedDeviceUpdateManyAndReturnArgs>(args: SelectSubset<T, TrustedDeviceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TrustedDevicePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TrustedDevice.
+     * @param {TrustedDeviceUpsertArgs} args - Arguments to update or create a TrustedDevice.
+     * @example
+     * // Update or create a TrustedDevice
+     * const trustedDevice = await prisma.trustedDevice.upsert({
+     *   create: {
+     *     // ... data to create a TrustedDevice
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TrustedDevice we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TrustedDeviceUpsertArgs>(args: SelectSubset<T, TrustedDeviceUpsertArgs<ExtArgs>>): Prisma__TrustedDeviceClient<$Result.GetResult<Prisma.$TrustedDevicePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TrustedDevices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrustedDeviceCountArgs} args - Arguments to filter TrustedDevices to count.
+     * @example
+     * // Count the number of TrustedDevices
+     * const count = await prisma.trustedDevice.count({
+     *   where: {
+     *     // ... the filter for the TrustedDevices we want to count
+     *   }
+     * })
+    **/
+    count<T extends TrustedDeviceCountArgs>(
+      args?: Subset<T, TrustedDeviceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TrustedDeviceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TrustedDevice.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrustedDeviceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TrustedDeviceAggregateArgs>(args: Subset<T, TrustedDeviceAggregateArgs>): Prisma.PrismaPromise<GetTrustedDeviceAggregateType<T>>
+
+    /**
+     * Group by TrustedDevice.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TrustedDeviceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TrustedDeviceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TrustedDeviceGroupByArgs['orderBy'] }
+        : { orderBy?: TrustedDeviceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TrustedDeviceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTrustedDeviceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TrustedDevice model
+   */
+  readonly fields: TrustedDeviceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TrustedDevice.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TrustedDeviceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TrustedDevice model
+   */
+  interface TrustedDeviceFieldRefs {
+    readonly id: FieldRef<"TrustedDevice", 'String'>
+    readonly userId: FieldRef<"TrustedDevice", 'String'>
+    readonly ipAddress: FieldRef<"TrustedDevice", 'String'>
+    readonly userAgent: FieldRef<"TrustedDevice", 'String'>
+    readonly expires: FieldRef<"TrustedDevice", 'DateTime'>
+    readonly createdAt: FieldRef<"TrustedDevice", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TrustedDevice findUnique
+   */
+  export type TrustedDeviceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrustedDevice
+     */
+    select?: TrustedDeviceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrustedDevice
+     */
+    omit?: TrustedDeviceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrustedDeviceInclude<ExtArgs> | null
+    /**
+     * Filter, which TrustedDevice to fetch.
+     */
+    where: TrustedDeviceWhereUniqueInput
+  }
+
+  /**
+   * TrustedDevice findUniqueOrThrow
+   */
+  export type TrustedDeviceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrustedDevice
+     */
+    select?: TrustedDeviceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrustedDevice
+     */
+    omit?: TrustedDeviceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrustedDeviceInclude<ExtArgs> | null
+    /**
+     * Filter, which TrustedDevice to fetch.
+     */
+    where: TrustedDeviceWhereUniqueInput
+  }
+
+  /**
+   * TrustedDevice findFirst
+   */
+  export type TrustedDeviceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrustedDevice
+     */
+    select?: TrustedDeviceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrustedDevice
+     */
+    omit?: TrustedDeviceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrustedDeviceInclude<ExtArgs> | null
+    /**
+     * Filter, which TrustedDevice to fetch.
+     */
+    where?: TrustedDeviceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrustedDevices to fetch.
+     */
+    orderBy?: TrustedDeviceOrderByWithRelationInput | TrustedDeviceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrustedDevices.
+     */
+    cursor?: TrustedDeviceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrustedDevices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrustedDevices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrustedDevices.
+     */
+    distinct?: TrustedDeviceScalarFieldEnum | TrustedDeviceScalarFieldEnum[]
+  }
+
+  /**
+   * TrustedDevice findFirstOrThrow
+   */
+  export type TrustedDeviceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrustedDevice
+     */
+    select?: TrustedDeviceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrustedDevice
+     */
+    omit?: TrustedDeviceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrustedDeviceInclude<ExtArgs> | null
+    /**
+     * Filter, which TrustedDevice to fetch.
+     */
+    where?: TrustedDeviceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrustedDevices to fetch.
+     */
+    orderBy?: TrustedDeviceOrderByWithRelationInput | TrustedDeviceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TrustedDevices.
+     */
+    cursor?: TrustedDeviceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrustedDevices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrustedDevices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrustedDevices.
+     */
+    distinct?: TrustedDeviceScalarFieldEnum | TrustedDeviceScalarFieldEnum[]
+  }
+
+  /**
+   * TrustedDevice findMany
+   */
+  export type TrustedDeviceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrustedDevice
+     */
+    select?: TrustedDeviceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrustedDevice
+     */
+    omit?: TrustedDeviceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrustedDeviceInclude<ExtArgs> | null
+    /**
+     * Filter, which TrustedDevices to fetch.
+     */
+    where?: TrustedDeviceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TrustedDevices to fetch.
+     */
+    orderBy?: TrustedDeviceOrderByWithRelationInput | TrustedDeviceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TrustedDevices.
+     */
+    cursor?: TrustedDeviceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TrustedDevices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TrustedDevices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TrustedDevices.
+     */
+    distinct?: TrustedDeviceScalarFieldEnum | TrustedDeviceScalarFieldEnum[]
+  }
+
+  /**
+   * TrustedDevice create
+   */
+  export type TrustedDeviceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrustedDevice
+     */
+    select?: TrustedDeviceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrustedDevice
+     */
+    omit?: TrustedDeviceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrustedDeviceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TrustedDevice.
+     */
+    data: XOR<TrustedDeviceCreateInput, TrustedDeviceUncheckedCreateInput>
+  }
+
+  /**
+   * TrustedDevice createMany
+   */
+  export type TrustedDeviceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TrustedDevices.
+     */
+    data: TrustedDeviceCreateManyInput | TrustedDeviceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TrustedDevice createManyAndReturn
+   */
+  export type TrustedDeviceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrustedDevice
+     */
+    select?: TrustedDeviceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrustedDevice
+     */
+    omit?: TrustedDeviceOmit<ExtArgs> | null
+    /**
+     * The data used to create many TrustedDevices.
+     */
+    data: TrustedDeviceCreateManyInput | TrustedDeviceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrustedDeviceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TrustedDevice update
+   */
+  export type TrustedDeviceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrustedDevice
+     */
+    select?: TrustedDeviceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrustedDevice
+     */
+    omit?: TrustedDeviceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrustedDeviceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TrustedDevice.
+     */
+    data: XOR<TrustedDeviceUpdateInput, TrustedDeviceUncheckedUpdateInput>
+    /**
+     * Choose, which TrustedDevice to update.
+     */
+    where: TrustedDeviceWhereUniqueInput
+  }
+
+  /**
+   * TrustedDevice updateMany
+   */
+  export type TrustedDeviceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TrustedDevices.
+     */
+    data: XOR<TrustedDeviceUpdateManyMutationInput, TrustedDeviceUncheckedUpdateManyInput>
+    /**
+     * Filter which TrustedDevices to update
+     */
+    where?: TrustedDeviceWhereInput
+    /**
+     * Limit how many TrustedDevices to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrustedDevice updateManyAndReturn
+   */
+  export type TrustedDeviceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrustedDevice
+     */
+    select?: TrustedDeviceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrustedDevice
+     */
+    omit?: TrustedDeviceOmit<ExtArgs> | null
+    /**
+     * The data used to update TrustedDevices.
+     */
+    data: XOR<TrustedDeviceUpdateManyMutationInput, TrustedDeviceUncheckedUpdateManyInput>
+    /**
+     * Filter which TrustedDevices to update
+     */
+    where?: TrustedDeviceWhereInput
+    /**
+     * Limit how many TrustedDevices to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrustedDeviceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TrustedDevice upsert
+   */
+  export type TrustedDeviceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrustedDevice
+     */
+    select?: TrustedDeviceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrustedDevice
+     */
+    omit?: TrustedDeviceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrustedDeviceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TrustedDevice to update in case it exists.
+     */
+    where: TrustedDeviceWhereUniqueInput
+    /**
+     * In case the TrustedDevice found by the `where` argument doesn't exist, create a new TrustedDevice with this data.
+     */
+    create: XOR<TrustedDeviceCreateInput, TrustedDeviceUncheckedCreateInput>
+    /**
+     * In case the TrustedDevice was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TrustedDeviceUpdateInput, TrustedDeviceUncheckedUpdateInput>
+  }
+
+  /**
+   * TrustedDevice delete
+   */
+  export type TrustedDeviceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrustedDevice
+     */
+    select?: TrustedDeviceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrustedDevice
+     */
+    omit?: TrustedDeviceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrustedDeviceInclude<ExtArgs> | null
+    /**
+     * Filter which TrustedDevice to delete.
+     */
+    where: TrustedDeviceWhereUniqueInput
+  }
+
+  /**
+   * TrustedDevice deleteMany
+   */
+  export type TrustedDeviceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TrustedDevices to delete
+     */
+    where?: TrustedDeviceWhereInput
+    /**
+     * Limit how many TrustedDevices to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TrustedDevice without action
+   */
+  export type TrustedDeviceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TrustedDevice
+     */
+    select?: TrustedDeviceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TrustedDevice
+     */
+    omit?: TrustedDeviceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TrustedDeviceInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model CustomDomain
    */
 
@@ -25715,8 +26944,8 @@ export namespace Prisma {
     conversionRate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    product?: boolean | ProductDefaultArgs<ExtArgs>
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
     affiliations?: boolean | AffiliateOffer$affiliationsArgs<ExtArgs>
     _count?: boolean | AffiliateOfferCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["affiliateOffer"]>
@@ -25742,8 +26971,8 @@ export namespace Prisma {
     conversionRate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    product?: boolean | ProductDefaultArgs<ExtArgs>
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["affiliateOffer"]>
 
   export type AffiliateOfferSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -25767,8 +26996,8 @@ export namespace Prisma {
     conversionRate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    product?: boolean | ProductDefaultArgs<ExtArgs>
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["affiliateOffer"]>
 
   export type AffiliateOfferSelectScalar = {
@@ -25796,25 +27025,25 @@ export namespace Prisma {
 
   export type AffiliateOfferOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "productId" | "ownerId" | "title" | "description" | "commissionType" | "commissionValue" | "cookieDays" | "maxAffiliates" | "requiresApproval" | "status" | "category" | "tags" | "imageUrl" | "totalAffiliates" | "totalSales" | "totalRevenue" | "conversionRate" | "createdAt" | "updatedAt", ExtArgs["result"]["affiliateOffer"]>
   export type AffiliateOfferInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    product?: boolean | ProductDefaultArgs<ExtArgs>
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
     affiliations?: boolean | AffiliateOffer$affiliationsArgs<ExtArgs>
     _count?: boolean | AffiliateOfferCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AffiliateOfferIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    product?: boolean | ProductDefaultArgs<ExtArgs>
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
   export type AffiliateOfferIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    product?: boolean | ProductDefaultArgs<ExtArgs>
     owner?: boolean | UserDefaultArgs<ExtArgs>
+    product?: boolean | ProductDefaultArgs<ExtArgs>
   }
 
   export type $AffiliateOfferPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AffiliateOffer"
     objects: {
-      product: Prisma.$ProductPayload<ExtArgs>
       owner: Prisma.$UserPayload<ExtArgs>
+      product: Prisma.$ProductPayload<ExtArgs>
       affiliations: Prisma.$AffiliationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -26232,8 +27461,8 @@ export namespace Prisma {
    */
   export interface Prisma__AffiliateOfferClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     affiliations<T extends AffiliateOffer$affiliationsArgs<ExtArgs> = {}>(args?: Subset<T, AffiliateOffer$affiliationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -27013,8 +28242,8 @@ export namespace Prisma {
     approvedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
     affiliate?: boolean | UserDefaultArgs<ExtArgs>
+    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
     sales?: boolean | Affiliation$salesArgs<ExtArgs>
     orders?: boolean | Affiliation$ordersArgs<ExtArgs>
     _count?: boolean | AffiliationCountOutputTypeDefaultArgs<ExtArgs>
@@ -27035,8 +28264,8 @@ export namespace Prisma {
     approvedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
     affiliate?: boolean | UserDefaultArgs<ExtArgs>
+    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["affiliation"]>
 
   export type AffiliationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -27054,8 +28283,8 @@ export namespace Prisma {
     approvedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
     affiliate?: boolean | UserDefaultArgs<ExtArgs>
+    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["affiliation"]>
 
   export type AffiliationSelectScalar = {
@@ -27077,26 +28306,26 @@ export namespace Prisma {
 
   export type AffiliationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "offerId" | "affiliateId" | "status" | "affiliateLink" | "affiliateCode" | "totalClicks" | "totalSales" | "totalEarned" | "pendingBalance" | "availableBalance" | "approvedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["affiliation"]>
   export type AffiliationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
     affiliate?: boolean | UserDefaultArgs<ExtArgs>
+    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
     sales?: boolean | Affiliation$salesArgs<ExtArgs>
     orders?: boolean | Affiliation$ordersArgs<ExtArgs>
     _count?: boolean | AffiliationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AffiliationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
     affiliate?: boolean | UserDefaultArgs<ExtArgs>
+    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
   }
   export type AffiliationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
     affiliate?: boolean | UserDefaultArgs<ExtArgs>
+    offer?: boolean | AffiliateOfferDefaultArgs<ExtArgs>
   }
 
   export type $AffiliationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Affiliation"
     objects: {
-      offer: Prisma.$AffiliateOfferPayload<ExtArgs>
       affiliate: Prisma.$UserPayload<ExtArgs>
+      offer: Prisma.$AffiliateOfferPayload<ExtArgs>
       sales: Prisma.$AffiliationSalePayload<ExtArgs>[]
       orders: Prisma.$OrderPayload<ExtArgs>[]
     }
@@ -27509,8 +28738,8 @@ export namespace Prisma {
    */
   export interface Prisma__AffiliationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    offer<T extends AffiliateOfferDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AffiliateOfferDefaultArgs<ExtArgs>>): Prisma__AffiliateOfferClient<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     affiliate<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    offer<T extends AffiliateOfferDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AffiliateOfferDefaultArgs<ExtArgs>>): Prisma__AffiliateOfferClient<$Result.GetResult<Prisma.$AffiliateOfferPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     sales<T extends Affiliation$salesArgs<ExtArgs> = {}>(args?: Subset<T, Affiliation$salesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     orders<T extends Affiliation$ordersArgs<ExtArgs> = {}>(args?: Subset<T, Affiliation$ordersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -29208,13 +30437,14 @@ export namespace Prisma {
     pendingBalance: 'pendingBalance',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    username: 'username',
     showcaseConfig: 'showcaseConfig',
     socialLinks: 'socialLinks',
+    username: 'username',
+    lastActiveAt: 'lastActiveAt',
+    onboardingSteps: 'onboardingSteps',
     twoFactorEnabled: 'twoFactorEnabled',
     twoFactorSecret: 'twoFactorSecret',
-    onboardingSteps: 'onboardingSteps',
-    lastActiveAt: 'lastActiveAt'
+    twoFactorMethod: 'twoFactorMethod'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -29290,18 +30520,18 @@ export namespace Prisma {
     cardBrand: 'cardBrand',
     installments: 'installments',
     externalId: 'externalId',
-    wooviCorrelationId: 'wooviCorrelationId',
-    wooviTransactionId: 'wooviTransactionId',
-    wooviEndToEndId: 'wooviEndToEndId',
-    pixQrCodeUrl: 'pixQrCodeUrl',
-    pixBrCode: 'pixBrCode',
-    pixExpiresAt: 'pixExpiresAt',
     paidAt: 'paidAt',
     refundedAt: 'refundedAt',
     isMatured: 'isMatured',
     statusHistory: 'statusHistory',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
+    pixBrCode: 'pixBrCode',
+    pixExpiresAt: 'pixExpiresAt',
+    pixQrCodeUrl: 'pixQrCodeUrl',
+    wooviCorrelationId: 'wooviCorrelationId',
+    wooviEndToEndId: 'wooviEndToEndId',
+    wooviTransactionId: 'wooviTransactionId',
     affiliationId: 'affiliationId'
   };
 
@@ -29477,6 +30707,18 @@ export namespace Prisma {
   };
 
   export type AdminLogScalarFieldEnum = (typeof AdminLogScalarFieldEnum)[keyof typeof AdminLogScalarFieldEnum]
+
+
+  export const TrustedDeviceScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    ipAddress: 'ipAddress',
+    userAgent: 'userAgent',
+    expires: 'expires',
+    createdAt: 'createdAt'
+  };
+
+  export type TrustedDeviceScalarFieldEnum = (typeof TrustedDeviceScalarFieldEnum)[keyof typeof TrustedDeviceScalarFieldEnum]
 
 
   export const CustomDomainScalarFieldEnum: {
@@ -29720,6 +30962,20 @@ export namespace Prisma {
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'TwoFactorMethod'
+   */
+  export type EnumTwoFactorMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TwoFactorMethod'>
+    
+
+
+  /**
+   * Reference to a field of type 'TwoFactorMethod[]'
+   */
+  export type ListEnumTwoFactorMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TwoFactorMethod[]'>
     
 
 
@@ -29976,27 +31232,29 @@ export namespace Prisma {
     pendingBalance?: FloatFilter<"User"> | number
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    username?: StringNullableFilter<"User"> | string | null
     showcaseConfig?: JsonNullableFilter<"User">
     socialLinks?: JsonNullableFilter<"User">
+    username?: StringNullableFilter<"User"> | string | null
+    lastActiveAt?: DateTimeFilter<"User"> | Date | string
+    onboardingSteps?: JsonNullableFilter<"User">
     twoFactorEnabled?: BoolFilter<"User"> | boolean
     twoFactorSecret?: StringNullableFilter<"User"> | string | null
-    onboardingSteps?: JsonNullableFilter<"User">
-    lastActiveAt?: DateTimeFilter<"User"> | Date | string
-    products?: ProductListRelationFilter
-    orders?: OrderListRelationFilter
-    withdrawals?: WithdrawalListRelationFilter
-    transactions?: TransactionListRelationFilter
-    webhooks?: WebhookListRelationFilter
-    apiKeys?: ApiKeyListRelationFilter
-    kycDocuments?: KycDocumentListRelationFilter
-    badges?: UserBadgeListRelationFilter
-    pendingBalances?: PendingBalanceListRelationFilter
-    customDomains?: CustomDomainListRelationFilter
-    notifications?: NotificationListRelationFilter
-    auditLogs?: AuditLogListRelationFilter
+    twoFactorMethod?: EnumTwoFactorMethodNullableFilter<"User"> | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceListRelationFilter
     affiliateOffers?: AffiliateOfferListRelationFilter
     affiliations?: AffiliationListRelationFilter
+    apiKeys?: ApiKeyListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
+    customDomains?: CustomDomainListRelationFilter
+    kycDocuments?: KycDocumentListRelationFilter
+    notifications?: NotificationListRelationFilter
+    orders?: OrderListRelationFilter
+    pendingBalances?: PendingBalanceListRelationFilter
+    products?: ProductListRelationFilter
+    transactions?: TransactionListRelationFilter
+    badges?: UserBadgeListRelationFilter
+    webhooks?: WebhookListRelationFilter
+    withdrawals?: WithdrawalListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -30022,27 +31280,29 @@ export namespace Prisma {
     pendingBalance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    username?: SortOrderInput | SortOrder
     showcaseConfig?: SortOrderInput | SortOrder
     socialLinks?: SortOrderInput | SortOrder
+    username?: SortOrderInput | SortOrder
+    lastActiveAt?: SortOrder
+    onboardingSteps?: SortOrderInput | SortOrder
     twoFactorEnabled?: SortOrder
     twoFactorSecret?: SortOrderInput | SortOrder
-    onboardingSteps?: SortOrderInput | SortOrder
-    lastActiveAt?: SortOrder
-    products?: ProductOrderByRelationAggregateInput
-    orders?: OrderOrderByRelationAggregateInput
-    withdrawals?: WithdrawalOrderByRelationAggregateInput
-    transactions?: TransactionOrderByRelationAggregateInput
-    webhooks?: WebhookOrderByRelationAggregateInput
-    apiKeys?: ApiKeyOrderByRelationAggregateInput
-    kycDocuments?: KycDocumentOrderByRelationAggregateInput
-    badges?: UserBadgeOrderByRelationAggregateInput
-    pendingBalances?: PendingBalanceOrderByRelationAggregateInput
-    customDomains?: CustomDomainOrderByRelationAggregateInput
-    notifications?: NotificationOrderByRelationAggregateInput
-    auditLogs?: AuditLogOrderByRelationAggregateInput
+    twoFactorMethod?: SortOrderInput | SortOrder
+    trustedDevices?: TrustedDeviceOrderByRelationAggregateInput
     affiliateOffers?: AffiliateOfferOrderByRelationAggregateInput
     affiliations?: AffiliationOrderByRelationAggregateInput
+    apiKeys?: ApiKeyOrderByRelationAggregateInput
+    auditLogs?: AuditLogOrderByRelationAggregateInput
+    customDomains?: CustomDomainOrderByRelationAggregateInput
+    kycDocuments?: KycDocumentOrderByRelationAggregateInput
+    notifications?: NotificationOrderByRelationAggregateInput
+    orders?: OrderOrderByRelationAggregateInput
+    pendingBalances?: PendingBalanceOrderByRelationAggregateInput
+    products?: ProductOrderByRelationAggregateInput
+    transactions?: TransactionOrderByRelationAggregateInput
+    badges?: UserBadgeOrderByRelationAggregateInput
+    webhooks?: WebhookOrderByRelationAggregateInput
+    withdrawals?: WithdrawalOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -30074,24 +31334,26 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     showcaseConfig?: JsonNullableFilter<"User">
     socialLinks?: JsonNullableFilter<"User">
+    lastActiveAt?: DateTimeFilter<"User"> | Date | string
+    onboardingSteps?: JsonNullableFilter<"User">
     twoFactorEnabled?: BoolFilter<"User"> | boolean
     twoFactorSecret?: StringNullableFilter<"User"> | string | null
-    onboardingSteps?: JsonNullableFilter<"User">
-    lastActiveAt?: DateTimeFilter<"User"> | Date | string
-    products?: ProductListRelationFilter
-    orders?: OrderListRelationFilter
-    withdrawals?: WithdrawalListRelationFilter
-    transactions?: TransactionListRelationFilter
-    webhooks?: WebhookListRelationFilter
-    apiKeys?: ApiKeyListRelationFilter
-    kycDocuments?: KycDocumentListRelationFilter
-    badges?: UserBadgeListRelationFilter
-    pendingBalances?: PendingBalanceListRelationFilter
-    customDomains?: CustomDomainListRelationFilter
-    notifications?: NotificationListRelationFilter
-    auditLogs?: AuditLogListRelationFilter
+    twoFactorMethod?: EnumTwoFactorMethodNullableFilter<"User"> | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceListRelationFilter
     affiliateOffers?: AffiliateOfferListRelationFilter
     affiliations?: AffiliationListRelationFilter
+    apiKeys?: ApiKeyListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
+    customDomains?: CustomDomainListRelationFilter
+    kycDocuments?: KycDocumentListRelationFilter
+    notifications?: NotificationListRelationFilter
+    orders?: OrderListRelationFilter
+    pendingBalances?: PendingBalanceListRelationFilter
+    products?: ProductListRelationFilter
+    transactions?: TransactionListRelationFilter
+    badges?: UserBadgeListRelationFilter
+    webhooks?: WebhookListRelationFilter
+    withdrawals?: WithdrawalListRelationFilter
   }, "id" | "email" | "username">
 
   export type UserOrderByWithAggregationInput = {
@@ -30117,13 +31379,14 @@ export namespace Prisma {
     pendingBalance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    username?: SortOrderInput | SortOrder
     showcaseConfig?: SortOrderInput | SortOrder
     socialLinks?: SortOrderInput | SortOrder
+    username?: SortOrderInput | SortOrder
+    lastActiveAt?: SortOrder
+    onboardingSteps?: SortOrderInput | SortOrder
     twoFactorEnabled?: SortOrder
     twoFactorSecret?: SortOrderInput | SortOrder
-    onboardingSteps?: SortOrderInput | SortOrder
-    lastActiveAt?: SortOrder
+    twoFactorMethod?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -30157,13 +31420,14 @@ export namespace Prisma {
     pendingBalance?: FloatWithAggregatesFilter<"User"> | number
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
-    username?: StringNullableWithAggregatesFilter<"User"> | string | null
     showcaseConfig?: JsonNullableWithAggregatesFilter<"User">
     socialLinks?: JsonNullableWithAggregatesFilter<"User">
+    username?: StringNullableWithAggregatesFilter<"User"> | string | null
+    lastActiveAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    onboardingSteps?: JsonNullableWithAggregatesFilter<"User">
     twoFactorEnabled?: BoolWithAggregatesFilter<"User"> | boolean
     twoFactorSecret?: StringNullableWithAggregatesFilter<"User"> | string | null
-    onboardingSteps?: JsonNullableWithAggregatesFilter<"User">
-    lastActiveAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    twoFactorMethod?: EnumTwoFactorMethodNullableWithAggregatesFilter<"User"> | $Enums.TwoFactorMethod | null
   }
 
   export type NotificationWhereInput = {
@@ -30316,10 +31580,10 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     showInShowcase?: BoolFilter<"Product"> | boolean
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    orders?: OrderListRelationFilter
-    checkoutLinks?: CheckoutLinkListRelationFilter
     affiliateOffers?: AffiliateOfferListRelationFilter
+    checkoutLinks?: CheckoutLinkListRelationFilter
+    orders?: OrderListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type ProductOrderByWithRelationInput = {
@@ -30339,10 +31603,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     showInShowcase?: SortOrder
-    user?: UserOrderByWithRelationInput
-    orders?: OrderOrderByRelationAggregateInput
-    checkoutLinks?: CheckoutLinkOrderByRelationAggregateInput
     affiliateOffers?: AffiliateOfferOrderByRelationAggregateInput
+    checkoutLinks?: CheckoutLinkOrderByRelationAggregateInput
+    orders?: OrderOrderByRelationAggregateInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type ProductWhereUniqueInput = Prisma.AtLeast<{
@@ -30365,10 +31629,10 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Product"> | Date | string
     updatedAt?: DateTimeFilter<"Product"> | Date | string
     showInShowcase?: BoolFilter<"Product"> | boolean
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    orders?: OrderListRelationFilter
-    checkoutLinks?: CheckoutLinkListRelationFilter
     affiliateOffers?: AffiliateOfferListRelationFilter
+    checkoutLinks?: CheckoutLinkListRelationFilter
+    orders?: OrderListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "slug">
 
   export type ProductOrderByWithAggregationInput = {
@@ -30442,24 +31706,24 @@ export namespace Prisma {
     cardBrand?: StringNullableFilter<"Order"> | string | null
     installments?: IntFilter<"Order"> | number
     externalId?: StringNullableFilter<"Order"> | string | null
-    wooviCorrelationId?: StringNullableFilter<"Order"> | string | null
-    wooviTransactionId?: StringNullableFilter<"Order"> | string | null
-    wooviEndToEndId?: StringNullableFilter<"Order"> | string | null
-    pixQrCodeUrl?: StringNullableFilter<"Order"> | string | null
-    pixBrCode?: StringNullableFilter<"Order"> | string | null
-    pixExpiresAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     paidAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     refundedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     isMatured?: BoolFilter<"Order"> | boolean
     statusHistory?: JsonNullableFilter<"Order">
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
+    pixBrCode?: StringNullableFilter<"Order"> | string | null
+    pixExpiresAt?: DateTimeNullableFilter<"Order"> | Date | string | null
+    pixQrCodeUrl?: StringNullableFilter<"Order"> | string | null
+    wooviCorrelationId?: StringNullableFilter<"Order"> | string | null
+    wooviEndToEndId?: StringNullableFilter<"Order"> | string | null
+    wooviTransactionId?: StringNullableFilter<"Order"> | string | null
     affiliationId?: StringNullableFilter<"Order"> | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-    pendingBalances?: PendingBalanceListRelationFilter
-    affiliation?: XOR<AffiliationNullableScalarRelationFilter, AffiliationWhereInput> | null
     affiliationSale?: XOR<AffiliationSaleNullableScalarRelationFilter, AffiliationSaleWhereInput> | null
+    affiliation?: XOR<AffiliationNullableScalarRelationFilter, AffiliationWhereInput> | null
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    pendingBalances?: PendingBalanceListRelationFilter
   }
 
   export type OrderOrderByWithRelationInput = {
@@ -30484,24 +31748,24 @@ export namespace Prisma {
     cardBrand?: SortOrderInput | SortOrder
     installments?: SortOrder
     externalId?: SortOrderInput | SortOrder
-    wooviCorrelationId?: SortOrderInput | SortOrder
-    wooviTransactionId?: SortOrderInput | SortOrder
-    wooviEndToEndId?: SortOrderInput | SortOrder
-    pixQrCodeUrl?: SortOrderInput | SortOrder
-    pixBrCode?: SortOrderInput | SortOrder
-    pixExpiresAt?: SortOrderInput | SortOrder
     paidAt?: SortOrderInput | SortOrder
     refundedAt?: SortOrderInput | SortOrder
     isMatured?: SortOrder
     statusHistory?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    pixBrCode?: SortOrderInput | SortOrder
+    pixExpiresAt?: SortOrderInput | SortOrder
+    pixQrCodeUrl?: SortOrderInput | SortOrder
+    wooviCorrelationId?: SortOrderInput | SortOrder
+    wooviEndToEndId?: SortOrderInput | SortOrder
+    wooviTransactionId?: SortOrderInput | SortOrder
     affiliationId?: SortOrderInput | SortOrder
-    user?: UserOrderByWithRelationInput
-    product?: ProductOrderByWithRelationInput
-    pendingBalances?: PendingBalanceOrderByRelationAggregateInput
-    affiliation?: AffiliationOrderByWithRelationInput
     affiliationSale?: AffiliationSaleOrderByWithRelationInput
+    affiliation?: AffiliationOrderByWithRelationInput
+    product?: ProductOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+    pendingBalances?: PendingBalanceOrderByRelationAggregateInput
   }
 
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
@@ -30530,23 +31794,23 @@ export namespace Prisma {
     cardBrand?: StringNullableFilter<"Order"> | string | null
     installments?: IntFilter<"Order"> | number
     externalId?: StringNullableFilter<"Order"> | string | null
-    wooviTransactionId?: StringNullableFilter<"Order"> | string | null
-    wooviEndToEndId?: StringNullableFilter<"Order"> | string | null
-    pixQrCodeUrl?: StringNullableFilter<"Order"> | string | null
-    pixBrCode?: StringNullableFilter<"Order"> | string | null
-    pixExpiresAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     paidAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     refundedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
     isMatured?: BoolFilter<"Order"> | boolean
     statusHistory?: JsonNullableFilter<"Order">
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
+    pixBrCode?: StringNullableFilter<"Order"> | string | null
+    pixExpiresAt?: DateTimeNullableFilter<"Order"> | Date | string | null
+    pixQrCodeUrl?: StringNullableFilter<"Order"> | string | null
+    wooviEndToEndId?: StringNullableFilter<"Order"> | string | null
+    wooviTransactionId?: StringNullableFilter<"Order"> | string | null
     affiliationId?: StringNullableFilter<"Order"> | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
-    pendingBalances?: PendingBalanceListRelationFilter
-    affiliation?: XOR<AffiliationNullableScalarRelationFilter, AffiliationWhereInput> | null
     affiliationSale?: XOR<AffiliationSaleNullableScalarRelationFilter, AffiliationSaleWhereInput> | null
+    affiliation?: XOR<AffiliationNullableScalarRelationFilter, AffiliationWhereInput> | null
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    pendingBalances?: PendingBalanceListRelationFilter
   }, "id" | "wooviCorrelationId">
 
   export type OrderOrderByWithAggregationInput = {
@@ -30571,18 +31835,18 @@ export namespace Prisma {
     cardBrand?: SortOrderInput | SortOrder
     installments?: SortOrder
     externalId?: SortOrderInput | SortOrder
-    wooviCorrelationId?: SortOrderInput | SortOrder
-    wooviTransactionId?: SortOrderInput | SortOrder
-    wooviEndToEndId?: SortOrderInput | SortOrder
-    pixQrCodeUrl?: SortOrderInput | SortOrder
-    pixBrCode?: SortOrderInput | SortOrder
-    pixExpiresAt?: SortOrderInput | SortOrder
     paidAt?: SortOrderInput | SortOrder
     refundedAt?: SortOrderInput | SortOrder
     isMatured?: SortOrder
     statusHistory?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    pixBrCode?: SortOrderInput | SortOrder
+    pixExpiresAt?: SortOrderInput | SortOrder
+    pixQrCodeUrl?: SortOrderInput | SortOrder
+    wooviCorrelationId?: SortOrderInput | SortOrder
+    wooviEndToEndId?: SortOrderInput | SortOrder
+    wooviTransactionId?: SortOrderInput | SortOrder
     affiliationId?: SortOrderInput | SortOrder
     _count?: OrderCountOrderByAggregateInput
     _avg?: OrderAvgOrderByAggregateInput
@@ -30616,18 +31880,18 @@ export namespace Prisma {
     cardBrand?: StringNullableWithAggregatesFilter<"Order"> | string | null
     installments?: IntWithAggregatesFilter<"Order"> | number
     externalId?: StringNullableWithAggregatesFilter<"Order"> | string | null
-    wooviCorrelationId?: StringNullableWithAggregatesFilter<"Order"> | string | null
-    wooviTransactionId?: StringNullableWithAggregatesFilter<"Order"> | string | null
-    wooviEndToEndId?: StringNullableWithAggregatesFilter<"Order"> | string | null
-    pixQrCodeUrl?: StringNullableWithAggregatesFilter<"Order"> | string | null
-    pixBrCode?: StringNullableWithAggregatesFilter<"Order"> | string | null
-    pixExpiresAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     paidAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     refundedAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
     isMatured?: BoolWithAggregatesFilter<"Order"> | boolean
     statusHistory?: JsonNullableWithAggregatesFilter<"Order">
     createdAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
+    pixBrCode?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    pixExpiresAt?: DateTimeNullableWithAggregatesFilter<"Order"> | Date | string | null
+    pixQrCodeUrl?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    wooviCorrelationId?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    wooviEndToEndId?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    wooviTransactionId?: StringNullableWithAggregatesFilter<"Order"> | string | null
     affiliationId?: StringNullableWithAggregatesFilter<"Order"> | string | null
   }
 
@@ -30642,8 +31906,8 @@ export namespace Prisma {
     availableAt?: DateTimeFilter<"PendingBalance"> | Date | string
     released?: BoolFilter<"PendingBalance"> | boolean
     createdAt?: DateTimeFilter<"PendingBalance"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type PendingBalanceOrderByWithRelationInput = {
@@ -30654,8 +31918,8 @@ export namespace Prisma {
     availableAt?: SortOrder
     released?: SortOrder
     createdAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     order?: OrderOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type PendingBalanceWhereUniqueInput = Prisma.AtLeast<{
@@ -30669,8 +31933,8 @@ export namespace Prisma {
     availableAt?: DateTimeFilter<"PendingBalance"> | Date | string
     released?: BoolFilter<"PendingBalance"> | boolean
     createdAt?: DateTimeFilter<"PendingBalance"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
 
   export type PendingBalanceOrderByWithAggregationInput = {
@@ -31486,6 +32750,67 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"AdminLog"> | Date | string
   }
 
+  export type TrustedDeviceWhereInput = {
+    AND?: TrustedDeviceWhereInput | TrustedDeviceWhereInput[]
+    OR?: TrustedDeviceWhereInput[]
+    NOT?: TrustedDeviceWhereInput | TrustedDeviceWhereInput[]
+    id?: StringFilter<"TrustedDevice"> | string
+    userId?: StringFilter<"TrustedDevice"> | string
+    ipAddress?: StringFilter<"TrustedDevice"> | string
+    userAgent?: StringNullableFilter<"TrustedDevice"> | string | null
+    expires?: DateTimeFilter<"TrustedDevice"> | Date | string
+    createdAt?: DateTimeFilter<"TrustedDevice"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type TrustedDeviceOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    expires?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type TrustedDeviceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_ipAddress?: TrustedDeviceUserIdIpAddressCompoundUniqueInput
+    AND?: TrustedDeviceWhereInput | TrustedDeviceWhereInput[]
+    OR?: TrustedDeviceWhereInput[]
+    NOT?: TrustedDeviceWhereInput | TrustedDeviceWhereInput[]
+    userId?: StringFilter<"TrustedDevice"> | string
+    ipAddress?: StringFilter<"TrustedDevice"> | string
+    userAgent?: StringNullableFilter<"TrustedDevice"> | string | null
+    expires?: DateTimeFilter<"TrustedDevice"> | Date | string
+    createdAt?: DateTimeFilter<"TrustedDevice"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId_ipAddress">
+
+  export type TrustedDeviceOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    expires?: SortOrder
+    createdAt?: SortOrder
+    _count?: TrustedDeviceCountOrderByAggregateInput
+    _max?: TrustedDeviceMaxOrderByAggregateInput
+    _min?: TrustedDeviceMinOrderByAggregateInput
+  }
+
+  export type TrustedDeviceScalarWhereWithAggregatesInput = {
+    AND?: TrustedDeviceScalarWhereWithAggregatesInput | TrustedDeviceScalarWhereWithAggregatesInput[]
+    OR?: TrustedDeviceScalarWhereWithAggregatesInput[]
+    NOT?: TrustedDeviceScalarWhereWithAggregatesInput | TrustedDeviceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TrustedDevice"> | string
+    userId?: StringWithAggregatesFilter<"TrustedDevice"> | string
+    ipAddress?: StringWithAggregatesFilter<"TrustedDevice"> | string
+    userAgent?: StringNullableWithAggregatesFilter<"TrustedDevice"> | string | null
+    expires?: DateTimeWithAggregatesFilter<"TrustedDevice"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"TrustedDevice"> | Date | string
+  }
+
   export type CustomDomainWhereInput = {
     AND?: CustomDomainWhereInput | CustomDomainWhereInput[]
     OR?: CustomDomainWhereInput[]
@@ -31570,8 +32895,8 @@ export namespace Prisma {
     conversionRate?: FloatFilter<"AffiliateOffer"> | number
     createdAt?: DateTimeFilter<"AffiliateOffer"> | Date | string
     updatedAt?: DateTimeFilter<"AffiliateOffer"> | Date | string
-    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
     affiliations?: AffiliationListRelationFilter
   }
 
@@ -31596,8 +32921,8 @@ export namespace Prisma {
     conversionRate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    product?: ProductOrderByWithRelationInput
     owner?: UserOrderByWithRelationInput
+    product?: ProductOrderByWithRelationInput
     affiliations?: AffiliationOrderByRelationAggregateInput
   }
 
@@ -31625,8 +32950,8 @@ export namespace Prisma {
     conversionRate?: FloatFilter<"AffiliateOffer"> | number
     createdAt?: DateTimeFilter<"AffiliateOffer"> | Date | string
     updatedAt?: DateTimeFilter<"AffiliateOffer"> | Date | string
-    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
     affiliations?: AffiliationListRelationFilter
   }, "id">
 
@@ -31702,8 +33027,8 @@ export namespace Prisma {
     approvedAt?: DateTimeNullableFilter<"Affiliation"> | Date | string | null
     createdAt?: DateTimeFilter<"Affiliation"> | Date | string
     updatedAt?: DateTimeFilter<"Affiliation"> | Date | string
-    offer?: XOR<AffiliateOfferScalarRelationFilter, AffiliateOfferWhereInput>
     affiliate?: XOR<UserScalarRelationFilter, UserWhereInput>
+    offer?: XOR<AffiliateOfferScalarRelationFilter, AffiliateOfferWhereInput>
     sales?: AffiliationSaleListRelationFilter
     orders?: OrderListRelationFilter
   }
@@ -31723,8 +33048,8 @@ export namespace Prisma {
     approvedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    offer?: AffiliateOfferOrderByWithRelationInput
     affiliate?: UserOrderByWithRelationInput
+    offer?: AffiliateOfferOrderByWithRelationInput
     sales?: AffiliationSaleOrderByRelationAggregateInput
     orders?: OrderOrderByRelationAggregateInput
   }
@@ -31747,8 +33072,8 @@ export namespace Prisma {
     approvedAt?: DateTimeNullableFilter<"Affiliation"> | Date | string | null
     createdAt?: DateTimeFilter<"Affiliation"> | Date | string
     updatedAt?: DateTimeFilter<"Affiliation"> | Date | string
-    offer?: XOR<AffiliateOfferScalarRelationFilter, AffiliateOfferWhereInput>
     affiliate?: XOR<UserScalarRelationFilter, UserWhereInput>
+    offer?: XOR<AffiliateOfferScalarRelationFilter, AffiliateOfferWhereInput>
     sales?: AffiliationSaleListRelationFilter
     orders?: OrderListRelationFilter
   }, "id" | "affiliateLink" | "affiliateCode">
@@ -31893,27 +33218,29 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    transactions?: TransactionCreateNestedManyWithoutUserInput
-    webhooks?: WebhookCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
-    badges?: UserBadgeCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -31939,27 +33266,29 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
-    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
-    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -31985,27 +33314,29 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -32031,27 +33362,29 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -32077,13 +33410,14 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -32109,13 +33443,14 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -32141,13 +33476,14 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
   }
 
   export type NotificationCreateInput = {
@@ -32304,10 +33640,10 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     showInShowcase?: boolean
-    user: UserCreateNestedOneWithoutProductsInput
-    orders?: OrderCreateNestedManyWithoutProductInput
-    checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
     affiliateOffers?: AffiliateOfferCreateNestedManyWithoutProductInput
+    checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
+    orders?: OrderCreateNestedManyWithoutProductInput
+    user: UserCreateNestedOneWithoutProductsInput
   }
 
   export type ProductUncheckedCreateInput = {
@@ -32327,9 +33663,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     showInShowcase?: boolean
-    orders?: OrderUncheckedCreateNestedManyWithoutProductInput
-    checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
     affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutProductInput
+    checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
+    orders?: OrderUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductUpdateInput = {
@@ -32348,10 +33684,10 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     showInShowcase?: BoolFieldUpdateOperationsInput | boolean
-    user?: UserUpdateOneRequiredWithoutProductsNestedInput
-    orders?: OrderUpdateManyWithoutProductNestedInput
-    checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutProductNestedInput
+    checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
+    orders?: OrderUpdateManyWithoutProductNestedInput
+    user?: UserUpdateOneRequiredWithoutProductsNestedInput
   }
 
   export type ProductUncheckedUpdateInput = {
@@ -32371,9 +33707,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     showInShowcase?: BoolFieldUpdateOperationsInput | boolean
-    orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
-    checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutProductNestedInput
+    checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type ProductCreateManyInput = {
@@ -32452,23 +33788,23 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutOrdersInput
-    product: ProductCreateNestedOneWithoutOrdersInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
-    affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
     affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
+    affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
+    product: ProductCreateNestedOneWithoutOrdersInput
+    user: UserCreateNestedOneWithoutOrdersInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateInput = {
@@ -32493,21 +33829,21 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
     affiliationId?: string | null
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
     affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUpdateInput = {
@@ -32530,23 +33866,23 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutOrdersNestedInput
-    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
-    affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
+    affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
+    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    user?: UserUpdateOneRequiredWithoutOrdersNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateInput = {
@@ -32571,21 +33907,21 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
     affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderCreateManyInput = {
@@ -32610,18 +33946,18 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
     affiliationId?: string | null
   }
 
@@ -32645,18 +33981,18 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type OrderUncheckedUpdateManyInput = {
@@ -32681,18 +34017,18 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -32702,8 +34038,8 @@ export namespace Prisma {
     availableAt: Date | string
     released?: boolean
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutPendingBalancesInput
     order: OrderCreateNestedOneWithoutPendingBalancesInput
+    user: UserCreateNestedOneWithoutPendingBalancesInput
   }
 
   export type PendingBalanceUncheckedCreateInput = {
@@ -32722,8 +34058,8 @@ export namespace Prisma {
     availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
     released?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutPendingBalancesNestedInput
     order?: OrderUpdateOneRequiredWithoutPendingBalancesNestedInput
+    user?: UserUpdateOneRequiredWithoutPendingBalancesNestedInput
   }
 
   export type PendingBalanceUncheckedUpdateInput = {
@@ -33611,6 +34947,68 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TrustedDeviceCreateInput = {
+    id?: string
+    ipAddress: string
+    userAgent?: string | null
+    expires: Date | string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutTrustedDevicesInput
+  }
+
+  export type TrustedDeviceUncheckedCreateInput = {
+    id?: string
+    userId: string
+    ipAddress: string
+    userAgent?: string | null
+    expires: Date | string
+    createdAt?: Date | string
+  }
+
+  export type TrustedDeviceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutTrustedDevicesNestedInput
+  }
+
+  export type TrustedDeviceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrustedDeviceCreateManyInput = {
+    id?: string
+    userId: string
+    ipAddress: string
+    userAgent?: string | null
+    expires: Date | string
+    createdAt?: Date | string
+  }
+
+  export type TrustedDeviceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TrustedDeviceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    ipAddress?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type CustomDomainCreateInput = {
     id?: string
     domain: string
@@ -33692,8 +35090,8 @@ export namespace Prisma {
     conversionRate?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    product: ProductCreateNestedOneWithoutAffiliateOffersInput
     owner: UserCreateNestedOneWithoutAffiliateOffersInput
+    product: ProductCreateNestedOneWithoutAffiliateOffersInput
     affiliations?: AffiliationCreateNestedManyWithoutOfferInput
   }
 
@@ -33740,8 +35138,8 @@ export namespace Prisma {
     conversionRate?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    product?: ProductUpdateOneRequiredWithoutAffiliateOffersNestedInput
     owner?: UserUpdateOneRequiredWithoutAffiliateOffersNestedInput
+    product?: ProductUpdateOneRequiredWithoutAffiliateOffersNestedInput
     affiliations?: AffiliationUpdateManyWithoutOfferNestedInput
   }
 
@@ -33849,8 +35247,8 @@ export namespace Prisma {
     approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    offer: AffiliateOfferCreateNestedOneWithoutAffiliationsInput
     affiliate: UserCreateNestedOneWithoutAffiliationsInput
+    offer: AffiliateOfferCreateNestedOneWithoutAffiliationsInput
     sales?: AffiliationSaleCreateNestedManyWithoutAffiliationInput
     orders?: OrderCreateNestedManyWithoutAffiliationInput
   }
@@ -33887,8 +35285,8 @@ export namespace Prisma {
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    offer?: AffiliateOfferUpdateOneRequiredWithoutAffiliationsNestedInput
     affiliate?: UserUpdateOneRequiredWithoutAffiliationsNestedInput
+    offer?: AffiliateOfferUpdateOneRequiredWithoutAffiliationsNestedInput
     sales?: AffiliationSaleUpdateManyWithoutAffiliationNestedInput
     orders?: OrderUpdateManyWithoutAffiliationNestedInput
   }
@@ -34144,76 +35542,17 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type ProductListRelationFilter = {
-    every?: ProductWhereInput
-    some?: ProductWhereInput
-    none?: ProductWhereInput
+  export type EnumTwoFactorMethodNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.TwoFactorMethod | EnumTwoFactorMethodFieldRefInput<$PrismaModel> | null
+    in?: $Enums.TwoFactorMethod[] | ListEnumTwoFactorMethodFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.TwoFactorMethod[] | ListEnumTwoFactorMethodFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumTwoFactorMethodNullableFilter<$PrismaModel> | $Enums.TwoFactorMethod | null
   }
 
-  export type OrderListRelationFilter = {
-    every?: OrderWhereInput
-    some?: OrderWhereInput
-    none?: OrderWhereInput
-  }
-
-  export type WithdrawalListRelationFilter = {
-    every?: WithdrawalWhereInput
-    some?: WithdrawalWhereInput
-    none?: WithdrawalWhereInput
-  }
-
-  export type TransactionListRelationFilter = {
-    every?: TransactionWhereInput
-    some?: TransactionWhereInput
-    none?: TransactionWhereInput
-  }
-
-  export type WebhookListRelationFilter = {
-    every?: WebhookWhereInput
-    some?: WebhookWhereInput
-    none?: WebhookWhereInput
-  }
-
-  export type ApiKeyListRelationFilter = {
-    every?: ApiKeyWhereInput
-    some?: ApiKeyWhereInput
-    none?: ApiKeyWhereInput
-  }
-
-  export type KycDocumentListRelationFilter = {
-    every?: KycDocumentWhereInput
-    some?: KycDocumentWhereInput
-    none?: KycDocumentWhereInput
-  }
-
-  export type UserBadgeListRelationFilter = {
-    every?: UserBadgeWhereInput
-    some?: UserBadgeWhereInput
-    none?: UserBadgeWhereInput
-  }
-
-  export type PendingBalanceListRelationFilter = {
-    every?: PendingBalanceWhereInput
-    some?: PendingBalanceWhereInput
-    none?: PendingBalanceWhereInput
-  }
-
-  export type CustomDomainListRelationFilter = {
-    every?: CustomDomainWhereInput
-    some?: CustomDomainWhereInput
-    none?: CustomDomainWhereInput
-  }
-
-  export type NotificationListRelationFilter = {
-    every?: NotificationWhereInput
-    some?: NotificationWhereInput
-    none?: NotificationWhereInput
-  }
-
-  export type AuditLogListRelationFilter = {
-    every?: AuditLogWhereInput
-    some?: AuditLogWhereInput
-    none?: AuditLogWhereInput
+  export type TrustedDeviceListRelationFilter = {
+    every?: TrustedDeviceWhereInput
+    some?: TrustedDeviceWhereInput
+    none?: TrustedDeviceWhereInput
   }
 
   export type AffiliateOfferListRelationFilter = {
@@ -34228,56 +35567,84 @@ export namespace Prisma {
     none?: AffiliationWhereInput
   }
 
+  export type ApiKeyListRelationFilter = {
+    every?: ApiKeyWhereInput
+    some?: ApiKeyWhereInput
+    none?: ApiKeyWhereInput
+  }
+
+  export type AuditLogListRelationFilter = {
+    every?: AuditLogWhereInput
+    some?: AuditLogWhereInput
+    none?: AuditLogWhereInput
+  }
+
+  export type CustomDomainListRelationFilter = {
+    every?: CustomDomainWhereInput
+    some?: CustomDomainWhereInput
+    none?: CustomDomainWhereInput
+  }
+
+  export type KycDocumentListRelationFilter = {
+    every?: KycDocumentWhereInput
+    some?: KycDocumentWhereInput
+    none?: KycDocumentWhereInput
+  }
+
+  export type NotificationListRelationFilter = {
+    every?: NotificationWhereInput
+    some?: NotificationWhereInput
+    none?: NotificationWhereInput
+  }
+
+  export type OrderListRelationFilter = {
+    every?: OrderWhereInput
+    some?: OrderWhereInput
+    none?: OrderWhereInput
+  }
+
+  export type PendingBalanceListRelationFilter = {
+    every?: PendingBalanceWhereInput
+    some?: PendingBalanceWhereInput
+    none?: PendingBalanceWhereInput
+  }
+
+  export type ProductListRelationFilter = {
+    every?: ProductWhereInput
+    some?: ProductWhereInput
+    none?: ProductWhereInput
+  }
+
+  export type TransactionListRelationFilter = {
+    every?: TransactionWhereInput
+    some?: TransactionWhereInput
+    none?: TransactionWhereInput
+  }
+
+  export type UserBadgeListRelationFilter = {
+    every?: UserBadgeWhereInput
+    some?: UserBadgeWhereInput
+    none?: UserBadgeWhereInput
+  }
+
+  export type WebhookListRelationFilter = {
+    every?: WebhookWhereInput
+    some?: WebhookWhereInput
+    none?: WebhookWhereInput
+  }
+
+  export type WithdrawalListRelationFilter = {
+    every?: WithdrawalWhereInput
+    some?: WithdrawalWhereInput
+    none?: WithdrawalWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
-  export type ProductOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type OrderOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type WithdrawalOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type TransactionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type WebhookOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ApiKeyOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type KycDocumentOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type UserBadgeOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type PendingBalanceOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type CustomDomainOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type NotificationOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type AuditLogOrderByRelationAggregateInput = {
+  export type TrustedDeviceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -34286,6 +35653,54 @@ export namespace Prisma {
   }
 
   export type AffiliationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ApiKeyOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AuditLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CustomDomainOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type KycDocumentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type NotificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type OrderOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PendingBalanceOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProductOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TransactionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserBadgeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type WebhookOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type WithdrawalOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -34312,13 +35727,14 @@ export namespace Prisma {
     pendingBalance?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    username?: SortOrder
     showcaseConfig?: SortOrder
     socialLinks?: SortOrder
+    username?: SortOrder
+    lastActiveAt?: SortOrder
+    onboardingSteps?: SortOrder
     twoFactorEnabled?: SortOrder
     twoFactorSecret?: SortOrder
-    onboardingSteps?: SortOrder
-    lastActiveAt?: SortOrder
+    twoFactorMethod?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -34353,9 +35769,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     username?: SortOrder
+    lastActiveAt?: SortOrder
     twoFactorEnabled?: SortOrder
     twoFactorSecret?: SortOrder
-    lastActiveAt?: SortOrder
+    twoFactorMethod?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -34382,9 +35799,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     username?: SortOrder
+    lastActiveAt?: SortOrder
     twoFactorEnabled?: SortOrder
     twoFactorSecret?: SortOrder
-    lastActiveAt?: SortOrder
+    twoFactorMethod?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -34533,6 +35951,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type EnumTwoFactorMethodNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TwoFactorMethod | EnumTwoFactorMethodFieldRefInput<$PrismaModel> | null
+    in?: $Enums.TwoFactorMethod[] | ListEnumTwoFactorMethodFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.TwoFactorMethod[] | ListEnumTwoFactorMethodFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumTwoFactorMethodNullableWithAggregatesFilter<$PrismaModel> | $Enums.TwoFactorMethod | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumTwoFactorMethodNullableFilter<$PrismaModel>
+    _max?: NestedEnumTwoFactorMethodNullableFilter<$PrismaModel>
   }
 
   export type EnumNotificationTypeFilter<$PrismaModel = never> = {
@@ -34780,9 +36208,9 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type ProductScalarRelationFilter = {
-    is?: ProductWhereInput
-    isNot?: ProductWhereInput
+  export type AffiliationSaleNullableScalarRelationFilter = {
+    is?: AffiliationSaleWhereInput | null
+    isNot?: AffiliationSaleWhereInput | null
   }
 
   export type AffiliationNullableScalarRelationFilter = {
@@ -34790,9 +36218,9 @@ export namespace Prisma {
     isNot?: AffiliationWhereInput | null
   }
 
-  export type AffiliationSaleNullableScalarRelationFilter = {
-    is?: AffiliationSaleWhereInput | null
-    isNot?: AffiliationSaleWhereInput | null
+  export type ProductScalarRelationFilter = {
+    is?: ProductWhereInput
+    isNot?: ProductWhereInput
   }
 
   export type OrderCountOrderByAggregateInput = {
@@ -34817,18 +36245,18 @@ export namespace Prisma {
     cardBrand?: SortOrder
     installments?: SortOrder
     externalId?: SortOrder
-    wooviCorrelationId?: SortOrder
-    wooviTransactionId?: SortOrder
-    wooviEndToEndId?: SortOrder
-    pixQrCodeUrl?: SortOrder
-    pixBrCode?: SortOrder
-    pixExpiresAt?: SortOrder
     paidAt?: SortOrder
     refundedAt?: SortOrder
     isMatured?: SortOrder
     statusHistory?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    pixBrCode?: SortOrder
+    pixExpiresAt?: SortOrder
+    pixQrCodeUrl?: SortOrder
+    wooviCorrelationId?: SortOrder
+    wooviEndToEndId?: SortOrder
+    wooviTransactionId?: SortOrder
     affiliationId?: SortOrder
   }
 
@@ -34860,17 +36288,17 @@ export namespace Prisma {
     cardBrand?: SortOrder
     installments?: SortOrder
     externalId?: SortOrder
-    wooviCorrelationId?: SortOrder
-    wooviTransactionId?: SortOrder
-    wooviEndToEndId?: SortOrder
-    pixQrCodeUrl?: SortOrder
-    pixBrCode?: SortOrder
-    pixExpiresAt?: SortOrder
     paidAt?: SortOrder
     refundedAt?: SortOrder
     isMatured?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    pixBrCode?: SortOrder
+    pixExpiresAt?: SortOrder
+    pixQrCodeUrl?: SortOrder
+    wooviCorrelationId?: SortOrder
+    wooviEndToEndId?: SortOrder
+    wooviTransactionId?: SortOrder
     affiliationId?: SortOrder
   }
 
@@ -34895,17 +36323,17 @@ export namespace Prisma {
     cardBrand?: SortOrder
     installments?: SortOrder
     externalId?: SortOrder
-    wooviCorrelationId?: SortOrder
-    wooviTransactionId?: SortOrder
-    wooviEndToEndId?: SortOrder
-    pixQrCodeUrl?: SortOrder
-    pixBrCode?: SortOrder
-    pixExpiresAt?: SortOrder
     paidAt?: SortOrder
     refundedAt?: SortOrder
     isMatured?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    pixBrCode?: SortOrder
+    pixExpiresAt?: SortOrder
+    pixQrCodeUrl?: SortOrder
+    wooviCorrelationId?: SortOrder
+    wooviEndToEndId?: SortOrder
+    wooviTransactionId?: SortOrder
     affiliationId?: SortOrder
   }
 
@@ -35593,6 +37021,38 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type TrustedDeviceUserIdIpAddressCompoundUniqueInput = {
+    userId: string
+    ipAddress: string
+  }
+
+  export type TrustedDeviceCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    expires?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TrustedDeviceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    expires?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TrustedDeviceMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    expires?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type EnumDomainStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.DomainStatus | EnumDomainStatusFieldRefInput<$PrismaModel>
     in?: $Enums.DomainStatus[] | ListEnumDomainStatusFieldRefInput<$PrismaModel>
@@ -35922,88 +37382,11 @@ export namespace Prisma {
     _max?: NestedEnumSaleCommissionStatusFilter<$PrismaModel>
   }
 
-  export type ProductCreateNestedManyWithoutUserInput = {
-    create?: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput> | ProductCreateWithoutUserInput[] | ProductUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ProductCreateOrConnectWithoutUserInput | ProductCreateOrConnectWithoutUserInput[]
-    createMany?: ProductCreateManyUserInputEnvelope
-    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-  }
-
-  export type OrderCreateNestedManyWithoutUserInput = {
-    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
-    createMany?: OrderCreateManyUserInputEnvelope
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-  }
-
-  export type WithdrawalCreateNestedManyWithoutUserInput = {
-    create?: XOR<WithdrawalCreateWithoutUserInput, WithdrawalUncheckedCreateWithoutUserInput> | WithdrawalCreateWithoutUserInput[] | WithdrawalUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutUserInput | WithdrawalCreateOrConnectWithoutUserInput[]
-    createMany?: WithdrawalCreateManyUserInputEnvelope
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-  }
-
-  export type TransactionCreateNestedManyWithoutUserInput = {
-    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
-    createMany?: TransactionCreateManyUserInputEnvelope
-    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-  }
-
-  export type WebhookCreateNestedManyWithoutUserInput = {
-    create?: XOR<WebhookCreateWithoutUserInput, WebhookUncheckedCreateWithoutUserInput> | WebhookCreateWithoutUserInput[] | WebhookUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: WebhookCreateOrConnectWithoutUserInput | WebhookCreateOrConnectWithoutUserInput[]
-    createMany?: WebhookCreateManyUserInputEnvelope
-    connect?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
-  }
-
-  export type ApiKeyCreateNestedManyWithoutUserInput = {
-    create?: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput> | ApiKeyCreateWithoutUserInput[] | ApiKeyUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
-    createMany?: ApiKeyCreateManyUserInputEnvelope
-    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-  }
-
-  export type KycDocumentCreateNestedManyWithoutUserInput = {
-    create?: XOR<KycDocumentCreateWithoutUserInput, KycDocumentUncheckedCreateWithoutUserInput> | KycDocumentCreateWithoutUserInput[] | KycDocumentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: KycDocumentCreateOrConnectWithoutUserInput | KycDocumentCreateOrConnectWithoutUserInput[]
-    createMany?: KycDocumentCreateManyUserInputEnvelope
-    connect?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
-  }
-
-  export type UserBadgeCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserBadgeCreateWithoutUserInput, UserBadgeUncheckedCreateWithoutUserInput> | UserBadgeCreateWithoutUserInput[] | UserBadgeUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserBadgeCreateOrConnectWithoutUserInput | UserBadgeCreateOrConnectWithoutUserInput[]
-    createMany?: UserBadgeCreateManyUserInputEnvelope
-    connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
-  }
-
-  export type PendingBalanceCreateNestedManyWithoutUserInput = {
-    create?: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput> | PendingBalanceCreateWithoutUserInput[] | PendingBalanceUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: PendingBalanceCreateOrConnectWithoutUserInput | PendingBalanceCreateOrConnectWithoutUserInput[]
-    createMany?: PendingBalanceCreateManyUserInputEnvelope
-    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-  }
-
-  export type CustomDomainCreateNestedManyWithoutUserInput = {
-    create?: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput> | CustomDomainCreateWithoutUserInput[] | CustomDomainUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CustomDomainCreateOrConnectWithoutUserInput | CustomDomainCreateOrConnectWithoutUserInput[]
-    createMany?: CustomDomainCreateManyUserInputEnvelope
-    connect?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
-  }
-
-  export type NotificationCreateNestedManyWithoutUserInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-  }
-
-  export type AuditLogCreateNestedManyWithoutUserInput = {
-    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
-    createMany?: AuditLogCreateManyUserInputEnvelope
-    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  export type TrustedDeviceCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrustedDeviceCreateWithoutUserInput, TrustedDeviceUncheckedCreateWithoutUserInput> | TrustedDeviceCreateWithoutUserInput[] | TrustedDeviceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrustedDeviceCreateOrConnectWithoutUserInput | TrustedDeviceCreateOrConnectWithoutUserInput[]
+    createMany?: TrustedDeviceCreateManyUserInputEnvelope
+    connect?: TrustedDeviceWhereUniqueInput | TrustedDeviceWhereUniqueInput[]
   }
 
   export type AffiliateOfferCreateNestedManyWithoutOwnerInput = {
@@ -36020,88 +37403,95 @@ export namespace Prisma {
     connect?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
   }
 
-  export type ProductUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput> | ProductCreateWithoutUserInput[] | ProductUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ProductCreateOrConnectWithoutUserInput | ProductCreateOrConnectWithoutUserInput[]
-    createMany?: ProductCreateManyUserInputEnvelope
-    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-  }
-
-  export type OrderUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
-    createMany?: OrderCreateManyUserInputEnvelope
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-  }
-
-  export type WithdrawalUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<WithdrawalCreateWithoutUserInput, WithdrawalUncheckedCreateWithoutUserInput> | WithdrawalCreateWithoutUserInput[] | WithdrawalUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutUserInput | WithdrawalCreateOrConnectWithoutUserInput[]
-    createMany?: WithdrawalCreateManyUserInputEnvelope
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-  }
-
-  export type TransactionUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
-    createMany?: TransactionCreateManyUserInputEnvelope
-    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-  }
-
-  export type WebhookUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<WebhookCreateWithoutUserInput, WebhookUncheckedCreateWithoutUserInput> | WebhookCreateWithoutUserInput[] | WebhookUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: WebhookCreateOrConnectWithoutUserInput | WebhookCreateOrConnectWithoutUserInput[]
-    createMany?: WebhookCreateManyUserInputEnvelope
-    connect?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
-  }
-
-  export type ApiKeyUncheckedCreateNestedManyWithoutUserInput = {
+  export type ApiKeyCreateNestedManyWithoutUserInput = {
     create?: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput> | ApiKeyCreateWithoutUserInput[] | ApiKeyUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
     createMany?: ApiKeyCreateManyUserInputEnvelope
     connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
   }
 
-  export type KycDocumentUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<KycDocumentCreateWithoutUserInput, KycDocumentUncheckedCreateWithoutUserInput> | KycDocumentCreateWithoutUserInput[] | KycDocumentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: KycDocumentCreateOrConnectWithoutUserInput | KycDocumentCreateOrConnectWithoutUserInput[]
-    createMany?: KycDocumentCreateManyUserInputEnvelope
-    connect?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
+  export type AuditLogCreateNestedManyWithoutUserInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
   }
 
-  export type UserBadgeUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserBadgeCreateWithoutUserInput, UserBadgeUncheckedCreateWithoutUserInput> | UserBadgeCreateWithoutUserInput[] | UserBadgeUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserBadgeCreateOrConnectWithoutUserInput | UserBadgeCreateOrConnectWithoutUserInput[]
-    createMany?: UserBadgeCreateManyUserInputEnvelope
-    connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
-  }
-
-  export type PendingBalanceUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput> | PendingBalanceCreateWithoutUserInput[] | PendingBalanceUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: PendingBalanceCreateOrConnectWithoutUserInput | PendingBalanceCreateOrConnectWithoutUserInput[]
-    createMany?: PendingBalanceCreateManyUserInputEnvelope
-    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-  }
-
-  export type CustomDomainUncheckedCreateNestedManyWithoutUserInput = {
+  export type CustomDomainCreateNestedManyWithoutUserInput = {
     create?: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput> | CustomDomainCreateWithoutUserInput[] | CustomDomainUncheckedCreateWithoutUserInput[]
     connectOrCreate?: CustomDomainCreateOrConnectWithoutUserInput | CustomDomainCreateOrConnectWithoutUserInput[]
     createMany?: CustomDomainCreateManyUserInputEnvelope
     connect?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
   }
 
-  export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
+  export type KycDocumentCreateNestedManyWithoutUserInput = {
+    create?: XOR<KycDocumentCreateWithoutUserInput, KycDocumentUncheckedCreateWithoutUserInput> | KycDocumentCreateWithoutUserInput[] | KycDocumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: KycDocumentCreateOrConnectWithoutUserInput | KycDocumentCreateOrConnectWithoutUserInput[]
+    createMany?: KycDocumentCreateManyUserInputEnvelope
+    connect?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
+  }
+
+  export type NotificationCreateNestedManyWithoutUserInput = {
     create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
     createMany?: NotificationCreateManyUserInputEnvelope
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
-  export type AuditLogUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
-    createMany?: AuditLogCreateManyUserInputEnvelope
-    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  export type OrderCreateNestedManyWithoutUserInput = {
+    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
+    createMany?: OrderCreateManyUserInputEnvelope
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
+  export type PendingBalanceCreateNestedManyWithoutUserInput = {
+    create?: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput> | PendingBalanceCreateWithoutUserInput[] | PendingBalanceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PendingBalanceCreateOrConnectWithoutUserInput | PendingBalanceCreateOrConnectWithoutUserInput[]
+    createMany?: PendingBalanceCreateManyUserInputEnvelope
+    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+  }
+
+  export type ProductCreateNestedManyWithoutUserInput = {
+    create?: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput> | ProductCreateWithoutUserInput[] | ProductUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutUserInput | ProductCreateOrConnectWithoutUserInput[]
+    createMany?: ProductCreateManyUserInputEnvelope
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+  }
+
+  export type TransactionCreateNestedManyWithoutUserInput = {
+    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
+    createMany?: TransactionCreateManyUserInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type UserBadgeCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserBadgeCreateWithoutUserInput, UserBadgeUncheckedCreateWithoutUserInput> | UserBadgeCreateWithoutUserInput[] | UserBadgeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserBadgeCreateOrConnectWithoutUserInput | UserBadgeCreateOrConnectWithoutUserInput[]
+    createMany?: UserBadgeCreateManyUserInputEnvelope
+    connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
+  }
+
+  export type WebhookCreateNestedManyWithoutUserInput = {
+    create?: XOR<WebhookCreateWithoutUserInput, WebhookUncheckedCreateWithoutUserInput> | WebhookCreateWithoutUserInput[] | WebhookUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WebhookCreateOrConnectWithoutUserInput | WebhookCreateOrConnectWithoutUserInput[]
+    createMany?: WebhookCreateManyUserInputEnvelope
+    connect?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
+  }
+
+  export type WithdrawalCreateNestedManyWithoutUserInput = {
+    create?: XOR<WithdrawalCreateWithoutUserInput, WithdrawalUncheckedCreateWithoutUserInput> | WithdrawalCreateWithoutUserInput[] | WithdrawalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutUserInput | WithdrawalCreateOrConnectWithoutUserInput[]
+    createMany?: WithdrawalCreateManyUserInputEnvelope
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+  }
+
+  export type TrustedDeviceUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TrustedDeviceCreateWithoutUserInput, TrustedDeviceUncheckedCreateWithoutUserInput> | TrustedDeviceCreateWithoutUserInput[] | TrustedDeviceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrustedDeviceCreateOrConnectWithoutUserInput | TrustedDeviceCreateOrConnectWithoutUserInput[]
+    createMany?: TrustedDeviceCreateManyUserInputEnvelope
+    connect?: TrustedDeviceWhereUniqueInput | TrustedDeviceWhereUniqueInput[]
   }
 
   export type AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput = {
@@ -36116,6 +37506,90 @@ export namespace Prisma {
     connectOrCreate?: AffiliationCreateOrConnectWithoutAffiliateInput | AffiliationCreateOrConnectWithoutAffiliateInput[]
     createMany?: AffiliationCreateManyAffiliateInputEnvelope
     connect?: AffiliationWhereUniqueInput | AffiliationWhereUniqueInput[]
+  }
+
+  export type ApiKeyUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput> | ApiKeyCreateWithoutUserInput[] | ApiKeyUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
+    createMany?: ApiKeyCreateManyUserInputEnvelope
+    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+  }
+
+  export type AuditLogUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  }
+
+  export type CustomDomainUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput> | CustomDomainCreateWithoutUserInput[] | CustomDomainUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CustomDomainCreateOrConnectWithoutUserInput | CustomDomainCreateOrConnectWithoutUserInput[]
+    createMany?: CustomDomainCreateManyUserInputEnvelope
+    connect?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+  }
+
+  export type KycDocumentUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<KycDocumentCreateWithoutUserInput, KycDocumentUncheckedCreateWithoutUserInput> | KycDocumentCreateWithoutUserInput[] | KycDocumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: KycDocumentCreateOrConnectWithoutUserInput | KycDocumentCreateOrConnectWithoutUserInput[]
+    createMany?: KycDocumentCreateManyUserInputEnvelope
+    connect?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type OrderUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
+    createMany?: OrderCreateManyUserInputEnvelope
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
+  export type PendingBalanceUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput> | PendingBalanceCreateWithoutUserInput[] | PendingBalanceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PendingBalanceCreateOrConnectWithoutUserInput | PendingBalanceCreateOrConnectWithoutUserInput[]
+    createMany?: PendingBalanceCreateManyUserInputEnvelope
+    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+  }
+
+  export type ProductUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput> | ProductCreateWithoutUserInput[] | ProductUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutUserInput | ProductCreateOrConnectWithoutUserInput[]
+    createMany?: ProductCreateManyUserInputEnvelope
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+  }
+
+  export type TransactionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
+    createMany?: TransactionCreateManyUserInputEnvelope
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+  }
+
+  export type UserBadgeUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserBadgeCreateWithoutUserInput, UserBadgeUncheckedCreateWithoutUserInput> | UserBadgeCreateWithoutUserInput[] | UserBadgeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserBadgeCreateOrConnectWithoutUserInput | UserBadgeCreateOrConnectWithoutUserInput[]
+    createMany?: UserBadgeCreateManyUserInputEnvelope
+    connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
+  }
+
+  export type WebhookUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<WebhookCreateWithoutUserInput, WebhookUncheckedCreateWithoutUserInput> | WebhookCreateWithoutUserInput[] | WebhookUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WebhookCreateOrConnectWithoutUserInput | WebhookCreateOrConnectWithoutUserInput[]
+    createMany?: WebhookCreateManyUserInputEnvelope
+    connect?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
+  }
+
+  export type WithdrawalUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<WithdrawalCreateWithoutUserInput, WithdrawalUncheckedCreateWithoutUserInput> | WithdrawalCreateWithoutUserInput[] | WithdrawalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutUserInput | WithdrawalCreateOrConnectWithoutUserInput[]
+    createMany?: WithdrawalCreateManyUserInputEnvelope
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -36158,172 +37632,22 @@ export namespace Prisma {
     set?: boolean
   }
 
-  export type ProductUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput> | ProductCreateWithoutUserInput[] | ProductUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ProductCreateOrConnectWithoutUserInput | ProductCreateOrConnectWithoutUserInput[]
-    upsert?: ProductUpsertWithWhereUniqueWithoutUserInput | ProductUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ProductCreateManyUserInputEnvelope
-    set?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    disconnect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    delete?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    update?: ProductUpdateWithWhereUniqueWithoutUserInput | ProductUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ProductUpdateManyWithWhereWithoutUserInput | ProductUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
+  export type NullableEnumTwoFactorMethodFieldUpdateOperationsInput = {
+    set?: $Enums.TwoFactorMethod | null
   }
 
-  export type OrderUpdateManyWithoutUserNestedInput = {
-    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
-    upsert?: OrderUpsertWithWhereUniqueWithoutUserInput | OrderUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: OrderCreateManyUserInputEnvelope
-    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    update?: OrderUpdateWithWhereUniqueWithoutUserInput | OrderUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: OrderUpdateManyWithWhereWithoutUserInput | OrderUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
-  }
-
-  export type WithdrawalUpdateManyWithoutUserNestedInput = {
-    create?: XOR<WithdrawalCreateWithoutUserInput, WithdrawalUncheckedCreateWithoutUserInput> | WithdrawalCreateWithoutUserInput[] | WithdrawalUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutUserInput | WithdrawalCreateOrConnectWithoutUserInput[]
-    upsert?: WithdrawalUpsertWithWhereUniqueWithoutUserInput | WithdrawalUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: WithdrawalCreateManyUserInputEnvelope
-    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    update?: WithdrawalUpdateWithWhereUniqueWithoutUserInput | WithdrawalUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: WithdrawalUpdateManyWithWhereWithoutUserInput | WithdrawalUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
-  }
-
-  export type TransactionUpdateManyWithoutUserNestedInput = {
-    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
-    upsert?: TransactionUpsertWithWhereUniqueWithoutUserInput | TransactionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: TransactionCreateManyUserInputEnvelope
-    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    update?: TransactionUpdateWithWhereUniqueWithoutUserInput | TransactionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: TransactionUpdateManyWithWhereWithoutUserInput | TransactionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
-  }
-
-  export type WebhookUpdateManyWithoutUserNestedInput = {
-    create?: XOR<WebhookCreateWithoutUserInput, WebhookUncheckedCreateWithoutUserInput> | WebhookCreateWithoutUserInput[] | WebhookUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: WebhookCreateOrConnectWithoutUserInput | WebhookCreateOrConnectWithoutUserInput[]
-    upsert?: WebhookUpsertWithWhereUniqueWithoutUserInput | WebhookUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: WebhookCreateManyUserInputEnvelope
-    set?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
-    disconnect?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
-    delete?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
-    connect?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
-    update?: WebhookUpdateWithWhereUniqueWithoutUserInput | WebhookUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: WebhookUpdateManyWithWhereWithoutUserInput | WebhookUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: WebhookScalarWhereInput | WebhookScalarWhereInput[]
-  }
-
-  export type ApiKeyUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput> | ApiKeyCreateWithoutUserInput[] | ApiKeyUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
-    upsert?: ApiKeyUpsertWithWhereUniqueWithoutUserInput | ApiKeyUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ApiKeyCreateManyUserInputEnvelope
-    set?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    disconnect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    delete?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    update?: ApiKeyUpdateWithWhereUniqueWithoutUserInput | ApiKeyUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ApiKeyUpdateManyWithWhereWithoutUserInput | ApiKeyUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
-  }
-
-  export type KycDocumentUpdateManyWithoutUserNestedInput = {
-    create?: XOR<KycDocumentCreateWithoutUserInput, KycDocumentUncheckedCreateWithoutUserInput> | KycDocumentCreateWithoutUserInput[] | KycDocumentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: KycDocumentCreateOrConnectWithoutUserInput | KycDocumentCreateOrConnectWithoutUserInput[]
-    upsert?: KycDocumentUpsertWithWhereUniqueWithoutUserInput | KycDocumentUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: KycDocumentCreateManyUserInputEnvelope
-    set?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
-    disconnect?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
-    delete?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
-    connect?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
-    update?: KycDocumentUpdateWithWhereUniqueWithoutUserInput | KycDocumentUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: KycDocumentUpdateManyWithWhereWithoutUserInput | KycDocumentUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: KycDocumentScalarWhereInput | KycDocumentScalarWhereInput[]
-  }
-
-  export type UserBadgeUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserBadgeCreateWithoutUserInput, UserBadgeUncheckedCreateWithoutUserInput> | UserBadgeCreateWithoutUserInput[] | UserBadgeUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserBadgeCreateOrConnectWithoutUserInput | UserBadgeCreateOrConnectWithoutUserInput[]
-    upsert?: UserBadgeUpsertWithWhereUniqueWithoutUserInput | UserBadgeUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserBadgeCreateManyUserInputEnvelope
-    set?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
-    disconnect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
-    delete?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
-    connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
-    update?: UserBadgeUpdateWithWhereUniqueWithoutUserInput | UserBadgeUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserBadgeUpdateManyWithWhereWithoutUserInput | UserBadgeUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
-  }
-
-  export type PendingBalanceUpdateManyWithoutUserNestedInput = {
-    create?: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput> | PendingBalanceCreateWithoutUserInput[] | PendingBalanceUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: PendingBalanceCreateOrConnectWithoutUserInput | PendingBalanceCreateOrConnectWithoutUserInput[]
-    upsert?: PendingBalanceUpsertWithWhereUniqueWithoutUserInput | PendingBalanceUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: PendingBalanceCreateManyUserInputEnvelope
-    set?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-    disconnect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-    delete?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-    update?: PendingBalanceUpdateWithWhereUniqueWithoutUserInput | PendingBalanceUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: PendingBalanceUpdateManyWithWhereWithoutUserInput | PendingBalanceUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
-  }
-
-  export type CustomDomainUpdateManyWithoutUserNestedInput = {
-    create?: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput> | CustomDomainCreateWithoutUserInput[] | CustomDomainUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CustomDomainCreateOrConnectWithoutUserInput | CustomDomainCreateOrConnectWithoutUserInput[]
-    upsert?: CustomDomainUpsertWithWhereUniqueWithoutUserInput | CustomDomainUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: CustomDomainCreateManyUserInputEnvelope
-    set?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
-    disconnect?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
-    delete?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
-    connect?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
-    update?: CustomDomainUpdateWithWhereUniqueWithoutUserInput | CustomDomainUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: CustomDomainUpdateManyWithWhereWithoutUserInput | CustomDomainUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: CustomDomainScalarWhereInput | CustomDomainScalarWhereInput[]
-  }
-
-  export type NotificationUpdateManyWithoutUserNestedInput = {
-    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
-    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: NotificationCreateManyUserInputEnvelope
-    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
-    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-  }
-
-  export type AuditLogUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
-    upsert?: AuditLogUpsertWithWhereUniqueWithoutUserInput | AuditLogUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AuditLogCreateManyUserInputEnvelope
-    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  export type TrustedDeviceUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrustedDeviceCreateWithoutUserInput, TrustedDeviceUncheckedCreateWithoutUserInput> | TrustedDeviceCreateWithoutUserInput[] | TrustedDeviceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrustedDeviceCreateOrConnectWithoutUserInput | TrustedDeviceCreateOrConnectWithoutUserInput[]
+    upsert?: TrustedDeviceUpsertWithWhereUniqueWithoutUserInput | TrustedDeviceUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrustedDeviceCreateManyUserInputEnvelope
+    set?: TrustedDeviceWhereUniqueInput | TrustedDeviceWhereUniqueInput[]
+    disconnect?: TrustedDeviceWhereUniqueInput | TrustedDeviceWhereUniqueInput[]
+    delete?: TrustedDeviceWhereUniqueInput | TrustedDeviceWhereUniqueInput[]
+    connect?: TrustedDeviceWhereUniqueInput | TrustedDeviceWhereUniqueInput[]
+    update?: TrustedDeviceUpdateWithWhereUniqueWithoutUserInput | TrustedDeviceUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrustedDeviceUpdateManyWithWhereWithoutUserInput | TrustedDeviceUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrustedDeviceScalarWhereInput | TrustedDeviceScalarWhereInput[]
   }
 
   export type AffiliateOfferUpdateManyWithoutOwnerNestedInput = {
@@ -36354,77 +37678,7 @@ export namespace Prisma {
     deleteMany?: AffiliationScalarWhereInput | AffiliationScalarWhereInput[]
   }
 
-  export type ProductUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput> | ProductCreateWithoutUserInput[] | ProductUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ProductCreateOrConnectWithoutUserInput | ProductCreateOrConnectWithoutUserInput[]
-    upsert?: ProductUpsertWithWhereUniqueWithoutUserInput | ProductUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ProductCreateManyUserInputEnvelope
-    set?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    disconnect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    delete?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
-    update?: ProductUpdateWithWhereUniqueWithoutUserInput | ProductUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ProductUpdateManyWithWhereWithoutUserInput | ProductUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
-  }
-
-  export type OrderUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
-    upsert?: OrderUpsertWithWhereUniqueWithoutUserInput | OrderUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: OrderCreateManyUserInputEnvelope
-    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    update?: OrderUpdateWithWhereUniqueWithoutUserInput | OrderUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: OrderUpdateManyWithWhereWithoutUserInput | OrderUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
-  }
-
-  export type WithdrawalUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<WithdrawalCreateWithoutUserInput, WithdrawalUncheckedCreateWithoutUserInput> | WithdrawalCreateWithoutUserInput[] | WithdrawalUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: WithdrawalCreateOrConnectWithoutUserInput | WithdrawalCreateOrConnectWithoutUserInput[]
-    upsert?: WithdrawalUpsertWithWhereUniqueWithoutUserInput | WithdrawalUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: WithdrawalCreateManyUserInputEnvelope
-    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
-    update?: WithdrawalUpdateWithWhereUniqueWithoutUserInput | WithdrawalUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: WithdrawalUpdateManyWithWhereWithoutUserInput | WithdrawalUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
-  }
-
-  export type TransactionUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
-    upsert?: TransactionUpsertWithWhereUniqueWithoutUserInput | TransactionUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: TransactionCreateManyUserInputEnvelope
-    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
-    update?: TransactionUpdateWithWhereUniqueWithoutUserInput | TransactionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: TransactionUpdateManyWithWhereWithoutUserInput | TransactionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
-  }
-
-  export type WebhookUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<WebhookCreateWithoutUserInput, WebhookUncheckedCreateWithoutUserInput> | WebhookCreateWithoutUserInput[] | WebhookUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: WebhookCreateOrConnectWithoutUserInput | WebhookCreateOrConnectWithoutUserInput[]
-    upsert?: WebhookUpsertWithWhereUniqueWithoutUserInput | WebhookUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: WebhookCreateManyUserInputEnvelope
-    set?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
-    disconnect?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
-    delete?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
-    connect?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
-    update?: WebhookUpdateWithWhereUniqueWithoutUserInput | WebhookUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: WebhookUpdateManyWithWhereWithoutUserInput | WebhookUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: WebhookScalarWhereInput | WebhookScalarWhereInput[]
-  }
-
-  export type ApiKeyUncheckedUpdateManyWithoutUserNestedInput = {
+  export type ApiKeyUpdateManyWithoutUserNestedInput = {
     create?: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput> | ApiKeyCreateWithoutUserInput[] | ApiKeyUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
     upsert?: ApiKeyUpsertWithWhereUniqueWithoutUserInput | ApiKeyUpsertWithWhereUniqueWithoutUserInput[]
@@ -36438,49 +37692,21 @@ export namespace Prisma {
     deleteMany?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
   }
 
-  export type KycDocumentUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<KycDocumentCreateWithoutUserInput, KycDocumentUncheckedCreateWithoutUserInput> | KycDocumentCreateWithoutUserInput[] | KycDocumentUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: KycDocumentCreateOrConnectWithoutUserInput | KycDocumentCreateOrConnectWithoutUserInput[]
-    upsert?: KycDocumentUpsertWithWhereUniqueWithoutUserInput | KycDocumentUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: KycDocumentCreateManyUserInputEnvelope
-    set?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
-    disconnect?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
-    delete?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
-    connect?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
-    update?: KycDocumentUpdateWithWhereUniqueWithoutUserInput | KycDocumentUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: KycDocumentUpdateManyWithWhereWithoutUserInput | KycDocumentUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: KycDocumentScalarWhereInput | KycDocumentScalarWhereInput[]
+  export type AuditLogUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutUserInput | AuditLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
   }
 
-  export type UserBadgeUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserBadgeCreateWithoutUserInput, UserBadgeUncheckedCreateWithoutUserInput> | UserBadgeCreateWithoutUserInput[] | UserBadgeUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserBadgeCreateOrConnectWithoutUserInput | UserBadgeCreateOrConnectWithoutUserInput[]
-    upsert?: UserBadgeUpsertWithWhereUniqueWithoutUserInput | UserBadgeUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserBadgeCreateManyUserInputEnvelope
-    set?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
-    disconnect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
-    delete?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
-    connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
-    update?: UserBadgeUpdateWithWhereUniqueWithoutUserInput | UserBadgeUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserBadgeUpdateManyWithWhereWithoutUserInput | UserBadgeUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
-  }
-
-  export type PendingBalanceUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput> | PendingBalanceCreateWithoutUserInput[] | PendingBalanceUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: PendingBalanceCreateOrConnectWithoutUserInput | PendingBalanceCreateOrConnectWithoutUserInput[]
-    upsert?: PendingBalanceUpsertWithWhereUniqueWithoutUserInput | PendingBalanceUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: PendingBalanceCreateManyUserInputEnvelope
-    set?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-    disconnect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-    delete?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-    update?: PendingBalanceUpdateWithWhereUniqueWithoutUserInput | PendingBalanceUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: PendingBalanceUpdateManyWithWhereWithoutUserInput | PendingBalanceUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
-  }
-
-  export type CustomDomainUncheckedUpdateManyWithoutUserNestedInput = {
+  export type CustomDomainUpdateManyWithoutUserNestedInput = {
     create?: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput> | CustomDomainCreateWithoutUserInput[] | CustomDomainUncheckedCreateWithoutUserInput[]
     connectOrCreate?: CustomDomainCreateOrConnectWithoutUserInput | CustomDomainCreateOrConnectWithoutUserInput[]
     upsert?: CustomDomainUpsertWithWhereUniqueWithoutUserInput | CustomDomainUpsertWithWhereUniqueWithoutUserInput[]
@@ -36494,7 +37720,21 @@ export namespace Prisma {
     deleteMany?: CustomDomainScalarWhereInput | CustomDomainScalarWhereInput[]
   }
 
-  export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
+  export type KycDocumentUpdateManyWithoutUserNestedInput = {
+    create?: XOR<KycDocumentCreateWithoutUserInput, KycDocumentUncheckedCreateWithoutUserInput> | KycDocumentCreateWithoutUserInput[] | KycDocumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: KycDocumentCreateOrConnectWithoutUserInput | KycDocumentCreateOrConnectWithoutUserInput[]
+    upsert?: KycDocumentUpsertWithWhereUniqueWithoutUserInput | KycDocumentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: KycDocumentCreateManyUserInputEnvelope
+    set?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
+    disconnect?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
+    delete?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
+    connect?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
+    update?: KycDocumentUpdateWithWhereUniqueWithoutUserInput | KycDocumentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: KycDocumentUpdateManyWithWhereWithoutUserInput | KycDocumentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: KycDocumentScalarWhereInput | KycDocumentScalarWhereInput[]
+  }
+
+  export type NotificationUpdateManyWithoutUserNestedInput = {
     create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
     upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
@@ -36508,18 +37748,116 @@ export namespace Prisma {
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
-  export type AuditLogUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
-    upsert?: AuditLogUpsertWithWhereUniqueWithoutUserInput | AuditLogUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AuditLogCreateManyUserInputEnvelope
-    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  export type OrderUpdateManyWithoutUserNestedInput = {
+    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutUserInput | OrderUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: OrderCreateManyUserInputEnvelope
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutUserInput | OrderUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutUserInput | OrderUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
+  export type PendingBalanceUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput> | PendingBalanceCreateWithoutUserInput[] | PendingBalanceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PendingBalanceCreateOrConnectWithoutUserInput | PendingBalanceCreateOrConnectWithoutUserInput[]
+    upsert?: PendingBalanceUpsertWithWhereUniqueWithoutUserInput | PendingBalanceUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PendingBalanceCreateManyUserInputEnvelope
+    set?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    disconnect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    delete?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    update?: PendingBalanceUpdateWithWhereUniqueWithoutUserInput | PendingBalanceUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PendingBalanceUpdateManyWithWhereWithoutUserInput | PendingBalanceUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
+  }
+
+  export type ProductUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput> | ProductCreateWithoutUserInput[] | ProductUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutUserInput | ProductCreateOrConnectWithoutUserInput[]
+    upsert?: ProductUpsertWithWhereUniqueWithoutUserInput | ProductUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ProductCreateManyUserInputEnvelope
+    set?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    disconnect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    delete?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    update?: ProductUpdateWithWhereUniqueWithoutUserInput | ProductUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ProductUpdateManyWithWhereWithoutUserInput | ProductUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
+  }
+
+  export type TransactionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutUserInput | TransactionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TransactionCreateManyUserInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutUserInput | TransactionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutUserInput | TransactionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type UserBadgeUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserBadgeCreateWithoutUserInput, UserBadgeUncheckedCreateWithoutUserInput> | UserBadgeCreateWithoutUserInput[] | UserBadgeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserBadgeCreateOrConnectWithoutUserInput | UserBadgeCreateOrConnectWithoutUserInput[]
+    upsert?: UserBadgeUpsertWithWhereUniqueWithoutUserInput | UserBadgeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserBadgeCreateManyUserInputEnvelope
+    set?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
+    disconnect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
+    delete?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
+    connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
+    update?: UserBadgeUpdateWithWhereUniqueWithoutUserInput | UserBadgeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserBadgeUpdateManyWithWhereWithoutUserInput | UserBadgeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
+  }
+
+  export type WebhookUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WebhookCreateWithoutUserInput, WebhookUncheckedCreateWithoutUserInput> | WebhookCreateWithoutUserInput[] | WebhookUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WebhookCreateOrConnectWithoutUserInput | WebhookCreateOrConnectWithoutUserInput[]
+    upsert?: WebhookUpsertWithWhereUniqueWithoutUserInput | WebhookUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WebhookCreateManyUserInputEnvelope
+    set?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
+    disconnect?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
+    delete?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
+    connect?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
+    update?: WebhookUpdateWithWhereUniqueWithoutUserInput | WebhookUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WebhookUpdateManyWithWhereWithoutUserInput | WebhookUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WebhookScalarWhereInput | WebhookScalarWhereInput[]
+  }
+
+  export type WithdrawalUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WithdrawalCreateWithoutUserInput, WithdrawalUncheckedCreateWithoutUserInput> | WithdrawalCreateWithoutUserInput[] | WithdrawalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutUserInput | WithdrawalCreateOrConnectWithoutUserInput[]
+    upsert?: WithdrawalUpsertWithWhereUniqueWithoutUserInput | WithdrawalUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WithdrawalCreateManyUserInputEnvelope
+    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    update?: WithdrawalUpdateWithWhereUniqueWithoutUserInput | WithdrawalUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WithdrawalUpdateManyWithWhereWithoutUserInput | WithdrawalUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
+  }
+
+  export type TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TrustedDeviceCreateWithoutUserInput, TrustedDeviceUncheckedCreateWithoutUserInput> | TrustedDeviceCreateWithoutUserInput[] | TrustedDeviceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TrustedDeviceCreateOrConnectWithoutUserInput | TrustedDeviceCreateOrConnectWithoutUserInput[]
+    upsert?: TrustedDeviceUpsertWithWhereUniqueWithoutUserInput | TrustedDeviceUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TrustedDeviceCreateManyUserInputEnvelope
+    set?: TrustedDeviceWhereUniqueInput | TrustedDeviceWhereUniqueInput[]
+    disconnect?: TrustedDeviceWhereUniqueInput | TrustedDeviceWhereUniqueInput[]
+    delete?: TrustedDeviceWhereUniqueInput | TrustedDeviceWhereUniqueInput[]
+    connect?: TrustedDeviceWhereUniqueInput | TrustedDeviceWhereUniqueInput[]
+    update?: TrustedDeviceUpdateWithWhereUniqueWithoutUserInput | TrustedDeviceUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TrustedDeviceUpdateManyWithWhereWithoutUserInput | TrustedDeviceUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TrustedDeviceScalarWhereInput | TrustedDeviceScalarWhereInput[]
   }
 
   export type AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput = {
@@ -36548,6 +37886,174 @@ export namespace Prisma {
     update?: AffiliationUpdateWithWhereUniqueWithoutAffiliateInput | AffiliationUpdateWithWhereUniqueWithoutAffiliateInput[]
     updateMany?: AffiliationUpdateManyWithWhereWithoutAffiliateInput | AffiliationUpdateManyWithWhereWithoutAffiliateInput[]
     deleteMany?: AffiliationScalarWhereInput | AffiliationScalarWhereInput[]
+  }
+
+  export type ApiKeyUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput> | ApiKeyCreateWithoutUserInput[] | ApiKeyUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
+    upsert?: ApiKeyUpsertWithWhereUniqueWithoutUserInput | ApiKeyUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ApiKeyCreateManyUserInputEnvelope
+    set?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    disconnect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    delete?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    update?: ApiKeyUpdateWithWhereUniqueWithoutUserInput | ApiKeyUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ApiKeyUpdateManyWithWhereWithoutUserInput | ApiKeyUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutUserInput | AuditLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
+  export type CustomDomainUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput> | CustomDomainCreateWithoutUserInput[] | CustomDomainUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CustomDomainCreateOrConnectWithoutUserInput | CustomDomainCreateOrConnectWithoutUserInput[]
+    upsert?: CustomDomainUpsertWithWhereUniqueWithoutUserInput | CustomDomainUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CustomDomainCreateManyUserInputEnvelope
+    set?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+    disconnect?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+    delete?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+    connect?: CustomDomainWhereUniqueInput | CustomDomainWhereUniqueInput[]
+    update?: CustomDomainUpdateWithWhereUniqueWithoutUserInput | CustomDomainUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CustomDomainUpdateManyWithWhereWithoutUserInput | CustomDomainUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CustomDomainScalarWhereInput | CustomDomainScalarWhereInput[]
+  }
+
+  export type KycDocumentUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<KycDocumentCreateWithoutUserInput, KycDocumentUncheckedCreateWithoutUserInput> | KycDocumentCreateWithoutUserInput[] | KycDocumentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: KycDocumentCreateOrConnectWithoutUserInput | KycDocumentCreateOrConnectWithoutUserInput[]
+    upsert?: KycDocumentUpsertWithWhereUniqueWithoutUserInput | KycDocumentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: KycDocumentCreateManyUserInputEnvelope
+    set?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
+    disconnect?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
+    delete?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
+    connect?: KycDocumentWhereUniqueInput | KycDocumentWhereUniqueInput[]
+    update?: KycDocumentUpdateWithWhereUniqueWithoutUserInput | KycDocumentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: KycDocumentUpdateManyWithWhereWithoutUserInput | KycDocumentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: KycDocumentScalarWhereInput | KycDocumentScalarWhereInput[]
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type OrderUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput> | OrderCreateWithoutUserInput[] | OrderUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutUserInput | OrderCreateOrConnectWithoutUserInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutUserInput | OrderUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: OrderCreateManyUserInputEnvelope
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutUserInput | OrderUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutUserInput | OrderUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  }
+
+  export type PendingBalanceUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput> | PendingBalanceCreateWithoutUserInput[] | PendingBalanceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PendingBalanceCreateOrConnectWithoutUserInput | PendingBalanceCreateOrConnectWithoutUserInput[]
+    upsert?: PendingBalanceUpsertWithWhereUniqueWithoutUserInput | PendingBalanceUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PendingBalanceCreateManyUserInputEnvelope
+    set?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    disconnect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    delete?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    update?: PendingBalanceUpdateWithWhereUniqueWithoutUserInput | PendingBalanceUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PendingBalanceUpdateManyWithWhereWithoutUserInput | PendingBalanceUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
+  }
+
+  export type ProductUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput> | ProductCreateWithoutUserInput[] | ProductUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ProductCreateOrConnectWithoutUserInput | ProductCreateOrConnectWithoutUserInput[]
+    upsert?: ProductUpsertWithWhereUniqueWithoutUserInput | ProductUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ProductCreateManyUserInputEnvelope
+    set?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    disconnect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    delete?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    connect?: ProductWhereUniqueInput | ProductWhereUniqueInput[]
+    update?: ProductUpdateWithWhereUniqueWithoutUserInput | ProductUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ProductUpdateManyWithWhereWithoutUserInput | ProductUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ProductScalarWhereInput | ProductScalarWhereInput[]
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput> | TransactionCreateWithoutUserInput[] | TransactionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: TransactionCreateOrConnectWithoutUserInput | TransactionCreateOrConnectWithoutUserInput[]
+    upsert?: TransactionUpsertWithWhereUniqueWithoutUserInput | TransactionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: TransactionCreateManyUserInputEnvelope
+    set?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    disconnect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    delete?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
+    update?: TransactionUpdateWithWhereUniqueWithoutUserInput | TransactionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: TransactionUpdateManyWithWhereWithoutUserInput | TransactionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+  }
+
+  export type UserBadgeUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserBadgeCreateWithoutUserInput, UserBadgeUncheckedCreateWithoutUserInput> | UserBadgeCreateWithoutUserInput[] | UserBadgeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserBadgeCreateOrConnectWithoutUserInput | UserBadgeCreateOrConnectWithoutUserInput[]
+    upsert?: UserBadgeUpsertWithWhereUniqueWithoutUserInput | UserBadgeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserBadgeCreateManyUserInputEnvelope
+    set?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
+    disconnect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
+    delete?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
+    connect?: UserBadgeWhereUniqueInput | UserBadgeWhereUniqueInput[]
+    update?: UserBadgeUpdateWithWhereUniqueWithoutUserInput | UserBadgeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserBadgeUpdateManyWithWhereWithoutUserInput | UserBadgeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
+  }
+
+  export type WebhookUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WebhookCreateWithoutUserInput, WebhookUncheckedCreateWithoutUserInput> | WebhookCreateWithoutUserInput[] | WebhookUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WebhookCreateOrConnectWithoutUserInput | WebhookCreateOrConnectWithoutUserInput[]
+    upsert?: WebhookUpsertWithWhereUniqueWithoutUserInput | WebhookUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WebhookCreateManyUserInputEnvelope
+    set?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
+    disconnect?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
+    delete?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
+    connect?: WebhookWhereUniqueInput | WebhookWhereUniqueInput[]
+    update?: WebhookUpdateWithWhereUniqueWithoutUserInput | WebhookUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WebhookUpdateManyWithWhereWithoutUserInput | WebhookUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WebhookScalarWhereInput | WebhookScalarWhereInput[]
+  }
+
+  export type WithdrawalUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<WithdrawalCreateWithoutUserInput, WithdrawalUncheckedCreateWithoutUserInput> | WithdrawalCreateWithoutUserInput[] | WithdrawalUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: WithdrawalCreateOrConnectWithoutUserInput | WithdrawalCreateOrConnectWithoutUserInput[]
+    upsert?: WithdrawalUpsertWithWhereUniqueWithoutUserInput | WithdrawalUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: WithdrawalCreateManyUserInputEnvelope
+    set?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    disconnect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    delete?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    connect?: WithdrawalWhereUniqueInput | WithdrawalWhereUniqueInput[]
+    update?: WithdrawalUpdateWithWhereUniqueWithoutUserInput | WithdrawalUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: WithdrawalUpdateManyWithWhereWithoutUserInput | WithdrawalUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutNotificationsInput = {
@@ -36582,17 +38088,11 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAuditLogsInput, UserUpdateWithoutAuditLogsInput>, UserUncheckedUpdateWithoutAuditLogsInput>
   }
 
-  export type UserCreateNestedOneWithoutProductsInput = {
-    create?: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutProductsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type OrderCreateNestedManyWithoutProductInput = {
-    create?: XOR<OrderCreateWithoutProductInput, OrderUncheckedCreateWithoutProductInput> | OrderCreateWithoutProductInput[] | OrderUncheckedCreateWithoutProductInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutProductInput | OrderCreateOrConnectWithoutProductInput[]
-    createMany?: OrderCreateManyProductInputEnvelope
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  export type AffiliateOfferCreateNestedManyWithoutProductInput = {
+    create?: XOR<AffiliateOfferCreateWithoutProductInput, AffiliateOfferUncheckedCreateWithoutProductInput> | AffiliateOfferCreateWithoutProductInput[] | AffiliateOfferUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutProductInput | AffiliateOfferCreateOrConnectWithoutProductInput[]
+    createMany?: AffiliateOfferCreateManyProductInputEnvelope
+    connect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
   }
 
   export type CheckoutLinkCreateNestedManyWithoutProductInput = {
@@ -36602,18 +38102,24 @@ export namespace Prisma {
     connect?: CheckoutLinkWhereUniqueInput | CheckoutLinkWhereUniqueInput[]
   }
 
-  export type AffiliateOfferCreateNestedManyWithoutProductInput = {
-    create?: XOR<AffiliateOfferCreateWithoutProductInput, AffiliateOfferUncheckedCreateWithoutProductInput> | AffiliateOfferCreateWithoutProductInput[] | AffiliateOfferUncheckedCreateWithoutProductInput[]
-    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutProductInput | AffiliateOfferCreateOrConnectWithoutProductInput[]
-    createMany?: AffiliateOfferCreateManyProductInputEnvelope
-    connect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
-  }
-
-  export type OrderUncheckedCreateNestedManyWithoutProductInput = {
+  export type OrderCreateNestedManyWithoutProductInput = {
     create?: XOR<OrderCreateWithoutProductInput, OrderUncheckedCreateWithoutProductInput> | OrderCreateWithoutProductInput[] | OrderUncheckedCreateWithoutProductInput[]
     connectOrCreate?: OrderCreateOrConnectWithoutProductInput | OrderCreateOrConnectWithoutProductInput[]
     createMany?: OrderCreateManyProductInputEnvelope
     connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutProductsInput = {
+    create?: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutProductsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type AffiliateOfferUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<AffiliateOfferCreateWithoutProductInput, AffiliateOfferUncheckedCreateWithoutProductInput> | AffiliateOfferCreateWithoutProductInput[] | AffiliateOfferUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutProductInput | AffiliateOfferCreateOrConnectWithoutProductInput[]
+    createMany?: AffiliateOfferCreateManyProductInputEnvelope
+    connect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
   }
 
   export type CheckoutLinkUncheckedCreateNestedManyWithoutProductInput = {
@@ -36623,11 +38129,11 @@ export namespace Prisma {
     connect?: CheckoutLinkWhereUniqueInput | CheckoutLinkWhereUniqueInput[]
   }
 
-  export type AffiliateOfferUncheckedCreateNestedManyWithoutProductInput = {
-    create?: XOR<AffiliateOfferCreateWithoutProductInput, AffiliateOfferUncheckedCreateWithoutProductInput> | AffiliateOfferCreateWithoutProductInput[] | AffiliateOfferUncheckedCreateWithoutProductInput[]
-    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutProductInput | AffiliateOfferCreateOrConnectWithoutProductInput[]
-    createMany?: AffiliateOfferCreateManyProductInputEnvelope
-    connect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+  export type OrderUncheckedCreateNestedManyWithoutProductInput = {
+    create?: XOR<OrderCreateWithoutProductInput, OrderUncheckedCreateWithoutProductInput> | OrderCreateWithoutProductInput[] | OrderUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutProductInput | OrderCreateOrConnectWithoutProductInput[]
+    createMany?: OrderCreateManyProductInputEnvelope
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
   }
 
   export type EnumProductTypeFieldUpdateOperationsInput = {
@@ -36646,26 +38152,18 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type UserUpdateOneRequiredWithoutProductsNestedInput = {
-    create?: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutProductsInput
-    upsert?: UserUpsertWithoutProductsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProductsInput, UserUpdateWithoutProductsInput>, UserUncheckedUpdateWithoutProductsInput>
-  }
-
-  export type OrderUpdateManyWithoutProductNestedInput = {
-    create?: XOR<OrderCreateWithoutProductInput, OrderUncheckedCreateWithoutProductInput> | OrderCreateWithoutProductInput[] | OrderUncheckedCreateWithoutProductInput[]
-    connectOrCreate?: OrderCreateOrConnectWithoutProductInput | OrderCreateOrConnectWithoutProductInput[]
-    upsert?: OrderUpsertWithWhereUniqueWithoutProductInput | OrderUpsertWithWhereUniqueWithoutProductInput[]
-    createMany?: OrderCreateManyProductInputEnvelope
-    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
-    update?: OrderUpdateWithWhereUniqueWithoutProductInput | OrderUpdateWithWhereUniqueWithoutProductInput[]
-    updateMany?: OrderUpdateManyWithWhereWithoutProductInput | OrderUpdateManyWithWhereWithoutProductInput[]
-    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
+  export type AffiliateOfferUpdateManyWithoutProductNestedInput = {
+    create?: XOR<AffiliateOfferCreateWithoutProductInput, AffiliateOfferUncheckedCreateWithoutProductInput> | AffiliateOfferCreateWithoutProductInput[] | AffiliateOfferUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutProductInput | AffiliateOfferCreateOrConnectWithoutProductInput[]
+    upsert?: AffiliateOfferUpsertWithWhereUniqueWithoutProductInput | AffiliateOfferUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: AffiliateOfferCreateManyProductInputEnvelope
+    set?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    disconnect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    delete?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    connect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
+    update?: AffiliateOfferUpdateWithWhereUniqueWithoutProductInput | AffiliateOfferUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: AffiliateOfferUpdateManyWithWhereWithoutProductInput | AffiliateOfferUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: AffiliateOfferScalarWhereInput | AffiliateOfferScalarWhereInput[]
   }
 
   export type CheckoutLinkUpdateManyWithoutProductNestedInput = {
@@ -36682,21 +38180,7 @@ export namespace Prisma {
     deleteMany?: CheckoutLinkScalarWhereInput | CheckoutLinkScalarWhereInput[]
   }
 
-  export type AffiliateOfferUpdateManyWithoutProductNestedInput = {
-    create?: XOR<AffiliateOfferCreateWithoutProductInput, AffiliateOfferUncheckedCreateWithoutProductInput> | AffiliateOfferCreateWithoutProductInput[] | AffiliateOfferUncheckedCreateWithoutProductInput[]
-    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutProductInput | AffiliateOfferCreateOrConnectWithoutProductInput[]
-    upsert?: AffiliateOfferUpsertWithWhereUniqueWithoutProductInput | AffiliateOfferUpsertWithWhereUniqueWithoutProductInput[]
-    createMany?: AffiliateOfferCreateManyProductInputEnvelope
-    set?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
-    disconnect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
-    delete?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
-    connect?: AffiliateOfferWhereUniqueInput | AffiliateOfferWhereUniqueInput[]
-    update?: AffiliateOfferUpdateWithWhereUniqueWithoutProductInput | AffiliateOfferUpdateWithWhereUniqueWithoutProductInput[]
-    updateMany?: AffiliateOfferUpdateManyWithWhereWithoutProductInput | AffiliateOfferUpdateManyWithWhereWithoutProductInput[]
-    deleteMany?: AffiliateOfferScalarWhereInput | AffiliateOfferScalarWhereInput[]
-  }
-
-  export type OrderUncheckedUpdateManyWithoutProductNestedInput = {
+  export type OrderUpdateManyWithoutProductNestedInput = {
     create?: XOR<OrderCreateWithoutProductInput, OrderUncheckedCreateWithoutProductInput> | OrderCreateWithoutProductInput[] | OrderUncheckedCreateWithoutProductInput[]
     connectOrCreate?: OrderCreateOrConnectWithoutProductInput | OrderCreateOrConnectWithoutProductInput[]
     upsert?: OrderUpsertWithWhereUniqueWithoutProductInput | OrderUpsertWithWhereUniqueWithoutProductInput[]
@@ -36710,18 +38194,12 @@ export namespace Prisma {
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
-  export type CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput = {
-    create?: XOR<CheckoutLinkCreateWithoutProductInput, CheckoutLinkUncheckedCreateWithoutProductInput> | CheckoutLinkCreateWithoutProductInput[] | CheckoutLinkUncheckedCreateWithoutProductInput[]
-    connectOrCreate?: CheckoutLinkCreateOrConnectWithoutProductInput | CheckoutLinkCreateOrConnectWithoutProductInput[]
-    upsert?: CheckoutLinkUpsertWithWhereUniqueWithoutProductInput | CheckoutLinkUpsertWithWhereUniqueWithoutProductInput[]
-    createMany?: CheckoutLinkCreateManyProductInputEnvelope
-    set?: CheckoutLinkWhereUniqueInput | CheckoutLinkWhereUniqueInput[]
-    disconnect?: CheckoutLinkWhereUniqueInput | CheckoutLinkWhereUniqueInput[]
-    delete?: CheckoutLinkWhereUniqueInput | CheckoutLinkWhereUniqueInput[]
-    connect?: CheckoutLinkWhereUniqueInput | CheckoutLinkWhereUniqueInput[]
-    update?: CheckoutLinkUpdateWithWhereUniqueWithoutProductInput | CheckoutLinkUpdateWithWhereUniqueWithoutProductInput[]
-    updateMany?: CheckoutLinkUpdateManyWithWhereWithoutProductInput | CheckoutLinkUpdateManyWithWhereWithoutProductInput[]
-    deleteMany?: CheckoutLinkScalarWhereInput | CheckoutLinkScalarWhereInput[]
+  export type UserUpdateOneRequiredWithoutProductsNestedInput = {
+    create?: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutProductsInput
+    upsert?: UserUpsertWithoutProductsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProductsInput, UserUpdateWithoutProductsInput>, UserUncheckedUpdateWithoutProductsInput>
   }
 
   export type AffiliateOfferUncheckedUpdateManyWithoutProductNestedInput = {
@@ -36738,29 +38216,32 @@ export namespace Prisma {
     deleteMany?: AffiliateOfferScalarWhereInput | AffiliateOfferScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutOrdersInput = {
-    create?: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
-    connectOrCreate?: UserCreateOrConnectWithoutOrdersInput
-    connect?: UserWhereUniqueInput
+  export type CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<CheckoutLinkCreateWithoutProductInput, CheckoutLinkUncheckedCreateWithoutProductInput> | CheckoutLinkCreateWithoutProductInput[] | CheckoutLinkUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: CheckoutLinkCreateOrConnectWithoutProductInput | CheckoutLinkCreateOrConnectWithoutProductInput[]
+    upsert?: CheckoutLinkUpsertWithWhereUniqueWithoutProductInput | CheckoutLinkUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: CheckoutLinkCreateManyProductInputEnvelope
+    set?: CheckoutLinkWhereUniqueInput | CheckoutLinkWhereUniqueInput[]
+    disconnect?: CheckoutLinkWhereUniqueInput | CheckoutLinkWhereUniqueInput[]
+    delete?: CheckoutLinkWhereUniqueInput | CheckoutLinkWhereUniqueInput[]
+    connect?: CheckoutLinkWhereUniqueInput | CheckoutLinkWhereUniqueInput[]
+    update?: CheckoutLinkUpdateWithWhereUniqueWithoutProductInput | CheckoutLinkUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: CheckoutLinkUpdateManyWithWhereWithoutProductInput | CheckoutLinkUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: CheckoutLinkScalarWhereInput | CheckoutLinkScalarWhereInput[]
   }
 
-  export type ProductCreateNestedOneWithoutOrdersInput = {
-    create?: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
-    connectOrCreate?: ProductCreateOrConnectWithoutOrdersInput
-    connect?: ProductWhereUniqueInput
-  }
-
-  export type PendingBalanceCreateNestedManyWithoutOrderInput = {
-    create?: XOR<PendingBalanceCreateWithoutOrderInput, PendingBalanceUncheckedCreateWithoutOrderInput> | PendingBalanceCreateWithoutOrderInput[] | PendingBalanceUncheckedCreateWithoutOrderInput[]
-    connectOrCreate?: PendingBalanceCreateOrConnectWithoutOrderInput | PendingBalanceCreateOrConnectWithoutOrderInput[]
-    createMany?: PendingBalanceCreateManyOrderInputEnvelope
-    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-  }
-
-  export type AffiliationCreateNestedOneWithoutOrdersInput = {
-    create?: XOR<AffiliationCreateWithoutOrdersInput, AffiliationUncheckedCreateWithoutOrdersInput>
-    connectOrCreate?: AffiliationCreateOrConnectWithoutOrdersInput
-    connect?: AffiliationWhereUniqueInput
+  export type OrderUncheckedUpdateManyWithoutProductNestedInput = {
+    create?: XOR<OrderCreateWithoutProductInput, OrderUncheckedCreateWithoutProductInput> | OrderCreateWithoutProductInput[] | OrderUncheckedCreateWithoutProductInput[]
+    connectOrCreate?: OrderCreateOrConnectWithoutProductInput | OrderCreateOrConnectWithoutProductInput[]
+    upsert?: OrderUpsertWithWhereUniqueWithoutProductInput | OrderUpsertWithWhereUniqueWithoutProductInput[]
+    createMany?: OrderCreateManyProductInputEnvelope
+    set?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    disconnect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    delete?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    connect?: OrderWhereUniqueInput | OrderWhereUniqueInput[]
+    update?: OrderUpdateWithWhereUniqueWithoutProductInput | OrderUpdateWithWhereUniqueWithoutProductInput[]
+    updateMany?: OrderUpdateManyWithWhereWithoutProductInput | OrderUpdateManyWithWhereWithoutProductInput[]
+    deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
   export type AffiliationSaleCreateNestedOneWithoutOrderInput = {
@@ -36769,7 +38250,25 @@ export namespace Prisma {
     connect?: AffiliationSaleWhereUniqueInput
   }
 
-  export type PendingBalanceUncheckedCreateNestedManyWithoutOrderInput = {
+  export type AffiliationCreateNestedOneWithoutOrdersInput = {
+    create?: XOR<AffiliationCreateWithoutOrdersInput, AffiliationUncheckedCreateWithoutOrdersInput>
+    connectOrCreate?: AffiliationCreateOrConnectWithoutOrdersInput
+    connect?: AffiliationWhereUniqueInput
+  }
+
+  export type ProductCreateNestedOneWithoutOrdersInput = {
+    create?: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutOrdersInput
+    connect?: ProductWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutOrdersInput = {
+    create?: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOrdersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type PendingBalanceCreateNestedManyWithoutOrderInput = {
     create?: XOR<PendingBalanceCreateWithoutOrderInput, PendingBalanceUncheckedCreateWithoutOrderInput> | PendingBalanceCreateWithoutOrderInput[] | PendingBalanceUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: PendingBalanceCreateOrConnectWithoutOrderInput | PendingBalanceCreateOrConnectWithoutOrderInput[]
     createMany?: PendingBalanceCreateManyOrderInputEnvelope
@@ -36780,6 +38279,13 @@ export namespace Prisma {
     create?: XOR<AffiliationSaleCreateWithoutOrderInput, AffiliationSaleUncheckedCreateWithoutOrderInput>
     connectOrCreate?: AffiliationSaleCreateOrConnectWithoutOrderInput
     connect?: AffiliationSaleWhereUniqueInput
+  }
+
+  export type PendingBalanceUncheckedCreateNestedManyWithoutOrderInput = {
+    create?: XOR<PendingBalanceCreateWithoutOrderInput, PendingBalanceUncheckedCreateWithoutOrderInput> | PendingBalanceCreateWithoutOrderInput[] | PendingBalanceUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: PendingBalanceCreateOrConnectWithoutOrderInput | PendingBalanceCreateOrConnectWithoutOrderInput[]
+    createMany?: PendingBalanceCreateManyOrderInputEnvelope
+    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
   }
 
   export type EnumOrderStatusFieldUpdateOperationsInput = {
@@ -36794,34 +38300,14 @@ export namespace Prisma {
     set?: Date | string | null
   }
 
-  export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
-    create?: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
-    connectOrCreate?: UserCreateOrConnectWithoutOrdersInput
-    upsert?: UserUpsertWithoutOrdersInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrdersInput, UserUpdateWithoutOrdersInput>, UserUncheckedUpdateWithoutOrdersInput>
-  }
-
-  export type ProductUpdateOneRequiredWithoutOrdersNestedInput = {
-    create?: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
-    connectOrCreate?: ProductCreateOrConnectWithoutOrdersInput
-    upsert?: ProductUpsertWithoutOrdersInput
-    connect?: ProductWhereUniqueInput
-    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutOrdersInput, ProductUpdateWithoutOrdersInput>, ProductUncheckedUpdateWithoutOrdersInput>
-  }
-
-  export type PendingBalanceUpdateManyWithoutOrderNestedInput = {
-    create?: XOR<PendingBalanceCreateWithoutOrderInput, PendingBalanceUncheckedCreateWithoutOrderInput> | PendingBalanceCreateWithoutOrderInput[] | PendingBalanceUncheckedCreateWithoutOrderInput[]
-    connectOrCreate?: PendingBalanceCreateOrConnectWithoutOrderInput | PendingBalanceCreateOrConnectWithoutOrderInput[]
-    upsert?: PendingBalanceUpsertWithWhereUniqueWithoutOrderInput | PendingBalanceUpsertWithWhereUniqueWithoutOrderInput[]
-    createMany?: PendingBalanceCreateManyOrderInputEnvelope
-    set?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-    disconnect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-    delete?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
-    update?: PendingBalanceUpdateWithWhereUniqueWithoutOrderInput | PendingBalanceUpdateWithWhereUniqueWithoutOrderInput[]
-    updateMany?: PendingBalanceUpdateManyWithWhereWithoutOrderInput | PendingBalanceUpdateManyWithWhereWithoutOrderInput[]
-    deleteMany?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
+  export type AffiliationSaleUpdateOneWithoutOrderNestedInput = {
+    create?: XOR<AffiliationSaleCreateWithoutOrderInput, AffiliationSaleUncheckedCreateWithoutOrderInput>
+    connectOrCreate?: AffiliationSaleCreateOrConnectWithoutOrderInput
+    upsert?: AffiliationSaleUpsertWithoutOrderInput
+    disconnect?: AffiliationSaleWhereInput | boolean
+    delete?: AffiliationSaleWhereInput | boolean
+    connect?: AffiliationSaleWhereUniqueInput
+    update?: XOR<XOR<AffiliationSaleUpdateToOneWithWhereWithoutOrderInput, AffiliationSaleUpdateWithoutOrderInput>, AffiliationSaleUncheckedUpdateWithoutOrderInput>
   }
 
   export type AffiliationUpdateOneWithoutOrdersNestedInput = {
@@ -36834,17 +38320,23 @@ export namespace Prisma {
     update?: XOR<XOR<AffiliationUpdateToOneWithWhereWithoutOrdersInput, AffiliationUpdateWithoutOrdersInput>, AffiliationUncheckedUpdateWithoutOrdersInput>
   }
 
-  export type AffiliationSaleUpdateOneWithoutOrderNestedInput = {
-    create?: XOR<AffiliationSaleCreateWithoutOrderInput, AffiliationSaleUncheckedCreateWithoutOrderInput>
-    connectOrCreate?: AffiliationSaleCreateOrConnectWithoutOrderInput
-    upsert?: AffiliationSaleUpsertWithoutOrderInput
-    disconnect?: AffiliationSaleWhereInput | boolean
-    delete?: AffiliationSaleWhereInput | boolean
-    connect?: AffiliationSaleWhereUniqueInput
-    update?: XOR<XOR<AffiliationSaleUpdateToOneWithWhereWithoutOrderInput, AffiliationSaleUpdateWithoutOrderInput>, AffiliationSaleUncheckedUpdateWithoutOrderInput>
+  export type ProductUpdateOneRequiredWithoutOrdersNestedInput = {
+    create?: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutOrdersInput
+    upsert?: ProductUpsertWithoutOrdersInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutOrdersInput, ProductUpdateWithoutOrdersInput>, ProductUncheckedUpdateWithoutOrdersInput>
   }
 
-  export type PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput = {
+  export type UserUpdateOneRequiredWithoutOrdersNestedInput = {
+    create?: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOrdersInput
+    upsert?: UserUpsertWithoutOrdersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrdersInput, UserUpdateWithoutOrdersInput>, UserUncheckedUpdateWithoutOrdersInput>
+  }
+
+  export type PendingBalanceUpdateManyWithoutOrderNestedInput = {
     create?: XOR<PendingBalanceCreateWithoutOrderInput, PendingBalanceUncheckedCreateWithoutOrderInput> | PendingBalanceCreateWithoutOrderInput[] | PendingBalanceUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: PendingBalanceCreateOrConnectWithoutOrderInput | PendingBalanceCreateOrConnectWithoutOrderInput[]
     upsert?: PendingBalanceUpsertWithWhereUniqueWithoutOrderInput | PendingBalanceUpsertWithWhereUniqueWithoutOrderInput[]
@@ -36868,10 +38360,18 @@ export namespace Prisma {
     update?: XOR<XOR<AffiliationSaleUpdateToOneWithWhereWithoutOrderInput, AffiliationSaleUpdateWithoutOrderInput>, AffiliationSaleUncheckedUpdateWithoutOrderInput>
   }
 
-  export type UserCreateNestedOneWithoutPendingBalancesInput = {
-    create?: XOR<UserCreateWithoutPendingBalancesInput, UserUncheckedCreateWithoutPendingBalancesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPendingBalancesInput
-    connect?: UserWhereUniqueInput
+  export type PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<PendingBalanceCreateWithoutOrderInput, PendingBalanceUncheckedCreateWithoutOrderInput> | PendingBalanceCreateWithoutOrderInput[] | PendingBalanceUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: PendingBalanceCreateOrConnectWithoutOrderInput | PendingBalanceCreateOrConnectWithoutOrderInput[]
+    upsert?: PendingBalanceUpsertWithWhereUniqueWithoutOrderInput | PendingBalanceUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: PendingBalanceCreateManyOrderInputEnvelope
+    set?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    disconnect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    delete?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    connect?: PendingBalanceWhereUniqueInput | PendingBalanceWhereUniqueInput[]
+    update?: PendingBalanceUpdateWithWhereUniqueWithoutOrderInput | PendingBalanceUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: PendingBalanceUpdateManyWithWhereWithoutOrderInput | PendingBalanceUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
   }
 
   export type OrderCreateNestedOneWithoutPendingBalancesInput = {
@@ -36880,12 +38380,10 @@ export namespace Prisma {
     connect?: OrderWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutPendingBalancesNestedInput = {
+  export type UserCreateNestedOneWithoutPendingBalancesInput = {
     create?: XOR<UserCreateWithoutPendingBalancesInput, UserUncheckedCreateWithoutPendingBalancesInput>
     connectOrCreate?: UserCreateOrConnectWithoutPendingBalancesInput
-    upsert?: UserUpsertWithoutPendingBalancesInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPendingBalancesInput, UserUpdateWithoutPendingBalancesInput>, UserUncheckedUpdateWithoutPendingBalancesInput>
   }
 
   export type OrderUpdateOneRequiredWithoutPendingBalancesNestedInput = {
@@ -36894,6 +38392,14 @@ export namespace Prisma {
     upsert?: OrderUpsertWithoutPendingBalancesInput
     connect?: OrderWhereUniqueInput
     update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutPendingBalancesInput, OrderUpdateWithoutPendingBalancesInput>, OrderUncheckedUpdateWithoutPendingBalancesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutPendingBalancesNestedInput = {
+    create?: XOR<UserCreateWithoutPendingBalancesInput, UserUncheckedCreateWithoutPendingBalancesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPendingBalancesInput
+    upsert?: UserUpsertWithoutPendingBalancesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPendingBalancesInput, UserUpdateWithoutPendingBalancesInput>, UserUncheckedUpdateWithoutPendingBalancesInput>
   }
 
   export type UserCreateNestedOneWithoutWithdrawalsInput = {
@@ -37035,6 +38541,20 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTransactionsInput, UserUpdateWithoutTransactionsInput>, UserUncheckedUpdateWithoutTransactionsInput>
   }
 
+  export type UserCreateNestedOneWithoutTrustedDevicesInput = {
+    create?: XOR<UserCreateWithoutTrustedDevicesInput, UserUncheckedCreateWithoutTrustedDevicesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrustedDevicesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutTrustedDevicesNestedInput = {
+    create?: XOR<UserCreateWithoutTrustedDevicesInput, UserUncheckedCreateWithoutTrustedDevicesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTrustedDevicesInput
+    upsert?: UserUpsertWithoutTrustedDevicesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTrustedDevicesInput, UserUpdateWithoutTrustedDevicesInput>, UserUncheckedUpdateWithoutTrustedDevicesInput>
+  }
+
   export type UserCreateNestedOneWithoutCustomDomainsInput = {
     create?: XOR<UserCreateWithoutCustomDomainsInput, UserUncheckedCreateWithoutCustomDomainsInput>
     connectOrCreate?: UserCreateOrConnectWithoutCustomDomainsInput
@@ -37057,16 +38577,16 @@ export namespace Prisma {
     set: string[]
   }
 
-  export type ProductCreateNestedOneWithoutAffiliateOffersInput = {
-    create?: XOR<ProductCreateWithoutAffiliateOffersInput, ProductUncheckedCreateWithoutAffiliateOffersInput>
-    connectOrCreate?: ProductCreateOrConnectWithoutAffiliateOffersInput
-    connect?: ProductWhereUniqueInput
-  }
-
   export type UserCreateNestedOneWithoutAffiliateOffersInput = {
     create?: XOR<UserCreateWithoutAffiliateOffersInput, UserUncheckedCreateWithoutAffiliateOffersInput>
     connectOrCreate?: UserCreateOrConnectWithoutAffiliateOffersInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type ProductCreateNestedOneWithoutAffiliateOffersInput = {
+    create?: XOR<ProductCreateWithoutAffiliateOffersInput, ProductUncheckedCreateWithoutAffiliateOffersInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutAffiliateOffersInput
+    connect?: ProductWhereUniqueInput
   }
 
   export type AffiliationCreateNestedManyWithoutOfferInput = {
@@ -37096,20 +38616,20 @@ export namespace Prisma {
     push?: string | string[]
   }
 
-  export type ProductUpdateOneRequiredWithoutAffiliateOffersNestedInput = {
-    create?: XOR<ProductCreateWithoutAffiliateOffersInput, ProductUncheckedCreateWithoutAffiliateOffersInput>
-    connectOrCreate?: ProductCreateOrConnectWithoutAffiliateOffersInput
-    upsert?: ProductUpsertWithoutAffiliateOffersInput
-    connect?: ProductWhereUniqueInput
-    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutAffiliateOffersInput, ProductUpdateWithoutAffiliateOffersInput>, ProductUncheckedUpdateWithoutAffiliateOffersInput>
-  }
-
   export type UserUpdateOneRequiredWithoutAffiliateOffersNestedInput = {
     create?: XOR<UserCreateWithoutAffiliateOffersInput, UserUncheckedCreateWithoutAffiliateOffersInput>
     connectOrCreate?: UserCreateOrConnectWithoutAffiliateOffersInput
     upsert?: UserUpsertWithoutAffiliateOffersInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAffiliateOffersInput, UserUpdateWithoutAffiliateOffersInput>, UserUncheckedUpdateWithoutAffiliateOffersInput>
+  }
+
+  export type ProductUpdateOneRequiredWithoutAffiliateOffersNestedInput = {
+    create?: XOR<ProductCreateWithoutAffiliateOffersInput, ProductUncheckedCreateWithoutAffiliateOffersInput>
+    connectOrCreate?: ProductCreateOrConnectWithoutAffiliateOffersInput
+    upsert?: ProductUpsertWithoutAffiliateOffersInput
+    connect?: ProductWhereUniqueInput
+    update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutAffiliateOffersInput, ProductUpdateWithoutAffiliateOffersInput>, ProductUncheckedUpdateWithoutAffiliateOffersInput>
   }
 
   export type AffiliationUpdateManyWithoutOfferNestedInput = {
@@ -37140,16 +38660,16 @@ export namespace Prisma {
     deleteMany?: AffiliationScalarWhereInput | AffiliationScalarWhereInput[]
   }
 
-  export type AffiliateOfferCreateNestedOneWithoutAffiliationsInput = {
-    create?: XOR<AffiliateOfferCreateWithoutAffiliationsInput, AffiliateOfferUncheckedCreateWithoutAffiliationsInput>
-    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutAffiliationsInput
-    connect?: AffiliateOfferWhereUniqueInput
-  }
-
   export type UserCreateNestedOneWithoutAffiliationsInput = {
     create?: XOR<UserCreateWithoutAffiliationsInput, UserUncheckedCreateWithoutAffiliationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAffiliationsInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type AffiliateOfferCreateNestedOneWithoutAffiliationsInput = {
+    create?: XOR<AffiliateOfferCreateWithoutAffiliationsInput, AffiliateOfferUncheckedCreateWithoutAffiliationsInput>
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutAffiliationsInput
+    connect?: AffiliateOfferWhereUniqueInput
   }
 
   export type AffiliationSaleCreateNestedManyWithoutAffiliationInput = {
@@ -37184,20 +38704,20 @@ export namespace Prisma {
     set?: $Enums.AffiliationStatus
   }
 
-  export type AffiliateOfferUpdateOneRequiredWithoutAffiliationsNestedInput = {
-    create?: XOR<AffiliateOfferCreateWithoutAffiliationsInput, AffiliateOfferUncheckedCreateWithoutAffiliationsInput>
-    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutAffiliationsInput
-    upsert?: AffiliateOfferUpsertWithoutAffiliationsInput
-    connect?: AffiliateOfferWhereUniqueInput
-    update?: XOR<XOR<AffiliateOfferUpdateToOneWithWhereWithoutAffiliationsInput, AffiliateOfferUpdateWithoutAffiliationsInput>, AffiliateOfferUncheckedUpdateWithoutAffiliationsInput>
-  }
-
   export type UserUpdateOneRequiredWithoutAffiliationsNestedInput = {
     create?: XOR<UserCreateWithoutAffiliationsInput, UserUncheckedCreateWithoutAffiliationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAffiliationsInput
     upsert?: UserUpsertWithoutAffiliationsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAffiliationsInput, UserUpdateWithoutAffiliationsInput>, UserUncheckedUpdateWithoutAffiliationsInput>
+  }
+
+  export type AffiliateOfferUpdateOneRequiredWithoutAffiliationsNestedInput = {
+    create?: XOR<AffiliateOfferCreateWithoutAffiliationsInput, AffiliateOfferUncheckedCreateWithoutAffiliationsInput>
+    connectOrCreate?: AffiliateOfferCreateOrConnectWithoutAffiliationsInput
+    upsert?: AffiliateOfferUpsertWithoutAffiliationsInput
+    connect?: AffiliateOfferWhereUniqueInput
+    update?: XOR<XOR<AffiliateOfferUpdateToOneWithWhereWithoutAffiliationsInput, AffiliateOfferUpdateWithoutAffiliationsInput>, AffiliateOfferUncheckedUpdateWithoutAffiliationsInput>
   }
 
   export type AffiliationSaleUpdateManyWithoutAffiliationNestedInput = {
@@ -37371,6 +38891,13 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type NestedEnumTwoFactorMethodNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.TwoFactorMethod | EnumTwoFactorMethodFieldRefInput<$PrismaModel> | null
+    in?: $Enums.TwoFactorMethod[] | ListEnumTwoFactorMethodFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.TwoFactorMethod[] | ListEnumTwoFactorMethodFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumTwoFactorMethodNullableFilter<$PrismaModel> | $Enums.TwoFactorMethod | null
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -37526,6 +39053,16 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTwoFactorMethodNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TwoFactorMethod | EnumTwoFactorMethodFieldRefInput<$PrismaModel> | null
+    in?: $Enums.TwoFactorMethod[] | ListEnumTwoFactorMethodFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.TwoFactorMethod[] | ListEnumTwoFactorMethodFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumTwoFactorMethodNullableWithAggregatesFilter<$PrismaModel> | $Enums.TwoFactorMethod | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumTwoFactorMethodNullableFilter<$PrismaModel>
+    _max?: NestedEnumTwoFactorMethodNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumNotificationTypeFilter<$PrismaModel = never> = {
@@ -37891,417 +39428,29 @@ export namespace Prisma {
     _max?: NestedEnumSaleCommissionStatusFilter<$PrismaModel>
   }
 
-  export type ProductCreateWithoutUserInput = {
+  export type TrustedDeviceCreateWithoutUserInput = {
     id?: string
-    name: string
-    description?: string | null
-    price: number
-    currency?: string
-    type?: $Enums.ProductType
-    status?: $Enums.ProductStatus
-    imageUrl?: string | null
-    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
-    slug: string
-    salesCount?: number
-    revenue?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    showInShowcase?: boolean
-    orders?: OrderCreateNestedManyWithoutProductInput
-    checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
-    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutProductInput
-  }
-
-  export type ProductUncheckedCreateWithoutUserInput = {
-    id?: string
-    name: string
-    description?: string | null
-    price: number
-    currency?: string
-    type?: $Enums.ProductType
-    status?: $Enums.ProductStatus
-    imageUrl?: string | null
-    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
-    slug: string
-    salesCount?: number
-    revenue?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    showInShowcase?: boolean
-    orders?: OrderUncheckedCreateNestedManyWithoutProductInput
-    checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
-    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutProductInput
-  }
-
-  export type ProductCreateOrConnectWithoutUserInput = {
-    where: ProductWhereUniqueInput
-    create: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput>
-  }
-
-  export type ProductCreateManyUserInputEnvelope = {
-    data: ProductCreateManyUserInput | ProductCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type OrderCreateWithoutUserInput = {
-    id?: string
-    buyerName: string
-    buyerEmail: string
-    buyerCpf?: string | null
-    buyerPhone?: string | null
-    buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount: number
-    platformFee: number
-    netAmount: number
-    status?: $Enums.OrderStatus
-    paymentMethod: $Enums.PaymentMethod
-    pixQrCode?: string | null
-    pixCopyPaste?: string | null
-    boletoUrl?: string | null
-    boletoBarcode?: string | null
-    cardLastFour?: string | null
-    cardBrand?: string | null
-    installments?: number
-    externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
-    paidAt?: Date | string | null
-    refundedAt?: Date | string | null
-    isMatured?: boolean
-    statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    product: ProductCreateNestedOneWithoutOrdersInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
-    affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
-    affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
-  }
-
-  export type OrderUncheckedCreateWithoutUserInput = {
-    id?: string
-    productId: string
-    buyerName: string
-    buyerEmail: string
-    buyerCpf?: string | null
-    buyerPhone?: string | null
-    buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount: number
-    platformFee: number
-    netAmount: number
-    status?: $Enums.OrderStatus
-    paymentMethod: $Enums.PaymentMethod
-    pixQrCode?: string | null
-    pixCopyPaste?: string | null
-    boletoUrl?: string | null
-    boletoBarcode?: string | null
-    cardLastFour?: string | null
-    cardBrand?: string | null
-    installments?: number
-    externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
-    paidAt?: Date | string | null
-    refundedAt?: Date | string | null
-    isMatured?: boolean
-    statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    affiliationId?: string | null
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
-    affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
-  }
-
-  export type OrderCreateOrConnectWithoutUserInput = {
-    where: OrderWhereUniqueInput
-    create: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
-  }
-
-  export type OrderCreateManyUserInputEnvelope = {
-    data: OrderCreateManyUserInput | OrderCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type WithdrawalCreateWithoutUserInput = {
-    id?: string
-    amount: number
-    status?: $Enums.WithdrawalStatus
-    pixKey: string
-    pixKeyType: $Enums.PixKeyType
-    processedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type WithdrawalUncheckedCreateWithoutUserInput = {
-    id?: string
-    amount: number
-    status?: $Enums.WithdrawalStatus
-    pixKey: string
-    pixKeyType: $Enums.PixKeyType
-    processedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type WithdrawalCreateOrConnectWithoutUserInput = {
-    where: WithdrawalWhereUniqueInput
-    create: XOR<WithdrawalCreateWithoutUserInput, WithdrawalUncheckedCreateWithoutUserInput>
-  }
-
-  export type WithdrawalCreateManyUserInputEnvelope = {
-    data: WithdrawalCreateManyUserInput | WithdrawalCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type TransactionCreateWithoutUserInput = {
-    id?: string
-    type: $Enums.TransactionType
-    amount: number
-    balance: number
-    description: string
-    createdAt?: Date | string
-  }
-
-  export type TransactionUncheckedCreateWithoutUserInput = {
-    id?: string
-    type: $Enums.TransactionType
-    amount: number
-    balance: number
-    description: string
-    createdAt?: Date | string
-  }
-
-  export type TransactionCreateOrConnectWithoutUserInput = {
-    where: TransactionWhereUniqueInput
-    create: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput>
-  }
-
-  export type TransactionCreateManyUserInputEnvelope = {
-    data: TransactionCreateManyUserInput | TransactionCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type WebhookCreateWithoutUserInput = {
-    id?: string
-    url: string
-    secret: string
-    events?: WebhookCreateeventsInput | string[]
-    active?: boolean
-    createdAt?: Date | string
-  }
-
-  export type WebhookUncheckedCreateWithoutUserInput = {
-    id?: string
-    url: string
-    secret: string
-    events?: WebhookCreateeventsInput | string[]
-    active?: boolean
-    createdAt?: Date | string
-  }
-
-  export type WebhookCreateOrConnectWithoutUserInput = {
-    where: WebhookWhereUniqueInput
-    create: XOR<WebhookCreateWithoutUserInput, WebhookUncheckedCreateWithoutUserInput>
-  }
-
-  export type WebhookCreateManyUserInputEnvelope = {
-    data: WebhookCreateManyUserInput | WebhookCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ApiKeyCreateWithoutUserInput = {
-    id?: string
-    name: string
-    key: string
-    lastUsed?: Date | string | null
-    active?: boolean
-    createdAt?: Date | string
-  }
-
-  export type ApiKeyUncheckedCreateWithoutUserInput = {
-    id?: string
-    name: string
-    key: string
-    lastUsed?: Date | string | null
-    active?: boolean
-    createdAt?: Date | string
-  }
-
-  export type ApiKeyCreateOrConnectWithoutUserInput = {
-    where: ApiKeyWhereUniqueInput
-    create: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput>
-  }
-
-  export type ApiKeyCreateManyUserInputEnvelope = {
-    data: ApiKeyCreateManyUserInput | ApiKeyCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type KycDocumentCreateWithoutUserInput = {
-    id?: string
-    type: $Enums.DocType
-    fileUrl: string
-    status?: $Enums.DocStatus
-    reviewNote?: string | null
-    reviewedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type KycDocumentUncheckedCreateWithoutUserInput = {
-    id?: string
-    type: $Enums.DocType
-    fileUrl: string
-    status?: $Enums.DocStatus
-    reviewNote?: string | null
-    reviewedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type KycDocumentCreateOrConnectWithoutUserInput = {
-    where: KycDocumentWhereUniqueInput
-    create: XOR<KycDocumentCreateWithoutUserInput, KycDocumentUncheckedCreateWithoutUserInput>
-  }
-
-  export type KycDocumentCreateManyUserInputEnvelope = {
-    data: KycDocumentCreateManyUserInput | KycDocumentCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserBadgeCreateWithoutUserInput = {
-    id?: string
-    badge: $Enums.BadgeType
-    earnedAt?: Date | string
-  }
-
-  export type UserBadgeUncheckedCreateWithoutUserInput = {
-    id?: string
-    badge: $Enums.BadgeType
-    earnedAt?: Date | string
-  }
-
-  export type UserBadgeCreateOrConnectWithoutUserInput = {
-    where: UserBadgeWhereUniqueInput
-    create: XOR<UserBadgeCreateWithoutUserInput, UserBadgeUncheckedCreateWithoutUserInput>
-  }
-
-  export type UserBadgeCreateManyUserInputEnvelope = {
-    data: UserBadgeCreateManyUserInput | UserBadgeCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type PendingBalanceCreateWithoutUserInput = {
-    id?: string
-    amount: number
-    availableAt: Date | string
-    released?: boolean
-    createdAt?: Date | string
-    order: OrderCreateNestedOneWithoutPendingBalancesInput
-  }
-
-  export type PendingBalanceUncheckedCreateWithoutUserInput = {
-    id?: string
-    orderId: string
-    amount: number
-    availableAt: Date | string
-    released?: boolean
-    createdAt?: Date | string
-  }
-
-  export type PendingBalanceCreateOrConnectWithoutUserInput = {
-    where: PendingBalanceWhereUniqueInput
-    create: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput>
-  }
-
-  export type PendingBalanceCreateManyUserInputEnvelope = {
-    data: PendingBalanceCreateManyUserInput | PendingBalanceCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type CustomDomainCreateWithoutUserInput = {
-    id?: string
-    domain: string
-    status?: $Enums.DomainStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CustomDomainUncheckedCreateWithoutUserInput = {
-    id?: string
-    domain: string
-    status?: $Enums.DomainStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CustomDomainCreateOrConnectWithoutUserInput = {
-    where: CustomDomainWhereUniqueInput
-    create: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput>
-  }
-
-  export type CustomDomainCreateManyUserInputEnvelope = {
-    data: CustomDomainCreateManyUserInput | CustomDomainCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type NotificationCreateWithoutUserInput = {
-    id?: string
-    title: string
-    content: string
-    read?: boolean
-    type?: $Enums.NotificationType
-    createdAt?: Date | string
-  }
-
-  export type NotificationUncheckedCreateWithoutUserInput = {
-    id?: string
-    title: string
-    content: string
-    read?: boolean
-    type?: $Enums.NotificationType
-    createdAt?: Date | string
-  }
-
-  export type NotificationCreateOrConnectWithoutUserInput = {
-    where: NotificationWhereUniqueInput
-    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
-  }
-
-  export type NotificationCreateManyUserInputEnvelope = {
-    data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type AuditLogCreateWithoutUserInput = {
-    id?: string
-    action: string
-    details?: string | null
-    ipAddress?: string | null
+    ipAddress: string
     userAgent?: string | null
+    expires: Date | string
     createdAt?: Date | string
   }
 
-  export type AuditLogUncheckedCreateWithoutUserInput = {
+  export type TrustedDeviceUncheckedCreateWithoutUserInput = {
     id?: string
-    action: string
-    details?: string | null
-    ipAddress?: string | null
+    ipAddress: string
     userAgent?: string | null
+    expires: Date | string
     createdAt?: Date | string
   }
 
-  export type AuditLogCreateOrConnectWithoutUserInput = {
-    where: AuditLogWhereUniqueInput
-    create: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput>
+  export type TrustedDeviceCreateOrConnectWithoutUserInput = {
+    where: TrustedDeviceWhereUniqueInput
+    create: XOR<TrustedDeviceCreateWithoutUserInput, TrustedDeviceUncheckedCreateWithoutUserInput>
   }
 
-  export type AuditLogCreateManyUserInputEnvelope = {
-    data: AuditLogCreateManyUserInput | AuditLogCreateManyUserInput[]
+  export type TrustedDeviceCreateManyUserInputEnvelope = {
+    data: TrustedDeviceCreateManyUserInput | TrustedDeviceCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -38407,386 +39556,446 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ProductUpsertWithWhereUniqueWithoutUserInput = {
-    where: ProductWhereUniqueInput
-    update: XOR<ProductUpdateWithoutUserInput, ProductUncheckedUpdateWithoutUserInput>
-    create: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput>
+  export type ApiKeyCreateWithoutUserInput = {
+    id?: string
+    name: string
+    key: string
+    lastUsed?: Date | string | null
+    active?: boolean
+    createdAt?: Date | string
   }
 
-  export type ProductUpdateWithWhereUniqueWithoutUserInput = {
-    where: ProductWhereUniqueInput
-    data: XOR<ProductUpdateWithoutUserInput, ProductUncheckedUpdateWithoutUserInput>
+  export type ApiKeyUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    key: string
+    lastUsed?: Date | string | null
+    active?: boolean
+    createdAt?: Date | string
   }
 
-  export type ProductUpdateManyWithWhereWithoutUserInput = {
-    where: ProductScalarWhereInput
-    data: XOR<ProductUpdateManyMutationInput, ProductUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type ProductScalarWhereInput = {
-    AND?: ProductScalarWhereInput | ProductScalarWhereInput[]
-    OR?: ProductScalarWhereInput[]
-    NOT?: ProductScalarWhereInput | ProductScalarWhereInput[]
-    id?: StringFilter<"Product"> | string
-    userId?: StringFilter<"Product"> | string
-    name?: StringFilter<"Product"> | string
-    description?: StringNullableFilter<"Product"> | string | null
-    price?: FloatFilter<"Product"> | number
-    currency?: StringFilter<"Product"> | string
-    type?: EnumProductTypeFilter<"Product"> | $Enums.ProductType
-    status?: EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
-    imageUrl?: StringNullableFilter<"Product"> | string | null
-    checkoutConfig?: JsonNullableFilter<"Product">
-    slug?: StringFilter<"Product"> | string
-    salesCount?: IntFilter<"Product"> | number
-    revenue?: FloatFilter<"Product"> | number
-    createdAt?: DateTimeFilter<"Product"> | Date | string
-    updatedAt?: DateTimeFilter<"Product"> | Date | string
-    showInShowcase?: BoolFilter<"Product"> | boolean
-  }
-
-  export type OrderUpsertWithWhereUniqueWithoutUserInput = {
-    where: OrderWhereUniqueInput
-    update: XOR<OrderUpdateWithoutUserInput, OrderUncheckedUpdateWithoutUserInput>
-    create: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
-  }
-
-  export type OrderUpdateWithWhereUniqueWithoutUserInput = {
-    where: OrderWhereUniqueInput
-    data: XOR<OrderUpdateWithoutUserInput, OrderUncheckedUpdateWithoutUserInput>
-  }
-
-  export type OrderUpdateManyWithWhereWithoutUserInput = {
-    where: OrderScalarWhereInput
-    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type OrderScalarWhereInput = {
-    AND?: OrderScalarWhereInput | OrderScalarWhereInput[]
-    OR?: OrderScalarWhereInput[]
-    NOT?: OrderScalarWhereInput | OrderScalarWhereInput[]
-    id?: StringFilter<"Order"> | string
-    userId?: StringFilter<"Order"> | string
-    productId?: StringFilter<"Order"> | string
-    buyerName?: StringFilter<"Order"> | string
-    buyerEmail?: StringFilter<"Order"> | string
-    buyerCpf?: StringNullableFilter<"Order"> | string | null
-    buyerPhone?: StringNullableFilter<"Order"> | string | null
-    buyerData?: JsonNullableFilter<"Order">
-    amount?: FloatFilter<"Order"> | number
-    platformFee?: FloatFilter<"Order"> | number
-    netAmount?: FloatFilter<"Order"> | number
-    status?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
-    paymentMethod?: EnumPaymentMethodFilter<"Order"> | $Enums.PaymentMethod
-    pixQrCode?: StringNullableFilter<"Order"> | string | null
-    pixCopyPaste?: StringNullableFilter<"Order"> | string | null
-    boletoUrl?: StringNullableFilter<"Order"> | string | null
-    boletoBarcode?: StringNullableFilter<"Order"> | string | null
-    cardLastFour?: StringNullableFilter<"Order"> | string | null
-    cardBrand?: StringNullableFilter<"Order"> | string | null
-    installments?: IntFilter<"Order"> | number
-    externalId?: StringNullableFilter<"Order"> | string | null
-    wooviCorrelationId?: StringNullableFilter<"Order"> | string | null
-    wooviTransactionId?: StringNullableFilter<"Order"> | string | null
-    wooviEndToEndId?: StringNullableFilter<"Order"> | string | null
-    pixQrCodeUrl?: StringNullableFilter<"Order"> | string | null
-    pixBrCode?: StringNullableFilter<"Order"> | string | null
-    pixExpiresAt?: DateTimeNullableFilter<"Order"> | Date | string | null
-    paidAt?: DateTimeNullableFilter<"Order"> | Date | string | null
-    refundedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
-    isMatured?: BoolFilter<"Order"> | boolean
-    statusHistory?: JsonNullableFilter<"Order">
-    createdAt?: DateTimeFilter<"Order"> | Date | string
-    updatedAt?: DateTimeFilter<"Order"> | Date | string
-    affiliationId?: StringNullableFilter<"Order"> | string | null
-  }
-
-  export type WithdrawalUpsertWithWhereUniqueWithoutUserInput = {
-    where: WithdrawalWhereUniqueInput
-    update: XOR<WithdrawalUpdateWithoutUserInput, WithdrawalUncheckedUpdateWithoutUserInput>
-    create: XOR<WithdrawalCreateWithoutUserInput, WithdrawalUncheckedCreateWithoutUserInput>
-  }
-
-  export type WithdrawalUpdateWithWhereUniqueWithoutUserInput = {
-    where: WithdrawalWhereUniqueInput
-    data: XOR<WithdrawalUpdateWithoutUserInput, WithdrawalUncheckedUpdateWithoutUserInput>
-  }
-
-  export type WithdrawalUpdateManyWithWhereWithoutUserInput = {
-    where: WithdrawalScalarWhereInput
-    data: XOR<WithdrawalUpdateManyMutationInput, WithdrawalUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type WithdrawalScalarWhereInput = {
-    AND?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
-    OR?: WithdrawalScalarWhereInput[]
-    NOT?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
-    id?: StringFilter<"Withdrawal"> | string
-    userId?: StringFilter<"Withdrawal"> | string
-    amount?: FloatFilter<"Withdrawal"> | number
-    status?: EnumWithdrawalStatusFilter<"Withdrawal"> | $Enums.WithdrawalStatus
-    pixKey?: StringFilter<"Withdrawal"> | string
-    pixKeyType?: EnumPixKeyTypeFilter<"Withdrawal"> | $Enums.PixKeyType
-    processedAt?: DateTimeNullableFilter<"Withdrawal"> | Date | string | null
-    createdAt?: DateTimeFilter<"Withdrawal"> | Date | string
-  }
-
-  export type TransactionUpsertWithWhereUniqueWithoutUserInput = {
-    where: TransactionWhereUniqueInput
-    update: XOR<TransactionUpdateWithoutUserInput, TransactionUncheckedUpdateWithoutUserInput>
-    create: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput>
-  }
-
-  export type TransactionUpdateWithWhereUniqueWithoutUserInput = {
-    where: TransactionWhereUniqueInput
-    data: XOR<TransactionUpdateWithoutUserInput, TransactionUncheckedUpdateWithoutUserInput>
-  }
-
-  export type TransactionUpdateManyWithWhereWithoutUserInput = {
-    where: TransactionScalarWhereInput
-    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type TransactionScalarWhereInput = {
-    AND?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
-    OR?: TransactionScalarWhereInput[]
-    NOT?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
-    id?: StringFilter<"Transaction"> | string
-    userId?: StringFilter<"Transaction"> | string
-    type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
-    amount?: FloatFilter<"Transaction"> | number
-    balance?: FloatFilter<"Transaction"> | number
-    description?: StringFilter<"Transaction"> | string
-    createdAt?: DateTimeFilter<"Transaction"> | Date | string
-  }
-
-  export type WebhookUpsertWithWhereUniqueWithoutUserInput = {
-    where: WebhookWhereUniqueInput
-    update: XOR<WebhookUpdateWithoutUserInput, WebhookUncheckedUpdateWithoutUserInput>
-    create: XOR<WebhookCreateWithoutUserInput, WebhookUncheckedCreateWithoutUserInput>
-  }
-
-  export type WebhookUpdateWithWhereUniqueWithoutUserInput = {
-    where: WebhookWhereUniqueInput
-    data: XOR<WebhookUpdateWithoutUserInput, WebhookUncheckedUpdateWithoutUserInput>
-  }
-
-  export type WebhookUpdateManyWithWhereWithoutUserInput = {
-    where: WebhookScalarWhereInput
-    data: XOR<WebhookUpdateManyMutationInput, WebhookUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type WebhookScalarWhereInput = {
-    AND?: WebhookScalarWhereInput | WebhookScalarWhereInput[]
-    OR?: WebhookScalarWhereInput[]
-    NOT?: WebhookScalarWhereInput | WebhookScalarWhereInput[]
-    id?: StringFilter<"Webhook"> | string
-    userId?: StringFilter<"Webhook"> | string
-    url?: StringFilter<"Webhook"> | string
-    secret?: StringFilter<"Webhook"> | string
-    events?: StringNullableListFilter<"Webhook">
-    active?: BoolFilter<"Webhook"> | boolean
-    createdAt?: DateTimeFilter<"Webhook"> | Date | string
-  }
-
-  export type ApiKeyUpsertWithWhereUniqueWithoutUserInput = {
+  export type ApiKeyCreateOrConnectWithoutUserInput = {
     where: ApiKeyWhereUniqueInput
-    update: XOR<ApiKeyUpdateWithoutUserInput, ApiKeyUncheckedUpdateWithoutUserInput>
     create: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput>
   }
 
-  export type ApiKeyUpdateWithWhereUniqueWithoutUserInput = {
-    where: ApiKeyWhereUniqueInput
-    data: XOR<ApiKeyUpdateWithoutUserInput, ApiKeyUncheckedUpdateWithoutUserInput>
+  export type ApiKeyCreateManyUserInputEnvelope = {
+    data: ApiKeyCreateManyUserInput | ApiKeyCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
-  export type ApiKeyUpdateManyWithWhereWithoutUserInput = {
-    where: ApiKeyScalarWhereInput
-    data: XOR<ApiKeyUpdateManyMutationInput, ApiKeyUncheckedUpdateManyWithoutUserInput>
+  export type AuditLogCreateWithoutUserInput = {
+    id?: string
+    action: string
+    details?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
   }
 
-  export type ApiKeyScalarWhereInput = {
-    AND?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
-    OR?: ApiKeyScalarWhereInput[]
-    NOT?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
-    id?: StringFilter<"ApiKey"> | string
-    userId?: StringFilter<"ApiKey"> | string
-    name?: StringFilter<"ApiKey"> | string
-    key?: StringFilter<"ApiKey"> | string
-    lastUsed?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
-    active?: BoolFilter<"ApiKey"> | boolean
-    createdAt?: DateTimeFilter<"ApiKey"> | Date | string
+  export type AuditLogUncheckedCreateWithoutUserInput = {
+    id?: string
+    action: string
+    details?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
   }
 
-  export type KycDocumentUpsertWithWhereUniqueWithoutUserInput = {
-    where: KycDocumentWhereUniqueInput
-    update: XOR<KycDocumentUpdateWithoutUserInput, KycDocumentUncheckedUpdateWithoutUserInput>
-    create: XOR<KycDocumentCreateWithoutUserInput, KycDocumentUncheckedCreateWithoutUserInput>
-  }
-
-  export type KycDocumentUpdateWithWhereUniqueWithoutUserInput = {
-    where: KycDocumentWhereUniqueInput
-    data: XOR<KycDocumentUpdateWithoutUserInput, KycDocumentUncheckedUpdateWithoutUserInput>
-  }
-
-  export type KycDocumentUpdateManyWithWhereWithoutUserInput = {
-    where: KycDocumentScalarWhereInput
-    data: XOR<KycDocumentUpdateManyMutationInput, KycDocumentUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type KycDocumentScalarWhereInput = {
-    AND?: KycDocumentScalarWhereInput | KycDocumentScalarWhereInput[]
-    OR?: KycDocumentScalarWhereInput[]
-    NOT?: KycDocumentScalarWhereInput | KycDocumentScalarWhereInput[]
-    id?: StringFilter<"KycDocument"> | string
-    userId?: StringFilter<"KycDocument"> | string
-    type?: EnumDocTypeFilter<"KycDocument"> | $Enums.DocType
-    fileUrl?: StringFilter<"KycDocument"> | string
-    status?: EnumDocStatusFilter<"KycDocument"> | $Enums.DocStatus
-    reviewNote?: StringNullableFilter<"KycDocument"> | string | null
-    reviewedAt?: DateTimeNullableFilter<"KycDocument"> | Date | string | null
-    createdAt?: DateTimeFilter<"KycDocument"> | Date | string
-  }
-
-  export type UserBadgeUpsertWithWhereUniqueWithoutUserInput = {
-    where: UserBadgeWhereUniqueInput
-    update: XOR<UserBadgeUpdateWithoutUserInput, UserBadgeUncheckedUpdateWithoutUserInput>
-    create: XOR<UserBadgeCreateWithoutUserInput, UserBadgeUncheckedCreateWithoutUserInput>
-  }
-
-  export type UserBadgeUpdateWithWhereUniqueWithoutUserInput = {
-    where: UserBadgeWhereUniqueInput
-    data: XOR<UserBadgeUpdateWithoutUserInput, UserBadgeUncheckedUpdateWithoutUserInput>
-  }
-
-  export type UserBadgeUpdateManyWithWhereWithoutUserInput = {
-    where: UserBadgeScalarWhereInput
-    data: XOR<UserBadgeUpdateManyMutationInput, UserBadgeUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type UserBadgeScalarWhereInput = {
-    AND?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
-    OR?: UserBadgeScalarWhereInput[]
-    NOT?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
-    id?: StringFilter<"UserBadge"> | string
-    userId?: StringFilter<"UserBadge"> | string
-    badge?: EnumBadgeTypeFilter<"UserBadge"> | $Enums.BadgeType
-    earnedAt?: DateTimeFilter<"UserBadge"> | Date | string
-  }
-
-  export type PendingBalanceUpsertWithWhereUniqueWithoutUserInput = {
-    where: PendingBalanceWhereUniqueInput
-    update: XOR<PendingBalanceUpdateWithoutUserInput, PendingBalanceUncheckedUpdateWithoutUserInput>
-    create: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput>
-  }
-
-  export type PendingBalanceUpdateWithWhereUniqueWithoutUserInput = {
-    where: PendingBalanceWhereUniqueInput
-    data: XOR<PendingBalanceUpdateWithoutUserInput, PendingBalanceUncheckedUpdateWithoutUserInput>
-  }
-
-  export type PendingBalanceUpdateManyWithWhereWithoutUserInput = {
-    where: PendingBalanceScalarWhereInput
-    data: XOR<PendingBalanceUpdateManyMutationInput, PendingBalanceUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type PendingBalanceScalarWhereInput = {
-    AND?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
-    OR?: PendingBalanceScalarWhereInput[]
-    NOT?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
-    id?: StringFilter<"PendingBalance"> | string
-    userId?: StringFilter<"PendingBalance"> | string
-    orderId?: StringFilter<"PendingBalance"> | string
-    amount?: FloatFilter<"PendingBalance"> | number
-    availableAt?: DateTimeFilter<"PendingBalance"> | Date | string
-    released?: BoolFilter<"PendingBalance"> | boolean
-    createdAt?: DateTimeFilter<"PendingBalance"> | Date | string
-  }
-
-  export type CustomDomainUpsertWithWhereUniqueWithoutUserInput = {
-    where: CustomDomainWhereUniqueInput
-    update: XOR<CustomDomainUpdateWithoutUserInput, CustomDomainUncheckedUpdateWithoutUserInput>
-    create: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput>
-  }
-
-  export type CustomDomainUpdateWithWhereUniqueWithoutUserInput = {
-    where: CustomDomainWhereUniqueInput
-    data: XOR<CustomDomainUpdateWithoutUserInput, CustomDomainUncheckedUpdateWithoutUserInput>
-  }
-
-  export type CustomDomainUpdateManyWithWhereWithoutUserInput = {
-    where: CustomDomainScalarWhereInput
-    data: XOR<CustomDomainUpdateManyMutationInput, CustomDomainUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type CustomDomainScalarWhereInput = {
-    AND?: CustomDomainScalarWhereInput | CustomDomainScalarWhereInput[]
-    OR?: CustomDomainScalarWhereInput[]
-    NOT?: CustomDomainScalarWhereInput | CustomDomainScalarWhereInput[]
-    id?: StringFilter<"CustomDomain"> | string
-    userId?: StringFilter<"CustomDomain"> | string
-    domain?: StringFilter<"CustomDomain"> | string
-    status?: EnumDomainStatusFilter<"CustomDomain"> | $Enums.DomainStatus
-    createdAt?: DateTimeFilter<"CustomDomain"> | Date | string
-    updatedAt?: DateTimeFilter<"CustomDomain"> | Date | string
-  }
-
-  export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
-    where: NotificationWhereUniqueInput
-    update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
-    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
-  }
-
-  export type NotificationUpdateWithWhereUniqueWithoutUserInput = {
-    where: NotificationWhereUniqueInput
-    data: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
-  }
-
-  export type NotificationUpdateManyWithWhereWithoutUserInput = {
-    where: NotificationScalarWhereInput
-    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type NotificationScalarWhereInput = {
-    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-    OR?: NotificationScalarWhereInput[]
-    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
-    id?: StringFilter<"Notification"> | string
-    userId?: StringFilter<"Notification"> | string
-    title?: StringFilter<"Notification"> | string
-    content?: StringFilter<"Notification"> | string
-    read?: BoolFilter<"Notification"> | boolean
-    type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
-    createdAt?: DateTimeFilter<"Notification"> | Date | string
-  }
-
-  export type AuditLogUpsertWithWhereUniqueWithoutUserInput = {
+  export type AuditLogCreateOrConnectWithoutUserInput = {
     where: AuditLogWhereUniqueInput
-    update: XOR<AuditLogUpdateWithoutUserInput, AuditLogUncheckedUpdateWithoutUserInput>
     create: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput>
   }
 
-  export type AuditLogUpdateWithWhereUniqueWithoutUserInput = {
-    where: AuditLogWhereUniqueInput
-    data: XOR<AuditLogUpdateWithoutUserInput, AuditLogUncheckedUpdateWithoutUserInput>
+  export type AuditLogCreateManyUserInputEnvelope = {
+    data: AuditLogCreateManyUserInput | AuditLogCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
-  export type AuditLogUpdateManyWithWhereWithoutUserInput = {
-    where: AuditLogScalarWhereInput
-    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyWithoutUserInput>
+  export type CustomDomainCreateWithoutUserInput = {
+    id?: string
+    domain: string
+    status?: $Enums.DomainStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type AuditLogScalarWhereInput = {
-    AND?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
-    OR?: AuditLogScalarWhereInput[]
-    NOT?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
-    id?: StringFilter<"AuditLog"> | string
-    userId?: StringFilter<"AuditLog"> | string
-    action?: StringFilter<"AuditLog"> | string
-    details?: StringNullableFilter<"AuditLog"> | string | null
-    ipAddress?: StringNullableFilter<"AuditLog"> | string | null
-    userAgent?: StringNullableFilter<"AuditLog"> | string | null
-    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+  export type CustomDomainUncheckedCreateWithoutUserInput = {
+    id?: string
+    domain: string
+    status?: $Enums.DomainStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CustomDomainCreateOrConnectWithoutUserInput = {
+    where: CustomDomainWhereUniqueInput
+    create: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput>
+  }
+
+  export type CustomDomainCreateManyUserInputEnvelope = {
+    data: CustomDomainCreateManyUserInput | CustomDomainCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type KycDocumentCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.DocType
+    fileUrl: string
+    status?: $Enums.DocStatus
+    reviewNote?: string | null
+    reviewedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type KycDocumentUncheckedCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.DocType
+    fileUrl: string
+    status?: $Enums.DocStatus
+    reviewNote?: string | null
+    reviewedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type KycDocumentCreateOrConnectWithoutUserInput = {
+    where: KycDocumentWhereUniqueInput
+    create: XOR<KycDocumentCreateWithoutUserInput, KycDocumentUncheckedCreateWithoutUserInput>
+  }
+
+  export type KycDocumentCreateManyUserInputEnvelope = {
+    data: KycDocumentCreateManyUserInput | KycDocumentCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type NotificationCreateWithoutUserInput = {
+    id?: string
+    title: string
+    content: string
+    read?: boolean
+    type?: $Enums.NotificationType
+    createdAt?: Date | string
+  }
+
+  export type NotificationUncheckedCreateWithoutUserInput = {
+    id?: string
+    title: string
+    content: string
+    read?: boolean
+    type?: $Enums.NotificationType
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationCreateManyUserInputEnvelope = {
+    data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OrderCreateWithoutUserInput = {
+    id?: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
+    affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
+    affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
+    product: ProductCreateNestedOneWithoutOrdersInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderUncheckedCreateWithoutUserInput = {
+    id?: string
+    productId: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
+    affiliationId?: string | null
+    affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderCreateOrConnectWithoutUserInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
+  }
+
+  export type OrderCreateManyUserInputEnvelope = {
+    data: OrderCreateManyUserInput | OrderCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PendingBalanceCreateWithoutUserInput = {
+    id?: string
+    amount: number
+    availableAt: Date | string
+    released?: boolean
+    createdAt?: Date | string
+    order: OrderCreateNestedOneWithoutPendingBalancesInput
+  }
+
+  export type PendingBalanceUncheckedCreateWithoutUserInput = {
+    id?: string
+    orderId: string
+    amount: number
+    availableAt: Date | string
+    released?: boolean
+    createdAt?: Date | string
+  }
+
+  export type PendingBalanceCreateOrConnectWithoutUserInput = {
+    where: PendingBalanceWhereUniqueInput
+    create: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput>
+  }
+
+  export type PendingBalanceCreateManyUserInputEnvelope = {
+    data: PendingBalanceCreateManyUserInput | PendingBalanceCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProductCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price: number
+    currency?: string
+    type?: $Enums.ProductType
+    status?: $Enums.ProductStatus
+    imageUrl?: string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug: string
+    salesCount?: number
+    revenue?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showInShowcase?: boolean
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutProductInput
+    checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
+    orders?: OrderCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductUncheckedCreateWithoutUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price: number
+    currency?: string
+    type?: $Enums.ProductType
+    status?: $Enums.ProductStatus
+    imageUrl?: string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug: string
+    salesCount?: number
+    revenue?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showInShowcase?: boolean
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutProductInput
+    checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
+    orders?: OrderUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutUserInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput>
+  }
+
+  export type ProductCreateManyUserInputEnvelope = {
+    data: ProductCreateManyUserInput | ProductCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TransactionCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.TransactionType
+    amount: number
+    balance: number
+    description: string
+    createdAt?: Date | string
+  }
+
+  export type TransactionUncheckedCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.TransactionType
+    amount: number
+    balance: number
+    description: string
+    createdAt?: Date | string
+  }
+
+  export type TransactionCreateOrConnectWithoutUserInput = {
+    where: TransactionWhereUniqueInput
+    create: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput>
+  }
+
+  export type TransactionCreateManyUserInputEnvelope = {
+    data: TransactionCreateManyUserInput | TransactionCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserBadgeCreateWithoutUserInput = {
+    id?: string
+    badge: $Enums.BadgeType
+    earnedAt?: Date | string
+  }
+
+  export type UserBadgeUncheckedCreateWithoutUserInput = {
+    id?: string
+    badge: $Enums.BadgeType
+    earnedAt?: Date | string
+  }
+
+  export type UserBadgeCreateOrConnectWithoutUserInput = {
+    where: UserBadgeWhereUniqueInput
+    create: XOR<UserBadgeCreateWithoutUserInput, UserBadgeUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserBadgeCreateManyUserInputEnvelope = {
+    data: UserBadgeCreateManyUserInput | UserBadgeCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WebhookCreateWithoutUserInput = {
+    id?: string
+    url: string
+    secret: string
+    events?: WebhookCreateeventsInput | string[]
+    active?: boolean
+    createdAt?: Date | string
+  }
+
+  export type WebhookUncheckedCreateWithoutUserInput = {
+    id?: string
+    url: string
+    secret: string
+    events?: WebhookCreateeventsInput | string[]
+    active?: boolean
+    createdAt?: Date | string
+  }
+
+  export type WebhookCreateOrConnectWithoutUserInput = {
+    where: WebhookWhereUniqueInput
+    create: XOR<WebhookCreateWithoutUserInput, WebhookUncheckedCreateWithoutUserInput>
+  }
+
+  export type WebhookCreateManyUserInputEnvelope = {
+    data: WebhookCreateManyUserInput | WebhookCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WithdrawalCreateWithoutUserInput = {
+    id?: string
+    amount: number
+    status?: $Enums.WithdrawalStatus
+    pixKey: string
+    pixKeyType: $Enums.PixKeyType
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type WithdrawalUncheckedCreateWithoutUserInput = {
+    id?: string
+    amount: number
+    status?: $Enums.WithdrawalStatus
+    pixKey: string
+    pixKeyType: $Enums.PixKeyType
+    processedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type WithdrawalCreateOrConnectWithoutUserInput = {
+    where: WithdrawalWhereUniqueInput
+    create: XOR<WithdrawalCreateWithoutUserInput, WithdrawalUncheckedCreateWithoutUserInput>
+  }
+
+  export type WithdrawalCreateManyUserInputEnvelope = {
+    data: WithdrawalCreateManyUserInput | WithdrawalCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TrustedDeviceUpsertWithWhereUniqueWithoutUserInput = {
+    where: TrustedDeviceWhereUniqueInput
+    update: XOR<TrustedDeviceUpdateWithoutUserInput, TrustedDeviceUncheckedUpdateWithoutUserInput>
+    create: XOR<TrustedDeviceCreateWithoutUserInput, TrustedDeviceUncheckedCreateWithoutUserInput>
+  }
+
+  export type TrustedDeviceUpdateWithWhereUniqueWithoutUserInput = {
+    where: TrustedDeviceWhereUniqueInput
+    data: XOR<TrustedDeviceUpdateWithoutUserInput, TrustedDeviceUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TrustedDeviceUpdateManyWithWhereWithoutUserInput = {
+    where: TrustedDeviceScalarWhereInput
+    data: XOR<TrustedDeviceUpdateManyMutationInput, TrustedDeviceUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TrustedDeviceScalarWhereInput = {
+    AND?: TrustedDeviceScalarWhereInput | TrustedDeviceScalarWhereInput[]
+    OR?: TrustedDeviceScalarWhereInput[]
+    NOT?: TrustedDeviceScalarWhereInput | TrustedDeviceScalarWhereInput[]
+    id?: StringFilter<"TrustedDevice"> | string
+    userId?: StringFilter<"TrustedDevice"> | string
+    ipAddress?: StringFilter<"TrustedDevice"> | string
+    userAgent?: StringNullableFilter<"TrustedDevice"> | string | null
+    expires?: DateTimeFilter<"TrustedDevice"> | Date | string
+    createdAt?: DateTimeFilter<"TrustedDevice"> | Date | string
   }
 
   export type AffiliateOfferUpsertWithWhereUniqueWithoutOwnerInput = {
@@ -38867,6 +40076,388 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Affiliation"> | Date | string
   }
 
+  export type ApiKeyUpsertWithWhereUniqueWithoutUserInput = {
+    where: ApiKeyWhereUniqueInput
+    update: XOR<ApiKeyUpdateWithoutUserInput, ApiKeyUncheckedUpdateWithoutUserInput>
+    create: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput>
+  }
+
+  export type ApiKeyUpdateWithWhereUniqueWithoutUserInput = {
+    where: ApiKeyWhereUniqueInput
+    data: XOR<ApiKeyUpdateWithoutUserInput, ApiKeyUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ApiKeyUpdateManyWithWhereWithoutUserInput = {
+    where: ApiKeyScalarWhereInput
+    data: XOR<ApiKeyUpdateManyMutationInput, ApiKeyUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ApiKeyScalarWhereInput = {
+    AND?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
+    OR?: ApiKeyScalarWhereInput[]
+    NOT?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
+    id?: StringFilter<"ApiKey"> | string
+    userId?: StringFilter<"ApiKey"> | string
+    name?: StringFilter<"ApiKey"> | string
+    key?: StringFilter<"ApiKey"> | string
+    lastUsed?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
+    active?: BoolFilter<"ApiKey"> | boolean
+    createdAt?: DateTimeFilter<"ApiKey"> | Date | string
+  }
+
+  export type AuditLogUpsertWithWhereUniqueWithoutUserInput = {
+    where: AuditLogWhereUniqueInput
+    update: XOR<AuditLogUpdateWithoutUserInput, AuditLogUncheckedUpdateWithoutUserInput>
+    create: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type AuditLogUpdateWithWhereUniqueWithoutUserInput = {
+    where: AuditLogWhereUniqueInput
+    data: XOR<AuditLogUpdateWithoutUserInput, AuditLogUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AuditLogUpdateManyWithWhereWithoutUserInput = {
+    where: AuditLogScalarWhereInput
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AuditLogScalarWhereInput = {
+    AND?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+    OR?: AuditLogScalarWhereInput[]
+    NOT?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+    id?: StringFilter<"AuditLog"> | string
+    userId?: StringFilter<"AuditLog"> | string
+    action?: StringFilter<"AuditLog"> | string
+    details?: StringNullableFilter<"AuditLog"> | string | null
+    ipAddress?: StringNullableFilter<"AuditLog"> | string | null
+    userAgent?: StringNullableFilter<"AuditLog"> | string | null
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+  }
+
+  export type CustomDomainUpsertWithWhereUniqueWithoutUserInput = {
+    where: CustomDomainWhereUniqueInput
+    update: XOR<CustomDomainUpdateWithoutUserInput, CustomDomainUncheckedUpdateWithoutUserInput>
+    create: XOR<CustomDomainCreateWithoutUserInput, CustomDomainUncheckedCreateWithoutUserInput>
+  }
+
+  export type CustomDomainUpdateWithWhereUniqueWithoutUserInput = {
+    where: CustomDomainWhereUniqueInput
+    data: XOR<CustomDomainUpdateWithoutUserInput, CustomDomainUncheckedUpdateWithoutUserInput>
+  }
+
+  export type CustomDomainUpdateManyWithWhereWithoutUserInput = {
+    where: CustomDomainScalarWhereInput
+    data: XOR<CustomDomainUpdateManyMutationInput, CustomDomainUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type CustomDomainScalarWhereInput = {
+    AND?: CustomDomainScalarWhereInput | CustomDomainScalarWhereInput[]
+    OR?: CustomDomainScalarWhereInput[]
+    NOT?: CustomDomainScalarWhereInput | CustomDomainScalarWhereInput[]
+    id?: StringFilter<"CustomDomain"> | string
+    userId?: StringFilter<"CustomDomain"> | string
+    domain?: StringFilter<"CustomDomain"> | string
+    status?: EnumDomainStatusFilter<"CustomDomain"> | $Enums.DomainStatus
+    createdAt?: DateTimeFilter<"CustomDomain"> | Date | string
+    updatedAt?: DateTimeFilter<"CustomDomain"> | Date | string
+  }
+
+  export type KycDocumentUpsertWithWhereUniqueWithoutUserInput = {
+    where: KycDocumentWhereUniqueInput
+    update: XOR<KycDocumentUpdateWithoutUserInput, KycDocumentUncheckedUpdateWithoutUserInput>
+    create: XOR<KycDocumentCreateWithoutUserInput, KycDocumentUncheckedCreateWithoutUserInput>
+  }
+
+  export type KycDocumentUpdateWithWhereUniqueWithoutUserInput = {
+    where: KycDocumentWhereUniqueInput
+    data: XOR<KycDocumentUpdateWithoutUserInput, KycDocumentUncheckedUpdateWithoutUserInput>
+  }
+
+  export type KycDocumentUpdateManyWithWhereWithoutUserInput = {
+    where: KycDocumentScalarWhereInput
+    data: XOR<KycDocumentUpdateManyMutationInput, KycDocumentUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type KycDocumentScalarWhereInput = {
+    AND?: KycDocumentScalarWhereInput | KycDocumentScalarWhereInput[]
+    OR?: KycDocumentScalarWhereInput[]
+    NOT?: KycDocumentScalarWhereInput | KycDocumentScalarWhereInput[]
+    id?: StringFilter<"KycDocument"> | string
+    userId?: StringFilter<"KycDocument"> | string
+    type?: EnumDocTypeFilter<"KycDocument"> | $Enums.DocType
+    fileUrl?: StringFilter<"KycDocument"> | string
+    status?: EnumDocStatusFilter<"KycDocument"> | $Enums.DocStatus
+    reviewNote?: StringNullableFilter<"KycDocument"> | string | null
+    reviewedAt?: DateTimeNullableFilter<"KycDocument"> | Date | string | null
+    createdAt?: DateTimeFilter<"KycDocument"> | Date | string
+  }
+
+  export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutUserInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type NotificationScalarWhereInput = {
+    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    OR?: NotificationScalarWhereInput[]
+    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    id?: StringFilter<"Notification"> | string
+    userId?: StringFilter<"Notification"> | string
+    title?: StringFilter<"Notification"> | string
+    content?: StringFilter<"Notification"> | string
+    read?: BoolFilter<"Notification"> | boolean
+    type?: EnumNotificationTypeFilter<"Notification"> | $Enums.NotificationType
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+  }
+
+  export type OrderUpsertWithWhereUniqueWithoutUserInput = {
+    where: OrderWhereUniqueInput
+    update: XOR<OrderUpdateWithoutUserInput, OrderUncheckedUpdateWithoutUserInput>
+    create: XOR<OrderCreateWithoutUserInput, OrderUncheckedCreateWithoutUserInput>
+  }
+
+  export type OrderUpdateWithWhereUniqueWithoutUserInput = {
+    where: OrderWhereUniqueInput
+    data: XOR<OrderUpdateWithoutUserInput, OrderUncheckedUpdateWithoutUserInput>
+  }
+
+  export type OrderUpdateManyWithWhereWithoutUserInput = {
+    where: OrderScalarWhereInput
+    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type OrderScalarWhereInput = {
+    AND?: OrderScalarWhereInput | OrderScalarWhereInput[]
+    OR?: OrderScalarWhereInput[]
+    NOT?: OrderScalarWhereInput | OrderScalarWhereInput[]
+    id?: StringFilter<"Order"> | string
+    userId?: StringFilter<"Order"> | string
+    productId?: StringFilter<"Order"> | string
+    buyerName?: StringFilter<"Order"> | string
+    buyerEmail?: StringFilter<"Order"> | string
+    buyerCpf?: StringNullableFilter<"Order"> | string | null
+    buyerPhone?: StringNullableFilter<"Order"> | string | null
+    buyerData?: JsonNullableFilter<"Order">
+    amount?: FloatFilter<"Order"> | number
+    platformFee?: FloatFilter<"Order"> | number
+    netAmount?: FloatFilter<"Order"> | number
+    status?: EnumOrderStatusFilter<"Order"> | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFilter<"Order"> | $Enums.PaymentMethod
+    pixQrCode?: StringNullableFilter<"Order"> | string | null
+    pixCopyPaste?: StringNullableFilter<"Order"> | string | null
+    boletoUrl?: StringNullableFilter<"Order"> | string | null
+    boletoBarcode?: StringNullableFilter<"Order"> | string | null
+    cardLastFour?: StringNullableFilter<"Order"> | string | null
+    cardBrand?: StringNullableFilter<"Order"> | string | null
+    installments?: IntFilter<"Order"> | number
+    externalId?: StringNullableFilter<"Order"> | string | null
+    paidAt?: DateTimeNullableFilter<"Order"> | Date | string | null
+    refundedAt?: DateTimeNullableFilter<"Order"> | Date | string | null
+    isMatured?: BoolFilter<"Order"> | boolean
+    statusHistory?: JsonNullableFilter<"Order">
+    createdAt?: DateTimeFilter<"Order"> | Date | string
+    updatedAt?: DateTimeFilter<"Order"> | Date | string
+    pixBrCode?: StringNullableFilter<"Order"> | string | null
+    pixExpiresAt?: DateTimeNullableFilter<"Order"> | Date | string | null
+    pixQrCodeUrl?: StringNullableFilter<"Order"> | string | null
+    wooviCorrelationId?: StringNullableFilter<"Order"> | string | null
+    wooviEndToEndId?: StringNullableFilter<"Order"> | string | null
+    wooviTransactionId?: StringNullableFilter<"Order"> | string | null
+    affiliationId?: StringNullableFilter<"Order"> | string | null
+  }
+
+  export type PendingBalanceUpsertWithWhereUniqueWithoutUserInput = {
+    where: PendingBalanceWhereUniqueInput
+    update: XOR<PendingBalanceUpdateWithoutUserInput, PendingBalanceUncheckedUpdateWithoutUserInput>
+    create: XOR<PendingBalanceCreateWithoutUserInput, PendingBalanceUncheckedCreateWithoutUserInput>
+  }
+
+  export type PendingBalanceUpdateWithWhereUniqueWithoutUserInput = {
+    where: PendingBalanceWhereUniqueInput
+    data: XOR<PendingBalanceUpdateWithoutUserInput, PendingBalanceUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PendingBalanceUpdateManyWithWhereWithoutUserInput = {
+    where: PendingBalanceScalarWhereInput
+    data: XOR<PendingBalanceUpdateManyMutationInput, PendingBalanceUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PendingBalanceScalarWhereInput = {
+    AND?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
+    OR?: PendingBalanceScalarWhereInput[]
+    NOT?: PendingBalanceScalarWhereInput | PendingBalanceScalarWhereInput[]
+    id?: StringFilter<"PendingBalance"> | string
+    userId?: StringFilter<"PendingBalance"> | string
+    orderId?: StringFilter<"PendingBalance"> | string
+    amount?: FloatFilter<"PendingBalance"> | number
+    availableAt?: DateTimeFilter<"PendingBalance"> | Date | string
+    released?: BoolFilter<"PendingBalance"> | boolean
+    createdAt?: DateTimeFilter<"PendingBalance"> | Date | string
+  }
+
+  export type ProductUpsertWithWhereUniqueWithoutUserInput = {
+    where: ProductWhereUniqueInput
+    update: XOR<ProductUpdateWithoutUserInput, ProductUncheckedUpdateWithoutUserInput>
+    create: XOR<ProductCreateWithoutUserInput, ProductUncheckedCreateWithoutUserInput>
+  }
+
+  export type ProductUpdateWithWhereUniqueWithoutUserInput = {
+    where: ProductWhereUniqueInput
+    data: XOR<ProductUpdateWithoutUserInput, ProductUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ProductUpdateManyWithWhereWithoutUserInput = {
+    where: ProductScalarWhereInput
+    data: XOR<ProductUpdateManyMutationInput, ProductUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ProductScalarWhereInput = {
+    AND?: ProductScalarWhereInput | ProductScalarWhereInput[]
+    OR?: ProductScalarWhereInput[]
+    NOT?: ProductScalarWhereInput | ProductScalarWhereInput[]
+    id?: StringFilter<"Product"> | string
+    userId?: StringFilter<"Product"> | string
+    name?: StringFilter<"Product"> | string
+    description?: StringNullableFilter<"Product"> | string | null
+    price?: FloatFilter<"Product"> | number
+    currency?: StringFilter<"Product"> | string
+    type?: EnumProductTypeFilter<"Product"> | $Enums.ProductType
+    status?: EnumProductStatusFilter<"Product"> | $Enums.ProductStatus
+    imageUrl?: StringNullableFilter<"Product"> | string | null
+    checkoutConfig?: JsonNullableFilter<"Product">
+    slug?: StringFilter<"Product"> | string
+    salesCount?: IntFilter<"Product"> | number
+    revenue?: FloatFilter<"Product"> | number
+    createdAt?: DateTimeFilter<"Product"> | Date | string
+    updatedAt?: DateTimeFilter<"Product"> | Date | string
+    showInShowcase?: BoolFilter<"Product"> | boolean
+  }
+
+  export type TransactionUpsertWithWhereUniqueWithoutUserInput = {
+    where: TransactionWhereUniqueInput
+    update: XOR<TransactionUpdateWithoutUserInput, TransactionUncheckedUpdateWithoutUserInput>
+    create: XOR<TransactionCreateWithoutUserInput, TransactionUncheckedCreateWithoutUserInput>
+  }
+
+  export type TransactionUpdateWithWhereUniqueWithoutUserInput = {
+    where: TransactionWhereUniqueInput
+    data: XOR<TransactionUpdateWithoutUserInput, TransactionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type TransactionUpdateManyWithWhereWithoutUserInput = {
+    where: TransactionScalarWhereInput
+    data: XOR<TransactionUpdateManyMutationInput, TransactionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type TransactionScalarWhereInput = {
+    AND?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+    OR?: TransactionScalarWhereInput[]
+    NOT?: TransactionScalarWhereInput | TransactionScalarWhereInput[]
+    id?: StringFilter<"Transaction"> | string
+    userId?: StringFilter<"Transaction"> | string
+    type?: EnumTransactionTypeFilter<"Transaction"> | $Enums.TransactionType
+    amount?: FloatFilter<"Transaction"> | number
+    balance?: FloatFilter<"Transaction"> | number
+    description?: StringFilter<"Transaction"> | string
+    createdAt?: DateTimeFilter<"Transaction"> | Date | string
+  }
+
+  export type UserBadgeUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserBadgeWhereUniqueInput
+    update: XOR<UserBadgeUpdateWithoutUserInput, UserBadgeUncheckedUpdateWithoutUserInput>
+    create: XOR<UserBadgeCreateWithoutUserInput, UserBadgeUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserBadgeUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserBadgeWhereUniqueInput
+    data: XOR<UserBadgeUpdateWithoutUserInput, UserBadgeUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserBadgeUpdateManyWithWhereWithoutUserInput = {
+    where: UserBadgeScalarWhereInput
+    data: XOR<UserBadgeUpdateManyMutationInput, UserBadgeUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserBadgeScalarWhereInput = {
+    AND?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
+    OR?: UserBadgeScalarWhereInput[]
+    NOT?: UserBadgeScalarWhereInput | UserBadgeScalarWhereInput[]
+    id?: StringFilter<"UserBadge"> | string
+    userId?: StringFilter<"UserBadge"> | string
+    badge?: EnumBadgeTypeFilter<"UserBadge"> | $Enums.BadgeType
+    earnedAt?: DateTimeFilter<"UserBadge"> | Date | string
+  }
+
+  export type WebhookUpsertWithWhereUniqueWithoutUserInput = {
+    where: WebhookWhereUniqueInput
+    update: XOR<WebhookUpdateWithoutUserInput, WebhookUncheckedUpdateWithoutUserInput>
+    create: XOR<WebhookCreateWithoutUserInput, WebhookUncheckedCreateWithoutUserInput>
+  }
+
+  export type WebhookUpdateWithWhereUniqueWithoutUserInput = {
+    where: WebhookWhereUniqueInput
+    data: XOR<WebhookUpdateWithoutUserInput, WebhookUncheckedUpdateWithoutUserInput>
+  }
+
+  export type WebhookUpdateManyWithWhereWithoutUserInput = {
+    where: WebhookScalarWhereInput
+    data: XOR<WebhookUpdateManyMutationInput, WebhookUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type WebhookScalarWhereInput = {
+    AND?: WebhookScalarWhereInput | WebhookScalarWhereInput[]
+    OR?: WebhookScalarWhereInput[]
+    NOT?: WebhookScalarWhereInput | WebhookScalarWhereInput[]
+    id?: StringFilter<"Webhook"> | string
+    userId?: StringFilter<"Webhook"> | string
+    url?: StringFilter<"Webhook"> | string
+    secret?: StringFilter<"Webhook"> | string
+    events?: StringNullableListFilter<"Webhook">
+    active?: BoolFilter<"Webhook"> | boolean
+    createdAt?: DateTimeFilter<"Webhook"> | Date | string
+  }
+
+  export type WithdrawalUpsertWithWhereUniqueWithoutUserInput = {
+    where: WithdrawalWhereUniqueInput
+    update: XOR<WithdrawalUpdateWithoutUserInput, WithdrawalUncheckedUpdateWithoutUserInput>
+    create: XOR<WithdrawalCreateWithoutUserInput, WithdrawalUncheckedCreateWithoutUserInput>
+  }
+
+  export type WithdrawalUpdateWithWhereUniqueWithoutUserInput = {
+    where: WithdrawalWhereUniqueInput
+    data: XOR<WithdrawalUpdateWithoutUserInput, WithdrawalUncheckedUpdateWithoutUserInput>
+  }
+
+  export type WithdrawalUpdateManyWithWhereWithoutUserInput = {
+    where: WithdrawalScalarWhereInput
+    data: XOR<WithdrawalUpdateManyMutationInput, WithdrawalUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type WithdrawalScalarWhereInput = {
+    AND?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
+    OR?: WithdrawalScalarWhereInput[]
+    NOT?: WithdrawalScalarWhereInput | WithdrawalScalarWhereInput[]
+    id?: StringFilter<"Withdrawal"> | string
+    userId?: StringFilter<"Withdrawal"> | string
+    amount?: FloatFilter<"Withdrawal"> | number
+    status?: EnumWithdrawalStatusFilter<"Withdrawal"> | $Enums.WithdrawalStatus
+    pixKey?: StringFilter<"Withdrawal"> | string
+    pixKeyType?: EnumPixKeyTypeFilter<"Withdrawal"> | $Enums.PixKeyType
+    processedAt?: DateTimeNullableFilter<"Withdrawal"> | Date | string | null
+    createdAt?: DateTimeFilter<"Withdrawal"> | Date | string
+  }
+
   export type UserCreateWithoutNotificationsInput = {
     id?: string
     name: string
@@ -38890,26 +40481,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    transactions?: TransactionCreateNestedManyWithoutUserInput
-    webhooks?: WebhookCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
-    badges?: UserBadgeCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -38935,26 +40528,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
-    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
-    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -38996,26 +40591,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -39041,26 +40638,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAuditLogsInput = {
@@ -39086,26 +40685,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    transactions?: TransactionCreateNestedManyWithoutUserInput
-    webhooks?: WebhookCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
-    badges?: UserBadgeCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -39131,26 +40732,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
-    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
-    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -39192,26 +40795,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -39237,231 +40842,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
-  }
-
-  export type UserCreateWithoutProductsInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: $Enums.Role
-    status?: $Enums.UserStatus
-    kycStatus?: $Enums.KycStatus
-    document?: string | null
-    phone?: string | null
-    pixKey?: string | null
-    pixKeyType?: $Enums.PixKeyType | null
-    bankName?: string | null
-    bankAgency?: string | null
-    bankAccount?: string | null
-    avatarUrl?: string | null
-    platformFeePercent?: number
-    totalEarnings?: number
-    totalWithdrawn?: number
-    availableBalance?: number
-    pendingBalance?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username?: string | null
-    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
-    socialLinks?: NullableJsonNullValueInput | InputJsonValue
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    orders?: OrderCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    transactions?: TransactionCreateNestedManyWithoutUserInput
-    webhooks?: WebhookCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
-    badges?: UserBadgeCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
-    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
-    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
-  }
-
-  export type UserUncheckedCreateWithoutProductsInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: $Enums.Role
-    status?: $Enums.UserStatus
-    kycStatus?: $Enums.KycStatus
-    document?: string | null
-    phone?: string | null
-    pixKey?: string | null
-    pixKeyType?: $Enums.PixKeyType | null
-    bankName?: string | null
-    bankAgency?: string | null
-    bankAccount?: string | null
-    avatarUrl?: string | null
-    platformFeePercent?: number
-    totalEarnings?: number
-    totalWithdrawn?: number
-    availableBalance?: number
-    pendingBalance?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username?: string | null
-    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
-    socialLinks?: NullableJsonNullValueInput | InputJsonValue
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
-    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
-    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
-    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
-    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
-  }
-
-  export type UserCreateOrConnectWithoutProductsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
-  }
-
-  export type OrderCreateWithoutProductInput = {
-    id?: string
-    buyerName: string
-    buyerEmail: string
-    buyerCpf?: string | null
-    buyerPhone?: string | null
-    buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount: number
-    platformFee: number
-    netAmount: number
-    status?: $Enums.OrderStatus
-    paymentMethod: $Enums.PaymentMethod
-    pixQrCode?: string | null
-    pixCopyPaste?: string | null
-    boletoUrl?: string | null
-    boletoBarcode?: string | null
-    cardLastFour?: string | null
-    cardBrand?: string | null
-    installments?: number
-    externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
-    paidAt?: Date | string | null
-    refundedAt?: Date | string | null
-    isMatured?: boolean
-    statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutOrdersInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
-    affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
-    affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
-  }
-
-  export type OrderUncheckedCreateWithoutProductInput = {
-    id?: string
-    userId: string
-    buyerName: string
-    buyerEmail: string
-    buyerCpf?: string | null
-    buyerPhone?: string | null
-    buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount: number
-    platformFee: number
-    netAmount: number
-    status?: $Enums.OrderStatus
-    paymentMethod: $Enums.PaymentMethod
-    pixQrCode?: string | null
-    pixCopyPaste?: string | null
-    boletoUrl?: string | null
-    boletoBarcode?: string | null
-    cardLastFour?: string | null
-    cardBrand?: string | null
-    installments?: number
-    externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
-    paidAt?: Date | string | null
-    refundedAt?: Date | string | null
-    isMatured?: boolean
-    statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    affiliationId?: string | null
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
-    affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
-  }
-
-  export type OrderCreateOrConnectWithoutProductInput = {
-    where: OrderWhereUniqueInput
-    create: XOR<OrderCreateWithoutProductInput, OrderUncheckedCreateWithoutProductInput>
-  }
-
-  export type OrderCreateManyProductInputEnvelope = {
-    data: OrderCreateManyProductInput | OrderCreateManyProductInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type CheckoutLinkCreateWithoutProductInput = {
-    id?: string
-    slug: string
-    active?: boolean
-    createdAt?: Date | string
-  }
-
-  export type CheckoutLinkUncheckedCreateWithoutProductInput = {
-    id?: string
-    slug: string
-    active?: boolean
-    createdAt?: Date | string
-  }
-
-  export type CheckoutLinkCreateOrConnectWithoutProductInput = {
-    where: CheckoutLinkWhereUniqueInput
-    create: XOR<CheckoutLinkCreateWithoutProductInput, CheckoutLinkUncheckedCreateWithoutProductInput>
-  }
-
-  export type CheckoutLinkCreateManyProductInputEnvelope = {
-    data: CheckoutLinkCreateManyProductInput | CheckoutLinkCreateManyProductInput[]
-    skipDuplicates?: boolean
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AffiliateOfferCreateWithoutProductInput = {
@@ -39520,6 +40922,274 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type CheckoutLinkCreateWithoutProductInput = {
+    id?: string
+    slug: string
+    active?: boolean
+    createdAt?: Date | string
+  }
+
+  export type CheckoutLinkUncheckedCreateWithoutProductInput = {
+    id?: string
+    slug: string
+    active?: boolean
+    createdAt?: Date | string
+  }
+
+  export type CheckoutLinkCreateOrConnectWithoutProductInput = {
+    where: CheckoutLinkWhereUniqueInput
+    create: XOR<CheckoutLinkCreateWithoutProductInput, CheckoutLinkUncheckedCreateWithoutProductInput>
+  }
+
+  export type CheckoutLinkCreateManyProductInputEnvelope = {
+    data: CheckoutLinkCreateManyProductInput | CheckoutLinkCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type OrderCreateWithoutProductInput = {
+    id?: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
+    affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
+    affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
+    user: UserCreateNestedOneWithoutOrdersInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderUncheckedCreateWithoutProductInput = {
+    id?: string
+    userId: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
+    affiliationId?: string | null
+    affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderCreateOrConnectWithoutProductInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutProductInput, OrderUncheckedCreateWithoutProductInput>
+  }
+
+  export type OrderCreateManyProductInputEnvelope = {
+    data: OrderCreateManyProductInput | OrderCreateManyProductInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutProductsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutProductsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutProductsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
+  }
+
+  export type AffiliateOfferUpsertWithWhereUniqueWithoutProductInput = {
+    where: AffiliateOfferWhereUniqueInput
+    update: XOR<AffiliateOfferUpdateWithoutProductInput, AffiliateOfferUncheckedUpdateWithoutProductInput>
+    create: XOR<AffiliateOfferCreateWithoutProductInput, AffiliateOfferUncheckedCreateWithoutProductInput>
+  }
+
+  export type AffiliateOfferUpdateWithWhereUniqueWithoutProductInput = {
+    where: AffiliateOfferWhereUniqueInput
+    data: XOR<AffiliateOfferUpdateWithoutProductInput, AffiliateOfferUncheckedUpdateWithoutProductInput>
+  }
+
+  export type AffiliateOfferUpdateManyWithWhereWithoutProductInput = {
+    where: AffiliateOfferScalarWhereInput
+    data: XOR<AffiliateOfferUpdateManyMutationInput, AffiliateOfferUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type CheckoutLinkUpsertWithWhereUniqueWithoutProductInput = {
+    where: CheckoutLinkWhereUniqueInput
+    update: XOR<CheckoutLinkUpdateWithoutProductInput, CheckoutLinkUncheckedUpdateWithoutProductInput>
+    create: XOR<CheckoutLinkCreateWithoutProductInput, CheckoutLinkUncheckedCreateWithoutProductInput>
+  }
+
+  export type CheckoutLinkUpdateWithWhereUniqueWithoutProductInput = {
+    where: CheckoutLinkWhereUniqueInput
+    data: XOR<CheckoutLinkUpdateWithoutProductInput, CheckoutLinkUncheckedUpdateWithoutProductInput>
+  }
+
+  export type CheckoutLinkUpdateManyWithWhereWithoutProductInput = {
+    where: CheckoutLinkScalarWhereInput
+    data: XOR<CheckoutLinkUpdateManyMutationInput, CheckoutLinkUncheckedUpdateManyWithoutProductInput>
+  }
+
+  export type CheckoutLinkScalarWhereInput = {
+    AND?: CheckoutLinkScalarWhereInput | CheckoutLinkScalarWhereInput[]
+    OR?: CheckoutLinkScalarWhereInput[]
+    NOT?: CheckoutLinkScalarWhereInput | CheckoutLinkScalarWhereInput[]
+    id?: StringFilter<"CheckoutLink"> | string
+    productId?: StringFilter<"CheckoutLink"> | string
+    slug?: StringFilter<"CheckoutLink"> | string
+    active?: BoolFilter<"CheckoutLink"> | boolean
+    createdAt?: DateTimeFilter<"CheckoutLink"> | Date | string
+  }
+
+  export type OrderUpsertWithWhereUniqueWithoutProductInput = {
+    where: OrderWhereUniqueInput
+    update: XOR<OrderUpdateWithoutProductInput, OrderUncheckedUpdateWithoutProductInput>
+    create: XOR<OrderCreateWithoutProductInput, OrderUncheckedCreateWithoutProductInput>
+  }
+
+  export type OrderUpdateWithWhereUniqueWithoutProductInput = {
+    where: OrderWhereUniqueInput
+    data: XOR<OrderUpdateWithoutProductInput, OrderUncheckedUpdateWithoutProductInput>
+  }
+
+  export type OrderUpdateManyWithWhereWithoutProductInput = {
+    where: OrderScalarWhereInput
+    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutProductInput>
+  }
+
   export type UserUpsertWithoutProductsInput = {
     update: XOR<UserUpdateWithoutProductsInput, UserUncheckedUpdateWithoutProductsInput>
     create: XOR<UserCreateWithoutProductsInput, UserUncheckedCreateWithoutProductsInput>
@@ -39554,26 +41224,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProductsInput = {
@@ -39599,85 +41271,141 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   }
 
-  export type OrderUpsertWithWhereUniqueWithoutProductInput = {
-    where: OrderWhereUniqueInput
-    update: XOR<OrderUpdateWithoutProductInput, OrderUncheckedUpdateWithoutProductInput>
-    create: XOR<OrderCreateWithoutProductInput, OrderUncheckedCreateWithoutProductInput>
+  export type AffiliationSaleCreateWithoutOrderInput = {
+    id?: string
+    saleAmount: number
+    commission: number
+    status?: $Enums.SaleCommissionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
+    affiliation: AffiliationCreateNestedOneWithoutSalesInput
   }
 
-  export type OrderUpdateWithWhereUniqueWithoutProductInput = {
-    where: OrderWhereUniqueInput
-    data: XOR<OrderUpdateWithoutProductInput, OrderUncheckedUpdateWithoutProductInput>
+  export type AffiliationSaleUncheckedCreateWithoutOrderInput = {
+    id?: string
+    affiliationId: string
+    saleAmount: number
+    commission: number
+    status?: $Enums.SaleCommissionStatus
+    paidAt?: Date | string | null
+    createdAt?: Date | string
   }
 
-  export type OrderUpdateManyWithWhereWithoutProductInput = {
-    where: OrderScalarWhereInput
-    data: XOR<OrderUpdateManyMutationInput, OrderUncheckedUpdateManyWithoutProductInput>
+  export type AffiliationSaleCreateOrConnectWithoutOrderInput = {
+    where: AffiliationSaleWhereUniqueInput
+    create: XOR<AffiliationSaleCreateWithoutOrderInput, AffiliationSaleUncheckedCreateWithoutOrderInput>
   }
 
-  export type CheckoutLinkUpsertWithWhereUniqueWithoutProductInput = {
-    where: CheckoutLinkWhereUniqueInput
-    update: XOR<CheckoutLinkUpdateWithoutProductInput, CheckoutLinkUncheckedUpdateWithoutProductInput>
-    create: XOR<CheckoutLinkCreateWithoutProductInput, CheckoutLinkUncheckedCreateWithoutProductInput>
+  export type AffiliationCreateWithoutOrdersInput = {
+    id?: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    affiliate: UserCreateNestedOneWithoutAffiliationsInput
+    offer: AffiliateOfferCreateNestedOneWithoutAffiliationsInput
+    sales?: AffiliationSaleCreateNestedManyWithoutAffiliationInput
   }
 
-  export type CheckoutLinkUpdateWithWhereUniqueWithoutProductInput = {
-    where: CheckoutLinkWhereUniqueInput
-    data: XOR<CheckoutLinkUpdateWithoutProductInput, CheckoutLinkUncheckedUpdateWithoutProductInput>
+  export type AffiliationUncheckedCreateWithoutOrdersInput = {
+    id?: string
+    offerId: string
+    affiliateId: string
+    status?: $Enums.AffiliationStatus
+    affiliateLink: string
+    affiliateCode: string
+    totalClicks?: number
+    totalSales?: number
+    totalEarned?: number
+    pendingBalance?: number
+    availableBalance?: number
+    approvedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sales?: AffiliationSaleUncheckedCreateNestedManyWithoutAffiliationInput
   }
 
-  export type CheckoutLinkUpdateManyWithWhereWithoutProductInput = {
-    where: CheckoutLinkScalarWhereInput
-    data: XOR<CheckoutLinkUpdateManyMutationInput, CheckoutLinkUncheckedUpdateManyWithoutProductInput>
+  export type AffiliationCreateOrConnectWithoutOrdersInput = {
+    where: AffiliationWhereUniqueInput
+    create: XOR<AffiliationCreateWithoutOrdersInput, AffiliationUncheckedCreateWithoutOrdersInput>
   }
 
-  export type CheckoutLinkScalarWhereInput = {
-    AND?: CheckoutLinkScalarWhereInput | CheckoutLinkScalarWhereInput[]
-    OR?: CheckoutLinkScalarWhereInput[]
-    NOT?: CheckoutLinkScalarWhereInput | CheckoutLinkScalarWhereInput[]
-    id?: StringFilter<"CheckoutLink"> | string
-    productId?: StringFilter<"CheckoutLink"> | string
-    slug?: StringFilter<"CheckoutLink"> | string
-    active?: BoolFilter<"CheckoutLink"> | boolean
-    createdAt?: DateTimeFilter<"CheckoutLink"> | Date | string
+  export type ProductCreateWithoutOrdersInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price: number
+    currency?: string
+    type?: $Enums.ProductType
+    status?: $Enums.ProductStatus
+    imageUrl?: string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug: string
+    salesCount?: number
+    revenue?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showInShowcase?: boolean
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutProductInput
+    checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
+    user: UserCreateNestedOneWithoutProductsInput
   }
 
-  export type AffiliateOfferUpsertWithWhereUniqueWithoutProductInput = {
-    where: AffiliateOfferWhereUniqueInput
-    update: XOR<AffiliateOfferUpdateWithoutProductInput, AffiliateOfferUncheckedUpdateWithoutProductInput>
-    create: XOR<AffiliateOfferCreateWithoutProductInput, AffiliateOfferUncheckedCreateWithoutProductInput>
+  export type ProductUncheckedCreateWithoutOrdersInput = {
+    id?: string
+    userId: string
+    name: string
+    description?: string | null
+    price: number
+    currency?: string
+    type?: $Enums.ProductType
+    status?: $Enums.ProductStatus
+    imageUrl?: string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug: string
+    salesCount?: number
+    revenue?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showInShowcase?: boolean
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutProductInput
+    checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
   }
 
-  export type AffiliateOfferUpdateWithWhereUniqueWithoutProductInput = {
-    where: AffiliateOfferWhereUniqueInput
-    data: XOR<AffiliateOfferUpdateWithoutProductInput, AffiliateOfferUncheckedUpdateWithoutProductInput>
-  }
-
-  export type AffiliateOfferUpdateManyWithWhereWithoutProductInput = {
-    where: AffiliateOfferScalarWhereInput
-    data: XOR<AffiliateOfferUpdateManyMutationInput, AffiliateOfferUncheckedUpdateManyWithoutProductInput>
+  export type ProductCreateOrConnectWithoutOrdersInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
   }
 
   export type UserCreateWithoutOrdersInput = {
@@ -39703,26 +41431,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    transactions?: TransactionCreateNestedManyWithoutUserInput
-    webhooks?: WebhookCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
-    badges?: UserBadgeCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrdersInput = {
@@ -39748,78 +41478,33 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
-    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
-    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrdersInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
-  }
-
-  export type ProductCreateWithoutOrdersInput = {
-    id?: string
-    name: string
-    description?: string | null
-    price: number
-    currency?: string
-    type?: $Enums.ProductType
-    status?: $Enums.ProductStatus
-    imageUrl?: string | null
-    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
-    slug: string
-    salesCount?: number
-    revenue?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    showInShowcase?: boolean
-    user: UserCreateNestedOneWithoutProductsInput
-    checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
-    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutProductInput
-  }
-
-  export type ProductUncheckedCreateWithoutOrdersInput = {
-    id?: string
-    userId: string
-    name: string
-    description?: string | null
-    price: number
-    currency?: string
-    type?: $Enums.ProductType
-    status?: $Enums.ProductStatus
-    imageUrl?: string | null
-    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
-    slug: string
-    salesCount?: number
-    revenue?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    showInShowcase?: boolean
-    checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
-    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutProductInput
-  }
-
-  export type ProductCreateOrConnectWithoutOrdersInput = {
-    where: ProductWhereUniqueInput
-    create: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
   }
 
   export type PendingBalanceCreateWithoutOrderInput = {
@@ -39850,70 +41535,135 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type AffiliationCreateWithoutOrdersInput = {
-    id?: string
-    status?: $Enums.AffiliationStatus
-    affiliateLink: string
-    affiliateCode: string
-    totalClicks?: number
-    totalSales?: number
-    totalEarned?: number
-    pendingBalance?: number
-    availableBalance?: number
-    approvedAt?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    offer: AffiliateOfferCreateNestedOneWithoutAffiliationsInput
-    affiliate: UserCreateNestedOneWithoutAffiliationsInput
-    sales?: AffiliationSaleCreateNestedManyWithoutAffiliationInput
-  }
-
-  export type AffiliationUncheckedCreateWithoutOrdersInput = {
-    id?: string
-    offerId: string
-    affiliateId: string
-    status?: $Enums.AffiliationStatus
-    affiliateLink: string
-    affiliateCode: string
-    totalClicks?: number
-    totalSales?: number
-    totalEarned?: number
-    pendingBalance?: number
-    availableBalance?: number
-    approvedAt?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    sales?: AffiliationSaleUncheckedCreateNestedManyWithoutAffiliationInput
-  }
-
-  export type AffiliationCreateOrConnectWithoutOrdersInput = {
-    where: AffiliationWhereUniqueInput
-    create: XOR<AffiliationCreateWithoutOrdersInput, AffiliationUncheckedCreateWithoutOrdersInput>
-  }
-
-  export type AffiliationSaleCreateWithoutOrderInput = {
-    id?: string
-    saleAmount: number
-    commission: number
-    status?: $Enums.SaleCommissionStatus
-    paidAt?: Date | string | null
-    createdAt?: Date | string
-    affiliation: AffiliationCreateNestedOneWithoutSalesInput
-  }
-
-  export type AffiliationSaleUncheckedCreateWithoutOrderInput = {
-    id?: string
-    affiliationId: string
-    saleAmount: number
-    commission: number
-    status?: $Enums.SaleCommissionStatus
-    paidAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type AffiliationSaleCreateOrConnectWithoutOrderInput = {
-    where: AffiliationSaleWhereUniqueInput
+  export type AffiliationSaleUpsertWithoutOrderInput = {
+    update: XOR<AffiliationSaleUpdateWithoutOrderInput, AffiliationSaleUncheckedUpdateWithoutOrderInput>
     create: XOR<AffiliationSaleCreateWithoutOrderInput, AffiliationSaleUncheckedCreateWithoutOrderInput>
+    where?: AffiliationSaleWhereInput
+  }
+
+  export type AffiliationSaleUpdateToOneWithWhereWithoutOrderInput = {
+    where?: AffiliationSaleWhereInput
+    data: XOR<AffiliationSaleUpdateWithoutOrderInput, AffiliationSaleUncheckedUpdateWithoutOrderInput>
+  }
+
+  export type AffiliationSaleUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commission?: FloatFieldUpdateOperationsInput | number
+    status?: EnumSaleCommissionStatusFieldUpdateOperationsInput | $Enums.SaleCommissionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliation?: AffiliationUpdateOneRequiredWithoutSalesNestedInput
+  }
+
+  export type AffiliationSaleUncheckedUpdateWithoutOrderInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    affiliationId?: StringFieldUpdateOperationsInput | string
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commission?: FloatFieldUpdateOperationsInput | number
+    status?: EnumSaleCommissionStatusFieldUpdateOperationsInput | $Enums.SaleCommissionStatus
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AffiliationUpsertWithoutOrdersInput = {
+    update: XOR<AffiliationUpdateWithoutOrdersInput, AffiliationUncheckedUpdateWithoutOrdersInput>
+    create: XOR<AffiliationCreateWithoutOrdersInput, AffiliationUncheckedCreateWithoutOrdersInput>
+    where?: AffiliationWhereInput
+  }
+
+  export type AffiliationUpdateToOneWithWhereWithoutOrdersInput = {
+    where?: AffiliationWhereInput
+    data: XOR<AffiliationUpdateWithoutOrdersInput, AffiliationUncheckedUpdateWithoutOrdersInput>
+  }
+
+  export type AffiliationUpdateWithoutOrdersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    affiliate?: UserUpdateOneRequiredWithoutAffiliationsNestedInput
+    offer?: AffiliateOfferUpdateOneRequiredWithoutAffiliationsNestedInput
+    sales?: AffiliationSaleUpdateManyWithoutAffiliationNestedInput
+  }
+
+  export type AffiliationUncheckedUpdateWithoutOrdersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    offerId?: StringFieldUpdateOperationsInput | string
+    affiliateId?: StringFieldUpdateOperationsInput | string
+    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
+    affiliateLink?: StringFieldUpdateOperationsInput | string
+    affiliateCode?: StringFieldUpdateOperationsInput | string
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarned?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sales?: AffiliationSaleUncheckedUpdateManyWithoutAffiliationNestedInput
+  }
+
+  export type ProductUpsertWithoutOrdersInput = {
+    update: XOR<ProductUpdateWithoutOrdersInput, ProductUncheckedUpdateWithoutOrdersInput>
+    create: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutOrdersInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutOrdersInput, ProductUncheckedUpdateWithoutOrdersInput>
+  }
+
+  export type ProductUpdateWithoutOrdersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug?: StringFieldUpdateOperationsInput | string
+    salesCount?: IntFieldUpdateOperationsInput | number
+    revenue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutProductNestedInput
+    checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
+    user?: UserUpdateOneRequiredWithoutProductsNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutOrdersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug?: StringFieldUpdateOperationsInput | string
+    salesCount?: IntFieldUpdateOperationsInput | number
+    revenue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutProductNestedInput
+    checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserUpsertWithoutOrdersInput = {
@@ -39950,26 +41700,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrdersInput = {
@@ -39995,79 +41747,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
-  }
-
-  export type ProductUpsertWithoutOrdersInput = {
-    update: XOR<ProductUpdateWithoutOrdersInput, ProductUncheckedUpdateWithoutOrdersInput>
-    create: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
-    where?: ProductWhereInput
-  }
-
-  export type ProductUpdateToOneWithWhereWithoutOrdersInput = {
-    where?: ProductWhereInput
-    data: XOR<ProductUpdateWithoutOrdersInput, ProductUncheckedUpdateWithoutOrdersInput>
-  }
-
-  export type ProductUpdateWithoutOrdersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    price?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
-    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
-    slug?: StringFieldUpdateOperationsInput | string
-    salesCount?: IntFieldUpdateOperationsInput | number
-    revenue?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
-    user?: UserUpdateOneRequiredWithoutProductsNestedInput
-    checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
-    affiliateOffers?: AffiliateOfferUpdateManyWithoutProductNestedInput
-  }
-
-  export type ProductUncheckedUpdateWithoutOrdersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    price?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
-    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
-    slug?: StringFieldUpdateOperationsInput | string
-    salesCount?: IntFieldUpdateOperationsInput | number
-    revenue?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
-    checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
-    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutProductNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PendingBalanceUpsertWithWhereUniqueWithoutOrderInput = {
@@ -40086,82 +41787,85 @@ export namespace Prisma {
     data: XOR<PendingBalanceUpdateManyMutationInput, PendingBalanceUncheckedUpdateManyWithoutOrderInput>
   }
 
-  export type AffiliationUpsertWithoutOrdersInput = {
-    update: XOR<AffiliationUpdateWithoutOrdersInput, AffiliationUncheckedUpdateWithoutOrdersInput>
-    create: XOR<AffiliationCreateWithoutOrdersInput, AffiliationUncheckedCreateWithoutOrdersInput>
-    where?: AffiliationWhereInput
+  export type OrderCreateWithoutPendingBalancesInput = {
+    id?: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
+    affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
+    affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
+    product: ProductCreateNestedOneWithoutOrdersInput
+    user: UserCreateNestedOneWithoutOrdersInput
   }
 
-  export type AffiliationUpdateToOneWithWhereWithoutOrdersInput = {
-    where?: AffiliationWhereInput
-    data: XOR<AffiliationUpdateWithoutOrdersInput, AffiliationUncheckedUpdateWithoutOrdersInput>
+  export type OrderUncheckedCreateWithoutPendingBalancesInput = {
+    id?: string
+    userId: string
+    productId: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
+    affiliationId?: string | null
+    affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
   }
 
-  export type AffiliationUpdateWithoutOrdersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
-    affiliateLink?: StringFieldUpdateOperationsInput | string
-    affiliateCode?: StringFieldUpdateOperationsInput | string
-    totalClicks?: IntFieldUpdateOperationsInput | number
-    totalSales?: IntFieldUpdateOperationsInput | number
-    totalEarned?: FloatFieldUpdateOperationsInput | number
-    pendingBalance?: FloatFieldUpdateOperationsInput | number
-    availableBalance?: FloatFieldUpdateOperationsInput | number
-    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    offer?: AffiliateOfferUpdateOneRequiredWithoutAffiliationsNestedInput
-    affiliate?: UserUpdateOneRequiredWithoutAffiliationsNestedInput
-    sales?: AffiliationSaleUpdateManyWithoutAffiliationNestedInput
-  }
-
-  export type AffiliationUncheckedUpdateWithoutOrdersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    offerId?: StringFieldUpdateOperationsInput | string
-    affiliateId?: StringFieldUpdateOperationsInput | string
-    status?: EnumAffiliationStatusFieldUpdateOperationsInput | $Enums.AffiliationStatus
-    affiliateLink?: StringFieldUpdateOperationsInput | string
-    affiliateCode?: StringFieldUpdateOperationsInput | string
-    totalClicks?: IntFieldUpdateOperationsInput | number
-    totalSales?: IntFieldUpdateOperationsInput | number
-    totalEarned?: FloatFieldUpdateOperationsInput | number
-    pendingBalance?: FloatFieldUpdateOperationsInput | number
-    availableBalance?: FloatFieldUpdateOperationsInput | number
-    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sales?: AffiliationSaleUncheckedUpdateManyWithoutAffiliationNestedInput
-  }
-
-  export type AffiliationSaleUpsertWithoutOrderInput = {
-    update: XOR<AffiliationSaleUpdateWithoutOrderInput, AffiliationSaleUncheckedUpdateWithoutOrderInput>
-    create: XOR<AffiliationSaleCreateWithoutOrderInput, AffiliationSaleUncheckedCreateWithoutOrderInput>
-    where?: AffiliationSaleWhereInput
-  }
-
-  export type AffiliationSaleUpdateToOneWithWhereWithoutOrderInput = {
-    where?: AffiliationSaleWhereInput
-    data: XOR<AffiliationSaleUpdateWithoutOrderInput, AffiliationSaleUncheckedUpdateWithoutOrderInput>
-  }
-
-  export type AffiliationSaleUpdateWithoutOrderInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    saleAmount?: FloatFieldUpdateOperationsInput | number
-    commission?: FloatFieldUpdateOperationsInput | number
-    status?: EnumSaleCommissionStatusFieldUpdateOperationsInput | $Enums.SaleCommissionStatus
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    affiliation?: AffiliationUpdateOneRequiredWithoutSalesNestedInput
-  }
-
-  export type AffiliationSaleUncheckedUpdateWithoutOrderInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    affiliationId?: StringFieldUpdateOperationsInput | string
-    saleAmount?: FloatFieldUpdateOperationsInput | number
-    commission?: FloatFieldUpdateOperationsInput | number
-    status?: EnumSaleCommissionStatusFieldUpdateOperationsInput | $Enums.SaleCommissionStatus
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type OrderCreateOrConnectWithoutPendingBalancesInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutPendingBalancesInput, OrderUncheckedCreateWithoutPendingBalancesInput>
   }
 
   export type UserCreateWithoutPendingBalancesInput = {
@@ -40187,26 +41891,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    transactions?: TransactionCreateNestedManyWithoutUserInput
-    webhooks?: WebhookCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
-    badges?: UserBadgeCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPendingBalancesInput = {
@@ -40232,26 +41938,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
-    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
-    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPendingBalancesInput = {
@@ -40259,85 +41967,91 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutPendingBalancesInput, UserUncheckedCreateWithoutPendingBalancesInput>
   }
 
-  export type OrderCreateWithoutPendingBalancesInput = {
-    id?: string
-    buyerName: string
-    buyerEmail: string
-    buyerCpf?: string | null
-    buyerPhone?: string | null
-    buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount: number
-    platformFee: number
-    netAmount: number
-    status?: $Enums.OrderStatus
-    paymentMethod: $Enums.PaymentMethod
-    pixQrCode?: string | null
-    pixCopyPaste?: string | null
-    boletoUrl?: string | null
-    boletoBarcode?: string | null
-    cardLastFour?: string | null
-    cardBrand?: string | null
-    installments?: number
-    externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
-    paidAt?: Date | string | null
-    refundedAt?: Date | string | null
-    isMatured?: boolean
-    statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutOrdersInput
-    product: ProductCreateNestedOneWithoutOrdersInput
-    affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
-    affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
-  }
-
-  export type OrderUncheckedCreateWithoutPendingBalancesInput = {
-    id?: string
-    userId: string
-    productId: string
-    buyerName: string
-    buyerEmail: string
-    buyerCpf?: string | null
-    buyerPhone?: string | null
-    buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount: number
-    platformFee: number
-    netAmount: number
-    status?: $Enums.OrderStatus
-    paymentMethod: $Enums.PaymentMethod
-    pixQrCode?: string | null
-    pixCopyPaste?: string | null
-    boletoUrl?: string | null
-    boletoBarcode?: string | null
-    cardLastFour?: string | null
-    cardBrand?: string | null
-    installments?: number
-    externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
-    paidAt?: Date | string | null
-    refundedAt?: Date | string | null
-    isMatured?: boolean
-    statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    affiliationId?: string | null
-    affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
-  }
-
-  export type OrderCreateOrConnectWithoutPendingBalancesInput = {
-    where: OrderWhereUniqueInput
+  export type OrderUpsertWithoutPendingBalancesInput = {
+    update: XOR<OrderUpdateWithoutPendingBalancesInput, OrderUncheckedUpdateWithoutPendingBalancesInput>
     create: XOR<OrderCreateWithoutPendingBalancesInput, OrderUncheckedCreateWithoutPendingBalancesInput>
+    where?: OrderWhereInput
+  }
+
+  export type OrderUpdateToOneWithWhereWithoutPendingBalancesInput = {
+    where?: OrderWhereInput
+    data: XOR<OrderUpdateWithoutPendingBalancesInput, OrderUncheckedUpdateWithoutPendingBalancesInput>
+  }
+
+  export type OrderUpdateWithoutPendingBalancesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
+    affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
+    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    user?: UserUpdateOneRequiredWithoutOrdersNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutPendingBalancesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
+    affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
   }
 
   export type UserUpsertWithoutPendingBalancesInput = {
@@ -40374,26 +42088,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPendingBalancesInput = {
@@ -40419,113 +42135,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
-  }
-
-  export type OrderUpsertWithoutPendingBalancesInput = {
-    update: XOR<OrderUpdateWithoutPendingBalancesInput, OrderUncheckedUpdateWithoutPendingBalancesInput>
-    create: XOR<OrderCreateWithoutPendingBalancesInput, OrderUncheckedCreateWithoutPendingBalancesInput>
-    where?: OrderWhereInput
-  }
-
-  export type OrderUpdateToOneWithWhereWithoutPendingBalancesInput = {
-    where?: OrderWhereInput
-    data: XOR<OrderUpdateWithoutPendingBalancesInput, OrderUncheckedUpdateWithoutPendingBalancesInput>
-  }
-
-  export type OrderUpdateWithoutPendingBalancesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    buyerName?: StringFieldUpdateOperationsInput | string
-    buyerEmail?: StringFieldUpdateOperationsInput | string
-    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
-    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount?: FloatFieldUpdateOperationsInput | number
-    platformFee?: FloatFieldUpdateOperationsInput | number
-    netAmount?: FloatFieldUpdateOperationsInput | number
-    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
-    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
-    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
-    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
-    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
-    installments?: IntFieldUpdateOperationsInput | number
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isMatured?: BoolFieldUpdateOperationsInput | boolean
-    statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutOrdersNestedInput
-    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
-    affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
-    affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
-  }
-
-  export type OrderUncheckedUpdateWithoutPendingBalancesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    buyerName?: StringFieldUpdateOperationsInput | string
-    buyerEmail?: StringFieldUpdateOperationsInput | string
-    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
-    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount?: FloatFieldUpdateOperationsInput | number
-    platformFee?: FloatFieldUpdateOperationsInput | number
-    netAmount?: FloatFieldUpdateOperationsInput | number
-    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
-    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
-    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
-    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
-    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
-    installments?: IntFieldUpdateOperationsInput | number
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isMatured?: BoolFieldUpdateOperationsInput | boolean
-    statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
-    affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWithdrawalsInput = {
@@ -40551,26 +42182,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    transactions?: TransactionCreateNestedManyWithoutUserInput
-    webhooks?: WebhookCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
-    badges?: UserBadgeCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWithdrawalsInput = {
@@ -40596,26 +42229,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
-    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
-    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWithdrawalsInput = {
@@ -40657,26 +42292,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWithdrawalsInput = {
@@ -40702,26 +42339,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutWebhooksInput = {
@@ -40747,26 +42386,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    transactions?: TransactionCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
-    badges?: UserBadgeCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWebhooksInput = {
@@ -40792,26 +42433,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
-    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWebhooksInput = {
@@ -40853,26 +42496,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWebhooksInput = {
@@ -40898,26 +42543,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutApiKeysInput = {
@@ -40943,26 +42590,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    transactions?: TransactionCreateNestedManyWithoutUserInput
-    webhooks?: WebhookCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
-    badges?: UserBadgeCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutApiKeysInput = {
@@ -40988,26 +42637,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
-    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
-    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutApiKeysInput = {
@@ -41049,26 +42700,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApiKeysInput = {
@@ -41094,26 +42747,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutKycDocumentsInput = {
@@ -41139,26 +42794,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    transactions?: TransactionCreateNestedManyWithoutUserInput
-    webhooks?: WebhookCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    badges?: UserBadgeCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutKycDocumentsInput = {
@@ -41184,26 +42841,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
-    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutKycDocumentsInput = {
@@ -41245,26 +42904,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutKycDocumentsInput = {
@@ -41290,26 +42951,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutBadgesInput = {
@@ -41335,26 +42998,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    transactions?: TransactionCreateNestedManyWithoutUserInput
-    webhooks?: WebhookCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBadgesInput = {
@@ -41380,26 +43045,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
-    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBadgesInput = {
@@ -41441,26 +43108,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBadgesInput = {
@@ -41486,26 +43155,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProductCreateWithoutCheckoutLinksInput = {
@@ -41524,9 +43195,9 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     showInShowcase?: boolean
-    user: UserCreateNestedOneWithoutProductsInput
-    orders?: OrderCreateNestedManyWithoutProductInput
     affiliateOffers?: AffiliateOfferCreateNestedManyWithoutProductInput
+    orders?: OrderCreateNestedManyWithoutProductInput
+    user: UserCreateNestedOneWithoutProductsInput
   }
 
   export type ProductUncheckedCreateWithoutCheckoutLinksInput = {
@@ -41546,8 +43217,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     showInShowcase?: boolean
-    orders?: OrderUncheckedCreateNestedManyWithoutProductInput
     affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutProductInput
+    orders?: OrderUncheckedCreateNestedManyWithoutProductInput
   }
 
   export type ProductCreateOrConnectWithoutCheckoutLinksInput = {
@@ -41582,9 +43253,9 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     showInShowcase?: BoolFieldUpdateOperationsInput | boolean
-    user?: UserUpdateOneRequiredWithoutProductsNestedInput
-    orders?: OrderUpdateManyWithoutProductNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutProductNestedInput
+    orders?: OrderUpdateManyWithoutProductNestedInput
+    user?: UserUpdateOneRequiredWithoutProductsNestedInput
   }
 
   export type ProductUncheckedUpdateWithoutCheckoutLinksInput = {
@@ -41604,8 +43275,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     showInShowcase?: BoolFieldUpdateOperationsInput | boolean
-    orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutProductNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type UserCreateWithoutTransactionsInput = {
@@ -41631,26 +43302,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    webhooks?: WebhookCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
-    badges?: UserBadgeCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTransactionsInput = {
@@ -41676,26 +43349,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
-    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTransactionsInput = {
@@ -41737,26 +43412,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTransactionsInput = {
@@ -41782,26 +43459,232 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutTrustedDevicesInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTrustedDevicesInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTrustedDevicesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTrustedDevicesInput, UserUncheckedCreateWithoutTrustedDevicesInput>
+  }
+
+  export type UserUpsertWithoutTrustedDevicesInput = {
+    update: XOR<UserUpdateWithoutTrustedDevicesInput, UserUncheckedUpdateWithoutTrustedDevicesInput>
+    create: XOR<UserCreateWithoutTrustedDevicesInput, UserUncheckedCreateWithoutTrustedDevicesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTrustedDevicesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTrustedDevicesInput, UserUncheckedUpdateWithoutTrustedDevicesInput>
+  }
+
+  export type UserUpdateWithoutTrustedDevicesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    document?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKeyType?: NullableEnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAgency?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    platformFeePercent?: FloatFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    totalWithdrawn?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTrustedDevicesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    kycStatus?: EnumKycStatusFieldUpdateOperationsInput | $Enums.KycStatus
+    document?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKey?: NullableStringFieldUpdateOperationsInput | string | null
+    pixKeyType?: NullableEnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAgency?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccount?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    platformFeePercent?: FloatFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    totalWithdrawn?: FloatFieldUpdateOperationsInput | number
+    availableBalance?: FloatFieldUpdateOperationsInput | number
+    pendingBalance?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutCustomDomainsInput = {
@@ -41827,26 +43710,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    transactions?: TransactionCreateNestedManyWithoutUserInput
-    webhooks?: WebhookCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
-    badges?: UserBadgeCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCustomDomainsInput = {
@@ -41872,26 +43757,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
-    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
-    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
     affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
     affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCustomDomainsInput = {
@@ -41933,26 +43820,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCustomDomainsInput = {
@@ -41978,73 +43867,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
     affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
-  }
-
-  export type ProductCreateWithoutAffiliateOffersInput = {
-    id?: string
-    name: string
-    description?: string | null
-    price: number
-    currency?: string
-    type?: $Enums.ProductType
-    status?: $Enums.ProductStatus
-    imageUrl?: string | null
-    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
-    slug: string
-    salesCount?: number
-    revenue?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    showInShowcase?: boolean
-    user: UserCreateNestedOneWithoutProductsInput
-    orders?: OrderCreateNestedManyWithoutProductInput
-    checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
-  }
-
-  export type ProductUncheckedCreateWithoutAffiliateOffersInput = {
-    id?: string
-    userId: string
-    name: string
-    description?: string | null
-    price: number
-    currency?: string
-    type?: $Enums.ProductType
-    status?: $Enums.ProductStatus
-    imageUrl?: string | null
-    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
-    slug: string
-    salesCount?: number
-    revenue?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    showInShowcase?: boolean
-    orders?: OrderUncheckedCreateNestedManyWithoutProductInput
-    checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
-  }
-
-  export type ProductCreateOrConnectWithoutAffiliateOffersInput = {
-    where: ProductWhereUniqueInput
-    create: XOR<ProductCreateWithoutAffiliateOffersInput, ProductUncheckedCreateWithoutAffiliateOffersInput>
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAffiliateOffersInput = {
@@ -42070,26 +43914,28 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    transactions?: TransactionCreateNestedManyWithoutUserInput
-    webhooks?: WebhookCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
-    badges?: UserBadgeCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
     affiliations?: AffiliationCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAffiliateOffersInput = {
@@ -42115,31 +43961,80 @@ export namespace Prisma {
     pendingBalance?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    username?: string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
-    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
-    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
     affiliations?: AffiliationUncheckedCreateNestedManyWithoutAffiliateInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAffiliateOffersInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutAffiliateOffersInput, UserUncheckedCreateWithoutAffiliateOffersInput>
+  }
+
+  export type ProductCreateWithoutAffiliateOffersInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price: number
+    currency?: string
+    type?: $Enums.ProductType
+    status?: $Enums.ProductStatus
+    imageUrl?: string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug: string
+    salesCount?: number
+    revenue?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showInShowcase?: boolean
+    checkoutLinks?: CheckoutLinkCreateNestedManyWithoutProductInput
+    orders?: OrderCreateNestedManyWithoutProductInput
+    user: UserCreateNestedOneWithoutProductsInput
+  }
+
+  export type ProductUncheckedCreateWithoutAffiliateOffersInput = {
+    id?: string
+    userId: string
+    name: string
+    description?: string | null
+    price: number
+    currency?: string
+    type?: $Enums.ProductType
+    status?: $Enums.ProductStatus
+    imageUrl?: string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug: string
+    salesCount?: number
+    revenue?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showInShowcase?: boolean
+    checkoutLinks?: CheckoutLinkUncheckedCreateNestedManyWithoutProductInput
+    orders?: OrderUncheckedCreateNestedManyWithoutProductInput
+  }
+
+  export type ProductCreateOrConnectWithoutAffiliateOffersInput = {
+    where: ProductWhereUniqueInput
+    create: XOR<ProductCreateWithoutAffiliateOffersInput, ProductUncheckedCreateWithoutAffiliateOffersInput>
   }
 
   export type AffiliationCreateWithoutOfferInput = {
@@ -42188,59 +44083,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ProductUpsertWithoutAffiliateOffersInput = {
-    update: XOR<ProductUpdateWithoutAffiliateOffersInput, ProductUncheckedUpdateWithoutAffiliateOffersInput>
-    create: XOR<ProductCreateWithoutAffiliateOffersInput, ProductUncheckedCreateWithoutAffiliateOffersInput>
-    where?: ProductWhereInput
-  }
-
-  export type ProductUpdateToOneWithWhereWithoutAffiliateOffersInput = {
-    where?: ProductWhereInput
-    data: XOR<ProductUpdateWithoutAffiliateOffersInput, ProductUncheckedUpdateWithoutAffiliateOffersInput>
-  }
-
-  export type ProductUpdateWithoutAffiliateOffersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    price?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
-    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
-    slug?: StringFieldUpdateOperationsInput | string
-    salesCount?: IntFieldUpdateOperationsInput | number
-    revenue?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
-    user?: UserUpdateOneRequiredWithoutProductsNestedInput
-    orders?: OrderUpdateManyWithoutProductNestedInput
-    checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
-  }
-
-  export type ProductUncheckedUpdateWithoutAffiliateOffersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    price?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
-    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
-    slug?: StringFieldUpdateOperationsInput | string
-    salesCount?: IntFieldUpdateOperationsInput | number
-    revenue?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
-    orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
-    checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
-  }
-
   export type UserUpsertWithoutAffiliateOffersInput = {
     update: XOR<UserUpdateWithoutAffiliateOffersInput, UserUncheckedUpdateWithoutAffiliateOffersInput>
     create: XOR<UserCreateWithoutAffiliateOffersInput, UserUncheckedCreateWithoutAffiliateOffersInput>
@@ -42275,26 +44117,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliations?: AffiliationUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAffiliateOffersInput = {
@@ -42320,26 +44164,81 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliations?: AffiliationUncheckedUpdateManyWithoutAffiliateNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ProductUpsertWithoutAffiliateOffersInput = {
+    update: XOR<ProductUpdateWithoutAffiliateOffersInput, ProductUncheckedUpdateWithoutAffiliateOffersInput>
+    create: XOR<ProductCreateWithoutAffiliateOffersInput, ProductUncheckedCreateWithoutAffiliateOffersInput>
+    where?: ProductWhereInput
+  }
+
+  export type ProductUpdateToOneWithWhereWithoutAffiliateOffersInput = {
+    where?: ProductWhereInput
+    data: XOR<ProductUpdateWithoutAffiliateOffersInput, ProductUncheckedUpdateWithoutAffiliateOffersInput>
+  }
+
+  export type ProductUpdateWithoutAffiliateOffersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug?: StringFieldUpdateOperationsInput | string
+    salesCount?: IntFieldUpdateOperationsInput | number
+    revenue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
+    checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
+    orders?: OrderUpdateManyWithoutProductNestedInput
+    user?: UserUpdateOneRequiredWithoutProductsNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutAffiliateOffersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug?: StringFieldUpdateOperationsInput | string
+    salesCount?: IntFieldUpdateOperationsInput | number
+    revenue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
+    checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
   }
 
   export type AffiliationUpsertWithWhereUniqueWithoutOfferInput = {
@@ -42356,6 +44255,105 @@ export namespace Prisma {
   export type AffiliationUpdateManyWithWhereWithoutOfferInput = {
     where: AffiliationScalarWhereInput
     data: XOR<AffiliationUpdateManyMutationInput, AffiliationUncheckedUpdateManyWithoutOfferInput>
+  }
+
+  export type UserCreateWithoutAffiliationsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    orders?: OrderCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
+    products?: ProductCreateNestedManyWithoutUserInput
+    transactions?: TransactionCreateNestedManyWithoutUserInput
+    badges?: UserBadgeCreateNestedManyWithoutUserInput
+    webhooks?: WebhookCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAffiliationsInput = {
+    id?: string
+    name: string
+    email: string
+    password: string
+    role?: $Enums.Role
+    status?: $Enums.UserStatus
+    kycStatus?: $Enums.KycStatus
+    document?: string | null
+    phone?: string | null
+    pixKey?: string | null
+    pixKeyType?: $Enums.PixKeyType | null
+    bankName?: string | null
+    bankAgency?: string | null
+    bankAccount?: string | null
+    avatarUrl?: string | null
+    platformFeePercent?: number
+    totalEarnings?: number
+    totalWithdrawn?: number
+    availableBalance?: number
+    pendingBalance?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
+    socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: string | null
+    lastActiveAt?: Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    twoFactorMethod?: $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedCreateNestedManyWithoutUserInput
+    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
+    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
+    products?: ProductUncheckedCreateNestedManyWithoutUserInput
+    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
+    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
+    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
+    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAffiliationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAffiliationsInput, UserUncheckedCreateWithoutAffiliationsInput>
   }
 
   export type AffiliateOfferCreateWithoutAffiliationsInput = {
@@ -42377,8 +44375,8 @@ export namespace Prisma {
     conversionRate?: number
     createdAt?: Date | string
     updatedAt?: Date | string
-    product: ProductCreateNestedOneWithoutAffiliateOffersInput
     owner: UserCreateNestedOneWithoutAffiliateOffersInput
+    product: ProductCreateNestedOneWithoutAffiliateOffersInput
   }
 
   export type AffiliateOfferUncheckedCreateWithoutAffiliationsInput = {
@@ -42407,101 +44405,6 @@ export namespace Prisma {
   export type AffiliateOfferCreateOrConnectWithoutAffiliationsInput = {
     where: AffiliateOfferWhereUniqueInput
     create: XOR<AffiliateOfferCreateWithoutAffiliationsInput, AffiliateOfferUncheckedCreateWithoutAffiliationsInput>
-  }
-
-  export type UserCreateWithoutAffiliationsInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: $Enums.Role
-    status?: $Enums.UserStatus
-    kycStatus?: $Enums.KycStatus
-    document?: string | null
-    phone?: string | null
-    pixKey?: string | null
-    pixKeyType?: $Enums.PixKeyType | null
-    bankName?: string | null
-    bankAgency?: string | null
-    bankAccount?: string | null
-    avatarUrl?: string | null
-    platformFeePercent?: number
-    totalEarnings?: number
-    totalWithdrawn?: number
-    availableBalance?: number
-    pendingBalance?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username?: string | null
-    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
-    socialLinks?: NullableJsonNullValueInput | InputJsonValue
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductCreateNestedManyWithoutUserInput
-    orders?: OrderCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalCreateNestedManyWithoutUserInput
-    transactions?: TransactionCreateNestedManyWithoutUserInput
-    webhooks?: WebhookCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentCreateNestedManyWithoutUserInput
-    badges?: UserBadgeCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainCreateNestedManyWithoutUserInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
-    affiliateOffers?: AffiliateOfferCreateNestedManyWithoutOwnerInput
-  }
-
-  export type UserUncheckedCreateWithoutAffiliationsInput = {
-    id?: string
-    name: string
-    email: string
-    password: string
-    role?: $Enums.Role
-    status?: $Enums.UserStatus
-    kycStatus?: $Enums.KycStatus
-    document?: string | null
-    phone?: string | null
-    pixKey?: string | null
-    pixKeyType?: $Enums.PixKeyType | null
-    bankName?: string | null
-    bankAgency?: string | null
-    bankAccount?: string | null
-    avatarUrl?: string | null
-    platformFeePercent?: number
-    totalEarnings?: number
-    totalWithdrawn?: number
-    availableBalance?: number
-    pendingBalance?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    username?: string | null
-    showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
-    socialLinks?: NullableJsonNullValueInput | InputJsonValue
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: Date | string
-    products?: ProductUncheckedCreateNestedManyWithoutUserInput
-    orders?: OrderUncheckedCreateNestedManyWithoutUserInput
-    withdrawals?: WithdrawalUncheckedCreateNestedManyWithoutUserInput
-    transactions?: TransactionUncheckedCreateNestedManyWithoutUserInput
-    webhooks?: WebhookUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    kycDocuments?: KycDocumentUncheckedCreateNestedManyWithoutUserInput
-    badges?: UserBadgeUncheckedCreateNestedManyWithoutUserInput
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutUserInput
-    customDomains?: CustomDomainUncheckedCreateNestedManyWithoutUserInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
-    affiliateOffers?: AffiliateOfferUncheckedCreateNestedManyWithoutOwnerInput
-  }
-
-  export type UserCreateOrConnectWithoutAffiliationsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutAffiliationsInput, UserUncheckedCreateWithoutAffiliationsInput>
   }
 
   export type AffiliationSaleCreateWithoutAffiliationInput = {
@@ -42554,22 +44457,22 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutOrdersInput
-    product: ProductCreateNestedOneWithoutOrdersInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
     affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
+    product: ProductCreateNestedOneWithoutOrdersInput
+    user: UserCreateNestedOneWithoutOrdersInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutAffiliationInput = {
@@ -42594,20 +44497,20 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
     affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
+    pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutAffiliationInput = {
@@ -42618,63 +44521,6 @@ export namespace Prisma {
   export type OrderCreateManyAffiliationInputEnvelope = {
     data: OrderCreateManyAffiliationInput | OrderCreateManyAffiliationInput[]
     skipDuplicates?: boolean
-  }
-
-  export type AffiliateOfferUpsertWithoutAffiliationsInput = {
-    update: XOR<AffiliateOfferUpdateWithoutAffiliationsInput, AffiliateOfferUncheckedUpdateWithoutAffiliationsInput>
-    create: XOR<AffiliateOfferCreateWithoutAffiliationsInput, AffiliateOfferUncheckedCreateWithoutAffiliationsInput>
-    where?: AffiliateOfferWhereInput
-  }
-
-  export type AffiliateOfferUpdateToOneWithWhereWithoutAffiliationsInput = {
-    where?: AffiliateOfferWhereInput
-    data: XOR<AffiliateOfferUpdateWithoutAffiliationsInput, AffiliateOfferUncheckedUpdateWithoutAffiliationsInput>
-  }
-
-  export type AffiliateOfferUpdateWithoutAffiliationsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
-    commissionValue?: FloatFieldUpdateOperationsInput | number
-    cookieDays?: IntFieldUpdateOperationsInput | number
-    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
-    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
-    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
-    category?: NullableStringFieldUpdateOperationsInput | string | null
-    tags?: AffiliateOfferUpdatetagsInput | string[]
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    totalAffiliates?: IntFieldUpdateOperationsInput | number
-    totalSales?: IntFieldUpdateOperationsInput | number
-    totalRevenue?: FloatFieldUpdateOperationsInput | number
-    conversionRate?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    product?: ProductUpdateOneRequiredWithoutAffiliateOffersNestedInput
-    owner?: UserUpdateOneRequiredWithoutAffiliateOffersNestedInput
-  }
-
-  export type AffiliateOfferUncheckedUpdateWithoutAffiliationsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    ownerId?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
-    commissionValue?: FloatFieldUpdateOperationsInput | number
-    cookieDays?: IntFieldUpdateOperationsInput | number
-    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
-    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
-    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
-    category?: NullableStringFieldUpdateOperationsInput | string | null
-    tags?: AffiliateOfferUpdatetagsInput | string[]
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    totalAffiliates?: IntFieldUpdateOperationsInput | number
-    totalSales?: IntFieldUpdateOperationsInput | number
-    totalRevenue?: FloatFieldUpdateOperationsInput | number
-    conversionRate?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUpsertWithoutAffiliationsInput = {
@@ -42711,26 +44557,28 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUpdateManyWithoutUserNestedInput
-    orders?: OrderUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUpdateManyWithoutOwnerNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    orders?: OrderUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutUserNestedInput
+    products?: ProductUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAffiliationsInput = {
@@ -42756,26 +44604,85 @@ export namespace Prisma {
     pendingBalance?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    username?: NullableStringFieldUpdateOperationsInput | string | null
     showcaseConfig?: NullableJsonNullValueInput | InputJsonValue
     socialLinks?: NullableJsonNullValueInput | InputJsonValue
+    username?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
-    lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
-    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
-    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
-    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
-    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
-    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
-    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
+    trustedDevices?: TrustedDeviceUncheckedUpdateManyWithoutUserNestedInput
     affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutOwnerNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    customDomains?: CustomDomainUncheckedUpdateManyWithoutUserNestedInput
+    kycDocuments?: KycDocumentUncheckedUpdateManyWithoutUserNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutUserNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutUserNestedInput
+    products?: ProductUncheckedUpdateManyWithoutUserNestedInput
+    transactions?: TransactionUncheckedUpdateManyWithoutUserNestedInput
+    badges?: UserBadgeUncheckedUpdateManyWithoutUserNestedInput
+    webhooks?: WebhookUncheckedUpdateManyWithoutUserNestedInput
+    withdrawals?: WithdrawalUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type AffiliateOfferUpsertWithoutAffiliationsInput = {
+    update: XOR<AffiliateOfferUpdateWithoutAffiliationsInput, AffiliateOfferUncheckedUpdateWithoutAffiliationsInput>
+    create: XOR<AffiliateOfferCreateWithoutAffiliationsInput, AffiliateOfferUncheckedCreateWithoutAffiliationsInput>
+    where?: AffiliateOfferWhereInput
+  }
+
+  export type AffiliateOfferUpdateToOneWithWhereWithoutAffiliationsInput = {
+    where?: AffiliateOfferWhereInput
+    data: XOR<AffiliateOfferUpdateWithoutAffiliationsInput, AffiliateOfferUncheckedUpdateWithoutAffiliationsInput>
+  }
+
+  export type AffiliateOfferUpdateWithoutAffiliationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
+    commissionValue?: FloatFieldUpdateOperationsInput | number
+    cookieDays?: IntFieldUpdateOperationsInput | number
+    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: AffiliateOfferUpdatetagsInput | string[]
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAffiliates?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalRevenue?: FloatFieldUpdateOperationsInput | number
+    conversionRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    owner?: UserUpdateOneRequiredWithoutAffiliateOffersNestedInput
+    product?: ProductUpdateOneRequiredWithoutAffiliateOffersNestedInput
+  }
+
+  export type AffiliateOfferUncheckedUpdateWithoutAffiliationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionType?: EnumCommissionTypeFieldUpdateOperationsInput | $Enums.CommissionType
+    commissionValue?: FloatFieldUpdateOperationsInput | number
+    cookieDays?: IntFieldUpdateOperationsInput | number
+    maxAffiliates?: NullableIntFieldUpdateOperationsInput | number | null
+    requiresApproval?: BoolFieldUpdateOperationsInput | boolean
+    status?: EnumOfferStatusFieldUpdateOperationsInput | $Enums.OfferStatus
+    category?: NullableStringFieldUpdateOperationsInput | string | null
+    tags?: AffiliateOfferUpdatetagsInput | string[]
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    totalAffiliates?: IntFieldUpdateOperationsInput | number
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalRevenue?: FloatFieldUpdateOperationsInput | number
+    conversionRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AffiliationSaleUpsertWithWhereUniqueWithoutAffiliationInput = {
@@ -42837,8 +44744,8 @@ export namespace Prisma {
     approvedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    offer: AffiliateOfferCreateNestedOneWithoutAffiliationsInput
     affiliate: UserCreateNestedOneWithoutAffiliationsInput
+    offer: AffiliateOfferCreateNestedOneWithoutAffiliationsInput
     orders?: OrderCreateNestedManyWithoutAffiliationInput
   }
 
@@ -42885,22 +44792,22 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutOrdersInput
-    product: ProductCreateNestedOneWithoutOrdersInput
-    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
     affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
+    product: ProductCreateNestedOneWithoutOrdersInput
+    user: UserCreateNestedOneWithoutOrdersInput
+    pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutAffiliationSaleInput = {
@@ -42925,18 +44832,18 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
     affiliationId?: string | null
     pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
   }
@@ -42970,8 +44877,8 @@ export namespace Prisma {
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    offer?: AffiliateOfferUpdateOneRequiredWithoutAffiliationsNestedInput
     affiliate?: UserUpdateOneRequiredWithoutAffiliationsNestedInput
+    offer?: AffiliateOfferUpdateOneRequiredWithoutAffiliationsNestedInput
     orders?: OrderUpdateManyWithoutAffiliationNestedInput
   }
 
@@ -43024,22 +44931,22 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutOrdersNestedInput
-    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
+    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    user?: UserUpdateOneRequiredWithoutOrdersNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutAffiliationSaleInput = {
@@ -43064,161 +44971,27 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
     pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
   }
 
-  export type ProductCreateManyUserInput = {
+  export type TrustedDeviceCreateManyUserInput = {
     id?: string
-    name: string
-    description?: string | null
-    price: number
-    currency?: string
-    type?: $Enums.ProductType
-    status?: $Enums.ProductStatus
-    imageUrl?: string | null
-    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
-    slug: string
-    salesCount?: number
-    revenue?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    showInShowcase?: boolean
-  }
-
-  export type OrderCreateManyUserInput = {
-    id?: string
-    productId: string
-    buyerName: string
-    buyerEmail: string
-    buyerCpf?: string | null
-    buyerPhone?: string | null
-    buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount: number
-    platformFee: number
-    netAmount: number
-    status?: $Enums.OrderStatus
-    paymentMethod: $Enums.PaymentMethod
-    pixQrCode?: string | null
-    pixCopyPaste?: string | null
-    boletoUrl?: string | null
-    boletoBarcode?: string | null
-    cardLastFour?: string | null
-    cardBrand?: string | null
-    installments?: number
-    externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
-    paidAt?: Date | string | null
-    refundedAt?: Date | string | null
-    isMatured?: boolean
-    statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    affiliationId?: string | null
-  }
-
-  export type WithdrawalCreateManyUserInput = {
-    id?: string
-    amount: number
-    status?: $Enums.WithdrawalStatus
-    pixKey: string
-    pixKeyType: $Enums.PixKeyType
-    processedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type TransactionCreateManyUserInput = {
-    id?: string
-    type: $Enums.TransactionType
-    amount: number
-    balance: number
-    description: string
-    createdAt?: Date | string
-  }
-
-  export type WebhookCreateManyUserInput = {
-    id?: string
-    url: string
-    secret: string
-    events?: WebhookCreateeventsInput | string[]
-    active?: boolean
-    createdAt?: Date | string
-  }
-
-  export type ApiKeyCreateManyUserInput = {
-    id?: string
-    name: string
-    key: string
-    lastUsed?: Date | string | null
-    active?: boolean
-    createdAt?: Date | string
-  }
-
-  export type KycDocumentCreateManyUserInput = {
-    id?: string
-    type: $Enums.DocType
-    fileUrl: string
-    status?: $Enums.DocStatus
-    reviewNote?: string | null
-    reviewedAt?: Date | string | null
-    createdAt?: Date | string
-  }
-
-  export type UserBadgeCreateManyUserInput = {
-    id?: string
-    badge: $Enums.BadgeType
-    earnedAt?: Date | string
-  }
-
-  export type PendingBalanceCreateManyUserInput = {
-    id?: string
-    orderId: string
-    amount: number
-    availableAt: Date | string
-    released?: boolean
-    createdAt?: Date | string
-  }
-
-  export type CustomDomainCreateManyUserInput = {
-    id?: string
-    domain: string
-    status?: $Enums.DomainStatus
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type NotificationCreateManyUserInput = {
-    id?: string
-    title: string
-    content: string
-    read?: boolean
-    type?: $Enums.NotificationType
-    createdAt?: Date | string
-  }
-
-  export type AuditLogCreateManyUserInput = {
-    id?: string
-    action: string
-    details?: string | null
-    ipAddress?: string | null
+    ipAddress: string
     userAgent?: string | null
+    expires: Date | string
     createdAt?: Date | string
   }
 
@@ -43260,439 +45033,169 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type ProductUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    price?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
-    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
-    slug?: StringFieldUpdateOperationsInput | string
-    salesCount?: IntFieldUpdateOperationsInput | number
-    revenue?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
-    orders?: OrderUpdateManyWithoutProductNestedInput
-    checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
-    affiliateOffers?: AffiliateOfferUpdateManyWithoutProductNestedInput
+  export type ApiKeyCreateManyUserInput = {
+    id?: string
+    name: string
+    key: string
+    lastUsed?: Date | string | null
+    active?: boolean
+    createdAt?: Date | string
   }
 
-  export type ProductUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    price?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
-    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
-    slug?: StringFieldUpdateOperationsInput | string
-    salesCount?: IntFieldUpdateOperationsInput | number
-    revenue?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
-    orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
-    checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
-    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutProductNestedInput
+  export type AuditLogCreateManyUserInput = {
+    id?: string
+    action: string
+    details?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    createdAt?: Date | string
   }
 
-  export type ProductUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    price?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
-    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
-    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
-    slug?: StringFieldUpdateOperationsInput | string
-    salesCount?: IntFieldUpdateOperationsInput | number
-    revenue?: FloatFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
+  export type CustomDomainCreateManyUserInput = {
+    id?: string
+    domain: string
+    status?: $Enums.DomainStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type OrderUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    buyerName?: StringFieldUpdateOperationsInput | string
-    buyerEmail?: StringFieldUpdateOperationsInput | string
-    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
-    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+  export type KycDocumentCreateManyUserInput = {
+    id?: string
+    type: $Enums.DocType
+    fileUrl: string
+    status?: $Enums.DocStatus
+    reviewNote?: string | null
+    reviewedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateManyUserInput = {
+    id?: string
+    title: string
+    content: string
+    read?: boolean
+    type?: $Enums.NotificationType
+    createdAt?: Date | string
+  }
+
+  export type OrderCreateManyUserInput = {
+    id?: string
+    productId: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
     buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount?: FloatFieldUpdateOperationsInput | number
-    platformFee?: FloatFieldUpdateOperationsInput | number
-    netAmount?: FloatFieldUpdateOperationsInput | number
-    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
-    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
-    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
-    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
-    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
-    installments?: IntFieldUpdateOperationsInput | number
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
-    affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
-    affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
+    affiliationId?: string | null
   }
 
-  export type OrderUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    buyerName?: StringFieldUpdateOperationsInput | string
-    buyerEmail?: StringFieldUpdateOperationsInput | string
-    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
-    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount?: FloatFieldUpdateOperationsInput | number
-    platformFee?: FloatFieldUpdateOperationsInput | number
-    netAmount?: FloatFieldUpdateOperationsInput | number
-    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
-    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
-    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
-    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
-    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
-    installments?: IntFieldUpdateOperationsInput | number
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isMatured?: BoolFieldUpdateOperationsInput | boolean
-    statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
-    affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
+  export type PendingBalanceCreateManyUserInput = {
+    id?: string
+    orderId: string
+    amount: number
+    availableAt: Date | string
+    released?: boolean
+    createdAt?: Date | string
   }
 
-  export type OrderUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
-    buyerName?: StringFieldUpdateOperationsInput | string
-    buyerEmail?: StringFieldUpdateOperationsInput | string
-    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
-    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount?: FloatFieldUpdateOperationsInput | number
-    platformFee?: FloatFieldUpdateOperationsInput | number
-    netAmount?: FloatFieldUpdateOperationsInput | number
-    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
-    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
-    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
-    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
-    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
-    installments?: IntFieldUpdateOperationsInput | number
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isMatured?: BoolFieldUpdateOperationsInput | boolean
-    statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
+  export type ProductCreateManyUserInput = {
+    id?: string
+    name: string
+    description?: string | null
+    price: number
+    currency?: string
+    type?: $Enums.ProductType
+    status?: $Enums.ProductStatus
+    imageUrl?: string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug: string
+    salesCount?: number
+    revenue?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    showInShowcase?: boolean
   }
 
-  export type WithdrawalUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: FloatFieldUpdateOperationsInput | number
-    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
-    pixKey?: StringFieldUpdateOperationsInput | string
-    pixKeyType?: EnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType
-    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type TransactionCreateManyUserInput = {
+    id?: string
+    type: $Enums.TransactionType
+    amount: number
+    balance: number
+    description: string
+    createdAt?: Date | string
   }
 
-  export type WithdrawalUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: FloatFieldUpdateOperationsInput | number
-    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
-    pixKey?: StringFieldUpdateOperationsInput | string
-    pixKeyType?: EnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType
-    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type UserBadgeCreateManyUserInput = {
+    id?: string
+    badge: $Enums.BadgeType
+    earnedAt?: Date | string
   }
 
-  export type WithdrawalUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: FloatFieldUpdateOperationsInput | number
-    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
-    pixKey?: StringFieldUpdateOperationsInput | string
-    pixKeyType?: EnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType
-    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type WebhookCreateManyUserInput = {
+    id?: string
+    url: string
+    secret: string
+    events?: WebhookCreateeventsInput | string[]
+    active?: boolean
+    createdAt?: Date | string
   }
 
-  export type TransactionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    amount?: FloatFieldUpdateOperationsInput | number
-    balance?: FloatFieldUpdateOperationsInput | number
-    description?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type WithdrawalCreateManyUserInput = {
+    id?: string
+    amount: number
+    status?: $Enums.WithdrawalStatus
+    pixKey: string
+    pixKeyType: $Enums.PixKeyType
+    processedAt?: Date | string | null
+    createdAt?: Date | string
   }
 
-  export type TransactionUncheckedUpdateWithoutUserInput = {
+  export type TrustedDeviceUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    amount?: FloatFieldUpdateOperationsInput | number
-    balance?: FloatFieldUpdateOperationsInput | number
-    description?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type TransactionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
-    amount?: FloatFieldUpdateOperationsInput | number
-    balance?: FloatFieldUpdateOperationsInput | number
-    description?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type WebhookUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    url?: StringFieldUpdateOperationsInput | string
-    secret?: StringFieldUpdateOperationsInput | string
-    events?: WebhookUpdateeventsInput | string[]
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type WebhookUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    url?: StringFieldUpdateOperationsInput | string
-    secret?: StringFieldUpdateOperationsInput | string
-    events?: WebhookUpdateeventsInput | string[]
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type WebhookUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    url?: StringFieldUpdateOperationsInput | string
-    secret?: StringFieldUpdateOperationsInput | string
-    events?: WebhookUpdateeventsInput | string[]
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ApiKeyUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    key?: StringFieldUpdateOperationsInput | string
-    lastUsed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ApiKeyUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    key?: StringFieldUpdateOperationsInput | string
-    lastUsed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ApiKeyUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    key?: StringFieldUpdateOperationsInput | string
-    lastUsed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type KycDocumentUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
-    fileUrl?: StringFieldUpdateOperationsInput | string
-    status?: EnumDocStatusFieldUpdateOperationsInput | $Enums.DocStatus
-    reviewNote?: NullableStringFieldUpdateOperationsInput | string | null
-    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type KycDocumentUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
-    fileUrl?: StringFieldUpdateOperationsInput | string
-    status?: EnumDocStatusFieldUpdateOperationsInput | $Enums.DocStatus
-    reviewNote?: NullableStringFieldUpdateOperationsInput | string | null
-    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type KycDocumentUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    type?: EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
-    fileUrl?: StringFieldUpdateOperationsInput | string
-    status?: EnumDocStatusFieldUpdateOperationsInput | $Enums.DocStatus
-    reviewNote?: NullableStringFieldUpdateOperationsInput | string | null
-    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserBadgeUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    badge?: EnumBadgeTypeFieldUpdateOperationsInput | $Enums.BadgeType
-    earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserBadgeUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    badge?: EnumBadgeTypeFieldUpdateOperationsInput | $Enums.BadgeType
-    earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserBadgeUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    badge?: EnumBadgeTypeFieldUpdateOperationsInput | $Enums.BadgeType
-    earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PendingBalanceUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    amount?: FloatFieldUpdateOperationsInput | number
-    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    released?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    order?: OrderUpdateOneRequiredWithoutPendingBalancesNestedInput
-  }
-
-  export type PendingBalanceUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
-    amount?: FloatFieldUpdateOperationsInput | number
-    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    released?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type PendingBalanceUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    orderId?: StringFieldUpdateOperationsInput | string
-    amount?: FloatFieldUpdateOperationsInput | number
-    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    released?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CustomDomainUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
-    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CustomDomainUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
-    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CustomDomainUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    domain?: StringFieldUpdateOperationsInput | string
-    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NotificationUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NotificationUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type NotificationUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    read?: BoolFieldUpdateOperationsInput | boolean
-    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AuditLogUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    details?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type AuditLogUncheckedUpdateWithoutUserInput = {
+  export type TrustedDeviceUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    details?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type AuditLogUncheckedUpdateManyWithoutUserInput = {
+  export type TrustedDeviceUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    action?: StringFieldUpdateOperationsInput | string
-    details?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: StringFieldUpdateOperationsInput | string
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -43816,47 +45319,440 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type OrderCreateManyProductInput = {
-    id?: string
-    userId: string
-    buyerName: string
-    buyerEmail: string
-    buyerCpf?: string | null
-    buyerPhone?: string | null
-    buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount: number
-    platformFee: number
-    netAmount: number
-    status?: $Enums.OrderStatus
-    paymentMethod: $Enums.PaymentMethod
-    pixQrCode?: string | null
-    pixCopyPaste?: string | null
-    boletoUrl?: string | null
-    boletoBarcode?: string | null
-    cardLastFour?: string | null
-    cardBrand?: string | null
-    installments?: number
-    externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
-    paidAt?: Date | string | null
-    refundedAt?: Date | string | null
-    isMatured?: boolean
-    statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    affiliationId?: string | null
+  export type ApiKeyUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    lastUsed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CheckoutLinkCreateManyProductInput = {
-    id?: string
-    slug: string
-    active?: boolean
-    createdAt?: Date | string
+  export type ApiKeyUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    lastUsed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ApiKeyUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    lastUsed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    details?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomDomainUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomDomainUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomDomainUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    domain?: StringFieldUpdateOperationsInput | string
+    status?: EnumDomainStatusFieldUpdateOperationsInput | $Enums.DomainStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type KycDocumentUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocStatusFieldUpdateOperationsInput | $Enums.DocStatus
+    reviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type KycDocumentUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocStatusFieldUpdateOperationsInput | $Enums.DocStatus
+    reviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type KycDocumentUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
+    fileUrl?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocStatusFieldUpdateOperationsInput | $Enums.DocStatus
+    reviewNote?: NullableStringFieldUpdateOperationsInput | string | null
+    reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    read?: BoolFieldUpdateOperationsInput | boolean
+    type?: EnumNotificationTypeFieldUpdateOperationsInput | $Enums.NotificationType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
+    affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
+    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
+    affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    productId?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PendingBalanceUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    released?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutPendingBalancesNestedInput
+  }
+
+  export type PendingBalanceUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    released?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PendingBalanceUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    availableAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    released?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProductUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug?: StringFieldUpdateOperationsInput | string
+    salesCount?: IntFieldUpdateOperationsInput | number
+    revenue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
+    affiliateOffers?: AffiliateOfferUpdateManyWithoutProductNestedInput
+    checkoutLinks?: CheckoutLinkUpdateManyWithoutProductNestedInput
+    orders?: OrderUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug?: StringFieldUpdateOperationsInput | string
+    salesCount?: IntFieldUpdateOperationsInput | number
+    revenue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
+    affiliateOffers?: AffiliateOfferUncheckedUpdateManyWithoutProductNestedInput
+    checkoutLinks?: CheckoutLinkUncheckedUpdateManyWithoutProductNestedInput
+    orders?: OrderUncheckedUpdateManyWithoutProductNestedInput
+  }
+
+  export type ProductUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    type?: EnumProductTypeFieldUpdateOperationsInput | $Enums.ProductType
+    status?: EnumProductStatusFieldUpdateOperationsInput | $Enums.ProductStatus
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    checkoutConfig?: NullableJsonNullValueInput | InputJsonValue
+    slug?: StringFieldUpdateOperationsInput | string
+    salesCount?: IntFieldUpdateOperationsInput | number
+    revenue?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    showInShowcase?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type TransactionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    amount?: FloatFieldUpdateOperationsInput | number
+    balance?: FloatFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    amount?: FloatFieldUpdateOperationsInput | number
+    balance?: FloatFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TransactionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumTransactionTypeFieldUpdateOperationsInput | $Enums.TransactionType
+    amount?: FloatFieldUpdateOperationsInput | number
+    balance?: FloatFieldUpdateOperationsInput | number
+    description?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserBadgeUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    badge?: EnumBadgeTypeFieldUpdateOperationsInput | $Enums.BadgeType
+    earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserBadgeUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    badge?: EnumBadgeTypeFieldUpdateOperationsInput | $Enums.BadgeType
+    earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserBadgeUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    badge?: EnumBadgeTypeFieldUpdateOperationsInput | $Enums.BadgeType
+    earnedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WebhookUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    secret?: StringFieldUpdateOperationsInput | string
+    events?: WebhookUpdateeventsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WebhookUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    secret?: StringFieldUpdateOperationsInput | string
+    events?: WebhookUpdateeventsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WebhookUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    secret?: StringFieldUpdateOperationsInput | string
+    events?: WebhookUpdateeventsInput | string[]
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WithdrawalUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
+    pixKey?: StringFieldUpdateOperationsInput | string
+    pixKeyType?: EnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WithdrawalUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
+    pixKey?: StringFieldUpdateOperationsInput | string
+    pixKeyType?: EnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WithdrawalUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    amount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumWithdrawalStatusFieldUpdateOperationsInput | $Enums.WithdrawalStatus
+    pixKey?: StringFieldUpdateOperationsInput | string
+    pixKeyType?: EnumPixKeyTypeFieldUpdateOperationsInput | $Enums.PixKeyType
+    processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AffiliateOfferCreateManyProductInput = {
@@ -43881,137 +45777,47 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type OrderUpdateWithoutProductInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    buyerName?: StringFieldUpdateOperationsInput | string
-    buyerEmail?: StringFieldUpdateOperationsInput | string
-    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
-    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+  export type CheckoutLinkCreateManyProductInput = {
+    id?: string
+    slug: string
+    active?: boolean
+    createdAt?: Date | string
+  }
+
+  export type OrderCreateManyProductInput = {
+    id?: string
+    userId: string
+    buyerName: string
+    buyerEmail: string
+    buyerCpf?: string | null
+    buyerPhone?: string | null
     buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount?: FloatFieldUpdateOperationsInput | number
-    platformFee?: FloatFieldUpdateOperationsInput | number
-    netAmount?: FloatFieldUpdateOperationsInput | number
-    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
-    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
-    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
-    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
-    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
-    installments?: IntFieldUpdateOperationsInput | number
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    amount: number
+    platformFee: number
+    netAmount: number
+    status?: $Enums.OrderStatus
+    paymentMethod: $Enums.PaymentMethod
+    pixQrCode?: string | null
+    pixCopyPaste?: string | null
+    boletoUrl?: string | null
+    boletoBarcode?: string | null
+    cardLastFour?: string | null
+    cardBrand?: string | null
+    installments?: number
+    externalId?: string | null
+    paidAt?: Date | string | null
+    refundedAt?: Date | string | null
+    isMatured?: boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutOrdersNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
-    affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
-    affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
-  }
-
-  export type OrderUncheckedUpdateWithoutProductInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    buyerName?: StringFieldUpdateOperationsInput | string
-    buyerEmail?: StringFieldUpdateOperationsInput | string
-    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
-    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount?: FloatFieldUpdateOperationsInput | number
-    platformFee?: FloatFieldUpdateOperationsInput | number
-    netAmount?: FloatFieldUpdateOperationsInput | number
-    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
-    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
-    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
-    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
-    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
-    installments?: IntFieldUpdateOperationsInput | number
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isMatured?: BoolFieldUpdateOperationsInput | boolean
-    statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
-    affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
-  }
-
-  export type OrderUncheckedUpdateManyWithoutProductInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    buyerName?: StringFieldUpdateOperationsInput | string
-    buyerEmail?: StringFieldUpdateOperationsInput | string
-    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
-    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    buyerData?: NullableJsonNullValueInput | InputJsonValue
-    amount?: FloatFieldUpdateOperationsInput | number
-    platformFee?: FloatFieldUpdateOperationsInput | number
-    netAmount?: FloatFieldUpdateOperationsInput | number
-    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
-    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
-    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
-    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
-    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
-    installments?: IntFieldUpdateOperationsInput | number
-    externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isMatured?: BoolFieldUpdateOperationsInput | boolean
-    statusHistory?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type CheckoutLinkUpdateWithoutProductInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CheckoutLinkUncheckedUpdateWithoutProductInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CheckoutLinkUncheckedUpdateManyWithoutProductInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    slug?: StringFieldUpdateOperationsInput | string
-    active?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
+    affiliationId?: string | null
   }
 
   export type AffiliateOfferUpdateWithoutProductInput = {
@@ -44080,6 +45886,139 @@ export namespace Prisma {
     conversionRate?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CheckoutLinkUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CheckoutLinkUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CheckoutLinkUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    active?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
+    affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
+    user?: UserUpdateOneRequiredWithoutOrdersNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
+    affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateManyWithoutProductInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    buyerName?: StringFieldUpdateOperationsInput | string
+    buyerEmail?: StringFieldUpdateOperationsInput | string
+    buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    buyerData?: NullableJsonNullValueInput | InputJsonValue
+    amount?: FloatFieldUpdateOperationsInput | number
+    platformFee?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: EnumOrderStatusFieldUpdateOperationsInput | $Enums.OrderStatus
+    paymentMethod?: EnumPaymentMethodFieldUpdateOperationsInput | $Enums.PaymentMethod
+    pixQrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixCopyPaste?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    boletoBarcode?: NullableStringFieldUpdateOperationsInput | string | null
+    cardLastFour?: NullableStringFieldUpdateOperationsInput | string | null
+    cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
+    installments?: IntFieldUpdateOperationsInput | number
+    externalId?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isMatured?: BoolFieldUpdateOperationsInput | boolean
+    statusHistory?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PendingBalanceCreateManyOrderInput = {
@@ -44218,18 +46157,18 @@ export namespace Prisma {
     cardBrand?: string | null
     installments?: number
     externalId?: string | null
-    wooviCorrelationId?: string | null
-    wooviTransactionId?: string | null
-    wooviEndToEndId?: string | null
-    pixQrCodeUrl?: string | null
-    pixBrCode?: string | null
-    pixExpiresAt?: Date | string | null
     paidAt?: Date | string | null
     refundedAt?: Date | string | null
     isMatured?: boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
+    pixBrCode?: string | null
+    pixExpiresAt?: Date | string | null
+    pixQrCodeUrl?: string | null
+    wooviCorrelationId?: string | null
+    wooviEndToEndId?: string | null
+    wooviTransactionId?: string | null
   }
 
   export type AffiliationSaleUpdateWithoutAffiliationInput = {
@@ -44282,22 +46221,22 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutOrdersNestedInput
-    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
-    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
+    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    user?: UserUpdateOneRequiredWithoutOrdersNestedInput
+    pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutAffiliationInput = {
@@ -44322,20 +46261,20 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
+    pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateManyWithoutAffiliationInput = {
@@ -44360,18 +46299,18 @@ export namespace Prisma {
     cardBrand?: NullableStringFieldUpdateOperationsInput | string | null
     installments?: IntFieldUpdateOperationsInput | number
     externalId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
-    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
-    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
-    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isMatured?: BoolFieldUpdateOperationsInput | boolean
     statusHistory?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    pixBrCode?: NullableStringFieldUpdateOperationsInput | string | null
+    pixExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    pixQrCodeUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
+    wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

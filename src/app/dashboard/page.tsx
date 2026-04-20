@@ -40,30 +40,57 @@ export default function DashboardPage() {
   const [chartData, setChartData] = useState<ChartPoint[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [txHasMore, setTxHasMore] = useState(false);
-  const [loading, setLoading] = useState(true);
+  
+  const [loadingMetrics, setLoadingMetrics] = useState(true);
+  const [loadingChart, setLoadingChart] = useState(true);
+  const [loadingTransactions, setLoadingTransactions] = useState(true);
 
   const fetchAll = useCallback(async (p: string) => {
-    setLoading(true);
-    try {
-      const [metricsRes, chartRes, txRes] = await Promise.all([
-        fetch(`/api/dashboard/metrics?period=${p}`),
-        fetch(`/api/dashboard/chart?period=${p}`),
-        fetch(`/api/dashboard/transactions?page=0`),
-      ]);
-      const [m, c, tx] = await Promise.all([
-        metricsRes.json(),
-        chartRes.json(),
-        txRes.json(),
-      ]);
-      setMetrics(m);
-      setChartData(c);
-      setTransactions(tx.transactions);
-      setTxHasMore(tx.hasMore);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
+    setLoadingMetrics(true);
+    setLoadingChart(true);
+    setLoadingTransactions(true);
+    
+    // Independent fetches
+    const fetchMetrics = async () => {
+      try {
+        const res = await fetch(`/api/dashboard/metrics?period=${p}`);
+        const data = await res.json();
+        setMetrics(data);
+      } catch (e) {
+        console.error("Metrics fetch error:", e);
+      } finally {
+        setLoadingMetrics(false);
+      }
+    };
+
+    const fetchChart = async () => {
+      try {
+        const res = await fetch(`/api/dashboard/chart?period=${p}`);
+        const data = await res.json();
+        setChartData(data);
+      } catch (e) {
+        console.error("Chart fetch error:", e);
+      } finally {
+        setLoadingChart(false);
+      }
+    };
+
+    const fetchTransactions = async () => {
+      try {
+        const res = await fetch(`/api/dashboard/transactions?page=0`);
+        const data = await res.json();
+        setTransactions(data.transactions);
+        setTxHasMore(data.hasMore);
+      } catch (e) {
+        console.error("Transactions fetch error:", e);
+      } finally {
+        setLoadingTransactions(false);
+      }
+    };
+
+    fetchMetrics();
+    fetchChart();
+    fetchTransactions();
   }, []);
 
   useEffect(() => {
@@ -77,7 +104,7 @@ export default function DashboardPage() {
       <div className="space-y-6">
           {/* Metrics */}
           <section>
-            {loading || !metrics ? (
+            {loadingMetrics || !metrics ? (
               <MetricsGridSkeleton />
             ) : (
               <MetricsGrid metrics={metrics} />
@@ -86,22 +113,22 @@ export default function DashboardPage() {
 
           {/* PIX Conversion + Chart row */}
           <section className="grid gap-4 xl:grid-cols-[320px_1fr]">
-            {loading || !metrics ? (
-              <>
-                <PixConversionSkeleton />
-                <RevenueChartSkeleton />
-              </>
+            {loadingMetrics || !metrics ? (
+              <PixConversionSkeleton />
             ) : (
-              <>
-                <PixConversion rate={metrics.pixConversionRate} />
-                <RevenueChart data={chartData} />
-              </>
+              <PixConversion rate={metrics.pixConversionRate} />
+            )}
+
+            {loadingChart ? (
+              <RevenueChartSkeleton />
+            ) : (
+              <RevenueChart data={chartData} />
             )}
           </section>
 
           {/* Transactions */}
           <section>
-            {loading ? (
+            {loadingTransactions ? (
               <TransactionsTableSkeleton />
             ) : (
               <TransactionsTable initial={transactions} initialHasMore={txHasMore} />

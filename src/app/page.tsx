@@ -2,7 +2,10 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useSpring, useInView, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useSpring, useInView, AnimatePresence, useMotionValue, useTransform } from "framer-motion";
+import { DashboardMockup } from "@/components/landing/DashboardMockup";
+import { PartnerTicker } from "@/components/landing/PartnerTicker";
+import { SectionHeading } from "@/components/landing/SectionHeading";
 import { 
   ShoppingCart, 
   Zap, 
@@ -33,8 +36,8 @@ const Counter = ({ value, duration = 2 }: { value: string; duration?: number }) 
   const isInView = useInView(ref, { once: true });
   
   // Extract number and suffix (e.g., "10M+" -> 10, "M+")
-  const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
-  const suffix = value.replace(/[0-9.]/g, '');
+  const numericValue = parseFloat(value.replace(/,/g, '.').replace(/[^0-9.]/g, ''));
+  const suffix = value.replace(/[0-9.,]/g, '');
 
   useEffect(() => {
     if (isInView) {
@@ -57,7 +60,11 @@ const Counter = ({ value, duration = 2 }: { value: string; duration?: number }) 
     }
   }, [isInView, numericValue, duration]);
 
-  return <span ref={ref}>{suffix.includes('%') ? count.toFixed(1) : Math.floor(count)}{suffix}</span>;
+  const displayCount = value.includes(',') || value.includes('.') 
+    ? count.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+    : count.toLocaleString('pt-BR', { maximumFractionDigits: 0 });
+
+  return <span ref={ref}>{displayCount}{suffix}</span>;
 };
 
 const CustomCursor = () => {
@@ -86,6 +93,19 @@ export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const heroRef = useRef<HTMLElement>(null);
+
+  const handleHeroMouseMove = (e: React.MouseEvent) => {
+    if (!heroRef.current) return;
+    const rect = heroRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    mouseX.set(x);
+    mouseY.set(y);
+  };
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -163,16 +183,20 @@ export default function LandingPage() {
       </AnimatePresence>
 
       {/* --- Section 1: Hero --- */}
-      <section className="relative min-h-[100vh] flex flex-col items-center justify-center pt-32 pb-20 overflow-hidden">
-        {/* Hero Video Background System */}
-        <div className="absolute inset-0 z-0">
+      <section 
+        ref={heroRef}
+        onMouseMove={handleHeroMouseMove}
+        className="relative min-h-[100vh] md:min-h-[100svh] flex flex-col items-center justify-center pt-32 pb-20 overflow-hidden bg-[#030307]"
+      >
+        {/* 1. Hero Video Background System */}
+        <div className="absolute inset-0 z-[0]">
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: [0, 1, 1, 0] }}
             transition={{ 
-              duration: 10, 
+              duration: 12, 
               repeat: Infinity, 
-              times: [0, 0.1, 0.9, 1],
+              times: [0, 0.05, 0.95, 1],
               ease: "easeInOut"
             }}
             className="absolute inset-0 w-full h-full"
@@ -183,210 +207,142 @@ export default function LandingPage() {
               loop
               playsInline
               className="w-full h-full object-cover"
-              poster="/assets/video-fallback.jpg" // Optional poster
+              poster="/assets/video-fallback.jpg"
             >
               <source src="/assets/video-hero.mp4" type="video/mp4" />
             </video>
           </motion.div>
           
-          {/* Loop Masking Overlays */}
-          {/* 1. Gradient Overlay (rgba(0,0,0,0.4) to 0.7) */}
-          <div className="absolute inset-0 bg-gradient-to-b from-bg-void/40 via-bg-void/60 to-bg-void/80 z-[1]" />
-          
-          {/* 2. Backdrop Blur (Light) + Purple Tint */}
-          <div className="absolute inset-0 backdrop-blur-[4px] md:backdrop-blur-[6px] bg-accent/2 z-[2]" />
-          
-          {/* 3. Global Noise / Overlay Texture */}
-          <div className="absolute inset-0 opacity-20 z-[3] pointer-events-none grid-dots" />
+          {/* Overlays for readability and integration */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#030307]/60 via-[#030307]/70 to-[#030307] z-[1]" />
+          <div className="absolute inset-0 backdrop-blur-[8px] bg-[#8b5cf6]/5 z-[2]" />
         </div>
 
-        <div className="container mx-auto px-6 text-center relative z-10">
+        {/* 2. Particles Orbit (Orbs roxos) */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-8"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            <span className="font-mono text-[10px] md:text-xs uppercase tracking-widest text-accent font-bold">
-              ⚡ PIX com liquidação D+0 — Split automático em segundos
-            </span>
-          </motion.div>
-
-          <h1 className="font-display text-5xl md:text-8xl font-extrabold uppercase italic leading-[0.9] tracking-tighter text-white mb-6">
-            <motion.span 
-              initial={{ filter: "blur(10px)", opacity: 0 }}
-              animate={{ filter: "blur(0px)", opacity: 1 }}
-              transition={{ duration: 0.8 }}
-            >
-              Pagamentos que
-            </motion.span>
-            <br />
-            <motion.span 
-              initial={{ filter: "blur(10px)", opacity: 0 }}
-              animate={{ filter: "blur(0px)", opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-accent text-glow"
-            >
-              PULSEPAY.
-            </motion.span>
-            <br />
-            <motion.span 
-              initial={{ filter: "blur(10px)", opacity: 0 }}
-              animate={{ filter: "blur(0px)", opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              seus players merecem.
-            </motion.span>
-          </h1>
-
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="max-w-2xl mx-auto text-lg md:text-xl text-text-secondary leading-relaxed mb-12 font-medium"
-          >
-            Checkout builder completo, split PIX instantâneo e dashboard em tempo real.
-            A nova era dos pagamentos para players e afiliados.
-          </motion.p>
-
+            animate={{ opacity: [0.4, 0.7, 0.4] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[-100px] left-[-100px] w-[400px] h-[400px] rounded-full z-0"
+            style={{ background: "radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%)", filter: "blur(80px)" }}
+          />
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
-          >
-            <Link href="/register" className="w-full sm:w-auto px-10 h-16 flex items-center justify-center gap-3 font-bold text-white bg-accent rounded-2xl glow-accent hover:brightness-110 transition-all scale-100 hover:scale-[1.02]">
-              Criar conta grátis
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-            <Link href="#features" className="w-full sm:w-auto px-10 h-16 flex items-center justify-center gap-3 font-bold text-white border border-accent/20 rounded-2xl hover:bg-accent/5 transition-all">
-              <Play className="w-5 h-5 fill-accent text-accent" />
-              Ver como funciona
-            </Link>
-          </motion.div>
+            animate={{ opacity: [0.4, 0.7, 0.4] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+            className="absolute bottom-[-150px] right-[-100px] w-[600px] h-[400px] rounded-full z-0"
+            style={{ background: "radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%)", filter: "blur(80px)" }}
+          />
+        </div>
+        
+        {/* 3. Global Noise / Overlay Texture */}
+        <div className="absolute inset-0 opacity-20 z-[3] pointer-events-none grid-dots" />
 
-          {/* Micro-text */}
-          <div className="flex items-center justify-center gap-6 text-xs md:text-sm text-text-muted font-medium mb-24">
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-success" /> Sem mensalidade</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-success" /> Conta em 5 minutos</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-success" /> Sem cartão de crédito</span>
+        <div className="container mx-auto px-6 relative z-10 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-0 items-center justify-between w-full h-full max-w-7xl mx-auto">
+            {/* Esquerda: Texto */}
+            <div className="flex flex-col items-center lg:items-start text-center lg:text-left pt-10 lg:pt-0 w-full lg:w-[110%] relative z-20">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/10 border border-accent/20 mb-8"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+                <span className="font-mono text-[10px] md:text-xs uppercase tracking-widest text-accent font-bold">
+                  ⚡ PIX com liquidação D+0 — Split automático em segundos
+                </span>
+              </motion.div>
+
+              <h1 
+                className="font-display mb-8"
+                style={{ lineHeight: 1.0, letterSpacing: "-0.03em" }}
+              >
+                <motion.span 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="block text-white"
+                  style={{ fontSize: "clamp(48px, 7vw, 82px)", fontWeight: 900 }}
+                >
+                  O gateway que
+                </motion.span>
+                <motion.span 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.1 }}
+                  className="block text-white"
+                  style={{ fontSize: "clamp(48px, 7vw, 82px)", fontWeight: 900 }}
+                >
+                  seus players
+                </motion.span>
+                <motion.span 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="block text-[#8b5cf6]"
+                  style={{ 
+                     fontSize: "clamp(48px, 7vw, 82px)", 
+                     fontWeight: 900,
+                     textShadow: "0 0 40px rgba(139,92,246,0.3)"
+                  }}
+                >
+                  merecem.
+                </motion.span>
+              </h1>
+
+              <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.6 }}
+                className="text-[18px] text-white/55 leading-relaxed mb-12 max-w-[520px] mx-auto lg:mx-0 font-medium"
+              >
+                Checkout builder completo, split PIX instantâneo e dashboard em tempo real.
+                A plataforma que players e afiliados escolhem para escalar.
+              </motion.p>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+                className="flex flex-col sm:flex-row items-center gap-4 mb-16 w-full sm:w-auto"
+              >
+                <Link href="/register" className="w-full sm:w-auto px-10 h-[60px] flex items-center justify-center gap-3 font-bold text-white bg-[#8b5cf6] hover:bg-[#7c3aed] rounded-2xl transition-all scale-100 hover:scale-[1.02] shadow-[0_0_30px_rgba(139,92,246,0.3)]">
+                  Criar conta grátis
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+                <Link href="#features" className="w-full sm:w-auto px-10 h-[60px] flex items-center justify-center gap-3 font-bold text-white border border-white/10 rounded-2xl hover:bg-white/5 transition-all">
+                  <span className="w-2 h-2 rounded-full bg-[#8b5cf6]" />
+                  Ver como funciona
+                </Link>
+              </motion.div>
+
+              {/* Micro-text */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 md:gap-6 text-xs md:text-sm text-text-muted font-medium mb-10 lg:mb-0">
+                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-success" /> Sem mensalidade</span>
+                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-success" /> Conta em 5 minutos</span>
+                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4 text-success" /> Sem cartão</span>
+              </div>
+            </div>
+            
+            {/* Direita: Mockup 3D Notebook */}
+            <div className="w-full relative z-10 flex items-center justify-center scale-90 sm:scale-100 mt-10 lg:mt-0">
+              <DashboardMockup mouseX={mouseX} mouseY={mouseY} />
+            </div>
           </div>
-
-          {/* Dashboard Mockup */}
-          <motion.div 
-            initial={{ opacity: 0, rotateX: 20, y: 40 }}
-            animate={{ opacity: 1, rotateX: 8, rotateY: -4, y: 0 }}
-            transition={{ duration: 1.2, delay: 1.2 }}
-            className="perspective-1000 max-w-4xl mx-auto"
-          >
-            <motion.div 
-              animate={{ y: [-8, 0, -8] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="relative aspect-video bg-bg-card border border-success/10 rounded-3xl p-6 shadow-2xl overflow-hidden"
-            >
-              {/* Dashboard Content Mockup */}
-              <div className="flex justify-between items-center mb-10">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center">
-                    <span className="text-accent text-[8px] font-bold italic">PP</span>
-                  </div>
-                  <span className="text-white text-sm font-bold opacity-80">Olá, Rafael 👋</span>
-                </div>
-                <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-success/40" />
-                  <div className="w-3 h-3 rounded-full bg-accent/40" />
-                  <div className="w-3 h-3 rounded-full bg-white/10" />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-6 mb-10">
-                {[
-                  { label: "Saldo disponível", value: "R$ 12.847,00", color: "text-success" },
-                  { label: "Vendas hoje", value: "47", color: "text-accent" },
-                  { label: "Conversão", value: "94%", color: "text-white" }
-                ].map((item, i) => (
-                  <div key={i} className="bg-bg-void/40 p-4 rounded-xl border border-white/5">
-                    <p className="text-[10px] text-text-secondary uppercase tracking-widest mb-1">{item.label}</p>
-                    <p className={cn("text-lg font-mono font-bold", item.color)}>{item.value}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="relative h-24 mb-6">
-                <svg className="w-full h-full" viewBox="0 0 400 100">
-                  <motion.path 
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 2, delay: 2 }}
-                    d="M0 80 Q 50 20, 100 60 T 200 40 T 300 10 T 400 50" 
-                    fill="none" 
-                    stroke="var(--success)" 
-                    strokeWidth="3" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-success/5 to-transparent" />
-                </svg>
-              </div>
-
-              <div className="space-y-3">
-                {[
-                  { name: "Pedro S.", amount: "+R$ 297,00" },
-                  { name: "Mariana L.", amount: "+R$ 97,00" },
-                  { name: "Carlos J.", amount: "+R$ 1.490,00" }
-                ].map((t, i) => (
-                  <div key={i} className="flex justify-between items-center p-3 bg-white/5 rounded-lg border border-white/5">
-                    <span className="text-xs text-white/50 flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-success" />
-                      PIX · {t.name}
-                    </span>
-                    <span className="text-xs font-mono font-bold text-success">{t.amount}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Glass Reflection */}
-              <div className="absolute -top-[50%] -left-[50%] w-[200%] h-[200%] bg-gradient-to-br from-white/5 via-transparent to-transparent rotate-45 pointer-events-none" />
-            </motion.div>
-          </motion.div>
         </div>
       </section>
 
       {/* --- Section 2: Partner Ticker --- */}
-      <section className="bg-bg-void py-16 border-y border-white/5 overflow-hidden">
-        <div className="container mx-auto px-6 mb-8 text-center uppercase tracking-widest text-[10px] text-text-muted font-bold">
-          Integrado com os melhores parceiros
-        </div>
-        <div className="flex overflow-hidden group select-none relative">
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-bg-void to-transparent z-10" />
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-bg-void to-transparent z-10" />
-          
-          <motion.div 
-            animate={{ x: "-100%" }}
-            transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-            className="flex items-center gap-16 pr-16"
-          >
-            {[...Array(3)].flatMap((_, i) => (
-              <React.Fragment key={i}>
-                <span className="text-xl font-bold text-text-muted flex items-center gap-4 hover:text-accent transition-colors">🏦 WOOVI</span>
-                <span className="text-xl font-bold text-text-muted flex items-center gap-4">🔒 PIX BCB</span>
-                <span className="text-xl font-bold text-text-muted flex items-center gap-4">🛡️ ANTIFRAUDE</span>
-                <span className="text-xl font-bold text-text-muted flex items-center gap-4">📊 RECHARTS</span>
-                <span className="text-xl font-bold text-text-muted flex items-center gap-4">⚡ VERCEL</span>
-                <span className="text-xl font-bold text-text-muted flex items-center gap-4">🐘 SUPABASE</span>
-                <span className="text-xl font-bold text-text-muted flex items-center gap-4">📧 RESEND</span>
-              </React.Fragment>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+      <PartnerTicker />
 
       {/* --- Section 3: Features --- */}
       <section id="recursos" className="py-32 bg-bg-deep relative overflow-hidden">
         <div className="container mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-20">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-bold mb-4 block underline decoration-accent/40 underline-offset-8">Recursos</span>
-            <h2 className="font-display text-4xl md:text-6xl font-extrabold text-white mb-6 uppercase italic">Tudo que você precisa.<br />Nada que te atrasa.</h2>
-            <p className="text-text-secondary text-lg">Desenvolvido por quem entende as dores de processar pagamentos no digital.</p>
-          </div>
+          <SectionHeading
+            label="RECURSOS"
+            title="Tudo que você precisa."
+            subtitle="Desenvolvido por quem entende as dores reais de processar pagamentos no digital."
+            align="center"
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <FeatureCard 
@@ -457,6 +413,12 @@ export default function LandingPage() {
       {/* --- Section 4: Steps --- */}
       <section className="py-32 bg-bg-void relative border-y border-white/5">
         <div className="container mx-auto px-6">
+          <SectionHeading
+            label="COMO FUNCIONA"
+            title="Três passos para escalar."
+            subtitle="Da criação da conta até o primeiro split em menos de um dia."
+            align="center"
+          />
           <div className="space-y-40">
              <StepItem 
               num="01" 
@@ -512,10 +474,12 @@ export default function LandingPage() {
       {/* --- Section 5: Pricing --- */}
       <section id="taxas" className="py-32 bg-bg-deep relative overflow-hidden">
         <div className="container mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="font-display text-4xl md:text-6xl font-extrabold text-white mb-6 uppercase italic">Custo justo. Sem surpresas.</h2>
-            <p className="text-text-secondary text-lg">Você só paga quando vende. Sem mensalidade, sem taxa de adesão.</p>
-          </div>
+          <SectionHeading
+            label="PREÇOS"
+            title="Custo justo. Sem surpresas."
+            subtitle="Você só paga quando vende. Sem mensalidade, sem taxa de adesão."
+            align="center"
+          />
 
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
             {/* PIX Card */}
@@ -599,9 +563,11 @@ export default function LandingPage() {
       {/* --- Section 6: Target Personas --- */}
       <section id="para-quem" className="py-32 bg-bg-void relative border-y border-white/5">
         <div className="container mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto mb-20 px-4">
-             <h2 className="font-display text-4xl md:text-5xl font-extrabold text-white mb-6 uppercase italic">Feito para quem vende de verdade.</h2>
-          </div>
+          <SectionHeading
+            label="PARA QUEM É"
+            title="Feito para quem vende de verdade."
+            align="center"
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
              <PersonaCard emoji="🎯" title="Afiliados" desc="Crie links de checkout personalizados, acompanhe comissões em realtime e saque via PIX." />
@@ -618,11 +584,11 @@ export default function LandingPage() {
           {/* Animated Stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-12 mb-32 border-b border-white/5 pb-20">
             <div className="text-center">
-               <p className="font-display text-4xl md:text-6xl font-black text-white italic"><Counter value="R$ 10M+" /></p>
+               <p className="font-display text-4xl md:text-6xl font-black text-white italic"><Counter value="R$ 2,4M+" /></p>
                <p className="text-text-muted font-bold text-[10px] uppercase tracking-widest mt-2 px-2">EM TRANSAÇÕES PROCESSADAS</p>
             </div>
             <div className="text-center">
-               <p className="font-display text-4xl md:text-6xl font-black text-white italic"><Counter value="4.200+" /></p>
+               <p className="font-display text-4xl md:text-6xl font-black text-white italic"><Counter value="847+" /></p>
                <p className="text-text-muted font-bold text-[10px] uppercase tracking-widest mt-2">PLAYERS ATIVOS NA PLATAFORMA</p>
             </div>
             <div className="text-center">
@@ -635,9 +601,11 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="text-center max-w-2xl mx-auto mb-20">
-             <h2 className="font-display text-4xl md:text-5xl font-extrabold text-white uppercase italic">Players que já escalam.</h2>
-          </div>
+          <SectionHeading
+            label="CASES"
+            title="Players que já escalam."
+            align="center"
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
              <TestimonialCard 
@@ -675,11 +643,12 @@ export default function LandingPage() {
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <span className="font-mono text-xs uppercase tracking-[0.2em] text-accent font-bold mb-4 block underline decoration-accent/40 underline-offset-8">Desenvolvedores</span>
-              <h2 className="font-display text-4xl md:text-6xl font-extrabold text-white mb-8 uppercase italic leading-[1.1]">API pensada para devs sérios.</h2>
-              <p className="text-text-secondary text-lg mb-10 leading-relaxed max-w-lg">
-                Documentação completa, sandbox gratuito e SDKs oficiais. Integre em horas, não em dias. Automatize cada pixel do faturamento da sua plataforma.
-              </p>
+              <SectionHeading
+                label="DESENVOLVEDORES"
+                title="API pensada para devs sérios."
+                subtitle="Documentação completa, sandbox gratuito e SDK Node.js."
+                align="left"
+              />
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                  <ApiFeature icon={<Globe className="w-5 h-5" />} text="REST + JSON Nativo" />
@@ -726,6 +695,18 @@ export default function LandingPage() {
                </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* --- Section 9: CTA Final --- */}
+      <section className="py-32 bg-bg-deep relative border-t border-white/5">
+        <div className="container mx-auto px-6 text-center">
+          <h2 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 800, color: "#f1f5f9", letterSpacing: "-0.02em" }} className="mb-6 font-display">Pronto para escalar?</h2>
+          <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.45)", lineHeight: 1.6 }} className="max-w-[520px] mx-auto mb-10">Crie sua conta em 5 minutos e comece a receber via PIX hoje mesmo.</p>
+          <Link href="/register" className="inline-flex px-10 h-[60px] items-center justify-center gap-3 font-bold text-white bg-[#8b5cf6] hover:bg-[#7c3aed] rounded-2xl transition-all scale-100 hover:scale-[1.02] shadow-[0_0_30px_rgba(139,92,246,0.2)]">
+            Criar conta grátis
+            <ArrowRight className="w-5 h-5" />
+          </Link>
         </div>
       </section>
 
@@ -776,7 +757,7 @@ export default function LandingPage() {
 
         <div className="container mx-auto px-6 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
            <p className="text-[10px] text-text-muted font-bold uppercase tracking-[0.2em]">&copy; 2024 PulsePay INTERMEDIAÇÃO LTDA. TODOS OS DIREITOS RESERVADOS.</p>
-           <p className="text-[10px] text-text-muted font-bold uppercase tracking-[0.2em] flex items-center gap-2">FEITO COM <div className="w-2 h-2 bg-accent rounded-full animate-ping" /> PARA PLAYERS FORTES.</p>
+           <div className="text-[10px] text-text-muted font-bold uppercase tracking-[0.2em] flex items-center gap-2">FEITO COM <div className="w-2 h-2 bg-accent rounded-full animate-ping" /> PARA PLAYERS FORTES.</div>
         </div>
       </footer>
     </div>
@@ -797,19 +778,20 @@ interface FeatureCardProps {
 const FeatureCard = ({ icon, title, description, tag, visual, highlight = false }: FeatureCardProps) => {
   return (
     <motion.div 
-      whileHover={{ y: -4 }}
+      whileHover={{ y: -4, borderColor: "rgba(139,92,246,0.25)" }}
+      transition={{ duration: 0.2 }}
       className={cn(
-        "group p-8 rounded-3xl bg-bg-card border border-white/5 transition-all duration-300 relative overflow-hidden",
+        "group p-8 rounded-3xl bg-bg-card border border-white/5 transition-colors duration-300 relative overflow-hidden",
         highlight && "border-accent/40 bg-accent/5"
       )}
     >
       <div className="relative z-10">
-        <div className="mb-6">{icon}</div>
-        <div className="flex items-center gap-3 mb-4">
-          <h3 className="font-display text-xl font-bold uppercase italic text-white leading-none">{title}</h3>
+        <div className="flex justify-between items-start mb-6">
+          <div>{icon}</div>
           <span className="px-2 py-0.5 bg-white/5 text-text-muted text-[8px] font-bold uppercase rounded-full tracking-tighter border border-white/5">{tag}</span>
         </div>
-        <p className="text-sm text-text-secondary leading-relaxed mb-8">{description}</p>
+        <h3 className="text-white mb-2" style={{ fontSize: "17px", fontWeight: 600 }}>{title}</h3>
+        <p className="text-text-secondary mb-8" style={{ fontSize: "14px", lineHeight: 1.6 }}>{description}</p>
         {visual && <div className="mt-auto">{visual}</div>}
       </div>
       

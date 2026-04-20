@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { WithdrawalModal } from "@/app/dashboard/financeiro/WithdrawalModal";
 
 function formatBRL(value: number) {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -77,58 +78,78 @@ interface MetricsGridProps {
 }
 
 export function MetricsGrid({ metrics }: MetricsGridProps) {
+  const [isWithdrawalModalOpen, setIsWithdrawalModalOpen] = useState(false);
+
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-      <MetricCard
-        title="Saldo disponível"
-        value={formatBRL(metrics.availableBalance)}
-        icon={DollarSign}
-        iconColor="text-[#22c55e]"
-        iconBg="rgba(34,197,94,0.12)"
-        action={
-          <Button variant="ghost" size="sm" icon={<ArrowDownToLine className="w-3.5 h-3.5" />}>
-            Sacar
-          </Button>
-        }
-      />
-      <MetricCard
-        title="Saldo pendente"
-        value={formatBRL(metrics.pendingBalance)}
-        icon={Clock}
-        iconColor="text-[#8b5cf6]"
-        iconBg="rgba(139,92,246,0.12)"
-        tooltip="Valores em processamento (1–3 dias úteis)"
-      />
-      <MetricCard
-        title="Saldo retido"
-        value={formatBRL(metrics.retainedBalance)}
-        icon={Clock}
-        iconColor="text-[#eab308]"
-        iconBg="rgba(234,179,8,0.12)"
-        tooltip="Retenção de segurança — liberado após 30 dias"
-      />
-      <MetricCard
-        title="Lucro líquido"
-        value={formatBRL(metrics.netProfit)}
-        icon={TrendingUp}
-        iconColor="text-[#8b5cf6]"
-        iconBg="rgba(139,92,246,0.12)"
-      />
-      <MetricCard
-        title="Total de transações"
-        value={metrics.totalTransactions.toLocaleString("pt-BR")}
-        icon={ArrowUpDown}
-        iconColor="text-[#64748b]"
-        iconBg="rgba(255,255,255,0.05)"
-      />
-      <MetricCard
-        title="Ticket médio"
-        value={formatBRL(metrics.averageTicket)}
-        icon={Percent}
-        iconColor="text-[#8b5cf6]"
-        iconBg="rgba(139,92,246,0.12)"
-      />
-    </div>
+    <>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <MetricCard
+          title="Saldo disponível"
+          value={formatBRL(metrics.availableBalance)}
+          icon={DollarSign}
+          iconColor="text-[#22c55e]"
+          iconBg="rgba(34,197,94,0.12)"
+          action={
+            <Button 
+                variant="ghost" 
+                size="sm" 
+                icon={<ArrowDownToLine className="w-3.5 h-3.5" />}
+                onClick={() => setIsWithdrawalModalOpen(true)}
+            >
+              Sacar
+            </Button>
+          }
+        />
+        <MetricCard
+          title="Saldo pendente"
+          value={formatBRL(metrics.pendingBalance)}
+          icon={Clock}
+          iconColor="text-[#8b5cf6]"
+          iconBg="rgba(139,92,246,0.12)"
+          tooltip="Valores em processamento (1–3 dias úteis)"
+        />
+        <MetricCard
+          title="Saldo retido"
+          value={formatBRL(metrics.retainedBalance)}
+          icon={Clock}
+          iconColor="text-[#eab308]"
+          iconBg="rgba(234,179,8,0.12)"
+          tooltip="Retenção de segurança — liberado após 30 dias"
+        />
+        <MetricCard
+          title="Lucro líquido"
+          value={formatBRL(metrics.netProfit)}
+          icon={TrendingUp}
+          iconColor="text-[#8b5cf6]"
+          iconBg="rgba(139,92,246,0.12)"
+        />
+        <MetricCard
+          title="Total de transações"
+          value={metrics.totalTransactions.toLocaleString("pt-BR")}
+          icon={ArrowUpDown}
+          iconColor="text-[#64748b]"
+          iconBg="rgba(255,255,255,0.05)"
+        />
+        <MetricCard
+          title="Ticket médio"
+          value={formatBRL(metrics.averageTicket)}
+          icon={Percent}
+          iconColor="text-[#8b5cf6]"
+          iconBg="rgba(139,92,246,0.12)"
+        />
+      </div>
+
+      {isWithdrawalModalOpen && (
+        <WithdrawalModal 
+            available={metrics.availableBalance}
+            onClose={() => setIsWithdrawalModalOpen(false)}
+            onSuccess={() => {
+                setIsWithdrawalModalOpen(false);
+                // In a real app we might want to refresh metrics here
+            }}
+        />
+      )}
+    </>
   );
 }
 
@@ -143,3 +164,4 @@ export function MetricsGridSkeleton() {
     </div>
   );
 }
+

@@ -30,21 +30,35 @@ export function KycReviewModal({ user, onClose, onRefresh }: { user: KycUser, on
 
   const handleApprove = async () => {
     setSubmitting(true);
-    await fetch(`/api/admin/kyc/${user.id}/approve`, { method: "PATCH" });
-    onRefresh();
-    onClose();
+    try {
+      const res = await fetch(`/api/admin/kyc/${user.id}/approve`, { method: "PATCH" });
+      if (!res.ok) throw new Error("Erro ao aprovar");
+      onRefresh();
+      onClose();
+    } catch (e) {
+      alert("Houve um erro ao aprovar o KYC.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleReject = async () => {
     if (!reason.trim()) return alert("Insira o motivo da rejeição");
     setSubmitting(true);
-    await fetch(`/api/admin/kyc/${user.id}/reject`, { 
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ reason }) 
-    });
-    onRefresh();
-    onClose();
+    try {
+      const res = await fetch(`/api/admin/kyc/${user.id}/reject`, { 
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reason }) 
+      });
+      if (!res.ok) throw new Error("Erro ao rejeitar");
+      onRefresh();
+      onClose();
+    } catch (e) {
+      alert("Houve um erro ao rejeitar o KYC.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (

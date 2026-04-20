@@ -10,7 +10,14 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const userId = session.user.id;
+  let userId = session.user.id;
+
+  // Healer logic: Garante que se for a conta do Roosevelt, usemos o ID correto do banco
+  if (session.user.email === 'rooseveltyyy@gmail.com') {
+    const dbUser = await prisma.user.findUnique({ where: { email: 'rooseveltyyy@gmail.com' }, select: { id: true } });
+    if (dbUser) userId = dbUser.id;
+  }
+
   const period = req.nextUrl.searchParams.get("period") ?? "week";
 
   // Filtro de tempo baseado no período

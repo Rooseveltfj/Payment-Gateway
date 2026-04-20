@@ -15,7 +15,7 @@ model User {
   role               Role             @default(USER)
   status             UserStatus       @default(PENDING)
   kycStatus          KycStatus        @default(NOT_SUBMITTED)
-  document           String? // CPF
+  document           String?
   phone              String?
   pixKey             String?
   pixKeyType         PixKeyType?
@@ -30,38 +30,40 @@ model User {
   pendingBalance     Float            @default(0)
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
-  products           Product[]
-  orders             Order[]
-  withdrawals        Withdrawal[]
-  transactions       Transaction[]
-  webhooks           Webhook[]
-  apiKeys            ApiKey[]
-  kycDocuments       KycDocument[]
-  badges             UserBadge[]
-  pendingBalances    PendingBalance[]
+  showcaseConfig     Json?
+  socialLinks        Json?
   username           String?          @unique
-  showcaseConfig     Json? // { bannerUrl: string, title: string, bio: string }
-  socialLinks        Json? // { twitter: string, instagram: string, etc }
-  customDomains      CustomDomain[]
+  lastActiveAt       DateTime         @default(now())
+  onboardingSteps    Json?
   twoFactorEnabled   Boolean          @default(false)
   twoFactorSecret    String?
-  onboardingSteps    Json? // { profile: bool, kyc: bool, product: bool, checkout: bool, share: bool }
-  lastActiveAt       DateTime         @default(now())
-  notifications      Notification[]
-  auditLogs          AuditLog[]
+  twoFactorMethod    TwoFactorMethod? @default(TOTP)
+  trustedDevices     TrustedDevice[]
   affiliateOffers    AffiliateOffer[] @relation("AffiliateOfferOwner")
   affiliations       Affiliation[]    @relation("AffiliateUser")
+  apiKeys            ApiKey[]
+  auditLogs          AuditLog[]
+  customDomains      CustomDomain[]
+  kycDocuments       KycDocument[]
+  notifications      Notification[]
+  orders             Order[]
+  pendingBalances    PendingBalance[]
+  products           Product[]
+  transactions       Transaction[]
+  badges             UserBadge[]
+  webhooks           Webhook[]
+  withdrawals        Withdrawal[]
 }
 
 model Notification {
   id        String           @id @default(cuid())
   userId    String
-  user      User             @relation(fields: [userId], references: [id])
   title     String
   content   String
   read      Boolean          @default(false)
   type      NotificationType @default(INFO)
   createdAt DateTime         @default(now())
+  user      User             @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }
@@ -69,27 +71,19 @@ model Notification {
 model AuditLog {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  action    String // "LOGIN", "WITHDRAWAL_REQUEST", "PASSWORD_CHANGE", etc
+  action    String
   details   String?
   ipAddress String?
   userAgent String?
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
-}
-
-enum NotificationType {
-  INFO
-  SUCCESS
-  WARNING
-  ERROR
 }
 
 model Product {
   id              String           @id @default(cuid())
   userId          String
-  user            User             @relation(fields: [userId], references: [id])
   name            String
   description     String?
   price           Float
@@ -97,16 +91,17 @@ model Product {
   type            ProductType      @default(SINGLE)
   status          ProductStatus    @default(ACTIVE)
   imageUrl        String?
-  checkoutConfig  Json? // configuração completa do checkout builder
+  checkoutConfig  Json?
   slug            String           @unique
   salesCount      Int              @default(0)
   revenue         Float            @default(0)
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   showInShowcase  Boolean          @default(true)
-  orders          Order[]
-  checkoutLinks   CheckoutLink[]
   affiliateOffers AffiliateOffer[]
+  checkoutLinks   CheckoutLink[]
+  orders          Order[]
+  user            User             @relation(fields: [userId], references: [id])
 
   @@index([userId])
   @@index([status])
@@ -116,14 +111,12 @@ model Product {
 model Order {
   id                 String           @id @default(cuid())
   userId             String
-  user               User             @relation(fields: [userId], references: [id])
   productId          String
-  product            Product          @relation(fields: [productId], references: [id])
   buyerName          String
   buyerEmail         String
   buyerCpf           String?
   buyerPhone         String?
-  buyerData          Json? // campos personalizados do checkout
+  buyerData          Json?
   amount             Float
   platformFee        Float
   netAmount          Float
@@ -136,23 +129,25 @@ model Order {
   cardLastFour       String?
   cardBrand          String?
   installments       Int              @default(1)
-  externalId         String? // ID do Pagar.me (legacy)
-  wooviCorrelationId String?          @unique
-  wooviTransactionId String?
-  wooviEndToEndId    String?
-  pixQrCodeUrl       String?
-  pixBrCode          String?
-  pixExpiresAt       DateTime?
+  externalId         String?
   paidAt             DateTime?
   refundedAt         DateTime?
   isMatured          Boolean          @default(false)
-  statusHistory      Json? // Histórico de estados: [{status: string, date: string}]
+  statusHistory      Json?
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
-  pendingBalances    PendingBalance[]
+  pixBrCode          String?
+  pixExpiresAt       DateTime?
+  pixQrCodeUrl       String?
+  wooviCorrelationId String?          @unique
+  wooviEndToEndId    String?
+  wooviTransactionId String?
   affiliationId      String?
-  affiliation        Affiliation?     @relation(fields: [affiliationId], references: [id])
   affiliationSale    AffiliationSale?
+  affiliation        Affiliation?     @relation(fields: [affiliationId], references: [id])
+  product            Product          @relation(fields: [productId], references: [id])
+  user               User             @relation(fields: [userId], references: [id])
+  pendingBalances    PendingBalance[]
 
   @@index([userId, status])
   @@index([createdAt])
@@ -162,13 +157,13 @@ model Order {
 model PendingBalance {
   id          String   @id @default(cuid())
   userId      String
-  user        User     @relation(fields: [userId], references: [id])
   orderId     String
-  order       Order    @relation(fields: [orderId], references: [id])
   amount      Float
   availableAt DateTime
   released    Boolean  @default(false)
   createdAt   DateTime @default(now())
+  order       Order    @relation(fields: [orderId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
   @@index([availableAt])
@@ -177,24 +172,24 @@ model PendingBalance {
 model Withdrawal {
   id          String           @id @default(cuid())
   userId      String
-  user        User             @relation(fields: [userId], references: [id])
   amount      Float
   status      WithdrawalStatus @default(PENDING)
   pixKey      String
   pixKeyType  PixKeyType
   processedAt DateTime?
   createdAt   DateTime         @default(now())
+  user        User             @relation(fields: [userId], references: [id])
 }
 
 model Webhook {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
   url       String
   secret    String
-  events    String[] // ["order.paid", "order.refunded", etc]
+  events    String[]
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model WebhookLog {
@@ -211,52 +206,52 @@ model WebhookLog {
 model ApiKey {
   id        String    @id @default(cuid())
   userId    String
-  user      User      @relation(fields: [userId], references: [id])
   name      String
   key       String    @unique
   lastUsed  DateTime?
   active    Boolean   @default(true)
   createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id])
 }
 
 model KycDocument {
   id         String    @id @default(cuid())
   userId     String
-  user       User      @relation(fields: [userId], references: [id])
   type       DocType
   fileUrl    String
   status     DocStatus @default(PENDING)
   reviewNote String?
   reviewedAt DateTime?
   createdAt  DateTime  @default(now())
+  user       User      @relation(fields: [userId], references: [id])
 }
 
 model UserBadge {
   id       String    @id @default(cuid())
   userId   String
-  user     User      @relation(fields: [userId], references: [id])
   badge    BadgeType
   earnedAt DateTime  @default(now())
+  user     User      @relation(fields: [userId], references: [id])
 }
 
 model CheckoutLink {
   id        String   @id @default(cuid())
   productId String
-  product   Product  @relation(fields: [productId], references: [id])
   slug      String   @unique
   active    Boolean  @default(true)
   createdAt DateTime @default(now())
+  product   Product  @relation(fields: [productId], references: [id])
 }
 
 model Transaction {
   id          String          @id @default(cuid())
   userId      String
-  user        User            @relation(fields: [userId], references: [id])
   type        TransactionType
   amount      Float
-  balance     Float // saldo após a transação
+  balance     Float
   description String
   createdAt   DateTime        @default(now())
+  user        User            @relation(fields: [userId], references: [id])
 }
 
 model PlatformSetting {
@@ -279,7 +274,7 @@ model PlatformSetting {
 model TwoFactorToken {
   id        String   @id @default(cuid())
   email     String   @unique
-  token     String // hashed code
+  token     String
   expires   DateTime
   attempts  Int      @default(0)
   createdAt DateTime @default(now())
@@ -300,11 +295,103 @@ model PasswordResetToken {
 model AdminLog {
   id        String   @id @default(cuid())
   adminId   String
-  targetId  String? // ID do usuário ou produto afetado
-  action    String // "USER_SUSPEND", "FEE_CHANGE", etc
+  targetId  String?
+  action    String
   details   String?
   ipAddress String?
   createdAt DateTime @default(now())
+}
+
+model TrustedDevice {
+  id        String   @id @default(cuid())
+  userId    String
+  ipAddress String
+  userAgent String?
+  expires   DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, ipAddress])
+  @@index([userId])
+}
+
+model CustomDomain {
+  id        String       @id @default(cuid())
+  userId    String
+  domain    String       @unique
+  status    DomainStatus @default(PENDING)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  user      User         @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model AffiliateOffer {
+  id               String         @id @default(cuid())
+  productId        String
+  ownerId          String
+  title            String
+  description      String?
+  commissionType   CommissionType @default(PERCENTAGE)
+  commissionValue  Float
+  cookieDays       Int            @default(30)
+  maxAffiliates    Int?
+  requiresApproval Boolean        @default(false)
+  status           OfferStatus    @default(ACTIVE)
+  category         String?
+  tags             String[]
+  imageUrl         String?
+  totalAffiliates  Int            @default(0)
+  totalSales       Int            @default(0)
+  totalRevenue     Float          @default(0)
+  conversionRate   Float          @default(0)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  owner            User           @relation("AffiliateOfferOwner", fields: [ownerId], references: [id])
+  product          Product        @relation(fields: [productId], references: [id])
+  affiliations     Affiliation[]
+}
+
+model Affiliation {
+  id               String            @id @default(cuid())
+  offerId          String
+  affiliateId      String
+  status           AffiliationStatus @default(PENDING)
+  affiliateLink    String            @unique
+  affiliateCode    String            @unique
+  totalClicks      Int               @default(0)
+  totalSales       Int               @default(0)
+  totalEarned      Float             @default(0)
+  pendingBalance   Float             @default(0)
+  availableBalance Float             @default(0)
+  approvedAt       DateTime?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  affiliate        User              @relation("AffiliateUser", fields: [affiliateId], references: [id])
+  offer            AffiliateOffer    @relation(fields: [offerId], references: [id])
+  sales            AffiliationSale[]
+  orders           Order[]
+}
+
+model AffiliationSale {
+  id            String               @id @default(cuid())
+  affiliationId String
+  orderId       String               @unique
+  saleAmount    Float
+  commission    Float
+  status        SaleCommissionStatus @default(PENDING)
+  paidAt        DateTime?
+  createdAt     DateTime             @default(now())
+  affiliation   Affiliation          @relation(fields: [affiliationId], references: [id])
+  order         Order                @relation(fields: [orderId], references: [id])
+}
+
+enum NotificationType {
+  INFO
+  SUCCESS
+  WARNING
+  ERROR
 }
 
 enum Role {
@@ -397,94 +484,11 @@ enum TransactionType {
   CHARGEBACK
 }
 
-model CustomDomain {
-  id        String       @id @default(cuid())
-  userId    String
-  user      User         @relation(fields: [userId], references: [id])
-  domain    String       @unique
-  status    DomainStatus @default(PENDING)
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
-
-  @@index([userId])
-}
-
 enum DomainStatus {
   PENDING
   VERIFIED
   ACTIVE
   ERROR
-}
-
-model AffiliateOffer {
-  id        String  @id @default(cuid())
-  productId String
-  product   Product @relation(fields: [productId], references: [id])
-  ownerId   String
-  owner     User    @relation("AffiliateOfferOwner", fields: [ownerId], references: [id])
-
-  title            String
-  description      String?
-  commissionType   CommissionType @default(PERCENTAGE)
-  commissionValue  Float // % ou valor fixo
-  cookieDays       Int            @default(30) // dias de rastreamento do cookie
-  maxAffiliates    Int? // null = ilimitado
-  requiresApproval Boolean        @default(false)
-  status           OfferStatus    @default(ACTIVE)
-
-  category String?
-  tags     String[]
-  imageUrl String?
-
-  totalAffiliates Int   @default(0)
-  totalSales      Int   @default(0)
-  totalRevenue    Float @default(0)
-  conversionRate  Float @default(0)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  affiliations Affiliation[]
-}
-
-model Affiliation {
-  id          String         @id @default(cuid())
-  offerId     String
-  offer       AffiliateOffer @relation(fields: [offerId], references: [id])
-  affiliateId String
-  affiliate   User           @relation("AffiliateUser", fields: [affiliateId], references: [id])
-
-  status        AffiliationStatus @default(PENDING)
-  affiliateLink String            @unique // ex: pay.pulsepay.com/c/[slug]?ref=[affiliateCode]
-  affiliateCode String            @unique // código único de rastreamento
-
-  totalClicks      Int   @default(0)
-  totalSales       Int   @default(0)
-  totalEarned      Float @default(0)
-  pendingBalance   Float @default(0)
-  availableBalance Float @default(0)
-
-  approvedAt DateTime?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-
-  sales  AffiliationSale[]
-  orders Order[]
-}
-
-model AffiliationSale {
-  id            String      @id @default(cuid())
-  affiliationId String
-  affiliation   Affiliation @relation(fields: [affiliationId], references: [id])
-  orderId       String      @unique
-  order         Order       @relation(fields: [orderId], references: [id])
-
-  saleAmount Float // valor total da venda
-  commission Float // comissão do afiliado nesta venda
-  status     SaleCommissionStatus @default(PENDING)
-
-  paidAt    DateTime?
-  createdAt DateTime  @default(now())
 }
 
 enum CommissionType {
@@ -510,4 +514,9 @@ enum SaleCommissionStatus {
   CLEARED
   PAID
   REFUNDED
+}
+
+enum TwoFactorMethod {
+  TOTP
+  EMAIL
 }

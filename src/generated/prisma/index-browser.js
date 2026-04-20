@@ -143,13 +143,14 @@ exports.Prisma.UserScalarFieldEnum = {
   pendingBalance: 'pendingBalance',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  username: 'username',
   showcaseConfig: 'showcaseConfig',
   socialLinks: 'socialLinks',
+  username: 'username',
+  lastActiveAt: 'lastActiveAt',
+  onboardingSteps: 'onboardingSteps',
   twoFactorEnabled: 'twoFactorEnabled',
   twoFactorSecret: 'twoFactorSecret',
-  onboardingSteps: 'onboardingSteps',
-  lastActiveAt: 'lastActiveAt'
+  twoFactorMethod: 'twoFactorMethod'
 };
 
 exports.Prisma.NotificationScalarFieldEnum = {
@@ -213,18 +214,18 @@ exports.Prisma.OrderScalarFieldEnum = {
   cardBrand: 'cardBrand',
   installments: 'installments',
   externalId: 'externalId',
-  wooviCorrelationId: 'wooviCorrelationId',
-  wooviTransactionId: 'wooviTransactionId',
-  wooviEndToEndId: 'wooviEndToEndId',
-  pixQrCodeUrl: 'pixQrCodeUrl',
-  pixBrCode: 'pixBrCode',
-  pixExpiresAt: 'pixExpiresAt',
   paidAt: 'paidAt',
   refundedAt: 'refundedAt',
   isMatured: 'isMatured',
   statusHistory: 'statusHistory',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
+  pixBrCode: 'pixBrCode',
+  pixExpiresAt: 'pixExpiresAt',
+  pixQrCodeUrl: 'pixQrCodeUrl',
+  wooviCorrelationId: 'wooviCorrelationId',
+  wooviEndToEndId: 'wooviEndToEndId',
+  wooviTransactionId: 'wooviTransactionId',
   affiliationId: 'affiliationId'
 };
 
@@ -360,6 +361,15 @@ exports.Prisma.AdminLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.TrustedDeviceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  expires: 'expires',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.CustomDomainScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -473,6 +483,11 @@ exports.PixKeyType = exports.$Enums.PixKeyType = {
   EMAIL: 'EMAIL',
   PHONE: 'PHONE',
   RANDOM: 'RANDOM'
+};
+
+exports.TwoFactorMethod = exports.$Enums.TwoFactorMethod = {
+  TOTP: 'TOTP',
+  EMAIL: 'EMAIL'
 };
 
 exports.NotificationType = exports.$Enums.NotificationType = {
@@ -597,6 +612,7 @@ exports.Prisma.ModelName = {
   TwoFactorToken: 'TwoFactorToken',
   PasswordResetToken: 'PasswordResetToken',
   AdminLog: 'AdminLog',
+  TrustedDevice: 'TrustedDevice',
   CustomDomain: 'CustomDomain',
   AffiliateOffer: 'AffiliateOffer',
   Affiliation: 'Affiliation',

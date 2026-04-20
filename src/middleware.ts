@@ -51,14 +51,15 @@ export default auth(async (req) => {
   const isAdminRoute = nextUrl.pathname.startsWith("/admin")
   const isDashboardRoute = nextUrl.pathname.startsWith("/dashboard")
 
+  // Use nextUrl.origin to ensure internal redirections stay on the same host (e.g. localhost)
   if (isAdminRoute) {
-    if (!isLogged) return NextResponse.redirect(new URL("/login", nextUrl))
+    if (!isLogged) return NextResponse.redirect(new URL("/login", nextUrl.origin))
     const user = req.auth?.user as { role?: string } | undefined
-    if (user?.role !== "ADMIN") return NextResponse.redirect(new URL("/dashboard", nextUrl))
+    if (user?.role !== "ADMIN") return NextResponse.redirect(new URL("/dashboard", nextUrl.origin))
   }
 
   if (isDashboardRoute && !isLogged) {
-    return NextResponse.redirect(new URL("/login", nextUrl))
+    return NextResponse.redirect(new URL("/login", nextUrl.origin))
   }
 
   // 4. Affiliation Tracking

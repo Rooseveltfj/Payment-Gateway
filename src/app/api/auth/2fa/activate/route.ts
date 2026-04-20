@@ -26,6 +26,7 @@ export async function POST(req: Request) {
     data: {
       twoFactorEnabled: true,
       twoFactorSecret: secret,
+      twoFactorMethod: "TOTP",
     }
   });
 

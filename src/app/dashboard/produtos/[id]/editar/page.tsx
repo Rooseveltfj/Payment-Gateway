@@ -17,21 +17,8 @@ export default function EditProductPage() {
   const [formData, setFormData] = useState<any>(null);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const res = await fetch(`/api/products/${params.id}`);
-        if (!res.ok) throw new Error("Produto não encontrado");
-        const data = await res.json();
-        setFormData(data);
-      } catch (error) {
-        toast.error("Erro ao carregar produto.");
-        router.push("/dashboard/produtos");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (params.id) fetchProduct();
+    // Redirect to the full builder immediately
+    router.replace(`/dashboard/produtos/${params.id}/checkout`);
   }, [params.id, router]);
 
   const handleSave = async () => {

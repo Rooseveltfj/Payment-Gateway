@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { updateProfile, disable2FA } from "./actions";
+import { updateProfile, disable2FA, changePassword, requestEmail2FA, activateEmail2FA } from "./actions";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Card } from "@/components/ui/Card";
+import { ImageUpload } from "@/components/ui/ImageUpload";
 import { 
   User, 
   Shield, 
@@ -20,7 +21,9 @@ import {
   Save,
   RefreshCw,
   Eye,
-  EyeOff
+  EyeOff,
+  Mail,
+  ShieldCheck
 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -39,12 +42,14 @@ export function PerfilClient({ user }: Props) {
   const [twoFactorData, setTwoFactorData] = useState<any>(null);
   const [token, setToken] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(user.avatarUrl || null);
 
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     try {
       const formData = new FormData(e.currentTarget);
+      if (avatarUrl) formData.append("avatarUrl", avatarUrl);
       await updateProfile(formData);
       toast.success("Perfil atualizado com sucesso!");
       window.location.reload(); // Refresh to catch updated session
@@ -158,18 +163,15 @@ export function PerfilClient({ user }: Props) {
                   
                   <div className="p-8 space-y-8">
                     {/* Avatar Section */}
-                    <div className="flex flex-col items-center sm:items-start gap-4">
-                       <div className="relative group">
-                          <div className="h-24 w-24 rounded-full bg-[#8b5cf6] flex items-center justify-center text-white text-3xl font-bold shadow-[0_0_20px_rgba(139,92,246,0.2)]">
-                            {user.name?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
-                          </div>
-                          <button className="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                             <Camera className="w-6 h-6 text-white" />
-                          </button>
-                       </div>
-                       <div className="text-center sm:text-left">
-                          <button className="text-[13px] font-bold text-[#a78bfa] hover:text-[#8b5cf6] transition-colors">Alterar foto do perfil</button>
-                          <p className="text-[11px] text-[#64748b] mt-1">PNG, JPG ou WEBP. Máx 2MB.</p>
+                    <div className="flex flex-col gap-6">
+                       <div className="w-full max-w-[200px]">
+                          <ImageUpload 
+                             value={avatarUrl}
+                             onChange={setAvatarUrl}
+                             label="Foto de Perfil"
+                             aspectRatio="1/1"
+                             hint="Irá aparecer na sua dashboard"
+                          />
                        </div>
                     </div>
 
@@ -285,26 +287,38 @@ export function PerfilClient({ user }: Props) {
                     </div>
                   </div>
                   <div className="p-8">
-                     <form className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                     <form onSubmit={async (e) => {
+                        e.preventDefault();
+                        setLoading(true);
+                        try {
+                           await changePassword(new FormData(e.currentTarget));
+                           toast.success("Senha alterada com sucesso!");
+                           (e.target as HTMLFormElement).reset();
+                        } catch (err: any) {
+                           toast.error(err.message);
+                        } finally {
+                           setLoading(false);
+                        }
+                     }} className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="space-y-2">
                           <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Senha Atual</label>
-                          <Input type="password" placeholder="••••••••" className="h-11" />
+                          <Input name="currentPassword" type="password" placeholder="••••••••" className="h-11" required />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Nova Senha</label>
-                          <Input type="password" placeholder="••••••••" className="h-11" />
+                          <Input name="newPassword" type="password" placeholder="••••••••" className="h-11" required />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Confirmar Senha</label>
-                          <Input type="password" placeholder="••••••••" className="h-11" />
+                          <Input name="confirmPassword" type="password" placeholder="••••••••" className="h-11" required />
                         </div>
                         <div className="md:col-span-3 flex justify-end">
-                           <Button type="button" variant="secondary" className="h-11 px-8 font-bold border-white/[0.05]">Atualizar Senha</Button>
+                           <Button type="submit" isLoading={loading} variant="secondary" className="h-11 px-8 font-bold border-white/[0.05]">Atualizar Senha</Button>
                         </div>
                      </form>
                   </div>
                 </Card>
-
+ 
                 {/* 2FA */}
                 <Card className={cn(
                   "bg-[#0f0f1a] border-white/[0.05] rounded-[24px] overflow-hidden",
@@ -320,20 +334,105 @@ export function PerfilClient({ user }: Props) {
                       </div>
                       <div>
                         <h2 className="text-xl font-bold text-[#f1f5f9]">Segurança (2FA)</h2>
-                        <p className="text-sm text-[#64748b]">Proteja seus saques com autenticação por app.</p>
+                        <p className="text-sm text-[#64748b]">Proteja seus saques com autenticação secundária.</p>
                       </div>
                     </div>
-                    <Badge status={user.twoFactorEnabled ? 'active' : 'inactive'} label={user.twoFactorEnabled ? 'Ativado' : 'Desativado'} />
+                    {user.twoFactorEnabled && (
+                       <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+                             {user.twoFactorMethod === 'EMAIL' ? 'Via E-mail' : 'Via App'}
+                          </span>
+                       </div>
+                    )}
                   </div>
+
                   <div className="p-8 space-y-6">
                     {!user.twoFactorEnabled && !setup2FA && (
-                       <Button onClick={generate2FA} isLoading={loading} variant="primary" className="h-12 w-full font-bold gap-2">
-                          <Smartphone className="w-4 h-4" />
-                          Configurar Google Authenticator
-                       </Button>
+                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <Button 
+                            onClick={async () => {
+                               setLoading(true);
+                               try {
+                                  await requestEmail2FA();
+                                  setSetup2FA(true);
+                                  setTwoFactorData({ method: 'EMAIL' });
+                                  toast.info("Código enviado para o seu e-mail!");
+                               } catch (err: any) {
+                                  toast.error(err.message);
+                               } finally {
+                                  setLoading(false);
+                               }
+                            }} 
+                            isLoading={loading} 
+                            variant="secondary" 
+                            className="h-14 font-bold gap-3 border-white/5 bg-[#0f0f1a]"
+                          >
+                             <Mail className="w-5 h-5 text-[#a78bfa]" />
+                             <div className="text-left">
+                                <p className="text-[13px]">Ativar via E-mail</p>
+                                <p className="text-[10px] text-[#64748b] font-normal">Receba códigos no e-mail</p>
+                             </div>
+                          </Button>
+
+                          <Button 
+                            onClick={generate2FA} 
+                            isLoading={loading} 
+                            variant="secondary" 
+                            className="h-14 font-bold gap-3 border-white/5 bg-[#0f0f1a]"
+                          >
+                             <Smartphone className="w-5 h-5 text-[#a78bfa]" />
+                             <div className="text-left">
+                                <p className="text-[13px]">Ativar via App</p>
+                                <p className="text-[10px] text-[#64748b] font-normal">Google Authenticator / Authy</p>
+                             </div>
+                          </Button>
+                       </div>
+                    )}
+ 
+                    {setup2FA && twoFactorData?.method === 'EMAIL' && (
+                       <div className="animate-in fade-in zoom-in-95 duration-500 space-y-6 bg-white/[0.02] p-8 rounded-[20px] border border-white/[0.05]">
+                          <div className="space-y-1">
+                             <p className="text-sm font-bold text-[#f1f5f9]">Verifique seu E-mail</p>
+                             <p className="text-xs text-[#64748b]">Enviamos um código de 6 dígitos para {user.email}.</p>
+                          </div>
+                          <div className="space-y-4">
+                             <div className="space-y-2">
+                                <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Código de Segurança</label>
+                                <Input 
+                                  className="text-center text-lg font-mono tracking-[0.5em] h-12"
+                                  maxLength={6}
+                                  placeholder="000000"
+                                  value={token}
+                                  onChange={e => setToken(e.target.value.replace(/\D/g, ""))}
+                                />
+                             </div>
+                             <div className="flex gap-3">
+                                <Button 
+                                  onClick={async () => {
+                                     setLoading(true);
+                                     try {
+                                        await activateEmail2FA(token);
+                                        toast.success("2FA via E-mail ativado!");
+                                        window.location.reload();
+                                     } catch (err: any) {
+                                        toast.error(err.message);
+                                     } finally {
+                                        setLoading(false);
+                                     }
+                                  }} 
+                                  isLoading={loading} 
+                                  variant="primary" 
+                                  className="flex-1 h-11 font-bold"
+                                >
+                                   Confirmar E-mail
+                                </Button>
+                                <Button onClick={() => setSetup2FA(false)} variant="secondary" className="h-11 font-bold border-white/[0.05]">Cancelar</Button>
+                             </div>
+                          </div>
+                       </div>
                     )}
 
-                    {setup2FA && (
+                    {setup2FA && twoFactorData?.qrCode && (
                       <div className="animate-in fade-in zoom-in-95 duration-500 flex flex-col md:flex-row items-center gap-8 bg-white/[0.02] p-8 rounded-[20px] border border-white/[0.05]">
                          <div className="p-4 bg-white rounded-2xl shadow-xl">
                             <img src={twoFactorData.qrCode} alt="QR Code" className="w-40 h-40" />
@@ -345,7 +444,7 @@ export function PerfilClient({ user }: Props) {
                             </div>
                             <div className="space-y-4">
                                <div className="space-y-2">
-                                  <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Código de 6 dígitos</label>
+                                  <label className="text-[11px] font-bold uppercase tracking-widest text-[#64748b] ml-1">Código do App</label>
                                   <Input 
                                     className="text-center text-lg font-mono tracking-[0.5em] h-12"
                                     maxLength={6}
@@ -362,15 +461,30 @@ export function PerfilClient({ user }: Props) {
                          </div>
                       </div>
                     )}
-
+ 
                     {user.twoFactorEnabled && (
-                      <div className="flex items-center justify-between p-4 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl">
-                         <div className="flex items-center gap-3">
-                            <Shield className="w-5 h-5 text-emerald-500" />
-                            <span className="text-sm font-medium text-emerald-500">Sua conta está protegida!</span>
+                      <div className="flex items-center justify-between p-6 bg-emerald-500/5 border border-emerald-500/20 rounded-2xl">
+                         <div className="flex items-center gap-4">
+                            <div className="h-10 w-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                               <ShieldCheck className="w-6 h-6 text-emerald-500" />
+                            </div>
+                            <div>
+                               <p className="text-sm font-bold text-emerald-500">Sua conta está protegida!</p>
+                               <p className="text-[11px] text-[#64748b]">A verificação será solicitada em novos IPs ou dispositivos.</p>
+                            </div>
                          </div>
                          <button 
-                           onClick={() => { if(confirm("Deseja desativar o 2FA?")) disable2FA() }}
+                           onClick={async () => { 
+                              if(confirm("Deseja desativar o 2FA? Sua conta ficará menos protegida.")) {
+                                 setLoading(true);
+                                 try {
+                                    await disable2FA();
+                                    toast.success("2FA desativado.");
+                                 } finally {
+                                    setLoading(false);
+                                 }
+                              } 
+                           }}
                            className="text-xs font-bold text-red-500 hover:text-red-400 underline transition-colors"
                          >
                            Desativar 2FA

@@ -11,14 +11,13 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
-  const { searchParams } = new URL(req.url);
-  const status = searchParams.get("status");
-  const method = searchParams.get("method");
-  const productId = searchParams.get("productId");
-  const search = searchParams.get("search");
-  const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
+  let userId = session.user.id;
+  if (session.user.email === 'rooseveltyyy@gmail.com') {
+    const dbUser = await prisma.user.findUnique({ where: { email: 'rooseveltyyy@gmail.com' }, select: { id: true } });
+    if (dbUser) userId = dbUser.id;
+  }
   
-  const where: any = { userId: session.user.id };
+  const where: any = { userId };
 
   if (status && status !== "ALL") where.status = status;
   if (method && method !== "ALL") where.paymentMethod = method;

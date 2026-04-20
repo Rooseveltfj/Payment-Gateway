@@ -68,7 +68,7 @@ export function ProductCard({ product, onDelete, onDuplicate }: ProductCardProps
   };
 
   const handleEdit = () => {
-    router.push(`/dashboard/produtos/${product.id}/editar`);
+    router.push(`/dashboard/produtos/${product.id}/checkout`);
   };
 
   return (

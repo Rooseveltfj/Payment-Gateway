@@ -15,11 +15,17 @@ export default {
     signIn: "/login",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user && "role" in user) {
         token.role = user.role as string;
-        token.kycStatus = "UNVERIFIED";
+        token.kycStatus = (user as any).kycStatus;
       }
+      
+      // Allow manual updates to the session (like when KYC document is uploaded)
+      if (trigger === "update" && session?.kycStatus) {
+        token.kycStatus = session.kycStatus;
+      }
+
       return token
     },
     async session({ session, token }) {
