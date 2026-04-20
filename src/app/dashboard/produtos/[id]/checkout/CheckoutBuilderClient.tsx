@@ -10,10 +10,12 @@ import { TriggersTab } from "@/components/checkout-builder/tabs/TriggersTab";
 import { SocialProofTab } from "@/components/checkout-builder/tabs/SocialProofTab";
 import { FormFieldsTab } from "@/components/checkout-builder/tabs/FormFieldsTab";
 import { GeneralTab } from "@/components/checkout-builder/tabs/GeneralTab";
+import { BumpUpsellTab } from "@/components/checkout-builder/tabs/BumpUpsellTab";
+import { AdvancedTab } from "@/components/checkout-builder/tabs/AdvancedTab";
 import { CheckoutPreview } from "@/components/checkout-builder/CheckoutPreview";
 import { 
   ChevronLeft, Layers, Monitor, Smartphone, ExternalLink, Save, Check, Loader2,
-  Settings2, Palette, Type, Zap, Users, ClipboardList, Minus, Plus, Search
+  Settings2, Palette, Type, Zap, Users, ClipboardList, Minus, Plus, Search, HelpCircle, FileCog
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
@@ -22,9 +24,11 @@ const TABS = [
   { id: "general", label: "Geral", icon: Settings2 },
   { id: "appearance", label: "Aparência", icon: Palette },
   { id: "content", label: "Conteúdo", icon: Type },
+  { id: "bump", label: "Ofertas", icon: Layers },
+  { id: "form", label: "Formulário", icon: ClipboardList },
   { id: "triggers", label: "Gatilhos", icon: Zap },
   { id: "social", label: "Prova Social", icon: Users },
-  { id: "form", label: "Formulário", icon: ClipboardList },
+  { id: "advanced", label: "Avançado", icon: FileCog },
 ];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -224,6 +228,12 @@ export function CheckoutBuilderClient({ productId, initialProduct }: { productId
             )}
             {activeTab === "form" && (
               <FormFieldsTab config={config.form} onChange={d => updateConfig("form", d)} />
+            )}
+            {activeTab === "bump" && (
+              <BumpUpsellTab config={config.bumpUpsell} onChange={d => updateConfig("bumpUpsell", d)} />
+            )}
+            {activeTab === "advanced" && (
+              <AdvancedTab config={config} onChange={d => setConfig(prev => ({ ...prev, ...d }))} />
             )}
           </div>
         </div>

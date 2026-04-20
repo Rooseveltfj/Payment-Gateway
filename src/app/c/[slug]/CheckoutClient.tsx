@@ -5,7 +5,7 @@ import { CheckoutConfig } from "@/types/checkout-config";
 import { CountdownTimer } from "@/components/checkout-builder/preview/CountdownTimer";
 import { SocialPopup } from "@/components/checkout-builder/preview/SocialPopup";
 import { ReviewCarousel } from "@/components/checkout-builder/preview/ReviewCarousel";
-import { CreditCard, QrCode, FileText, Loader2, CheckCircle2 } from "lucide-react";
+import { CreditCard, QrCode, FileText, Loader2, CheckCircle2, Shield, Lock, BadgeCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -46,9 +46,21 @@ export function CheckoutClient({ product, config }: Props) {
     buyerData: {} as Record<string, string>
   });
   const [loading, setLoading] = useState(false);
-  const [orderBump, setOrderBump] = useState(false);
+  const [selectedBumps, setSelectedBumps] = useState<string[]>([]);
   const [pixData, setPixData] = useState<{ qrCode: string; copyPaste: string } | null>(null);
   const [orderId, setOrderId] = useState<string | null>(null);
+  const [step, setStep] = useState(1);
+
+  // Back Redirect Hook
+  useEffect(() => {
+    if (!config?.redirects?.backRedirectUrl) return;
+    window.history.pushState(null, '', window.location.href);
+    const handlePopState = () => {
+      window.location.href = config.redirects.backRedirectUrl;
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [config]);
 
   // Polling para PIX
   useEffect(() => {
@@ -59,7 +71,11 @@ export function CheckoutClient({ product, config }: Props) {
         const res = await fetch(`/api/checkout/orders/${orderId}/status`);
         const data = await res.json();
         if (data.status === "PAID") {
-          router.push(`/obrigado/${orderId}`);
+          if (config?.redirects?.thankYouPageUrl) {
+            window.location.href = `${config.redirects.thankYouPageUrl}?order=${orderId}`;
+          } else {
+            router.push(`/obrigado/${orderId}`);
+          }
         }
       } catch { }
     }, 3000);
@@ -90,8 +106,30 @@ export function CheckoutClient({ product, config }: Props) {
     }
   };
 
-  const ts = getTemplateStyles();
+  const baseTs = getTemplateStyles();
+  const ts = {
+    bg: a.bgColor || baseTs.bg,
+    cardBg: a.widgetBgColor || baseTs.cardBg,
+    cardBorder: baseTs.cardBorder,
+    text: a.textColor || baseTs.text,
+    subtext: baseTs.subtext,
+    accent: a.buttonColor || baseTs.accent,
+    buttonText: a.buttonTextColor || "#ffffff",
+    fieldBg: a.inputBgColor || baseTs.fieldBg,
+    fieldBorder: baseTs.fieldBorder,
+    labelColor: a.inputTextColor || baseTs.labelColor,
+    isDark: baseTs.isDark
+  };
+
   const btnRadius = a.buttonStyle === "pill" ? "9999px" : a.buttonStyle === "square" ? "4px" : "12px";
+  const isLongForm = a.layoutType === "longform";
+  const isMultiStep = a.layoutType === "multistep";
+
+  const totalBumpsPrice = selectedBumps.reduce((acc, bumpId) => {
+    const b = bu.orderBumps?.find(ob => ob.id === bumpId);
+    return acc + (b?.specialPrice || 0);
+  }, 0);
+  const totalPrice = product.price + totalBumpsPrice;
 
   const fieldStyle = {
     background: ts.fieldBg,
@@ -107,7 +145,7 @@ export function CheckoutClient({ product, config }: Props) {
       if (paymentMethod === "PIX") {
         const res = await fetch(`/api/checkout/${product.slug}/pix`, {
           method: "POST",
-          body: JSON.stringify(formData)
+          body: JSON.stringify({ ...formData, selectedBumps })
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
@@ -122,14 +160,18 @@ export function CheckoutClient({ product, config }: Props) {
             ...formData,
             productId: product.id,
             paymentMethod,
-            orderBump
+            selectedBumps
           })
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error);
         
         setOrderId(data.orderId);
-        router.push(`/obrigado/${data.orderId}`);
+        if (config.redirects?.thankYouPageUrl) {
+          window.location.href = `${config.redirects.thankYouPageUrl}?order=${data.orderId}`;
+        } else {
+          router.push(`/obrigado/${data.orderId}`);
+        }
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Erro ao processar pedido";
@@ -164,13 +206,15 @@ export function CheckoutClient({ product, config }: Props) {
       )}
 
       {/* Main Container */}
-      <div className="max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div className={cn("w-full mx-auto px-4 sm:px-6 py-8 sm:py-12", isLongForm ? "max-w-3xl" : "max-w-6xl")}>
         
-        {/* Left Column Content - 7 cols */}
-        <div className="lg:col-span-7 space-y-8">
+        <div className={cn("flex flex-col gap-8", !isLongForm && "lg:grid lg:grid-cols-12 lg:gap-12")}>
+          
+          {/* Left Column Content */}
+          <div className={cn("space-y-6 sm:space-y-8", !isLongForm && "lg:col-span-7")}>
           <div className="flex items-center justify-between flex-wrap gap-4">
             {a.logoUrl && (
-              <img src={a.logoUrl} alt="Logo" className="h-10 object-contain drop-shadow-lg" />
+              <img src={a.logoUrl} alt="Logo" className="h-8 sm:h-10 object-contain drop-shadow-lg" />
             )}
             {sp.buyerCount?.enabled && (
               <div
@@ -259,20 +303,42 @@ export function CheckoutClient({ product, config }: Props) {
           )}
         </div>
 
-        {/* Right Column Form - 5 cols */}
-        <div className="lg:col-span-5">
-          <div className="sticky top-20">
-            <form onSubmit={handleCreateOrder} className="rounded-3xl p-8 space-y-6 shadow-2xl ring-1 ring-white/10" style={{ background: ts.cardBg, border: `1px solid ${ts.cardBorder}` }}>
+        {/* Right Column Form */}
+        <div className={cn("w-full", !isLongForm && "lg:col-span-5")}>
+          <div className={cn(!isLongForm && "lg:sticky lg:top-8")}>
+            
+            {isMultiStep && !pixData && (
+              <div className="flex items-center gap-2 mb-6">
+                 <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
+                   <div className="h-full transition-all duration-500" style={{ background: ts.accent, width: step === 1 ? '50%' : '100%' }} />
+                 </div>
+                 <span className="text-[10px] font-bold tracking-widest uppercase opacity-50">Etapa {step} de 2</span>
+              </div>
+            )}
+
+            <form onSubmit={(e) => {
+              if (isMultiStep && step === 1) {
+                 e.preventDefault();
+                 setStep(2);
+              } else {
+                 handleCreateOrder(e);
+              }
+            }} className="rounded-[24px] sm:rounded-[32px] p-5 sm:p-8 space-y-6 shadow-2xl transition-all duration-500" style={{ background: ts.cardBg, border: `1px solid ${ts.cardBorder}`, boxShadow: templateId === "neon" ? `0 0 50px ${ts.accent}20` : undefined }}>
               
               {!pixData ? (
                 <>
-                  <div className="space-y-2">
-                    <h2 className="text-2xl font-bold" style={{ color: ts.text }}>Checkout Seguro</h2>
-                    <p className="text-sm" style={{ color: ts.subtext }}>Complete seus dados para continuar</p>
+                  <div className="space-y-1">
+                    <h2 className="text-xl sm:text-2xl font-black" style={{ color: ts.text }}>
+                      {isMultiStep && step === 1 ? "Identificação" : templateId === "urgency" ? "⚡ COMPLETE SEU PEDIDO" : "Dados do Pagamento"}
+                    </h2>
+                    <p className="text-xs font-bold uppercase tracking-widest" style={{ color: ts.labelColor }}>
+                      {isMultiStep && step === 1 ? "Etapa 1 - Dados Básicos" : "Informações Pessoais Seguras"}
+                    </p>
                   </div>
 
-                  {/* Form Fields */}
-                  <div className="space-y-4">
+                  {/* Form Fields - Passos */}
+                  {(!isMultiStep || step === 1) && (
+                    <div className="space-y-4 animate-in fade-in duration-300">
                     <div>
                       <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Nome Completo</label>
                       <input 
@@ -390,31 +456,54 @@ export function CheckoutClient({ product, config }: Props) {
                       </div>
                     ))}
                   </div>
-
-                  {/* Order Bump */}
-                  {bu.orderBump.enabled && (
-                    <div className="p-4 rounded-xl border-2 border-dashed border-primary/30 bg-primary/5 space-y-3">
-                      <div className="flex items-center justify-between">
-                         <span className="text-xs font-bold text-primary uppercase">OFERTA ESPECIAL</span>
-                         <span className="text-sm font-bold text-primary">+ R$ {bu.orderBump.specialPrice.toFixed(2)}</span>
-                      </div>
-                      <p className="text-sm font-semibold">{bu.orderBump.productName}</p>
-                      <label className="flex items-center gap-3 p-2 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10 transition-all border border-white/5">
-                        <input 
-                          type="checkbox" 
-                          checked={orderBump}
-                          onChange={e => setOrderBump(e.target.checked)}
-                          className="h-5 w-5 rounded border-white/20 bg-transparent text-primary focus:ring-primary" 
-                        />
-                        <span className="text-xs font-bold">SIM! ADICIONAR AGORA</span>
-                      </label>
-                    </div>
                   )}
 
-                  {/* Payment Tabs */}
-                  <div className="space-y-3">
-                    <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Selecione o Pagamento</label>
-                    <div className="grid grid-cols-3 gap-2">
+                  {(!isMultiStep || step === 2) && (
+                    <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
+                      {isMultiStep && (
+                         <button type="button" onClick={() => setStep(1)} className="text-xs font-bold uppercase opacity-60 hover:opacity-100 flex items-center gap-1 mb-4" style={{ color: ts.text }}>
+                            &larr; Voltar
+                         </button>
+                      )}
+                      
+                      {/* Order Bumps */}
+                      {bu.orderBumps?.filter(b => b.enabled).map(bump => (
+                        <div key={bump.id} className="p-4 rounded-xl border-2 border-dashed flex items-start gap-3 transition-colors relative overflow-hidden" 
+                             style={{ 
+                               borderColor: selectedBumps.includes(bump.id) ? ts.accent : ts.fieldBorder,
+                               background: selectedBumps.includes(bump.id) ? `${ts.accent}15` : ts.fieldBg 
+                             }}>
+                           <div className="absolute top-0 right-0 bg-red-500 text-white text-[8px] font-black uppercase px-2 py-0.5 rounded-bl-lg">
+                             Oferta Única
+                           </div>
+                           <div className="flex-1 min-w-0 pr-8">
+                             <div className="flex items-center gap-2 mb-1">
+                               <span className="text-[11px] font-black" style={{ color: ts.accent }}>⚡ {bump.presentationText}</span>
+                             </div>
+                             <p className="text-[13px] font-bold mt-1 leading-tight" style={{ color: ts.text }}>{bump.productName}</p>
+                             <p className="text-[12px] font-black mt-1" style={{ color: ts.accent }}>
+                               + R$ {bump.specialPrice.toFixed(2).replace(".", ",")}
+                             </p>
+                           </div>
+                           <label className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-3 cursor-pointer">
+                             <input 
+                               type="checkbox" 
+                               checked={selectedBumps.includes(bump.id)}
+                               onChange={e => {
+                                 if (e.target.checked) setSelectedBumps(p => [...p, bump.id]);
+                                 else setSelectedBumps(p => p.filter(id => id !== bump.id));
+                               }}
+                               className="h-6 w-6 rounded border-white/20 bg-transparent focus:ring-0" 
+                               style={{ color: ts.accent }}
+                             />
+                           </label>
+                        </div>
+                      ))}
+
+                      {/* Payment Tabs */}
+                      <div className="space-y-3">
+                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Selecione o Pagamento</label>
+                        <div className="grid grid-cols-3 gap-2">
                        <button 
                          type="button"
                          onClick={() => setPaymentMethod("PIX")}
@@ -440,22 +529,39 @@ export function CheckoutClient({ product, config }: Props) {
                          <span className="text-[10px] font-bold">BOLETO</span>
                        </button>
                     </div>
-                  </div>
-
                   <button 
                     disabled={loading}
-                    className="w-full h-14 rounded-2xl font-bold text-white shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:scale-100 flex items-center justify-center gap-2"
+                    type="submit"
+                    className="w-full relative overflow-hidden group py-4 sm:py-5 text-base sm:text-lg font-black transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                     style={{ 
-                      background: a.primaryColor,
-                      borderRadius: a.buttonStyle === "pill" ? "9999px" : a.buttonStyle === "square" ? "4px" : "12px"
+                      background: ts.accent,
+                      color: a.buttonTextColor || "#fff",
+                      borderRadius: btnRadius,
+                      boxShadow: `0 16px 32px ${ts.accent}40`,
                     }}
                   >
+                    <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                     {loading ? (
-                      <Loader2 className="h-5 w-5 animate-spin" />
+                      <Loader2 className="h-5 w-5 animate-spin relative z-10" />
                     ) : (
-                      <>PAGAR AGORA R$ {orderBump ? (product.price + bu.orderBump.specialPrice).toFixed(2) : product.price.toFixed(2)}</>
+                      <span className="relative z-10 uppercase tracking-widest flex items-center gap-2">
+                        {isMultiStep && step === 1 ? "Ir para pagamento" : `Pagar R$ ${totalPrice.toFixed(2).replace(".", ",")}`}
+                      </span>
                     )}
                   </button>
+
+                  <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center pt-2">
+                    {t.authority.sealSecure && (
+                      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest" style={{ color: ts.subtext, opacity: 0.6 }}>
+                        <Lock className="h-3 w-3" style={{ color: ts.accent }} /> Compra Segura
+                      </div>
+                    )}
+                    {t.authority.sealSatisfaction && (
+                      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest" style={{ color: ts.subtext, opacity: 0.6 }}>
+                        <BadgeCheck className="h-3 w-3" style={{ color: ts.accent }} /> Garantia
+                      </div>
+                    )}
+                  </div>
 
                   {t.authority.showPaymentLogos && (
                     <div className="flex flex-wrap items-center justify-center gap-2 pt-4 opacity-40">
@@ -473,6 +579,7 @@ export function CheckoutClient({ product, config }: Props) {
                       ))}
                     </div>
                   )}
+                  </div>
                 </>
               ) : (
                 /* PIX Display Area */
@@ -518,9 +625,25 @@ export function CheckoutClient({ product, config }: Props) {
         </div>
       </div>
 
+      {/* Support Widget FAB */}
+      {t.supportWidget?.enabled && (
+        <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+          {t.supportWidget.instagram && (
+            <a href={`https://instagram.com/${t.supportWidget.instagram}`} target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full cursor-pointer bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500 shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
+               <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+          )}
+          {t.supportWidget.whatsapp && (
+            <a href={`https://wa.me/${t.supportWidget.whatsapp}`} target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full cursor-pointer bg-[#25D366] shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
+              <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.888-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.88-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.347-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+            </a>
+          )}
+        </div>
+      )}
+
       {/* Social Proof Popup */}
       {sp.popup.enabled && (
-        <SocialPopup interval={sp.popup.interval} primaryColor={a.primaryColor} />
+        <SocialPopup interval={sp.popup.interval} primaryColor={ts.accent} />
       )}
     </div>
   );

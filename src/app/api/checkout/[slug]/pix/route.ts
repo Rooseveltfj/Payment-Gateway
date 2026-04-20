@@ -12,7 +12,7 @@ export async function POST(
   try {
     const { slug } = params;
     const body = await req.json();
-    const { buyerName, buyerEmail, buyerCpf, buyerPhone } = body;
+    const { buyerName, buyerEmail, buyerCpf, buyerPhone, buyerData, selectedBumps } = body;
 
     // 1. Fetch Product and Seller
     const product = await prisma.product.findUnique({
@@ -26,8 +26,17 @@ export async function POST(
 
     const seller = product.user;
 
-    // 2. Calculate Values (Cents)
-    const amountCents = Math.round(product.price * 100);
+    // 2. Calculate Values with Bumps
+    let orderAmount = product.price;
+    const config = product.checkoutConfig as any;
+    if (selectedBumps && selectedBumps.length > 0 && config?.bumpUpsell?.orderBumps) {
+      selectedBumps.forEach((bumpId: string) => {
+        const bump = config.bumpUpsell.orderBumps.find((b: any) => b.id === bumpId);
+        if (bump) orderAmount += bump.specialPrice;
+      });
+    }
+
+    const amountCents = Math.round(orderAmount * 100);
     const platformFeePercent = seller.platformFeePercent || 9.99;
     const platformFeeCents = Math.round(amountCents * (platformFeePercent / 100));
     const netAmountCents = amountCents - platformFeeCents;
@@ -64,7 +73,8 @@ export async function POST(
         buyerEmail,
         buyerCpf,
         buyerPhone,
-        amount: product.price,
+        buyerData: buyerData || {},
+        amount: orderAmount,
         platformFee: platformFeeCents / 100,
         netAmount: netAmountCents / 100,
         status: "PENDING",
@@ -116,7 +126,7 @@ export async function POST(
       data: {
         userId: seller.id,
         title: "Novo Pix gerado! ⚡",
-        content: `Um cliente gerou um Pix de R$ ${product.price.toFixed(2)} para o produto ${product.name}.`,
+        content: `Um cliente gerou um Pix de R$ ${orderAmount.toFixed(2)} para o produto ${product.name}.`,
         type: "INFO"
       }
     }).catch(err => console.error("Error creating notification:", err));
@@ -137,7 +147,7 @@ export async function POST(
       brCode: charge.brCode,
       qrCodeImage: charge.qrCodeImage,
       expiresIn: charge.expiresIn,
-      amount: product.price
+      amount: orderAmount
     });
 
   } catch (error: any) {

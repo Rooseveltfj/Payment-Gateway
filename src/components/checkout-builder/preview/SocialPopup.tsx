@@ -25,9 +25,12 @@ export function SocialPopup({ interval, primaryColor }: Props) {
       setTimeout(() => setVisible(false), 4000);
     };
 
+    // Garantir fallback de 10s caso interval seja undefined/resolva em NaN, evitando loops imediatos
+    const safeInterval = Number(interval) || 10;
+    
     // First popup after 2s
     const initial = setTimeout(show, 2000);
-    const recurring = setInterval(show, interval * 1000);
+    const recurring = setInterval(show, safeInterval * 1000);
 
     return () => {
       clearTimeout(initial);

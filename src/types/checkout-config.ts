@@ -16,6 +16,13 @@ export type PopupInterval = 5 | 10 | 15 | 30;
 export interface AppearanceConfig {
   primaryColor: string;
   bgColor: string;
+  textColor: string;
+  buttonColor: string;
+  buttonTextColor: string;
+  widgetBgColor: string;
+  inputBgColor: string;
+  inputTextColor: string;
+  layoutType: "standard" | "multistep" | "longform";
   themePreset: ThemePreset;
   logoUrl: string | null;
   bannerUrl: string | null;
@@ -75,11 +82,18 @@ export interface GuaranteeConfig {
   text: string;
 }
 
+export interface SupportWidgetConfig {
+  enabled: boolean;
+  whatsapp: string;
+  instagram: string;
+}
+
 export interface TriggersConfig {
   scarcity: ScarcityConfig;
   urgency: UrgencyConfig;
   authority: AuthorityConfig;
   guarantee: GuaranteeConfig;
+  supportWidget: SupportWidgetConfig;
 }
 
 // ─── Social Proof ──────────────────────────────────────────
@@ -143,6 +157,7 @@ export interface FormConfig {
 
 // ─── Order Bump & Upsell ───────────────────────────────────
 export interface OrderBumpConfig {
+  id: string;
   enabled: boolean;
   productId: string | null;
   productName: string;
@@ -158,8 +173,14 @@ export interface UpsellConfig {
 }
 
 export interface BumpUpsellConfig {
-  orderBump: OrderBumpConfig;
+  orderBumps: OrderBumpConfig[];
   upsell: UpsellConfig;
+}
+
+// ─── Redirects ─────────────────────────────────────────────
+export interface RedirectsConfig {
+  backRedirectUrl: string;
+  thankYouPageUrl: string;
 }
 
 // ─── Pixels ────────────────────────────────────────────────
@@ -181,6 +202,7 @@ export interface CheckoutConfig {
   form: FormConfig;
   bumpUpsell: BumpUpsellConfig;
   pixels: PixelsConfig;
+  redirects: RedirectsConfig;
 }
 
 // ─── Default Config ────────────────────────────────────────
@@ -188,6 +210,13 @@ export const DEFAULT_CHECKOUT_CONFIG: CheckoutConfig = {
   appearance: {
     primaryColor: "#7c3aed",
     bgColor: "#09090b",
+    textColor: "#f4f4f5",
+    buttonColor: "#7c3aed",
+    buttonTextColor: "#ffffff",
+    widgetBgColor: "rgba(255,255,255,0.06)",
+    inputBgColor: "rgba(255,255,255,0.03)",
+    inputTextColor: "#ffffff",
+    layoutType: "standard",
     themePreset: "dark",
     logoUrl: null,
     bannerUrl: null,
@@ -237,6 +266,11 @@ export const DEFAULT_CHECKOUT_CONFIG: CheckoutConfig = {
       days: 7,
       text: "Satisfação garantida ou seu dinheiro de volta, sem perguntas.",
     },
+    supportWidget: {
+      enabled: false,
+      whatsapp: "",
+      instagram: "",
+    },
   },
   socialProof: {
     popup: {
@@ -268,14 +302,7 @@ export const DEFAULT_CHECKOUT_CONFIG: CheckoutConfig = {
     customFields: [],
   },
   bumpUpsell: {
-    orderBump: {
-      enabled: false,
-      productId: null,
-      productName: "",
-      specialPrice: 0,
-      presentationText: "⚡ Adicione também e economize!",
-      imageUrl: null,
-    },
+    orderBumps: [],
     upsell: {
       enabled: false,
       url: "",
@@ -289,5 +316,9 @@ export const DEFAULT_CHECKOUT_CONFIG: CheckoutConfig = {
     ga4Id: "",
     customHead: "",
     customBody: "",
+  },
+  redirects: {
+    backRedirectUrl: "",
+    thankYouPageUrl: "",
   },
 };

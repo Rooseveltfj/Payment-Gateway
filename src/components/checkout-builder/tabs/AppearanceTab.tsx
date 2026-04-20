@@ -4,7 +4,7 @@ import { TemplateId, AppearanceConfig, ButtonStyle, FontFamily, ThemePreset } fr
 import { Input } from "@/components/ui/Input";
 import { ImageUpload } from "@/components/ui/ImageUpload";
 import { cn } from "@/lib/utils";
-import { Check, Edit2, Layout, Sliders, Type, Image as ImageIcon } from "lucide-react";
+import { Check, Edit2, Layout, Sliders, Type, Image as ImageIcon, Minus } from "lucide-react";
 
 const FONTS: FontFamily[] = ["Geist", "Inter", "Poppins", "Montserrat"];
 const BUTTON_STYLES: { value: ButtonStyle; label: string; radius: string }[] = [
@@ -12,6 +12,23 @@ const BUTTON_STYLES: { value: ButtonStyle; label: string; radius: string }[] = [
   { value: "rounded", label: "Arredondado", radius: "rounded-xl" },
   { value: "square", label: "Quadrado", radius: "rounded-none" },
 ];
+
+const LAYOUT_STYLES: { value: "standard" | "multistep" | "longform"; label: string }[] = [
+  { value: "standard", label: "Padrão" },
+  { value: "multistep", label: "3 Etapas" },
+  { value: "longform", label: "Longo" },
+];
+
+const COLOR_FIELDS = [
+  { key: "primaryColor", label: "Cor primária" },
+  { key: "textColor", label: "Cor dos textos" },
+  { key: "buttonColor", label: "Cor do botão" },
+  { key: "buttonTextColor", label: "Texto do botão" },
+  { key: "bgColor", label: "Cor de fundo" },
+  { key: "widgetBgColor", label: "Fundo dos widgets" },
+  { key: "inputBgColor", label: "Fundo dos inputs" },
+  { key: "inputTextColor", label: "Texto dos inputs" },
+] as const;
 
 const TEMPLATES: { id: TemplateId; label: string; preview: string; theme: ThemePreset; isLight?: boolean }[] = [
   // Dark Templates
@@ -41,10 +58,22 @@ function SectionLabel({ children, icon: Icon }: { children: React.ReactNode; ico
 }
 
 export function AppearanceTab({ config, onChange }: Props) {
-  // @ts-ignore
   const activeTemplate = config.templateId || "classic";
   const darkTemplates = TEMPLATES.filter(t => !t.isLight);
   const lightTemplates = TEMPLATES.filter(t => t.isLight);
+
+  const resetColors = () => {
+    onChange({
+      primaryColor: "#7c3aed",
+      bgColor: "#09090b",
+      textColor: "#f4f4f5",
+      buttonColor: "#7c3aed",
+      buttonTextColor: "#ffffff",
+      widgetBgColor: "rgba(255,255,255,0.06)",
+      inputBgColor: "rgba(255,255,255,0.03)",
+      inputTextColor: "#ffffff",
+    });
+  };
 
   const renderTemplateGrid = (templates: typeof TEMPLATES) => (
     <div className="grid grid-cols-2 gap-3">
@@ -105,7 +134,26 @@ export function AppearanceTab({ config, onChange }: Props) {
   return (
     <div className="space-y-1 animate-in fade-in duration-500">
 
-      {/* ─── Dark Templates ─── */}
+      {/* ─── Layout ─── */}
+      <SectionLabel icon={Layout}>Tipo de Layout</SectionLabel>
+      <div className="flex gap-2 p-1 bg-black/40 rounded-xl border border-white/5 mb-6">
+        {LAYOUT_STYLES.map(s => (
+          <button
+            key={s.value}
+            onClick={() => onChange({ layoutType: s.value })}
+            className={cn(
+              "flex-1 py-2 text-[11px] font-bold transition-all rounded-lg",
+              (config.layoutType || "standard") === s.value
+                ? "bg-purple-600 text-white shadow-lg"
+                : "text-[#64748b] hover:text-white"
+            )}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+
+      {/* ─── Templates ─── */}
       <SectionLabel icon={Layout}>Templates Escuros</SectionLabel>
       {renderTemplateGrid(darkTemplates)}
 
@@ -114,51 +162,45 @@ export function AppearanceTab({ config, onChange }: Props) {
       {renderTemplateGrid(lightTemplates)}
 
       {/* ─── Colors ─── */}
-      <SectionLabel icon={Sliders}>Cores Globais</SectionLabel>
+      <SectionLabel icon={Sliders}>Cores Customizadas (Sobrescreve Template)</SectionLabel>
       <div className="space-y-4 bg-white/[0.02] border border-white/5 p-4 rounded-2xl">
-        <div className="flex items-center justify-between">
-          <div>
-            <label className="text-[12px] font-medium text-[#94a3b8]">Cor Principal (Accent)</label>
-            <p className="text-[10px] text-[#475569] mt-0.5">Botão, destaques e links</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="relative w-8 h-8 rounded-lg border border-white/10 overflow-hidden cursor-pointer">
-              <input
-                type="color"
-                value={config.primaryColor}
-                onChange={e => onChange({ primaryColor: e.target.value })}
-                className="absolute inset-[-4px] w-[calc(100%+8px)] h-[calc(100%+8px)] cursor-pointer"
-              />
-            </div>
-            <input
-              value={config.primaryColor}
-              onChange={e => onChange({ primaryColor: e.target.value })}
-              className="w-20 bg-black/40 border border-white/5 rounded-md px-2 py-1 text-[11px] font-mono text-center focus:border-purple-500 outline-none text-white"
-            />
-          </div>
+        <div className="grid grid-cols-2 gap-4">
+          {COLOR_FIELDS.map(field => {
+            const val = config[field.key as keyof AppearanceConfig] as string || "";
+            return (
+              <div key={field.key} className="space-y-2">
+                <label className="text-[11px] font-medium text-[#94a3b8]">{field.label}</label>
+                <div className="flex items-center gap-2 bg-black/40 border border-white/5 rounded-lg p-1">
+                  <div className="relative w-8 h-8 rounded shrink-0 border border-white/10 overflow-hidden cursor-pointer">
+                    <input
+                      type="color"
+                      value={val.startsWith("rgba") ? "#000000" : val} // Fallback if rgba
+                      onChange={e => onChange({ [field.key]: e.target.value })}
+                      className="absolute inset-[-4px] w-[calc(100%+8px)] h-[calc(100%+8px)] cursor-pointer"
+                    />
+                  </div>
+                  <input
+                    value={val}
+                    onChange={e => onChange({ [field.key]: e.target.value })}
+                    className="w-full bg-transparent text-[10px] font-mono border-none outline-none text-white px-1"
+                  />
+                  {val && (
+                    <button onClick={() => onChange({ [field.key]: "" })} className="p-1 opacity-50 hover:opacity-100">
+                      <Minus className="h-3 w-3" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
-
-        <div className="flex items-center justify-between">
-          <div>
-            <label className="text-[12px] font-medium text-[#94a3b8]">Fundo da Página</label>
-            <p className="text-[10px] text-[#475569] mt-0.5">Disponível no template Clássico</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="relative w-8 h-8 rounded-lg border border-white/10 overflow-hidden cursor-pointer">
-              <input
-                type="color"
-                value={config.bgColor}
-                onChange={e => onChange({ bgColor: e.target.value })}
-                className="absolute inset-[-4px] w-[calc(100%+8px)] h-[calc(100%+8px)] cursor-pointer"
-              />
-            </div>
-            <input
-              value={config.bgColor}
-              onChange={e => onChange({ bgColor: e.target.value })}
-              className="w-20 bg-black/40 border border-white/5 rounded-md px-2 py-1 text-[11px] font-mono text-center focus:border-purple-500 outline-none text-white"
-            />
-          </div>
-        </div>
+        
+        <button 
+          onClick={resetColors}
+          className="w-full mt-4 py-3 rounded-xl border border-white/10 text-[12px] font-bold text-white/70 hover:bg-white/5 transition-all"
+        >
+          Restaurar cores padrão
+        </button>
       </div>
 
       {/* ─── Logo & Banner ─── */}
