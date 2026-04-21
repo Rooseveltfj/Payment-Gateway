@@ -153,7 +153,6 @@ export function CheckoutClient({ product, config }: Props) {
         setOrderId(data.orderId);
         setPixData({ qrCode: data.qrCodeImage, copyPaste: data.brCode });
       } else {
-        // Fallback for Credit Card / Boleto (Not yet fully implemented with real Woovi logic)
         const res = await fetch(`/api/checkout/${product.slug}/create-order`, {
           method: "POST",
           body: JSON.stringify({
@@ -212,415 +211,420 @@ export function CheckoutClient({ product, config }: Props) {
           
           {/* Left Column Content */}
           <div className={cn("space-y-6 sm:space-y-8", !isLongForm && "lg:col-span-7")}>
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            {a.logoUrl && (
-              <img src={a.logoUrl} alt="Logo" className="h-8 sm:h-10 object-contain drop-shadow-lg" />
-            )}
-            {sp.buyerCount?.enabled && (
-              <div
-                className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md"
-                style={{ background: ts.isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.04)", border: `1px solid ${ts.fieldBorder}` }}
-              >
-                <div className="flex -space-x-1.5">
-                  {[1, 2, 3].map(i => (
-                    <div key={i} className="w-5 h-5 rounded-full border-2 flex items-center justify-center text-[7px] font-bold text-white"
-                      style={{ borderColor: ts.isDark ? "#09090b" : "#fff", background: ts.accent }}>
-                      {String.fromCharCode(64 + i)}
-                    </div>
-                  ))}
-                </div>
-                <span className="text-[11px] font-bold" style={{ color: ts.accent }}>
-                  +{sp.buyerCount.count.toLocaleString("pt-BR")} {sp.buyerCount.label}
-                </span>
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-4">
-            <h1 className="text-4xl font-extrabold tracking-tight leading-tight" style={{ color: ts.text }}>
-              {c.headline}
-            </h1>
-            <p className="text-xl" style={{ color: ts.subtext }}>
-              {c.subheadline}
-            </p>
-          </div>
-
-          {/* Video or Banner */}
-          {c.videoUrl && getVideoEmbed(c.videoUrl) ? (
-            <div className="relative rounded-2xl overflow-hidden aspect-video shadow-2xl ring-1 ring-white/10">
-              <iframe
-                src={getVideoEmbed(c.videoUrl)!}
-                className="w-full h-full"
-                allow="autoplay; encrypted-media"
-                allowFullScreen
-                title="Vídeo de Apresentação"
-              />
-            </div>
-          ) : (a.bannerUrl || a.bannerExternal) && (
-            <img
-              src={a.bannerUrl || a.bannerExternal}
-              alt="Banner do Produto"
-              className="w-full rounded-2xl object-cover shadow-2xl ring-1 ring-white/10"
-            />
-          )}
-
-          {/* Scarcity Countdown */}
-          {t.scarcity.countdownEnabled && (
-            <CountdownTimer config={t.scarcity} />
-          )}
-
-          {/* Benefits */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold uppercase tracking-widest opacity-50">O que você vai receber:</h3>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {c.benefits.map(b => (
-                <li key={b.id} className="flex items-center gap-3 p-4 rounded-xl" style={{ background: ts.fieldBg, border: `1px solid ${ts.fieldBorder}` }}>
-                  <div className="h-6 w-6 rounded-full flex items-center justify-center shrink-0" style={{ background: ts.accent }}>
-                    <CheckCircle2 className="h-4 w-4 text-white" />
-                  </div>
-                  <span className="text-sm font-bold" style={{ color: ts.text }}>{b.text}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Reviews */}
-          {sp.reviews.enabled && sp.reviews.items.length > 0 && (
-            <div className="py-8 border-t border-white/5">
-               <ReviewCarousel reviews={sp.reviews.items} display={sp.reviews.display} primaryColor={ts.accent} />
-            </div>
-          )}
-
-          {/* Guarantee */}
-          {t.guarantee.enabled && (
-             <div className="flex items-center gap-6 p-6 rounded-2xl" style={{ background: ts.cardBg, border: `1px solid ${ts.cardBorder}` }}>
-               <img src="https://cdn-icons-png.flaticon.com/512/755/755191.png" className="h-20 w-20 grayscale brightness-150 opacity-50" alt="Garantia" />
-               <div>
-                  <h4 className="text-xl font-bold" style={{ color: ts.text }}>Garantia Incondicional de {t.guarantee.days} Dias</h4>
-                  <p className="text-sm mt-1" style={{ color: ts.subtext }}>{t.guarantee.text}</p>
-               </div>
-             </div>
-          )}
-        </div>
-
-        {/* Right Column Form */}
-        <div className={cn("w-full", !isLongForm && "lg:col-span-5")}>
-          <div className={cn(!isLongForm && "lg:sticky lg:top-8")}>
-            
-            {isMultiStep && !pixData && (
-              <div className="flex items-center gap-2 mb-6">
-                 <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
-                   <div className="h-full transition-all duration-500" style={{ background: ts.accent, width: step === 1 ? '50%' : '100%' }} />
-                 </div>
-                 <span className="text-[10px] font-bold tracking-widest uppercase opacity-50">Etapa {step} de 2</span>
-              </div>
-            )}
-
-            <form onSubmit={(e) => {
-              if (isMultiStep && step === 1) {
-                 e.preventDefault();
-                 setStep(2);
-              } else {
-                 handleCreateOrder(e);
-              }
-            }} className="rounded-[24px] sm:rounded-[32px] p-5 sm:p-8 space-y-6 shadow-2xl transition-all duration-500" style={{ background: ts.cardBg, border: `1px solid ${ts.cardBorder}`, boxShadow: templateId === "neon" ? `0 0 50px ${ts.accent}20` : undefined }}>
-              
-              {!pixData ? (
-                <>
-                  <div className="space-y-1">
-                    <h2 className="text-xl sm:text-2xl font-black" style={{ color: ts.text }}>
-                      {isMultiStep && step === 1 ? "Identificação" : templateId === "urgency" ? "⚡ COMPLETE SEU PEDIDO" : "Dados do Pagamento"}
-                    </h2>
-                    <p className="text-xs font-bold uppercase tracking-widest" style={{ color: ts.labelColor }}>
-                      {isMultiStep && step === 1 ? "Etapa 1 - Dados Básicos" : "Informações Pessoais Seguras"}
-                    </p>
-                  </div>
-
-                  {/* Form Fields - Passos */}
-                  {(!isMultiStep || step === 1) && (
-                    <div className="space-y-4 animate-in fade-in duration-300">
-                    <div>
-                      <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Nome Completo</label>
-                      <input 
-                        required 
-                        value={formData.buyerName}
-                        onChange={e => setFormData({...formData, buyerName: e.target.value})}
-                        style={fieldStyle}
-                        className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
-                        placeholder="Seu nome"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">E-mail</label>
-                      <input 
-                        required 
-                        type="email"
-                        value={formData.buyerEmail}
-                        onChange={e => setFormData({...formData, buyerEmail: e.target.value})}
-                        style={fieldStyle}
-                        className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
-                        placeholder="seu@email.com"
-                      />
-                    </div>
-                    {f.optionalFields.cpf && (
-                      <div>
-                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">CPF / CNPJ</label>
-                        <input 
-                          required 
-                          value={formData.buyerCpf}
-                          onChange={e => setFormData({...formData, buyerCpf: e.target.value})}
-                          style={fieldStyle}
-                          className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
-                          placeholder="000.000.000-00"
-                        />
-                      </div>
-                    )}
-                    {f.optionalFields.phone && (
-                      <div>
-                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Telefone / WhatsApp</label>
-                        <input 
-                          required 
-                          type="tel"
-                          value={formData.buyerPhone}
-                          onChange={e => setFormData({...formData, buyerPhone: e.target.value})}
-                          style={fieldStyle}
-                          className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
-                          placeholder="(00) 00000-0000"
-                        />
-                      </div>
-                    )}
-                    {f.optionalFields.birthDate && (
-                      <div>
-                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Data de Nascimento</label>
-                        <input 
-                          required 
-                          type="date"
-                          value={formData.buyerData.birthDate || ''}
-                          onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, birthDate: e.target.value }})}
-                          style={fieldStyle}
-                          className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
-                        />
-                      </div>
-                    )}
-                    {f.optionalFields.address && (
-                      <div>
-                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Endereço Completo</label>
-                        <input 
-                          required 
-                          value={formData.buyerData.address || ''}
-                          onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, address: e.target.value }})}
-                          style={fieldStyle}
-                          className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
-                          placeholder="Rua, Número, Bairro"
-                        />
-                      </div>
-                    )}
-                    {f.optionalFields.zipCode && (
-                      <div>
-                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">CEP</label>
-                        <input 
-                          required 
-                          value={formData.buyerData.zipCode || ''}
-                          onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, zipCode: e.target.value }})}
-                          style={fieldStyle}
-                          className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
-                          placeholder="00000-000"
-                        />
-                      </div>
-                    )}
-                    {f.optionalFields.company && (
-                      <div>
-                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Nome da Empresa</label>
-                        <input 
-                          required 
-                          value={formData.buyerData.company || ''}
-                          onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, company: e.target.value }})}
-                          style={fieldStyle}
-                          className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
-                          placeholder="Sua Empresa"
-                        />
-                      </div>
-                    )}
-
-                    {f.customFields?.map(field => (
-                      <div key={field.id}>
-                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">{field.label}</label>
-                        <input 
-                          required={field.required}
-                          value={formData.buyerData[field.id] || ''}
-                          onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, [field.id]: e.target.value }})}
-                          style={fieldStyle}
-                          className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
-                          placeholder={field.placeholder || "..."}
-                        />
+            <div className="flex items-center justify-between flex-wrap gap-4">
+              {a.logoUrl && (
+                <img src={a.logoUrl} alt="Logo" className="h-8 sm:h-10 object-contain drop-shadow-lg" />
+              )}
+              {sp.buyerCount?.enabled && (
+                <div
+                  className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md"
+                  style={{ background: ts.isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.04)", border: `1px solid ${ts.fieldBorder}` }}
+                >
+                  <div className="flex -space-x-1.5">
+                    {[1, 2, 3].map(i => (
+                      <div key={i} className="w-5 h-5 rounded-full border-2 flex items-center justify-center text-[7px] font-bold text-white"
+                        style={{ borderColor: ts.isDark ? "#09090b" : "#fff", background: ts.accent }}>
+                        {String.fromCharCode(64 + i)}
                       </div>
                     ))}
                   </div>
-                  )}
-
-                  {(!isMultiStep || step === 2) && (
-                    <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
-                      {isMultiStep && (
-                         <button type="button" onClick={() => setStep(1)} className="text-xs font-bold uppercase opacity-60 hover:opacity-100 flex items-center gap-1 mb-4" style={{ color: ts.text }}>
-                            &larr; Voltar
-                         </button>
-                      )}
-                      
-                      {/* Order Bumps */}
-                      {bu.orderBumps?.filter(b => b.enabled).map(bump => (
-                        <div key={bump.id} className="p-4 rounded-xl border-2 border-dashed flex items-start gap-3 transition-colors relative overflow-hidden" 
-                             style={{ 
-                               borderColor: selectedBumps.includes(bump.id) ? ts.accent : ts.fieldBorder,
-                               background: selectedBumps.includes(bump.id) ? `${ts.accent}15` : ts.fieldBg 
-                             }}>
-                           <div className="absolute top-0 right-0 bg-red-500 text-white text-[8px] font-black uppercase px-2 py-0.5 rounded-bl-lg">
-                             Oferta Única
-                           </div>
-                           <div className="flex-1 min-w-0 pr-8">
-                             <div className="flex items-center gap-2 mb-1">
-                               <span className="text-[11px] font-black" style={{ color: ts.accent }}>⚡ {bump.presentationText}</span>
-                             </div>
-                             <p className="text-[13px] font-bold mt-1 leading-tight" style={{ color: ts.text }}>{bump.productName}</p>
-                             <p className="text-[12px] font-black mt-1" style={{ color: ts.accent }}>
-                               + R$ {bump.specialPrice.toFixed(2).replace(".", ",")}
-                             </p>
-                           </div>
-                           <label className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-3 cursor-pointer">
-                             <input 
-                               type="checkbox" 
-                               checked={selectedBumps.includes(bump.id)}
-                               onChange={e => {
-                                 if (e.target.checked) setSelectedBumps(p => [...p, bump.id]);
-                                 else setSelectedBumps(p => p.filter(id => id !== bump.id));
-                               }}
-                               className="h-6 w-6 rounded border-white/20 bg-transparent focus:ring-0" 
-                               style={{ color: ts.accent }}
-                             />
-                           </label>
-                        </div>
-                      ))}
-
-                      {/* Payment Tabs */}
-                      <div className="space-y-3">
-                        <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Selecione o Pagamento</label>
-                        <div className="grid grid-cols-3 gap-2">
-                       <button 
-                         type="button"
-                         onClick={() => setPaymentMethod("PIX")}
-                         className={cn("flex flex-col items-center justify-center gap-2 h-16 rounded-xl border transition-all", paymentMethod === "PIX" ? "border-primary bg-primary/10 text-primary" : "border-white/10 bg-white/5 opacity-60 hover:opacity-100")}
-                       >
-                         <QrCode className="h-5 w-5" />
-                         <span className="text-[10px] font-bold">PIX</span>
-                       </button>
-                       <button 
-                         type="button"
-                         onClick={() => setPaymentMethod("CREDIT_CARD")}
-                         className={cn("flex flex-col items-center justify-center gap-2 h-16 rounded-xl border transition-all", paymentMethod === "CREDIT_CARD" ? "border-primary bg-primary/10 text-primary" : "border-white/10 bg-white/5 opacity-60 hover:opacity-100")}
-                       >
-                         <CreditCard className="h-5 w-5" />
-                         <span className="text-[10px] font-bold">CARTÃO</span>
-                       </button>
-                       <button 
-                         type="button"
-                         onClick={() => setPaymentMethod("BOLETO")}
-                         className={cn("flex flex-col items-center justify-center gap-2 h-16 rounded-xl border transition-all", paymentMethod === "BOLETO" ? "border-primary bg-primary/10 text-primary" : "border-white/10 bg-white/5 opacity-60 hover:opacity-100")}
-                       >
-                         <FileText className="h-5 w-5" />
-                         <span className="text-[10px] font-bold">BOLETO</span>
-                       </button>
-                    </div>
-                  <button 
-                    disabled={loading}
-                    type="submit"
-                    className="w-full relative overflow-hidden group py-4 sm:py-5 text-base sm:text-lg font-black transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-                    style={{ 
-                      background: ts.accent,
-                      color: a.buttonTextColor || "#fff",
-                      borderRadius: btnRadius,
-                      boxShadow: `0 16px 32px ${ts.accent}40`,
-                    }}
-                  >
-                    <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                    {loading ? (
-                      <Loader2 className="h-5 w-5 animate-spin relative z-10" />
-                    ) : (
-                      <span className="relative z-10 uppercase tracking-widest flex items-center gap-2">
-                        {isMultiStep && step === 1 ? "Ir para pagamento" : `Pagar R$ ${totalPrice.toFixed(2).replace(".", ",")}`}
-                      </span>
-                    )}
-                  </button>
-
-                  <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center pt-2">
-                    {t.authority.sealSecure && (
-                      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest" style={{ color: ts.subtext, opacity: 0.6 }}>
-                        <Lock className="h-3 w-3" style={{ color: ts.accent }} /> Compra Segura
-                      </div>
-                    )}
-                    {t.authority.sealSatisfaction && (
-                      <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest" style={{ color: ts.subtext, opacity: 0.6 }}>
-                        <BadgeCheck className="h-3 w-3" style={{ color: ts.accent }} /> Garantia
-                      </div>
-                    )}
-                  </div>
-
-                  {t.authority.showPaymentLogos && (
-                    <div className="flex flex-wrap items-center justify-center gap-2 pt-4 opacity-40">
-                      {["Visa", "Mastercard", "Pix", "Elo", "SSL"].map(brand => (
-                        <span
-                          key={brand}
-                          className="text-[9px] font-black uppercase tracking-tighter px-1.5 py-0.5 rounded"
-                          style={{
-                            border: `1px solid ${ts.isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)"}`,
-                            color: ts.text
-                          }}
-                        >
-                          {brand}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                  </div>
-                </>
-              ) : (
-                /* PIX Display Area */
-                <div className="text-center space-y-6 pt-4 animate-in fade-in zoom-in duration-300">
-                  <div className="space-y-2">
-                    <h2 className="text-2xl font-bold">Quase lá!</h2>
-                    <p className="text-sm opacity-60">Escaneie o QR Code abaixo para pagar</p>
-                  </div>
-
-                  <div className="bg-white p-4 rounded-3xl mx-auto w-fit shadow-2xl">
-                    <img src={pixData.qrCode} alt="QR Code PIX" className="h-48 w-48" />
-                  </div>
-
-                  <div className="space-y-3">
-                    <button 
-                      type="button"
-                      onClick={() => {
-                        navigator.clipboard.writeText(pixData.copyPaste);
-                        alert("Código copiado!");
-                      }}
-                      className="w-full h-12 rounded-xl bg-white/5 border border-white/10 font-bold text-sm hover:bg-white/10 transition-all"
-                    >
-                      COPIAR CÓDIGO PIX
-                    </button>
-                    <p className="text-xs opacity-50 flex items-center justify-center gap-2">
-                      <Loader2 className="h-3 w-3 animate-spin" />
-                      Aguardando pagamento...
-                    </p>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-[#7c3aed]/10 border border-[#7c3aed]/20 text-left space-y-2" style={{ borderColor: `${a.primaryColor}30`, background: `${a.primaryColor}10` }}>
-                    <h4 className="text-xs font-bold uppercase" style={{ color: a.primaryColor }}>Como pagar?</h4>
-                    <ol className="text-xs space-y-1 opacity-80 list-decimal pl-4">
-                      <li>Abra o app do seu banco</li>
-                      <li>Vá em Área PIX e escolha &quot;Ler QR Code&quot; ou &quot;Pix Copia e Cola&quot;</li>
-                      <li>Confirme os dados e finalize o pagamento</li>
-                    </ol>
-                  </div>
+                  <span className="text-[11px] font-bold" style={{ color: ts.accent }}>
+                    +{sp.buyerCount.count.toLocaleString("pt-BR")} {sp.buyerCount.label}
+                  </span>
                 </div>
               )}
-            </form>
+            </div>
+
+            <div className="space-y-4">
+              <h1 className="text-4xl font-extrabold tracking-tight leading-tight" style={{ color: ts.text }}>
+                {c.headline}
+              </h1>
+              <p className="text-xl" style={{ color: ts.subtext }}>
+                {c.subheadline}
+              </p>
+            </div>
+
+            {/* Video or Banner */}
+            {c.videoUrl && getVideoEmbed(c.videoUrl) ? (
+              <div className="relative rounded-2xl overflow-hidden aspect-video shadow-2xl ring-1 ring-white/10">
+                <iframe
+                  src={getVideoEmbed(c.videoUrl)!}
+                  className="w-full h-full"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  title="Vídeo de Apresentação"
+                />
+              </div>
+            ) : (a.bannerUrl || a.bannerExternal) && (
+              <img
+                src={a.bannerUrl || a.bannerExternal}
+                alt="Banner do Produto"
+                className="w-full rounded-2xl object-cover shadow-2xl ring-1 ring-white/10"
+              />
+            )}
+
+            {/* Scarcity Countdown */}
+            {t.scarcity.countdownEnabled && (
+              <CountdownTimer config={t.scarcity} />
+            )}
+
+            {/* Benefits */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-bold uppercase tracking-widest opacity-50">O que você vai receber:</h3>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {c.benefits.map(b => (
+                  <li key={b.id} className="flex items-center gap-3 p-4 rounded-xl" style={{ background: ts.fieldBg, border: `1px solid ${ts.fieldBorder}` }}>
+                    <div className="h-6 w-6 rounded-full flex items-center justify-center shrink-0" style={{ background: ts.accent }}>
+                      <CheckCircle2 className="h-4 w-4 text-white" />
+                    </div>
+                    <span className="text-sm font-bold" style={{ color: ts.text }}>{b.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Reviews */}
+            {sp.reviews.enabled && sp.reviews.items.length > 0 && (
+              <div className="py-8 border-t border-white/5">
+                 <ReviewCarousel reviews={sp.reviews.items} display={sp.reviews.display} primaryColor={ts.accent} />
+              </div>
+            )}
+
+            {/* Guarantee */}
+            {t.guarantee.enabled && (
+               <div className="flex items-center gap-6 p-6 rounded-2xl" style={{ background: ts.cardBg, border: `1px solid ${ts.cardBorder}` }}>
+                 <img src="https://cdn-icons-png.flaticon.com/512/755/755191.png" className="h-20 w-20 grayscale brightness-150 opacity-50" alt="Garantia" />
+                 <div>
+                    <h4 className="text-xl font-bold" style={{ color: ts.text }}>Garantia Incondicional de {t.guarantee.days} Dias</h4>
+                    <p className="text-sm mt-1" style={{ color: ts.subtext }}>{t.guarantee.text}</p>
+                 </div>
+               </div>
+            )}
+          </div>
+
+          {/* Right Column Form */}
+          <div className={cn("w-full", !isLongForm && "lg:col-span-5")}>
+            <div className={cn(!isLongForm && "lg:sticky lg:top-8")}>
+              
+              {isMultiStep && !pixData && (
+                <div className="flex items-center gap-2 mb-6">
+                   <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
+                     <div className="h-full transition-all duration-500" style={{ background: ts.accent, width: step === 1 ? '50%' : '100%' }} />
+                   </div>
+                   <span className="text-[10px] font-bold tracking-widest uppercase opacity-50">Etapa {step} de 2</span>
+                </div>
+              )}
+
+              <form onSubmit={(e) => {
+                if (isMultiStep && step === 1) {
+                   e.preventDefault();
+                   setStep(2);
+                } else {
+                   handleCreateOrder(e);
+                }
+              }} className="rounded-[24px] sm:rounded-[32px] p-5 sm:p-8 space-y-6 shadow-2xl transition-all duration-500" style={{ background: ts.cardBg, border: `1px solid ${ts.cardBorder}`, boxShadow: templateId === "neon" ? `0 0 50px ${ts.accent}20` : undefined }}>
+                
+                {!pixData ? (
+                  <>
+                    <div className="space-y-1">
+                      <h2 className="text-xl sm:text-2xl font-black" style={{ color: ts.text }}>
+                        {isMultiStep && step === 1 ? "Identificação" : templateId === "urgency" ? "⚡ COMPLETE SEU PEDIDO" : "Dados do Pagamento"}
+                      </h2>
+                      <p className="text-xs font-bold uppercase tracking-widest" style={{ color: ts.labelColor }}>
+                        {isMultiStep && step === 1 ? "Etapa 1 - Dados Básicos" : "Informações Pessoais Seguras"}
+                      </p>
+                    </div>
+
+                    {/* Form Fields - Step 1 */}
+                    {(!isMultiStep || step === 1) && (
+                      <div className="space-y-4 animate-in fade-in duration-300">
+                        <div>
+                          <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Nome Completo</label>
+                          <input 
+                            required 
+                            value={formData.buyerName}
+                            onChange={e => setFormData({...formData, buyerName: e.target.value})}
+                            style={fieldStyle}
+                            className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                            placeholder="Seu nome"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">E-mail</label>
+                          <input 
+                            required 
+                            type="email"
+                            value={formData.buyerEmail}
+                            onChange={e => setFormData({...formData, buyerEmail: e.target.value})}
+                            style={fieldStyle}
+                            className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                            placeholder="seu@email.com"
+                          />
+                        </div>
+                        {f.optionalFields.cpf && (
+                          <div>
+                            <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">CPF / CNPJ</label>
+                            <input 
+                              required 
+                              value={formData.buyerCpf}
+                              onChange={e => setFormData({...formData, buyerCpf: e.target.value})}
+                              style={fieldStyle}
+                              className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                              placeholder="000.000.000-00"
+                            />
+                          </div>
+                        )}
+                        {f.optionalFields.phone && (
+                          <div>
+                            <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Telefone / WhatsApp</label>
+                            <input 
+                              required 
+                              type="tel"
+                              value={formData.buyerPhone}
+                              onChange={e => setFormData({...formData, buyerPhone: e.target.value})}
+                              style={fieldStyle}
+                              className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                              placeholder="(00) 00000-0000"
+                            />
+                          </div>
+                        )}
+                        {f.optionalFields.birthDate && (
+                          <div>
+                            <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Data de Nascimento</label>
+                            <input 
+                              required 
+                              type="date"
+                              value={formData.buyerData.birthDate || ''}
+                              onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, birthDate: e.target.value }})}
+                              style={fieldStyle}
+                              className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                            />
+                          </div>
+                        )}
+                        {f.optionalFields.address && (
+                          <div>
+                            <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Endereço Completo</label>
+                            <input 
+                              required 
+                              value={formData.buyerData.address || ''}
+                              onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, address: e.target.value }})}
+                              style={fieldStyle}
+                              className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                              placeholder="Rua, Número, Bairro"
+                            />
+                          </div>
+                        )}
+                        {f.optionalFields.zipCode && (
+                          <div>
+                            <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">CEP</label>
+                            <input 
+                              required 
+                              value={formData.buyerData.zipCode || ''}
+                              onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, zipCode: e.target.value }})}
+                              style={fieldStyle}
+                              className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                              placeholder="00000-000"
+                            />
+                          </div>
+                        )}
+                        {f.optionalFields.company && (
+                          <div>
+                            <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Nome da Empresa</label>
+                            <input 
+                              required 
+                              value={formData.buyerData.company || ''}
+                              onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, company: e.target.value }})}
+                              style={fieldStyle}
+                              className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                              placeholder="Sua Empresa"
+                            />
+                          </div>
+                        )}
+
+                        {f.customFields?.map(field => (
+                          <div key={field.id}>
+                            <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">{field.label}</label>
+                            <input 
+                              required={field.required}
+                              value={formData.buyerData[field.id] || ''}
+                              onChange={e => setFormData({...formData, buyerData: { ...formData.buyerData, [field.id]: e.target.value }})}
+                              style={fieldStyle}
+                              className="w-full h-12 rounded-xl px-4 text-sm outline-none transition-all focus:ring-2 focus:ring-purple-500" 
+                              placeholder={field.placeholder || "..."}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Form Fields - Step 2 */}
+                    {(!isMultiStep || step === 2) && (
+                      <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
+                        {isMultiStep && (
+                           <button type="button" onClick={() => setStep(1)} className="text-xs font-bold uppercase opacity-60 hover:opacity-100 flex items-center gap-1 mb-4" style={{ color: ts.text }}>
+                              &larr; Voltar
+                           </button>
+                        )}
+                        
+                        {/* Order Bumps */}
+                        {bu.orderBumps?.filter(b => b.enabled).map(bump => (
+                          <div key={bump.id} className="p-4 rounded-xl border-2 border-dashed flex items-start gap-3 transition-colors relative overflow-hidden" 
+                               style={{ 
+                                 borderColor: selectedBumps.includes(bump.id) ? ts.accent : ts.fieldBorder,
+                                 background: selectedBumps.includes(bump.id) ? `${ts.accent}15` : ts.fieldBg 
+                               }}>
+                             <div className="absolute top-0 right-0 bg-red-500 text-white text-[8px] font-black uppercase px-2 py-0.5 rounded-bl-lg">
+                               Oferta Única
+                             </div>
+                             <div className="flex-1 min-w-0 pr-8">
+                               <div className="flex items-center gap-2 mb-1">
+                                 <span className="text-[11px] font-black" style={{ color: ts.accent }}>⚡ {bump.presentationText}</span>
+                               </div>
+                               <p className="text-[13px] font-bold mt-1 leading-tight" style={{ color: ts.text }}>{bump.productName}</p>
+                               <p className="text-[12px] font-black mt-1" style={{ color: ts.accent }}>
+                                 + R$ {bump.specialPrice.toFixed(2).replace(".", ",")}
+                               </p>
+                             </div>
+                             <label className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-3 cursor-pointer">
+                               <input 
+                                 type="checkbox" 
+                                 checked={selectedBumps.includes(bump.id)}
+                                 onChange={e => {
+                                   if (e.target.checked) setSelectedBumps(p => [...p, bump.id]);
+                                   else setSelectedBumps(p => p.filter(id => id !== bump.id));
+                                 }}
+                                 className="h-6 w-6 rounded border-white/20 bg-transparent focus:ring-0" 
+                                 style={{ color: ts.accent }}
+                               />
+                             </label>
+                          </div>
+                        ))}
+
+                        {/* Payment Tabs */}
+                        <div className="space-y-3">
+                          <label className="text-xs font-bold uppercase tracking-wider mb-1.5 block opacity-50">Selecione o Pagamento</label>
+                          <div className="grid grid-cols-3 gap-2">
+                            <button 
+                              type="button"
+                              onClick={() => setPaymentMethod("PIX")}
+                              className={cn("flex flex-col items-center justify-center gap-2 h-16 rounded-xl border transition-all", paymentMethod === "PIX" ? "border-primary bg-primary/10 text-primary" : "border-white/10 bg-white/5 opacity-60 hover:opacity-100")}
+                            >
+                              <QrCode className="h-5 w-5" />
+                              <span className="text-[10px] font-bold">PIX</span>
+                            </button>
+                            <button 
+                              type="button"
+                              onClick={() => setPaymentMethod("CREDIT_CARD")}
+                              className={cn("flex flex-col items-center justify-center gap-2 h-16 rounded-xl border transition-all", paymentMethod === "CREDIT_CARD" ? "border-primary bg-primary/10 text-primary" : "border-white/10 bg-white/5 opacity-60 hover:opacity-100")}
+                            >
+                              <CreditCard className="h-5 w-5" />
+                              <span className="text-[10px] font-bold">CARTÃO</span>
+                            </button>
+                            <button 
+                              type="button"
+                              onClick={() => setPaymentMethod("BOLETO")}
+                              className={cn("flex flex-col items-center justify-center gap-2 h-16 rounded-xl border transition-all", paymentMethod === "BOLETO" ? "border-primary bg-primary/10 text-primary" : "border-white/10 bg-white/5 opacity-60 hover:opacity-100")}
+                            >
+                              <FileText className="h-5 w-5" />
+                              <span className="text-[10px] font-bold">BOLETO</span>
+                            </button>
+                          </div>
+                        </div>
+
+                        <button 
+                          disabled={loading}
+                          type="submit"
+                          className="w-full relative overflow-hidden group py-4 sm:py-5 text-base sm:text-lg font-black transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                          style={{ 
+                            background: ts.accent,
+                            color: a.buttonTextColor || "#fff",
+                            borderRadius: btnRadius,
+                            boxShadow: `0 16px 32px ${ts.accent}40`,
+                          }}
+                        >
+                          <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                          {loading ? (
+                            <Loader2 className="h-5 w-5 animate-spin relative z-10" />
+                          ) : (
+                            <span className="relative z-10 uppercase tracking-widest flex items-center gap-2">
+                              {isMultiStep && step === 1 ? "Ir para pagamento" : `Pagar R$ ${totalPrice.toFixed(2).replace(".", ",")}`}
+                            </span>
+                          )}
+                        </button>
+
+                        <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center pt-2">
+                          {t.authority.sealSecure && (
+                            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest" style={{ color: ts.subtext, opacity: 0.6 }}>
+                              <Lock className="h-3 w-3" style={{ color: ts.accent }} /> Compra Segura
+                            </div>
+                          )}
+                          {t.authority.sealSatisfaction && (
+                            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest" style={{ color: ts.subtext, opacity: 0.6 }}>
+                              <BadgeCheck className="h-3 w-3" style={{ color: ts.accent }} /> Garantia
+                            </div>
+                          )}
+                        </div>
+
+                        {t.authority.showPaymentLogos && (
+                          <div className="flex flex-wrap items-center justify-center gap-2 pt-4 opacity-40">
+                            {["Visa", "Mastercard", "Pix", "Elo", "SSL"].map(brand => (
+                              <span
+                                key={brand}
+                                className="text-[9px] font-black uppercase tracking-tighter px-1.5 py-0.5 rounded"
+                                style={{
+                                  border: `1px solid ${ts.isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)"}`,
+                                  color: ts.text
+                                }}
+                              >
+                                {brand}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  /* PIX Display Area */
+                  <div className="text-center space-y-6 pt-4 animate-in fade-in zoom-in duration-300">
+                    <div className="space-y-2">
+                      <h2 className="text-2xl font-bold">Quase lá!</h2>
+                      <p className="text-sm opacity-60">Escaneie o QR Code abaixo para pagar</p>
+                    </div>
+
+                    <div className="bg-white p-4 rounded-3xl mx-auto w-fit shadow-2xl">
+                      <img src={pixData.qrCode} alt="QR Code PIX" className="h-48 w-48" />
+                    </div>
+
+                    <div className="space-y-3">
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(pixData.copyPaste);
+                          alert("Código copiado!");
+                        }}
+                        className="w-full h-12 rounded-xl bg-white/5 border border-white/10 font-bold text-sm hover:bg-white/10 transition-all"
+                      >
+                        COPIAR CÓDIGO PIX
+                      </button>
+                      <p className="text-xs opacity-50 flex items-center justify-center gap-2">
+                        <Loader2 className="h-3 w-3 animate-spin" />
+                        Aguardando pagamento...
+                      </p>
+                    </div>
+
+                    <div className="p-4 rounded-xl bg-[#7c3aed]/10 border border-[#7c3aed]/20 text-left space-y-2" style={{ borderColor: `${a.primaryColor}30`, background: `${a.primaryColor}10` }}>
+                      <h4 className="text-xs font-bold uppercase" style={{ color: a.primaryColor }}>Como pagar?</h4>
+                      <ol className="text-xs space-y-1 opacity-80 list-decimal pl-4">
+                        <li>Abra o app do seu banco</li>
+                        <li>Vá em Área PIX e escolha &quot;Ler QR Code&quot; ou &quot;Pix Copia e Cola&quot;</li>
+                        <li>Confirme os dados e finalize o pagamento</li>
+                      </ol>
+                    </div>
+                  </div>
+                )}
+              </form>
+            </div>
           </div>
         </div>
       </div>
