@@ -15,6 +15,7 @@ import { Select } from "@/components/ui/Select";
 import { Badge, BadgeStatus } from "@/components/ui/Badge";
 import { DataTable, Column } from "@/components/ui/DataTable";
 import Link from "next/link";
+import { toast } from "sonner";
 
 interface AdminUser {
   id: string;
@@ -46,6 +47,7 @@ export default function AdminUsersList() {
       setPagination(data.pagination || { pages: 1 });
     } catch (err) {
       console.error(err);
+      toast.error("Falha ao carregar lista de usuários");
     } finally {
       setLoading(false);
     }

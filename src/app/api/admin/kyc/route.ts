@@ -2,8 +2,12 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function GET() {
-  // In a real environment, you might verify role === "ADMIN".
-  // Right now we just mock or return from DB.
+  const session = await auth();
+
+  const user = session?.user as { role?: string; id: string } | undefined;
+  if (!session || user?.role !== "ADMIN") {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   
   try {
     const users = await prisma.user.findMany({
@@ -17,8 +21,11 @@ export async function GET() {
     });
 
     return NextResponse.json({ users });
-  } catch {
-    // Return dummy data if Prisma is not connected
-    return NextResponse.json({ users: [] });
+  } catch (error) {
+    console.error("ADMIN_KYC_FETCH_ERROR", error);
+    return NextResponse.json({ 
+      error: "Erro ao buscar fila de KYC",
+      details: process.env.NODE_ENV === "development" ? String(error) : undefined
+    }, { status: 500 });
   }
 }

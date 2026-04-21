@@ -14,32 +14,29 @@ export async function POST(req: Request) {
     const data = await req.json();
     
     // In a real scenario we use transactions, here we just mock the update or save gracefully.
-    try {
-       // Atualizar status do usuário para PENDING
-       await prisma.user.update({
-         where: { id: session.user.id },
-         data: {
-           kycStatus: "PENDING",
-           document: data.cpf, // saving CPF
-           phone: data.phone,
-         }
-       });
+    await prisma.user.update({
+      where: { id: session.user.id },
+      data: {
+        kycStatus: "PENDING",
+        document: data.cpf,
+        phone: data.phone,
+      }
+    });
 
-       // Create KycDocuments
-       const docs = [];
-       if (data.frontIdUrl) docs.push({ type: "IDENTITY_FRONT", fileUrl: data.frontIdUrl, userId: session.user.id });
-       if (data.backIdUrl) docs.push({ type: "IDENTITY_BACK", fileUrl: data.backIdUrl, userId: session.user.id });
-       if (data.selfieUrl) docs.push({ type: "SELFIE", fileUrl: data.selfieUrl, userId: session.user.id });
-       if (data.residencyUrl) docs.push({ type: "PROOF_OF_ADDRESS", fileUrl: data.residencyUrl, userId: session.user.id });
+    const docs = [];
+    if (data.frontIdUrl) docs.push({ type: "IDENTITY_FRONT", fileUrl: data.frontIdUrl, userId: session.user.id });
+    if (data.backIdUrl) docs.push({ type: "IDENTITY_BACK", fileUrl: data.backIdUrl, userId: session.user.id });
+    if (data.selfieUrl) docs.push({ type: "SELFIE", fileUrl: data.selfieUrl, userId: session.user.id });
+    if (data.residencyUrl) docs.push({ type: "PROOF_OF_ADDRESS", fileUrl: data.residencyUrl, userId: session.user.id });
 
-       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-       await prisma.kycDocument.createMany({ data: docs as any });
-
-       return NextResponse.json({ success: true }, { status: 201 });
-    } catch {
-       return NextResponse.json({ success: true, mocked: true });
+    if (docs.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await prisma.kycDocument.createMany({ data: docs as any });
     }
-  } catch {
-    return NextResponse.json({ error: "Erro interno no servidor" }, { status: 500 });
+
+    return NextResponse.json({ success: true }, { status: 201 });
+  } catch (error) {
+    console.error("KYC_SUBMIT_ERROR", error);
+    return NextResponse.json({ error: "Erro ao processar submissão KYC. Tente novamente mais tarde." }, { status: 500 });
   }
 }

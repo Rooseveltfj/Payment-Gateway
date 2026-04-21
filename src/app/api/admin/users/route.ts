@@ -20,13 +20,15 @@ export async function GET(req: Request) {
     const kycStatus = searchParams.get("kycStatus") as KycStatus | null;
     const skip = (page - 1) * limit;
 
-    const where: { status?: UserStatus; kycStatus?: KycStatus; OR: Array<{ name?: { contains: string; mode: 'insensitive' }; email?: { contains: string; mode: 'insensitive' }; document?: { contains: string } }> } = {
-      OR: [
+    const where: any = {};
+    
+    if (search) {
+      where.OR = [
         { name: { contains: search, mode: 'insensitive' } },
         { email: { contains: search, mode: 'insensitive' } },
         { document: { contains: search } }
-      ]
-    };
+      ];
+    }
 
     if (status) where.status = status;
     if (kycStatus) where.kycStatus = kycStatus;
@@ -48,17 +50,27 @@ export async function GET(req: Request) {
 
     // Enhance users with volume data
     const enhancedUsers = await Promise.all(users.map(async (u) => {
-      const volume = await prisma.order.aggregate({
-        _sum: { amount: true },
-        where: { userId: u.id, status: "PAID" }
-      });
+      try {
+        const volume = await prisma.order.aggregate({
+          _sum: { amount: true },
+          where: { userId: u.id, status: "PAID" }
+        });
 
-      return {
-        ...u,
-        volume: volume._sum.amount || 0,
-        productCount: u._count.products,
-        _count: undefined
-      };
+        return {
+          ...u,
+          volume: volume._sum.amount || 0,
+          productCount: u._count.products,
+          _count: undefined
+        };
+      } catch (err) {
+        console.error(`Error enhancing user ${u.id}:`, err);
+        return {
+          ...u,
+          volume: 0,
+          productCount: u._count.products,
+          _count: undefined
+        };
+      }
     }));
 
     return NextResponse.json({
@@ -73,6 +85,9 @@ export async function GET(req: Request) {
 
   } catch (error) {
     console.error("ADMIN_USERS_ERROR", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return NextResponse.json({ 
+      error: "Erro interno no servidor ao buscar usuários",
+      details: process.env.NODE_ENV === "development" ? String(error) : undefined
+    }, { status: 500 });
   }
 }
