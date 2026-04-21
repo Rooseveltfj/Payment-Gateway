@@ -3,6 +3,8 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { UserStatus, KycStatus } from "@/generated/prisma/client";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
   const session = await auth();
 

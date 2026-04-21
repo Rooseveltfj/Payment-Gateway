@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { processMaturity } from "@/lib/financial";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const secret = searchParams.get("secret");

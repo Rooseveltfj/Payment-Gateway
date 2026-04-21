@@ -8,6 +8,8 @@ import { prisma } from "@/lib/prisma";
  * Frequency: Once per day (e.g., 00:00 UTC)
  */
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
   try {
     // Basic auth check for Cron (requires CRON_SECRET header from Vercel)
