@@ -11,7 +11,7 @@ const supabaseAdmin = createClient(
 
 export async function GET(
   request: Request,
-  { params }: { params: { userId: string; docId: string } }
+  { params }: { params: { id: string; docId: string } }
 ) {
   const session = await auth();
   
@@ -19,13 +19,13 @@ export async function GET(
     return NextResponse.json({ error: "Acesso negado" }, { status: 403 });
   }
 
-  const { userId, docId } = params;
+  const { id, docId } = params;
 
   try {
     const doc = await prisma.kycDocument.findFirst({
       where: { 
         id: docId,
-        userId: userId 
+        userId: id 
       }
     });
 
@@ -46,7 +46,7 @@ export async function GET(
 
     await audit("SUSPICIOUS_ACTIVITY", session.user.id!, {
       action: "ADMIN_KYC_DOCUMENT_VIEWED",
-      targetUserId: userId,
+      targetUserId: id,
       docId: docId,
       docType: doc.type
     }, request);
