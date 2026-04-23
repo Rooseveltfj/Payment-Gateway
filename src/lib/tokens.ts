@@ -15,13 +15,15 @@ export function hashCode(code: string): string {
   return crypto.createHash("sha256").update(code).digest("hex");
 }
 
+import { encrypt, decrypt, isEncrypted, hashApiKey } from "@/lib/encryption";
+
 /**
  * Generates and stores a new 2FA token for a given email.
  * If a token already exists, it is overwritten.
  */
 export async function generateTwoFactorToken(email: string) {
   const code = generateVerificationCode();
-  const hashedToken = hashCode(code);
+  const encryptedToken = await encrypt(code);
   const expires = new Date(new Date().getTime() + 5 * 60 * 1000); // 5 minutes
 
   // Delete existing token if any
@@ -38,7 +40,7 @@ export async function generateTwoFactorToken(email: string) {
   const twoFactorToken = await prisma.twoFactorToken.create({
     data: {
       email,
-      token: hashedToken,
+      token: encryptedToken,
       expires,
     }
   });
@@ -51,8 +53,6 @@ export async function generateTwoFactorToken(email: string) {
  * Handles expiry and attempt tracking.
  */
 export async function validateTwoFactorToken(email: string, code: string) {
-  const hashedCode = hashCode(code);
-  
   const existingToken = await prisma.twoFactorToken.findUnique({
     where: { email }
   });
@@ -70,7 +70,20 @@ export async function validateTwoFactorToken(email: string, code: string) {
     return { success: false, error: "Muitas tentativas. Solicite um novo código." };
   }
 
-  if (existingToken.token !== hashedCode) {
+  let isValid = false;
+  try {
+    if (isEncrypted(existingToken.token)) {
+      const decrypted = await decrypt(existingToken.token);
+      isValid = decrypted === code;
+    } else {
+      // Legacy hash check
+      isValid = hashCode(code) === existingToken.token;
+    }
+  } catch (e) {
+    isValid = false;
+  }
+
+  if (!isValid) {
     // Increment attempts
     await prisma.twoFactorToken.update({
       where: { id: existingToken.id },
@@ -92,7 +105,9 @@ export async function validateTwoFactorToken(email: string, code: string) {
  * Valid for 1 hour.
  */
 export async function generatePasswordResetToken(email: string) {
-  const token = crypto.randomUUID();
+  const rawToken = crypto.randomUUID();
+  const encryptedToken = await encrypt(rawToken);
+  const tokenHash = hashApiKey(rawToken); // reusing hashApiKey for generic token hashing
   const expires = new Date(new Date().getTime() + 3600 * 1000); // 1 hour
 
   const existingToken = await prisma.passwordResetToken.findFirst({
@@ -108,10 +123,11 @@ export async function generatePasswordResetToken(email: string) {
   const passwordResetToken = await prisma.passwordResetToken.create({
     data: {
       email,
-      token,
+      token: encryptedToken,
+      tokenHash: tokenHash,
       expires
     }
   });
 
-  return passwordResetToken;
+  return { ...passwordResetToken, token: rawToken };
 }

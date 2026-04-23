@@ -1,29 +1,60 @@
 import NextAuth from "next-auth"
 import authConfig from "./auth.config"
 import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
 
 const { auth } = NextAuth(authConfig)
 
 export default auth(async (req) => {
   const { nextUrl } = req
+  const pathname = nextUrl.pathname
   const isLogged = !!req.auth
   const hostname = req.headers.get("host") || ""
   
-  // 1. Security Headers
-  const requestHeaders = new Headers(req.headers)
-  const response = NextResponse.next({
-    request: {
-      headers: requestHeaders,
-    },
-  })
+  // ── 1. SECURITY HEADERS ───────────────────────────────────────────
+  const response = NextResponse.next()
+  
+  response.headers.set('X-Content-Type-Options', 'nosniff')
+  response.headers.set('X-Frame-Options', 'DENY')
+  response.headers.set('X-XSS-Protection', '1; mode=block')
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
+  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
+  response.headers.set(
+    'Strict-Transport-Security',
+    'max-age=63072000; includeSubDomains; preload'
+  )
+  response.headers.set(
+    'Content-Security-Policy',
+    [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.simpleicons.org",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com",
+      "img-src 'self' data: blob: https: https://api.dicebear.com https://cdn.simpleicons.org",
+      "connect-src 'self' https://*.supabase.co https://api.woovi.com",
+      "frame-ancestors 'none'",
+    ].join('; ')
+  )
 
-  // CSP, HSTS, etc.
-  response.headers.set("X-Frame-Options", "DENY")
-  response.headers.set("X-Content-Type-Options", "nosniff")
-  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin")
-  response.headers.set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
+  // ── 2. BLOQUEAR ACESSO DIRETO AO SUPABASE VIA BROWSER ───────────
+  if (pathname.startsWith('/api/') && req.headers.get('origin') === null) {
+    const ua = req.headers.get('user-agent') || ''
+    const blockedUAs = ['sqlmap', 'nikto', 'nmap', 'masscan', 'zgrab']
+    if (blockedUAs.some(b => ua.toLowerCase().includes(b))) {
+      return new NextResponse(null, { status: 403 })
+    }
+  }
 
-  // 2. Custom Domain Routing
+  // ── 3. BLOQUEAR ROTAS INTERNAS DE CRON ──────────────────────────
+  if (pathname.startsWith('/api/cron/')) {
+    const authHeader = req.headers.get('authorization')
+    const expectedSecret = `Bearer ${process.env.INTERNAL_API_SECRET}`
+    if (authHeader !== expectedSecret) {
+      return new NextResponse(null, { status: 401 })
+    }
+  }
+
+  // ── 4. CUSTOM DOMAIN ROUTING ─────────────────────────────────────
   const isMainDomain = 
     hostname.includes("pulsepay.com.br") || 
     hostname.includes("localhost") || 
@@ -35,36 +66,44 @@ export default auth(async (req) => {
       const data = await res.json()
 
       if (data.active && data.username) {
-        const path = nextUrl.pathname
-        if (path === "/") {
-          return NextResponse.rewrite(new URL(`/${data.username}`, req.url))
+        if (pathname === "/") {
+          const rewriteRes = NextResponse.rewrite(new URL(`/${data.username}`, req.url))
+          // Copy security headers to rewrite response
+          response.headers.forEach((v, k) => rewriteRes.headers.set(k, v))
+          return rewriteRes
         }
-        if (!path.startsWith("/api") && !path.startsWith("/_next") && !path.includes(".")) {
-          if (path.startsWith("/obrigado")) return NextResponse.next()
-          return NextResponse.rewrite(new URL(`/c${path}`, req.url))
+        if (!pathname.startsWith("/api") && !pathname.startsWith("/_next") && !pathname.includes(".")) {
+          if (pathname.startsWith("/obrigado")) return response
+          const rewriteRes = NextResponse.rewrite(new URL(`/c${pathname}`, req.url))
+          response.headers.forEach((v, k) => rewriteRes.headers.set(k, v))
+          return rewriteRes
         }
       }
     } catch (e) { console.error(e) }
   }
 
-  // 3. Auth Protection
-  const isAdminRoute = nextUrl.pathname.startsWith("/admin")
-  const isDashboardRoute = nextUrl.pathname.startsWith("/dashboard")
+  // ── 5. AUTH PROTECTION ───────────────────────────────────────────
+  if (pathname.startsWith('/dashboard')) {
+    if (!isLogged) {
+      return NextResponse.redirect(new URL('/login', req.url))
+    }
+    // Verificar se conta não está suspensa
+    const user = req.auth?.user as { status?: string } | undefined
+    if (user?.status === 'SUSPENDED') {
+      return NextResponse.redirect(new URL('/conta-suspensa', req.url))
+    }
+  }
 
-  // Use nextUrl.origin to ensure internal redirections stay on the same host (e.g. localhost)
-  if (isAdminRoute) {
-    if (!isLogged) return NextResponse.redirect(new URL("/login", nextUrl.origin))
+  if (pathname.startsWith('/admin')) {
     const user = req.auth?.user as { role?: string } | undefined
-    if (user?.role !== "ADMIN") return NextResponse.redirect(new URL("/dashboard", nextUrl.origin))
+    if (!isLogged || user?.role !== 'ADMIN') {
+      return new NextResponse(null, { status: 403 })
+    }
   }
 
-  if (isDashboardRoute && !isLogged) {
-    return NextResponse.redirect(new URL("/login", nextUrl.origin))
-  }
-
-  // 4. Affiliation Tracking
+  // ── 6. AFFILIATION TRACKING ──────────────────────────────────────
   const affiliateRef = nextUrl.searchParams.get("ref")
-  if (nextUrl.pathname.startsWith("/c/") && affiliateRef) {
+  if (pathname.startsWith("/c/") && affiliateRef) {
     response.cookies.set("pulsepay_affiliate", affiliateRef, {
       maxAge: 30 * 24 * 60 * 60,
       path: "/",
@@ -78,5 +117,7 @@ export default auth(async (req) => {
 })
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|assets/).*)',
+  ],
 }

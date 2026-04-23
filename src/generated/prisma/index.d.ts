@@ -3472,6 +3472,7 @@ export namespace Prisma {
     totalWithdrawn: number | null
     availableBalance: number | null
     pendingBalance: number | null
+    failedLoginCount: number | null
   }
 
   export type UserSumAggregateOutputType = {
@@ -3480,6 +3481,7 @@ export namespace Prisma {
     totalWithdrawn: number | null
     availableBalance: number | null
     pendingBalance: number | null
+    failedLoginCount: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -3507,6 +3509,10 @@ export namespace Prisma {
     updatedAt: Date | null
     username: string | null
     lastActiveAt: Date | null
+    lastLoginIp: string | null
+    lastLoginAt: Date | null
+    failedLoginCount: number | null
+    lockedUntil: Date | null
     twoFactorEnabled: boolean | null
     twoFactorSecret: string | null
     twoFactorMethod: $Enums.TwoFactorMethod | null
@@ -3537,6 +3543,10 @@ export namespace Prisma {
     updatedAt: Date | null
     username: string | null
     lastActiveAt: Date | null
+    lastLoginIp: string | null
+    lastLoginAt: Date | null
+    failedLoginCount: number | null
+    lockedUntil: Date | null
     twoFactorEnabled: boolean | null
     twoFactorSecret: string | null
     twoFactorMethod: $Enums.TwoFactorMethod | null
@@ -3570,6 +3580,10 @@ export namespace Prisma {
     username: number
     lastActiveAt: number
     onboardingSteps: number
+    lastLoginIp: number
+    lastLoginAt: number
+    failedLoginCount: number
+    lockedUntil: number
     twoFactorEnabled: number
     twoFactorSecret: number
     twoFactorMethod: number
@@ -3583,6 +3597,7 @@ export namespace Prisma {
     totalWithdrawn?: true
     availableBalance?: true
     pendingBalance?: true
+    failedLoginCount?: true
   }
 
   export type UserSumAggregateInputType = {
@@ -3591,6 +3606,7 @@ export namespace Prisma {
     totalWithdrawn?: true
     availableBalance?: true
     pendingBalance?: true
+    failedLoginCount?: true
   }
 
   export type UserMinAggregateInputType = {
@@ -3618,6 +3634,10 @@ export namespace Prisma {
     updatedAt?: true
     username?: true
     lastActiveAt?: true
+    lastLoginIp?: true
+    lastLoginAt?: true
+    failedLoginCount?: true
+    lockedUntil?: true
     twoFactorEnabled?: true
     twoFactorSecret?: true
     twoFactorMethod?: true
@@ -3648,6 +3668,10 @@ export namespace Prisma {
     updatedAt?: true
     username?: true
     lastActiveAt?: true
+    lastLoginIp?: true
+    lastLoginAt?: true
+    failedLoginCount?: true
+    lockedUntil?: true
     twoFactorEnabled?: true
     twoFactorSecret?: true
     twoFactorMethod?: true
@@ -3681,6 +3705,10 @@ export namespace Prisma {
     username?: true
     lastActiveAt?: true
     onboardingSteps?: true
+    lastLoginIp?: true
+    lastLoginAt?: true
+    failedLoginCount?: true
+    lockedUntil?: true
     twoFactorEnabled?: true
     twoFactorSecret?: true
     twoFactorMethod?: true
@@ -3801,6 +3829,10 @@ export namespace Prisma {
     username: string | null
     lastActiveAt: Date
     onboardingSteps: JsonValue | null
+    lastLoginIp: string | null
+    lastLoginAt: Date | null
+    failedLoginCount: number
+    lockedUntil: Date | null
     twoFactorEnabled: boolean
     twoFactorSecret: string | null
     twoFactorMethod: $Enums.TwoFactorMethod | null
@@ -3853,6 +3885,10 @@ export namespace Prisma {
     username?: boolean
     lastActiveAt?: boolean
     onboardingSteps?: boolean
+    lastLoginIp?: boolean
+    lastLoginAt?: boolean
+    failedLoginCount?: boolean
+    lockedUntil?: boolean
     twoFactorEnabled?: boolean
     twoFactorSecret?: boolean
     twoFactorMethod?: boolean
@@ -3902,6 +3938,10 @@ export namespace Prisma {
     username?: boolean
     lastActiveAt?: boolean
     onboardingSteps?: boolean
+    lastLoginIp?: boolean
+    lastLoginAt?: boolean
+    failedLoginCount?: boolean
+    lockedUntil?: boolean
     twoFactorEnabled?: boolean
     twoFactorSecret?: boolean
     twoFactorMethod?: boolean
@@ -3935,6 +3975,10 @@ export namespace Prisma {
     username?: boolean
     lastActiveAt?: boolean
     onboardingSteps?: boolean
+    lastLoginIp?: boolean
+    lastLoginAt?: boolean
+    failedLoginCount?: boolean
+    lockedUntil?: boolean
     twoFactorEnabled?: boolean
     twoFactorSecret?: boolean
     twoFactorMethod?: boolean
@@ -3968,12 +4012,16 @@ export namespace Prisma {
     username?: boolean
     lastActiveAt?: boolean
     onboardingSteps?: boolean
+    lastLoginIp?: boolean
+    lastLoginAt?: boolean
+    failedLoginCount?: boolean
+    lockedUntil?: boolean
     twoFactorEnabled?: boolean
     twoFactorSecret?: boolean
     twoFactorMethod?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "status" | "kycStatus" | "document" | "phone" | "pixKey" | "pixKeyType" | "bankName" | "bankAgency" | "bankAccount" | "avatarUrl" | "platformFeePercent" | "totalEarnings" | "totalWithdrawn" | "availableBalance" | "pendingBalance" | "createdAt" | "updatedAt" | "showcaseConfig" | "socialLinks" | "username" | "lastActiveAt" | "onboardingSteps" | "twoFactorEnabled" | "twoFactorSecret" | "twoFactorMethod", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "password" | "role" | "status" | "kycStatus" | "document" | "phone" | "pixKey" | "pixKeyType" | "bankName" | "bankAgency" | "bankAccount" | "avatarUrl" | "platformFeePercent" | "totalEarnings" | "totalWithdrawn" | "availableBalance" | "pendingBalance" | "createdAt" | "updatedAt" | "showcaseConfig" | "socialLinks" | "username" | "lastActiveAt" | "onboardingSteps" | "lastLoginIp" | "lastLoginAt" | "failedLoginCount" | "lockedUntil" | "twoFactorEnabled" | "twoFactorSecret" | "twoFactorMethod", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     trustedDevices?: boolean | User$trustedDevicesArgs<ExtArgs>
     affiliateOffers?: boolean | User$affiliateOffersArgs<ExtArgs>
@@ -4042,6 +4090,10 @@ export namespace Prisma {
       username: string | null
       lastActiveAt: Date
       onboardingSteps: Prisma.JsonValue | null
+      lastLoginIp: string | null
+      lastLoginAt: Date | null
+      failedLoginCount: number
+      lockedUntil: Date | null
       twoFactorEnabled: boolean
       twoFactorSecret: string | null
       twoFactorMethod: $Enums.TwoFactorMethod | null
@@ -4510,6 +4562,10 @@ export namespace Prisma {
     readonly username: FieldRef<"User", 'String'>
     readonly lastActiveAt: FieldRef<"User", 'DateTime'>
     readonly onboardingSteps: FieldRef<"User", 'Json'>
+    readonly lastLoginIp: FieldRef<"User", 'String'>
+    readonly lastLoginAt: FieldRef<"User", 'DateTime'>
+    readonly failedLoginCount: FieldRef<"User", 'Int'>
+    readonly lockedUntil: FieldRef<"User", 'DateTime'>
     readonly twoFactorEnabled: FieldRef<"User", 'Boolean'>
     readonly twoFactorSecret: FieldRef<"User", 'String'>
     readonly twoFactorMethod: FieldRef<"User", 'TwoFactorMethod'>
@@ -6410,6 +6466,7 @@ export namespace Prisma {
     details: number
     ipAddress: number
     userAgent: number
+    metadata: number
     createdAt: number
     _all: number
   }
@@ -6442,6 +6499,7 @@ export namespace Prisma {
     details?: true
     ipAddress?: true
     userAgent?: true
+    metadata?: true
     createdAt?: true
     _all?: true
   }
@@ -6520,11 +6578,12 @@ export namespace Prisma {
 
   export type AuditLogGroupByOutputType = {
     id: string
-    userId: string
+    userId: string | null
     action: string
     details: string | null
     ipAddress: string | null
     userAgent: string | null
+    metadata: JsonValue | null
     createdAt: Date
     _count: AuditLogCountAggregateOutputType | null
     _min: AuditLogMinAggregateOutputType | null
@@ -6552,8 +6611,9 @@ export namespace Prisma {
     details?: boolean
     ipAddress?: boolean
     userAgent?: boolean
+    metadata?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | AuditLog$userArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
 
   export type AuditLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6563,8 +6623,9 @@ export namespace Prisma {
     details?: boolean
     ipAddress?: boolean
     userAgent?: boolean
+    metadata?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | AuditLog$userArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
 
   export type AuditLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6574,8 +6635,9 @@ export namespace Prisma {
     details?: boolean
     ipAddress?: boolean
     userAgent?: boolean
+    metadata?: boolean
     createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | AuditLog$userArgs<ExtArgs>
   }, ExtArgs["result"]["auditLog"]>
 
   export type AuditLogSelectScalar = {
@@ -6585,32 +6647,34 @@ export namespace Prisma {
     details?: boolean
     ipAddress?: boolean
     userAgent?: boolean
+    metadata?: boolean
     createdAt?: boolean
   }
 
-  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "action" | "details" | "ipAddress" | "userAgent" | "createdAt", ExtArgs["result"]["auditLog"]>
+  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "action" | "details" | "ipAddress" | "userAgent" | "metadata" | "createdAt", ExtArgs["result"]["auditLog"]>
   export type AuditLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | AuditLog$userArgs<ExtArgs>
   }
   export type AuditLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | AuditLog$userArgs<ExtArgs>
   }
   export type AuditLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | AuditLog$userArgs<ExtArgs>
   }
 
   export type $AuditLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "AuditLog"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      userId: string
+      userId: string | null
       action: string
       details: string | null
       ipAddress: string | null
       userAgent: string | null
+      metadata: Prisma.JsonValue | null
       createdAt: Date
     }, ExtArgs["result"]["auditLog"]>
     composites: {}
@@ -7006,7 +7070,7 @@ export namespace Prisma {
    */
   export interface Prisma__AuditLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends AuditLog$userArgs<ExtArgs> = {}>(args?: Subset<T, AuditLog$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7042,6 +7106,7 @@ export namespace Prisma {
     readonly details: FieldRef<"AuditLog", 'String'>
     readonly ipAddress: FieldRef<"AuditLog", 'String'>
     readonly userAgent: FieldRef<"AuditLog", 'String'>
+    readonly metadata: FieldRef<"AuditLog", 'Json'>
     readonly createdAt: FieldRef<"AuditLog", 'DateTime'>
   }
     
@@ -7441,6 +7506,25 @@ export namespace Prisma {
      * Limit how many AuditLogs to delete.
      */
     limit?: number
+  }
+
+  /**
+   * AuditLog.user
+   */
+  export type AuditLog$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -8850,6 +8934,7 @@ export namespace Prisma {
     wooviCorrelationId: string | null
     wooviEndToEndId: string | null
     wooviTransactionId: string | null
+    externalCorrelationId: string | null
     affiliationId: string | null
   }
 
@@ -8885,6 +8970,7 @@ export namespace Prisma {
     wooviCorrelationId: string | null
     wooviEndToEndId: string | null
     wooviTransactionId: string | null
+    externalCorrelationId: string | null
     affiliationId: string | null
   }
 
@@ -8922,6 +9008,7 @@ export namespace Prisma {
     wooviCorrelationId: number
     wooviEndToEndId: number
     wooviTransactionId: number
+    externalCorrelationId: number
     affiliationId: number
     _all: number
   }
@@ -8973,6 +9060,7 @@ export namespace Prisma {
     wooviCorrelationId?: true
     wooviEndToEndId?: true
     wooviTransactionId?: true
+    externalCorrelationId?: true
     affiliationId?: true
   }
 
@@ -9008,6 +9096,7 @@ export namespace Prisma {
     wooviCorrelationId?: true
     wooviEndToEndId?: true
     wooviTransactionId?: true
+    externalCorrelationId?: true
     affiliationId?: true
   }
 
@@ -9045,6 +9134,7 @@ export namespace Prisma {
     wooviCorrelationId?: true
     wooviEndToEndId?: true
     wooviTransactionId?: true
+    externalCorrelationId?: true
     affiliationId?: true
     _all?: true
   }
@@ -9138,7 +9228,7 @@ export namespace Prisma {
   export type OrderGroupByOutputType = {
     id: string
     userId: string
-    productId: string
+    productId: string | null
     buyerName: string
     buyerEmail: string
     buyerCpf: string | null
@@ -9169,6 +9259,7 @@ export namespace Prisma {
     wooviCorrelationId: string | null
     wooviEndToEndId: string | null
     wooviTransactionId: string | null
+    externalCorrelationId: string | null
     affiliationId: string | null
     _count: OrderCountAggregateOutputType | null
     _avg: OrderAvgAggregateOutputType | null
@@ -9225,10 +9316,11 @@ export namespace Prisma {
     wooviCorrelationId?: boolean
     wooviEndToEndId?: boolean
     wooviTransactionId?: boolean
+    externalCorrelationId?: boolean
     affiliationId?: boolean
     affiliationSale?: boolean | Order$affiliationSaleArgs<ExtArgs>
     affiliation?: boolean | Order$affiliationArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
+    product?: boolean | Order$productArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     pendingBalances?: boolean | Order$pendingBalancesArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
@@ -9268,9 +9360,10 @@ export namespace Prisma {
     wooviCorrelationId?: boolean
     wooviEndToEndId?: boolean
     wooviTransactionId?: boolean
+    externalCorrelationId?: boolean
     affiliationId?: boolean
     affiliation?: boolean | Order$affiliationArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
+    product?: boolean | Order$productArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
@@ -9308,9 +9401,10 @@ export namespace Prisma {
     wooviCorrelationId?: boolean
     wooviEndToEndId?: boolean
     wooviTransactionId?: boolean
+    externalCorrelationId?: boolean
     affiliationId?: boolean
     affiliation?: boolean | Order$affiliationArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
+    product?: boolean | Order$productArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
@@ -9348,26 +9442,27 @@ export namespace Prisma {
     wooviCorrelationId?: boolean
     wooviEndToEndId?: boolean
     wooviTransactionId?: boolean
+    externalCorrelationId?: boolean
     affiliationId?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "productId" | "buyerName" | "buyerEmail" | "buyerCpf" | "buyerPhone" | "buyerData" | "amount" | "platformFee" | "netAmount" | "status" | "paymentMethod" | "pixQrCode" | "pixCopyPaste" | "boletoUrl" | "boletoBarcode" | "cardLastFour" | "cardBrand" | "installments" | "externalId" | "paidAt" | "refundedAt" | "isMatured" | "statusHistory" | "createdAt" | "updatedAt" | "pixBrCode" | "pixExpiresAt" | "pixQrCodeUrl" | "wooviCorrelationId" | "wooviEndToEndId" | "wooviTransactionId" | "affiliationId", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "productId" | "buyerName" | "buyerEmail" | "buyerCpf" | "buyerPhone" | "buyerData" | "amount" | "platformFee" | "netAmount" | "status" | "paymentMethod" | "pixQrCode" | "pixCopyPaste" | "boletoUrl" | "boletoBarcode" | "cardLastFour" | "cardBrand" | "installments" | "externalId" | "paidAt" | "refundedAt" | "isMatured" | "statusHistory" | "createdAt" | "updatedAt" | "pixBrCode" | "pixExpiresAt" | "pixQrCodeUrl" | "wooviCorrelationId" | "wooviEndToEndId" | "wooviTransactionId" | "externalCorrelationId" | "affiliationId", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     affiliationSale?: boolean | Order$affiliationSaleArgs<ExtArgs>
     affiliation?: boolean | Order$affiliationArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
+    product?: boolean | Order$productArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
     pendingBalances?: boolean | Order$pendingBalancesArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type OrderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     affiliation?: boolean | Order$affiliationArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
+    product?: boolean | Order$productArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type OrderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     affiliation?: boolean | Order$affiliationArgs<ExtArgs>
-    product?: boolean | ProductDefaultArgs<ExtArgs>
+    product?: boolean | Order$productArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
@@ -9376,14 +9471,14 @@ export namespace Prisma {
     objects: {
       affiliationSale: Prisma.$AffiliationSalePayload<ExtArgs> | null
       affiliation: Prisma.$AffiliationPayload<ExtArgs> | null
-      product: Prisma.$ProductPayload<ExtArgs>
+      product: Prisma.$ProductPayload<ExtArgs> | null
       user: Prisma.$UserPayload<ExtArgs>
       pendingBalances: Prisma.$PendingBalancePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       userId: string
-      productId: string
+      productId: string | null
       buyerName: string
       buyerEmail: string
       buyerCpf: string | null
@@ -9414,6 +9509,7 @@ export namespace Prisma {
       wooviCorrelationId: string | null
       wooviEndToEndId: string | null
       wooviTransactionId: string | null
+      externalCorrelationId: string | null
       affiliationId: string | null
     }, ExtArgs["result"]["order"]>
     composites: {}
@@ -9811,7 +9907,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     affiliationSale<T extends Order$affiliationSaleArgs<ExtArgs> = {}>(args?: Subset<T, Order$affiliationSaleArgs<ExtArgs>>): Prisma__AffiliationSaleClient<$Result.GetResult<Prisma.$AffiliationSalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     affiliation<T extends Order$affiliationArgs<ExtArgs> = {}>(args?: Subset<T, Order$affiliationArgs<ExtArgs>>): Prisma__AffiliationClient<$Result.GetResult<Prisma.$AffiliationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    product<T extends ProductDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProductDefaultArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    product<T extends Order$productArgs<ExtArgs> = {}>(args?: Subset<T, Order$productArgs<ExtArgs>>): Prisma__ProductClient<$Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     pendingBalances<T extends Order$pendingBalancesArgs<ExtArgs> = {}>(args?: Subset<T, Order$pendingBalancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PendingBalancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -9876,6 +9972,7 @@ export namespace Prisma {
     readonly wooviCorrelationId: FieldRef<"Order", 'String'>
     readonly wooviEndToEndId: FieldRef<"Order", 'String'>
     readonly wooviTransactionId: FieldRef<"Order", 'String'>
+    readonly externalCorrelationId: FieldRef<"Order", 'String'>
     readonly affiliationId: FieldRef<"Order", 'String'>
   }
     
@@ -10313,6 +10410,25 @@ export namespace Prisma {
      */
     include?: AffiliationInclude<ExtArgs> | null
     where?: AffiliationWhereInput
+  }
+
+  /**
+   * Order.product
+   */
+  export type Order$productArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Product
+     */
+    select?: ProductSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Product
+     */
+    omit?: ProductOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProductInclude<ExtArgs> | null
+    where?: ProductWhereInput
   }
 
   /**
@@ -14794,6 +14910,7 @@ export namespace Prisma {
     userId: string | null
     name: string | null
     key: string | null
+    keyHash: string | null
     lastUsed: Date | null
     active: boolean | null
     createdAt: Date | null
@@ -14804,6 +14921,7 @@ export namespace Prisma {
     userId: string | null
     name: string | null
     key: string | null
+    keyHash: string | null
     lastUsed: Date | null
     active: boolean | null
     createdAt: Date | null
@@ -14814,6 +14932,7 @@ export namespace Prisma {
     userId: number
     name: number
     key: number
+    keyHash: number
     lastUsed: number
     active: number
     createdAt: number
@@ -14826,6 +14945,7 @@ export namespace Prisma {
     userId?: true
     name?: true
     key?: true
+    keyHash?: true
     lastUsed?: true
     active?: true
     createdAt?: true
@@ -14836,6 +14956,7 @@ export namespace Prisma {
     userId?: true
     name?: true
     key?: true
+    keyHash?: true
     lastUsed?: true
     active?: true
     createdAt?: true
@@ -14846,6 +14967,7 @@ export namespace Prisma {
     userId?: true
     name?: true
     key?: true
+    keyHash?: true
     lastUsed?: true
     active?: true
     createdAt?: true
@@ -14929,6 +15051,7 @@ export namespace Prisma {
     userId: string
     name: string
     key: string
+    keyHash: string | null
     lastUsed: Date | null
     active: boolean
     createdAt: Date
@@ -14956,6 +15079,7 @@ export namespace Prisma {
     userId?: boolean
     name?: boolean
     key?: boolean
+    keyHash?: boolean
     lastUsed?: boolean
     active?: boolean
     createdAt?: boolean
@@ -14967,6 +15091,7 @@ export namespace Prisma {
     userId?: boolean
     name?: boolean
     key?: boolean
+    keyHash?: boolean
     lastUsed?: boolean
     active?: boolean
     createdAt?: boolean
@@ -14978,6 +15103,7 @@ export namespace Prisma {
     userId?: boolean
     name?: boolean
     key?: boolean
+    keyHash?: boolean
     lastUsed?: boolean
     active?: boolean
     createdAt?: boolean
@@ -14989,12 +15115,13 @@ export namespace Prisma {
     userId?: boolean
     name?: boolean
     key?: boolean
+    keyHash?: boolean
     lastUsed?: boolean
     active?: boolean
     createdAt?: boolean
   }
 
-  export type ApiKeyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "key" | "lastUsed" | "active" | "createdAt", ExtArgs["result"]["apiKey"]>
+  export type ApiKeyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "name" | "key" | "keyHash" | "lastUsed" | "active" | "createdAt", ExtArgs["result"]["apiKey"]>
   export type ApiKeyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -15015,6 +15142,7 @@ export namespace Prisma {
       userId: string
       name: string
       key: string
+      keyHash: string | null
       lastUsed: Date | null
       active: boolean
       createdAt: Date
@@ -15446,6 +15574,7 @@ export namespace Prisma {
     readonly userId: FieldRef<"ApiKey", 'String'>
     readonly name: FieldRef<"ApiKey", 'String'>
     readonly key: FieldRef<"ApiKey", 'String'>
+    readonly keyHash: FieldRef<"ApiKey", 'String'>
     readonly lastUsed: FieldRef<"ApiKey", 'DateTime'>
     readonly active: FieldRef<"ApiKey", 'Boolean'>
     readonly createdAt: FieldRef<"ApiKey", 'DateTime'>
@@ -15882,7 +16011,7 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     type: $Enums.DocType | null
-    fileUrl: string | null
+    filePath: string | null
     status: $Enums.DocStatus | null
     reviewNote: string | null
     reviewedAt: Date | null
@@ -15893,7 +16022,7 @@ export namespace Prisma {
     id: string | null
     userId: string | null
     type: $Enums.DocType | null
-    fileUrl: string | null
+    filePath: string | null
     status: $Enums.DocStatus | null
     reviewNote: string | null
     reviewedAt: Date | null
@@ -15904,7 +16033,7 @@ export namespace Prisma {
     id: number
     userId: number
     type: number
-    fileUrl: number
+    filePath: number
     status: number
     reviewNote: number
     reviewedAt: number
@@ -15917,7 +16046,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     type?: true
-    fileUrl?: true
+    filePath?: true
     status?: true
     reviewNote?: true
     reviewedAt?: true
@@ -15928,7 +16057,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     type?: true
-    fileUrl?: true
+    filePath?: true
     status?: true
     reviewNote?: true
     reviewedAt?: true
@@ -15939,7 +16068,7 @@ export namespace Prisma {
     id?: true
     userId?: true
     type?: true
-    fileUrl?: true
+    filePath?: true
     status?: true
     reviewNote?: true
     reviewedAt?: true
@@ -16023,7 +16152,7 @@ export namespace Prisma {
     id: string
     userId: string
     type: $Enums.DocType
-    fileUrl: string
+    filePath: string | null
     status: $Enums.DocStatus
     reviewNote: string | null
     reviewedAt: Date | null
@@ -16051,7 +16180,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     type?: boolean
-    fileUrl?: boolean
+    filePath?: boolean
     status?: boolean
     reviewNote?: boolean
     reviewedAt?: boolean
@@ -16063,7 +16192,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     type?: boolean
-    fileUrl?: boolean
+    filePath?: boolean
     status?: boolean
     reviewNote?: boolean
     reviewedAt?: boolean
@@ -16075,7 +16204,7 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     type?: boolean
-    fileUrl?: boolean
+    filePath?: boolean
     status?: boolean
     reviewNote?: boolean
     reviewedAt?: boolean
@@ -16087,14 +16216,14 @@ export namespace Prisma {
     id?: boolean
     userId?: boolean
     type?: boolean
-    fileUrl?: boolean
+    filePath?: boolean
     status?: boolean
     reviewNote?: boolean
     reviewedAt?: boolean
     createdAt?: boolean
   }
 
-  export type KycDocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "fileUrl" | "status" | "reviewNote" | "reviewedAt" | "createdAt", ExtArgs["result"]["kycDocument"]>
+  export type KycDocumentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "filePath" | "status" | "reviewNote" | "reviewedAt" | "createdAt", ExtArgs["result"]["kycDocument"]>
   export type KycDocumentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -16114,7 +16243,7 @@ export namespace Prisma {
       id: string
       userId: string
       type: $Enums.DocType
-      fileUrl: string
+      filePath: string | null
       status: $Enums.DocStatus
       reviewNote: string | null
       reviewedAt: Date | null
@@ -16546,7 +16675,7 @@ export namespace Prisma {
     readonly id: FieldRef<"KycDocument", 'String'>
     readonly userId: FieldRef<"KycDocument", 'String'>
     readonly type: FieldRef<"KycDocument", 'DocType'>
-    readonly fileUrl: FieldRef<"KycDocument", 'String'>
+    readonly filePath: FieldRef<"KycDocument", 'String'>
     readonly status: FieldRef<"KycDocument", 'DocStatus'>
     readonly reviewNote: FieldRef<"KycDocument", 'String'>
     readonly reviewedAt: FieldRef<"KycDocument", 'DateTime'>
@@ -22442,6 +22571,7 @@ export namespace Prisma {
     id: string | null
     email: string | null
     token: string | null
+    tokenHash: string | null
     expires: Date | null
     createdAt: Date | null
   }
@@ -22450,6 +22580,7 @@ export namespace Prisma {
     id: string | null
     email: string | null
     token: string | null
+    tokenHash: string | null
     expires: Date | null
     createdAt: Date | null
   }
@@ -22458,6 +22589,7 @@ export namespace Prisma {
     id: number
     email: number
     token: number
+    tokenHash: number
     expires: number
     createdAt: number
     _all: number
@@ -22468,6 +22600,7 @@ export namespace Prisma {
     id?: true
     email?: true
     token?: true
+    tokenHash?: true
     expires?: true
     createdAt?: true
   }
@@ -22476,6 +22609,7 @@ export namespace Prisma {
     id?: true
     email?: true
     token?: true
+    tokenHash?: true
     expires?: true
     createdAt?: true
   }
@@ -22484,6 +22618,7 @@ export namespace Prisma {
     id?: true
     email?: true
     token?: true
+    tokenHash?: true
     expires?: true
     createdAt?: true
     _all?: true
@@ -22565,6 +22700,7 @@ export namespace Prisma {
     id: string
     email: string
     token: string
+    tokenHash: string | null
     expires: Date
     createdAt: Date
     _count: PasswordResetTokenCountAggregateOutputType | null
@@ -22590,6 +22726,7 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     token?: boolean
+    tokenHash?: boolean
     expires?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["passwordResetToken"]>
@@ -22598,6 +22735,7 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     token?: boolean
+    tokenHash?: boolean
     expires?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["passwordResetToken"]>
@@ -22606,6 +22744,7 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     token?: boolean
+    tokenHash?: boolean
     expires?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["passwordResetToken"]>
@@ -22614,11 +22753,12 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     token?: boolean
+    tokenHash?: boolean
     expires?: boolean
     createdAt?: boolean
   }
 
-  export type PasswordResetTokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "token" | "expires" | "createdAt", ExtArgs["result"]["passwordResetToken"]>
+  export type PasswordResetTokenOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "token" | "tokenHash" | "expires" | "createdAt", ExtArgs["result"]["passwordResetToken"]>
 
   export type $PasswordResetTokenPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PasswordResetToken"
@@ -22627,6 +22767,7 @@ export namespace Prisma {
       id: string
       email: string
       token: string
+      tokenHash: string | null
       expires: Date
       createdAt: Date
     }, ExtArgs["result"]["passwordResetToken"]>
@@ -23055,6 +23196,7 @@ export namespace Prisma {
     readonly id: FieldRef<"PasswordResetToken", 'String'>
     readonly email: FieldRef<"PasswordResetToken", 'String'>
     readonly token: FieldRef<"PasswordResetToken", 'String'>
+    readonly tokenHash: FieldRef<"PasswordResetToken", 'String'>
     readonly expires: FieldRef<"PasswordResetToken", 'DateTime'>
     readonly createdAt: FieldRef<"PasswordResetToken", 'DateTime'>
   }
@@ -30442,6 +30584,10 @@ export namespace Prisma {
     username: 'username',
     lastActiveAt: 'lastActiveAt',
     onboardingSteps: 'onboardingSteps',
+    lastLoginIp: 'lastLoginIp',
+    lastLoginAt: 'lastLoginAt',
+    failedLoginCount: 'failedLoginCount',
+    lockedUntil: 'lockedUntil',
     twoFactorEnabled: 'twoFactorEnabled',
     twoFactorSecret: 'twoFactorSecret',
     twoFactorMethod: 'twoFactorMethod'
@@ -30470,6 +30616,7 @@ export namespace Prisma {
     details: 'details',
     ipAddress: 'ipAddress',
     userAgent: 'userAgent',
+    metadata: 'metadata',
     createdAt: 'createdAt'
   };
 
@@ -30532,6 +30679,7 @@ export namespace Prisma {
     wooviCorrelationId: 'wooviCorrelationId',
     wooviEndToEndId: 'wooviEndToEndId',
     wooviTransactionId: 'wooviTransactionId',
+    externalCorrelationId: 'externalCorrelationId',
     affiliationId: 'affiliationId'
   };
 
@@ -30597,6 +30745,7 @@ export namespace Prisma {
     userId: 'userId',
     name: 'name',
     key: 'key',
+    keyHash: 'keyHash',
     lastUsed: 'lastUsed',
     active: 'active',
     createdAt: 'createdAt'
@@ -30609,7 +30758,7 @@ export namespace Prisma {
     id: 'id',
     userId: 'userId',
     type: 'type',
-    fileUrl: 'fileUrl',
+    filePath: 'filePath',
     status: 'status',
     reviewNote: 'reviewNote',
     reviewedAt: 'reviewedAt',
@@ -30689,6 +30838,7 @@ export namespace Prisma {
     id: 'id',
     email: 'email',
     token: 'token',
+    tokenHash: 'tokenHash',
     expires: 'expires',
     createdAt: 'createdAt'
   };
@@ -30959,6 +31109,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
@@ -31018,20 +31182,6 @@ export namespace Prisma {
    * Reference to a field of type 'ProductStatus[]'
    */
   export type ListEnumProductStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProductStatus[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -31237,6 +31387,10 @@ export namespace Prisma {
     username?: StringNullableFilter<"User"> | string | null
     lastActiveAt?: DateTimeFilter<"User"> | Date | string
     onboardingSteps?: JsonNullableFilter<"User">
+    lastLoginIp?: StringNullableFilter<"User"> | string | null
+    lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    failedLoginCount?: IntFilter<"User"> | number
+    lockedUntil?: DateTimeNullableFilter<"User"> | Date | string | null
     twoFactorEnabled?: BoolFilter<"User"> | boolean
     twoFactorSecret?: StringNullableFilter<"User"> | string | null
     twoFactorMethod?: EnumTwoFactorMethodNullableFilter<"User"> | $Enums.TwoFactorMethod | null
@@ -31285,6 +31439,10 @@ export namespace Prisma {
     username?: SortOrderInput | SortOrder
     lastActiveAt?: SortOrder
     onboardingSteps?: SortOrderInput | SortOrder
+    lastLoginIp?: SortOrderInput | SortOrder
+    lastLoginAt?: SortOrderInput | SortOrder
+    failedLoginCount?: SortOrder
+    lockedUntil?: SortOrderInput | SortOrder
     twoFactorEnabled?: SortOrder
     twoFactorSecret?: SortOrderInput | SortOrder
     twoFactorMethod?: SortOrderInput | SortOrder
@@ -31336,6 +31494,10 @@ export namespace Prisma {
     socialLinks?: JsonNullableFilter<"User">
     lastActiveAt?: DateTimeFilter<"User"> | Date | string
     onboardingSteps?: JsonNullableFilter<"User">
+    lastLoginIp?: StringNullableFilter<"User"> | string | null
+    lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    failedLoginCount?: IntFilter<"User"> | number
+    lockedUntil?: DateTimeNullableFilter<"User"> | Date | string | null
     twoFactorEnabled?: BoolFilter<"User"> | boolean
     twoFactorSecret?: StringNullableFilter<"User"> | string | null
     twoFactorMethod?: EnumTwoFactorMethodNullableFilter<"User"> | $Enums.TwoFactorMethod | null
@@ -31384,6 +31546,10 @@ export namespace Prisma {
     username?: SortOrderInput | SortOrder
     lastActiveAt?: SortOrder
     onboardingSteps?: SortOrderInput | SortOrder
+    lastLoginIp?: SortOrderInput | SortOrder
+    lastLoginAt?: SortOrderInput | SortOrder
+    failedLoginCount?: SortOrder
+    lockedUntil?: SortOrderInput | SortOrder
     twoFactorEnabled?: SortOrder
     twoFactorSecret?: SortOrderInput | SortOrder
     twoFactorMethod?: SortOrderInput | SortOrder
@@ -31425,6 +31591,10 @@ export namespace Prisma {
     username?: StringNullableWithAggregatesFilter<"User"> | string | null
     lastActiveAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     onboardingSteps?: JsonNullableWithAggregatesFilter<"User">
+    lastLoginIp?: StringNullableWithAggregatesFilter<"User"> | string | null
+    lastLoginAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    failedLoginCount?: IntWithAggregatesFilter<"User"> | number
+    lockedUntil?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     twoFactorEnabled?: BoolWithAggregatesFilter<"User"> | boolean
     twoFactorSecret?: StringNullableWithAggregatesFilter<"User"> | string | null
     twoFactorMethod?: EnumTwoFactorMethodNullableWithAggregatesFilter<"User"> | $Enums.TwoFactorMethod | null
@@ -31500,22 +31670,24 @@ export namespace Prisma {
     OR?: AuditLogWhereInput[]
     NOT?: AuditLogWhereInput | AuditLogWhereInput[]
     id?: StringFilter<"AuditLog"> | string
-    userId?: StringFilter<"AuditLog"> | string
+    userId?: StringNullableFilter<"AuditLog"> | string | null
     action?: StringFilter<"AuditLog"> | string
     details?: StringNullableFilter<"AuditLog"> | string | null
     ipAddress?: StringNullableFilter<"AuditLog"> | string | null
     userAgent?: StringNullableFilter<"AuditLog"> | string | null
+    metadata?: JsonNullableFilter<"AuditLog">
     createdAt?: DateTimeFilter<"AuditLog"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type AuditLogOrderByWithRelationInput = {
     id?: SortOrder
-    userId?: SortOrder
+    userId?: SortOrderInput | SortOrder
     action?: SortOrder
     details?: SortOrderInput | SortOrder
     ipAddress?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     user?: UserOrderByWithRelationInput
   }
@@ -31525,22 +31697,24 @@ export namespace Prisma {
     AND?: AuditLogWhereInput | AuditLogWhereInput[]
     OR?: AuditLogWhereInput[]
     NOT?: AuditLogWhereInput | AuditLogWhereInput[]
-    userId?: StringFilter<"AuditLog"> | string
+    userId?: StringNullableFilter<"AuditLog"> | string | null
     action?: StringFilter<"AuditLog"> | string
     details?: StringNullableFilter<"AuditLog"> | string | null
     ipAddress?: StringNullableFilter<"AuditLog"> | string | null
     userAgent?: StringNullableFilter<"AuditLog"> | string | null
+    metadata?: JsonNullableFilter<"AuditLog">
     createdAt?: DateTimeFilter<"AuditLog"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id">
 
   export type AuditLogOrderByWithAggregationInput = {
     id?: SortOrder
-    userId?: SortOrder
+    userId?: SortOrderInput | SortOrder
     action?: SortOrder
     details?: SortOrderInput | SortOrder
     ipAddress?: SortOrderInput | SortOrder
     userAgent?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: AuditLogCountOrderByAggregateInput
     _max?: AuditLogMaxOrderByAggregateInput
@@ -31552,11 +31726,12 @@ export namespace Prisma {
     OR?: AuditLogScalarWhereWithAggregatesInput[]
     NOT?: AuditLogScalarWhereWithAggregatesInput | AuditLogScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"AuditLog"> | string
-    userId?: StringWithAggregatesFilter<"AuditLog"> | string
+    userId?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     action?: StringWithAggregatesFilter<"AuditLog"> | string
     details?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     ipAddress?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
     userAgent?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    metadata?: JsonNullableWithAggregatesFilter<"AuditLog">
     createdAt?: DateTimeWithAggregatesFilter<"AuditLog"> | Date | string
   }
 
@@ -31687,7 +31862,7 @@ export namespace Prisma {
     NOT?: OrderWhereInput | OrderWhereInput[]
     id?: StringFilter<"Order"> | string
     userId?: StringFilter<"Order"> | string
-    productId?: StringFilter<"Order"> | string
+    productId?: StringNullableFilter<"Order"> | string | null
     buyerName?: StringFilter<"Order"> | string
     buyerEmail?: StringFilter<"Order"> | string
     buyerCpf?: StringNullableFilter<"Order"> | string | null
@@ -31718,10 +31893,11 @@ export namespace Prisma {
     wooviCorrelationId?: StringNullableFilter<"Order"> | string | null
     wooviEndToEndId?: StringNullableFilter<"Order"> | string | null
     wooviTransactionId?: StringNullableFilter<"Order"> | string | null
+    externalCorrelationId?: StringNullableFilter<"Order"> | string | null
     affiliationId?: StringNullableFilter<"Order"> | string | null
     affiliationSale?: XOR<AffiliationSaleNullableScalarRelationFilter, AffiliationSaleWhereInput> | null
     affiliation?: XOR<AffiliationNullableScalarRelationFilter, AffiliationWhereInput> | null
-    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     pendingBalances?: PendingBalanceListRelationFilter
   }
@@ -31729,7 +31905,7 @@ export namespace Prisma {
   export type OrderOrderByWithRelationInput = {
     id?: SortOrder
     userId?: SortOrder
-    productId?: SortOrder
+    productId?: SortOrderInput | SortOrder
     buyerName?: SortOrder
     buyerEmail?: SortOrder
     buyerCpf?: SortOrderInput | SortOrder
@@ -31760,6 +31936,7 @@ export namespace Prisma {
     wooviCorrelationId?: SortOrderInput | SortOrder
     wooviEndToEndId?: SortOrderInput | SortOrder
     wooviTransactionId?: SortOrderInput | SortOrder
+    externalCorrelationId?: SortOrderInput | SortOrder
     affiliationId?: SortOrderInput | SortOrder
     affiliationSale?: AffiliationSaleOrderByWithRelationInput
     affiliation?: AffiliationOrderByWithRelationInput
@@ -31771,11 +31948,12 @@ export namespace Prisma {
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     wooviCorrelationId?: string
+    externalCorrelationId?: string
     AND?: OrderWhereInput | OrderWhereInput[]
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
     userId?: StringFilter<"Order"> | string
-    productId?: StringFilter<"Order"> | string
+    productId?: StringNullableFilter<"Order"> | string | null
     buyerName?: StringFilter<"Order"> | string
     buyerEmail?: StringFilter<"Order"> | string
     buyerCpf?: StringNullableFilter<"Order"> | string | null
@@ -31808,15 +31986,15 @@ export namespace Prisma {
     affiliationId?: StringNullableFilter<"Order"> | string | null
     affiliationSale?: XOR<AffiliationSaleNullableScalarRelationFilter, AffiliationSaleWhereInput> | null
     affiliation?: XOR<AffiliationNullableScalarRelationFilter, AffiliationWhereInput> | null
-    product?: XOR<ProductScalarRelationFilter, ProductWhereInput>
+    product?: XOR<ProductNullableScalarRelationFilter, ProductWhereInput> | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     pendingBalances?: PendingBalanceListRelationFilter
-  }, "id" | "wooviCorrelationId">
+  }, "id" | "wooviCorrelationId" | "externalCorrelationId">
 
   export type OrderOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
-    productId?: SortOrder
+    productId?: SortOrderInput | SortOrder
     buyerName?: SortOrder
     buyerEmail?: SortOrder
     buyerCpf?: SortOrderInput | SortOrder
@@ -31847,6 +32025,7 @@ export namespace Prisma {
     wooviCorrelationId?: SortOrderInput | SortOrder
     wooviEndToEndId?: SortOrderInput | SortOrder
     wooviTransactionId?: SortOrderInput | SortOrder
+    externalCorrelationId?: SortOrderInput | SortOrder
     affiliationId?: SortOrderInput | SortOrder
     _count?: OrderCountOrderByAggregateInput
     _avg?: OrderAvgOrderByAggregateInput
@@ -31861,7 +32040,7 @@ export namespace Prisma {
     NOT?: OrderScalarWhereWithAggregatesInput | OrderScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Order"> | string
     userId?: StringWithAggregatesFilter<"Order"> | string
-    productId?: StringWithAggregatesFilter<"Order"> | string
+    productId?: StringNullableWithAggregatesFilter<"Order"> | string | null
     buyerName?: StringWithAggregatesFilter<"Order"> | string
     buyerEmail?: StringWithAggregatesFilter<"Order"> | string
     buyerCpf?: StringNullableWithAggregatesFilter<"Order"> | string | null
@@ -31892,6 +32071,7 @@ export namespace Prisma {
     wooviCorrelationId?: StringNullableWithAggregatesFilter<"Order"> | string | null
     wooviEndToEndId?: StringNullableWithAggregatesFilter<"Order"> | string | null
     wooviTransactionId?: StringNullableWithAggregatesFilter<"Order"> | string | null
+    externalCorrelationId?: StringNullableWithAggregatesFilter<"Order"> | string | null
     affiliationId?: StringNullableWithAggregatesFilter<"Order"> | string | null
   }
 
@@ -32179,6 +32359,7 @@ export namespace Prisma {
     userId?: StringFilter<"ApiKey"> | string
     name?: StringFilter<"ApiKey"> | string
     key?: StringFilter<"ApiKey"> | string
+    keyHash?: StringNullableFilter<"ApiKey"> | string | null
     lastUsed?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
     active?: BoolFilter<"ApiKey"> | boolean
     createdAt?: DateTimeFilter<"ApiKey"> | Date | string
@@ -32190,6 +32371,7 @@ export namespace Prisma {
     userId?: SortOrder
     name?: SortOrder
     key?: SortOrder
+    keyHash?: SortOrderInput | SortOrder
     lastUsed?: SortOrderInput | SortOrder
     active?: SortOrder
     createdAt?: SortOrder
@@ -32199,6 +32381,7 @@ export namespace Prisma {
   export type ApiKeyWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     key?: string
+    keyHash?: string
     AND?: ApiKeyWhereInput | ApiKeyWhereInput[]
     OR?: ApiKeyWhereInput[]
     NOT?: ApiKeyWhereInput | ApiKeyWhereInput[]
@@ -32208,13 +32391,14 @@ export namespace Prisma {
     active?: BoolFilter<"ApiKey"> | boolean
     createdAt?: DateTimeFilter<"ApiKey"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id" | "key">
+  }, "id" | "key" | "keyHash">
 
   export type ApiKeyOrderByWithAggregationInput = {
     id?: SortOrder
     userId?: SortOrder
     name?: SortOrder
     key?: SortOrder
+    keyHash?: SortOrderInput | SortOrder
     lastUsed?: SortOrderInput | SortOrder
     active?: SortOrder
     createdAt?: SortOrder
@@ -32231,6 +32415,7 @@ export namespace Prisma {
     userId?: StringWithAggregatesFilter<"ApiKey"> | string
     name?: StringWithAggregatesFilter<"ApiKey"> | string
     key?: StringWithAggregatesFilter<"ApiKey"> | string
+    keyHash?: StringNullableWithAggregatesFilter<"ApiKey"> | string | null
     lastUsed?: DateTimeNullableWithAggregatesFilter<"ApiKey"> | Date | string | null
     active?: BoolWithAggregatesFilter<"ApiKey"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"ApiKey"> | Date | string
@@ -32243,7 +32428,7 @@ export namespace Prisma {
     id?: StringFilter<"KycDocument"> | string
     userId?: StringFilter<"KycDocument"> | string
     type?: EnumDocTypeFilter<"KycDocument"> | $Enums.DocType
-    fileUrl?: StringFilter<"KycDocument"> | string
+    filePath?: StringNullableFilter<"KycDocument"> | string | null
     status?: EnumDocStatusFilter<"KycDocument"> | $Enums.DocStatus
     reviewNote?: StringNullableFilter<"KycDocument"> | string | null
     reviewedAt?: DateTimeNullableFilter<"KycDocument"> | Date | string | null
@@ -32255,7 +32440,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     type?: SortOrder
-    fileUrl?: SortOrder
+    filePath?: SortOrderInput | SortOrder
     status?: SortOrder
     reviewNote?: SortOrderInput | SortOrder
     reviewedAt?: SortOrderInput | SortOrder
@@ -32270,7 +32455,7 @@ export namespace Prisma {
     NOT?: KycDocumentWhereInput | KycDocumentWhereInput[]
     userId?: StringFilter<"KycDocument"> | string
     type?: EnumDocTypeFilter<"KycDocument"> | $Enums.DocType
-    fileUrl?: StringFilter<"KycDocument"> | string
+    filePath?: StringNullableFilter<"KycDocument"> | string | null
     status?: EnumDocStatusFilter<"KycDocument"> | $Enums.DocStatus
     reviewNote?: StringNullableFilter<"KycDocument"> | string | null
     reviewedAt?: DateTimeNullableFilter<"KycDocument"> | Date | string | null
@@ -32282,7 +32467,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     type?: SortOrder
-    fileUrl?: SortOrder
+    filePath?: SortOrderInput | SortOrder
     status?: SortOrder
     reviewNote?: SortOrderInput | SortOrder
     reviewedAt?: SortOrderInput | SortOrder
@@ -32299,7 +32484,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"KycDocument"> | string
     userId?: StringWithAggregatesFilter<"KycDocument"> | string
     type?: EnumDocTypeWithAggregatesFilter<"KycDocument"> | $Enums.DocType
-    fileUrl?: StringWithAggregatesFilter<"KycDocument"> | string
+    filePath?: StringNullableWithAggregatesFilter<"KycDocument"> | string | null
     status?: EnumDocStatusWithAggregatesFilter<"KycDocument"> | $Enums.DocStatus
     reviewNote?: StringNullableWithAggregatesFilter<"KycDocument"> | string | null
     reviewedAt?: DateTimeNullableWithAggregatesFilter<"KycDocument"> | Date | string | null
@@ -32643,6 +32828,7 @@ export namespace Prisma {
     id?: StringFilter<"PasswordResetToken"> | string
     email?: StringFilter<"PasswordResetToken"> | string
     token?: StringFilter<"PasswordResetToken"> | string
+    tokenHash?: StringNullableFilter<"PasswordResetToken"> | string | null
     expires?: DateTimeFilter<"PasswordResetToken"> | Date | string
     createdAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
   }
@@ -32651,6 +32837,7 @@ export namespace Prisma {
     id?: SortOrder
     email?: SortOrder
     token?: SortOrder
+    tokenHash?: SortOrderInput | SortOrder
     expires?: SortOrder
     createdAt?: SortOrder
   }
@@ -32658,18 +32845,20 @@ export namespace Prisma {
   export type PasswordResetTokenWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     token?: string
+    tokenHash?: string
     AND?: PasswordResetTokenWhereInput | PasswordResetTokenWhereInput[]
     OR?: PasswordResetTokenWhereInput[]
     NOT?: PasswordResetTokenWhereInput | PasswordResetTokenWhereInput[]
     email?: StringFilter<"PasswordResetToken"> | string
     expires?: DateTimeFilter<"PasswordResetToken"> | Date | string
     createdAt?: DateTimeFilter<"PasswordResetToken"> | Date | string
-  }, "id" | "token">
+  }, "id" | "token" | "tokenHash">
 
   export type PasswordResetTokenOrderByWithAggregationInput = {
     id?: SortOrder
     email?: SortOrder
     token?: SortOrder
+    tokenHash?: SortOrderInput | SortOrder
     expires?: SortOrder
     createdAt?: SortOrder
     _count?: PasswordResetTokenCountOrderByAggregateInput
@@ -32684,6 +32873,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"PasswordResetToken"> | string
     email?: StringWithAggregatesFilter<"PasswordResetToken"> | string
     token?: StringWithAggregatesFilter<"PasswordResetToken"> | string
+    tokenHash?: StringNullableWithAggregatesFilter<"PasswordResetToken"> | string | null
     expires?: DateTimeWithAggregatesFilter<"PasswordResetToken"> | Date | string
     createdAt?: DateTimeWithAggregatesFilter<"PasswordResetToken"> | Date | string
   }
@@ -33223,6 +33413,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -33271,6 +33465,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -33319,6 +33517,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -33367,6 +33569,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -33415,6 +33621,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -33448,6 +33658,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -33481,6 +33695,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -33561,17 +33779,19 @@ export namespace Prisma {
     details?: string | null
     ipAddress?: string | null
     userAgent?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
-    user: UserCreateNestedOneWithoutAuditLogsInput
+    user?: UserCreateNestedOneWithoutAuditLogsInput
   }
 
   export type AuditLogUncheckedCreateInput = {
     id?: string
-    userId: string
+    userId?: string | null
     action: string
     details?: string | null
     ipAddress?: string | null
     userAgent?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
@@ -33581,27 +33801,30 @@ export namespace Prisma {
     details?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutAuditLogsNestedInput
+    user?: UserUpdateOneWithoutAuditLogsNestedInput
   }
 
   export type AuditLogUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     action?: StringFieldUpdateOperationsInput | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AuditLogCreateManyInput = {
     id?: string
-    userId: string
+    userId?: string | null
     action: string
     details?: string | null
     ipAddress?: string | null
     userAgent?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
@@ -33611,16 +33834,18 @@ export namespace Prisma {
     details?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AuditLogUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
     action?: StringFieldUpdateOperationsInput | string
     details?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -33800,9 +34025,10 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
     affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
-    product: ProductCreateNestedOneWithoutOrdersInput
+    product?: ProductCreateNestedOneWithoutOrdersInput
     user: UserCreateNestedOneWithoutOrdersInput
     pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
   }
@@ -33810,7 +34036,7 @@ export namespace Prisma {
   export type OrderUncheckedCreateInput = {
     id?: string
     userId: string
-    productId: string
+    productId?: string | null
     buyerName: string
     buyerEmail: string
     buyerCpf?: string | null
@@ -33841,6 +34067,7 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliationId?: string | null
     affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
     pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
@@ -33878,9 +34105,10 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
     affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
-    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    product?: ProductUpdateOneWithoutOrdersNestedInput
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
   }
@@ -33888,7 +34116,7 @@ export namespace Prisma {
   export type OrderUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
     buyerName?: StringFieldUpdateOperationsInput | string
     buyerEmail?: StringFieldUpdateOperationsInput | string
     buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
@@ -33919,6 +34147,7 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
     pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
@@ -33927,7 +34156,7 @@ export namespace Prisma {
   export type OrderCreateManyInput = {
     id?: string
     userId: string
-    productId: string
+    productId?: string | null
     buyerName: string
     buyerEmail: string
     buyerCpf?: string | null
@@ -33958,6 +34187,7 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliationId?: string | null
   }
 
@@ -33993,12 +34223,13 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type OrderUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
     buyerName?: StringFieldUpdateOperationsInput | string
     buyerEmail?: StringFieldUpdateOperationsInput | string
     buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
@@ -34029,6 +34260,7 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -34326,6 +34558,7 @@ export namespace Prisma {
     id?: string
     name: string
     key: string
+    keyHash?: string | null
     lastUsed?: Date | string | null
     active?: boolean
     createdAt?: Date | string
@@ -34337,6 +34570,7 @@ export namespace Prisma {
     userId: string
     name: string
     key: string
+    keyHash?: string | null
     lastUsed?: Date | string | null
     active?: boolean
     createdAt?: Date | string
@@ -34346,6 +34580,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     key?: StringFieldUpdateOperationsInput | string
+    keyHash?: NullableStringFieldUpdateOperationsInput | string | null
     lastUsed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34357,6 +34592,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     key?: StringFieldUpdateOperationsInput | string
+    keyHash?: NullableStringFieldUpdateOperationsInput | string | null
     lastUsed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34367,6 +34603,7 @@ export namespace Prisma {
     userId: string
     name: string
     key: string
+    keyHash?: string | null
     lastUsed?: Date | string | null
     active?: boolean
     createdAt?: Date | string
@@ -34376,6 +34613,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     key?: StringFieldUpdateOperationsInput | string
+    keyHash?: NullableStringFieldUpdateOperationsInput | string | null
     lastUsed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34386,6 +34624,7 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     key?: StringFieldUpdateOperationsInput | string
+    keyHash?: NullableStringFieldUpdateOperationsInput | string | null
     lastUsed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -34394,7 +34633,7 @@ export namespace Prisma {
   export type KycDocumentCreateInput = {
     id?: string
     type: $Enums.DocType
-    fileUrl: string
+    filePath?: string | null
     status?: $Enums.DocStatus
     reviewNote?: string | null
     reviewedAt?: Date | string | null
@@ -34406,7 +34645,7 @@ export namespace Prisma {
     id?: string
     userId: string
     type: $Enums.DocType
-    fileUrl: string
+    filePath?: string | null
     status?: $Enums.DocStatus
     reviewNote?: string | null
     reviewedAt?: Date | string | null
@@ -34416,7 +34655,7 @@ export namespace Prisma {
   export type KycDocumentUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDocStatusFieldUpdateOperationsInput | $Enums.DocStatus
     reviewNote?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34428,7 +34667,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     type?: EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDocStatusFieldUpdateOperationsInput | $Enums.DocStatus
     reviewNote?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34439,7 +34678,7 @@ export namespace Prisma {
     id?: string
     userId: string
     type: $Enums.DocType
-    fileUrl: string
+    filePath?: string | null
     status?: $Enums.DocStatus
     reviewNote?: string | null
     reviewedAt?: Date | string | null
@@ -34449,7 +34688,7 @@ export namespace Prisma {
   export type KycDocumentUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDocStatusFieldUpdateOperationsInput | $Enums.DocStatus
     reviewNote?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34460,7 +34699,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     type?: EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDocStatusFieldUpdateOperationsInput | $Enums.DocStatus
     reviewNote?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34825,6 +35064,7 @@ export namespace Prisma {
     id?: string
     email: string
     token: string
+    tokenHash?: string | null
     expires: Date | string
     createdAt?: Date | string
   }
@@ -34833,6 +35073,7 @@ export namespace Prisma {
     id?: string
     email: string
     token: string
+    tokenHash?: string | null
     expires: Date | string
     createdAt?: Date | string
   }
@@ -34841,6 +35082,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    tokenHash?: NullableStringFieldUpdateOperationsInput | string | null
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34849,6 +35091,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    tokenHash?: NullableStringFieldUpdateOperationsInput | string | null
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34857,6 +35100,7 @@ export namespace Prisma {
     id?: string
     email: string
     token: string
+    tokenHash?: string | null
     expires: Date | string
     createdAt?: Date | string
   }
@@ -34865,6 +35109,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    tokenHash?: NullableStringFieldUpdateOperationsInput | string | null
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -34873,6 +35118,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
+    tokenHash?: NullableStringFieldUpdateOperationsInput | string | null
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -35537,6 +35783,28 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -35732,6 +36000,10 @@ export namespace Prisma {
     username?: SortOrder
     lastActiveAt?: SortOrder
     onboardingSteps?: SortOrder
+    lastLoginIp?: SortOrder
+    lastLoginAt?: SortOrder
+    failedLoginCount?: SortOrder
+    lockedUntil?: SortOrder
     twoFactorEnabled?: SortOrder
     twoFactorSecret?: SortOrder
     twoFactorMethod?: SortOrder
@@ -35743,6 +36015,7 @@ export namespace Prisma {
     totalWithdrawn?: SortOrder
     availableBalance?: SortOrder
     pendingBalance?: SortOrder
+    failedLoginCount?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -35770,6 +36043,10 @@ export namespace Prisma {
     updatedAt?: SortOrder
     username?: SortOrder
     lastActiveAt?: SortOrder
+    lastLoginIp?: SortOrder
+    lastLoginAt?: SortOrder
+    failedLoginCount?: SortOrder
+    lockedUntil?: SortOrder
     twoFactorEnabled?: SortOrder
     twoFactorSecret?: SortOrder
     twoFactorMethod?: SortOrder
@@ -35800,6 +36077,10 @@ export namespace Prisma {
     updatedAt?: SortOrder
     username?: SortOrder
     lastActiveAt?: SortOrder
+    lastLoginIp?: SortOrder
+    lastLoginAt?: SortOrder
+    failedLoginCount?: SortOrder
+    lockedUntil?: SortOrder
     twoFactorEnabled?: SortOrder
     twoFactorSecret?: SortOrder
     twoFactorMethod?: SortOrder
@@ -35811,6 +36092,7 @@ export namespace Prisma {
     totalWithdrawn?: SortOrder
     availableBalance?: SortOrder
     pendingBalance?: SortOrder
+    failedLoginCount?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -35945,6 +36227,36 @@ export namespace Prisma {
     _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -36015,6 +36327,11 @@ export namespace Prisma {
     _max?: NestedEnumNotificationTypeFilter<$PrismaModel>
   }
 
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
   export type AuditLogCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -36022,6 +36339,7 @@ export namespace Prisma {
     details?: SortOrder
     ipAddress?: SortOrder
     userAgent?: SortOrder
+    metadata?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -36057,17 +36375,6 @@ export namespace Prisma {
     in?: $Enums.ProductStatus[] | ListEnumProductStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.ProductStatus[] | ListEnumProductStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumProductStatusFilter<$PrismaModel> | $Enums.ProductStatus
-  }
-
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type CheckoutLinkListRelationFilter = {
@@ -36167,22 +36474,6 @@ export namespace Prisma {
     _max?: NestedEnumProductStatusFilter<$PrismaModel>
   }
 
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
   export type EnumOrderStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
     in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
@@ -36197,17 +36488,6 @@ export namespace Prisma {
     not?: NestedEnumPaymentMethodFilter<$PrismaModel> | $Enums.PaymentMethod
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type AffiliationSaleNullableScalarRelationFilter = {
     is?: AffiliationSaleWhereInput | null
     isNot?: AffiliationSaleWhereInput | null
@@ -36218,9 +36498,9 @@ export namespace Prisma {
     isNot?: AffiliationWhereInput | null
   }
 
-  export type ProductScalarRelationFilter = {
-    is?: ProductWhereInput
-    isNot?: ProductWhereInput
+  export type ProductNullableScalarRelationFilter = {
+    is?: ProductWhereInput | null
+    isNot?: ProductWhereInput | null
   }
 
   export type OrderCountOrderByAggregateInput = {
@@ -36257,6 +36537,7 @@ export namespace Prisma {
     wooviCorrelationId?: SortOrder
     wooviEndToEndId?: SortOrder
     wooviTransactionId?: SortOrder
+    externalCorrelationId?: SortOrder
     affiliationId?: SortOrder
   }
 
@@ -36299,6 +36580,7 @@ export namespace Prisma {
     wooviCorrelationId?: SortOrder
     wooviEndToEndId?: SortOrder
     wooviTransactionId?: SortOrder
+    externalCorrelationId?: SortOrder
     affiliationId?: SortOrder
   }
 
@@ -36334,6 +36616,7 @@ export namespace Prisma {
     wooviCorrelationId?: SortOrder
     wooviEndToEndId?: SortOrder
     wooviTransactionId?: SortOrder
+    externalCorrelationId?: SortOrder
     affiliationId?: SortOrder
   }
 
@@ -36362,20 +36645,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPaymentMethodFilter<$PrismaModel>
     _max?: NestedEnumPaymentMethodFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type OrderScalarRelationFilter = {
@@ -36652,6 +36921,7 @@ export namespace Prisma {
     userId?: SortOrder
     name?: SortOrder
     key?: SortOrder
+    keyHash?: SortOrder
     lastUsed?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
@@ -36662,6 +36932,7 @@ export namespace Prisma {
     userId?: SortOrder
     name?: SortOrder
     key?: SortOrder
+    keyHash?: SortOrder
     lastUsed?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
@@ -36672,6 +36943,7 @@ export namespace Prisma {
     userId?: SortOrder
     name?: SortOrder
     key?: SortOrder
+    keyHash?: SortOrder
     lastUsed?: SortOrder
     active?: SortOrder
     createdAt?: SortOrder
@@ -36695,7 +36967,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     type?: SortOrder
-    fileUrl?: SortOrder
+    filePath?: SortOrder
     status?: SortOrder
     reviewNote?: SortOrder
     reviewedAt?: SortOrder
@@ -36706,7 +36978,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     type?: SortOrder
-    fileUrl?: SortOrder
+    filePath?: SortOrder
     status?: SortOrder
     reviewNote?: SortOrder
     reviewedAt?: SortOrder
@@ -36717,7 +36989,7 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     type?: SortOrder
-    fileUrl?: SortOrder
+    filePath?: SortOrder
     status?: SortOrder
     reviewNote?: SortOrder
     reviewedAt?: SortOrder
@@ -36780,6 +37052,11 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumBadgeTypeFilter<$PrismaModel>
     _max?: NestedEnumBadgeTypeFilter<$PrismaModel>
+  }
+
+  export type ProductScalarRelationFilter = {
+    is?: ProductWhereInput
+    isNot?: ProductWhereInput
   }
 
   export type CheckoutLinkCountOrderByAggregateInput = {
@@ -36971,6 +37248,7 @@ export namespace Prisma {
     id?: SortOrder
     email?: SortOrder
     token?: SortOrder
+    tokenHash?: SortOrder
     expires?: SortOrder
     createdAt?: SortOrder
   }
@@ -36979,6 +37257,7 @@ export namespace Prisma {
     id?: SortOrder
     email?: SortOrder
     token?: SortOrder
+    tokenHash?: SortOrder
     expires?: SortOrder
     createdAt?: SortOrder
   }
@@ -36987,6 +37266,7 @@ export namespace Prisma {
     id?: SortOrder
     email?: SortOrder
     token?: SortOrder
+    tokenHash?: SortOrder
     expires?: SortOrder
     createdAt?: SortOrder
   }
@@ -37628,6 +37908,18 @@ export namespace Prisma {
     set?: Date | string
   }
 
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
   }
@@ -38080,10 +38372,12 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutAuditLogsNestedInput = {
+  export type UserUpdateOneWithoutAuditLogsNestedInput = {
     create?: XOR<UserCreateWithoutAuditLogsInput, UserUncheckedCreateWithoutAuditLogsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAuditLogsInput
     upsert?: UserUpsertWithoutAuditLogsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAuditLogsInput, UserUpdateWithoutAuditLogsInput>, UserUncheckedUpdateWithoutAuditLogsInput>
   }
@@ -38142,14 +38436,6 @@ export namespace Prisma {
 
   export type EnumProductStatusFieldUpdateOperationsInput = {
     set?: $Enums.ProductStatus
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type AffiliateOfferUpdateManyWithoutProductNestedInput = {
@@ -38296,10 +38582,6 @@ export namespace Prisma {
     set?: $Enums.PaymentMethod
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
   export type AffiliationSaleUpdateOneWithoutOrderNestedInput = {
     create?: XOR<AffiliationSaleCreateWithoutOrderInput, AffiliationSaleUncheckedCreateWithoutOrderInput>
     connectOrCreate?: AffiliationSaleCreateOrConnectWithoutOrderInput
@@ -38320,10 +38602,12 @@ export namespace Prisma {
     update?: XOR<XOR<AffiliationUpdateToOneWithWhereWithoutOrdersInput, AffiliationUpdateWithoutOrdersInput>, AffiliationUncheckedUpdateWithoutOrdersInput>
   }
 
-  export type ProductUpdateOneRequiredWithoutOrdersNestedInput = {
+  export type ProductUpdateOneWithoutOrdersNestedInput = {
     create?: XOR<ProductCreateWithoutOrdersInput, ProductUncheckedCreateWithoutOrdersInput>
     connectOrCreate?: ProductCreateOrConnectWithoutOrdersInput
     upsert?: ProductUpsertWithoutOrdersInput
+    disconnect?: ProductWhereInput | boolean
+    delete?: ProductWhereInput | boolean
     connect?: ProductWhereUniqueInput
     update?: XOR<XOR<ProductUpdateToOneWithWhereWithoutOrdersInput, ProductUpdateWithoutOrdersInput>, ProductUncheckedUpdateWithoutOrdersInput>
   }
@@ -38886,6 +39170,28 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
   export type NestedBoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
@@ -38913,17 +39219,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
-  }
-
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
@@ -39047,6 +39342,36 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -39116,22 +39441,6 @@ export namespace Prisma {
     _max?: NestedEnumProductStatusFilter<$PrismaModel>
   }
 
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
   export type NestedEnumOrderStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.OrderStatus | EnumOrderStatusFieldRefInput<$PrismaModel>
     in?: $Enums.OrderStatus[] | ListEnumOrderStatusFieldRefInput<$PrismaModel>
@@ -39144,17 +39453,6 @@ export namespace Prisma {
     in?: $Enums.PaymentMethod[] | ListEnumPaymentMethodFieldRefInput<$PrismaModel>
     notIn?: $Enums.PaymentMethod[] | ListEnumPaymentMethodFieldRefInput<$PrismaModel>
     not?: NestedEnumPaymentMethodFilter<$PrismaModel> | $Enums.PaymentMethod
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type NestedEnumOrderStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -39175,20 +39473,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPaymentMethodFilter<$PrismaModel>
     _max?: NestedEnumPaymentMethodFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumWithdrawalStatusFilter<$PrismaModel = never> = {
@@ -39560,6 +39844,7 @@ export namespace Prisma {
     id?: string
     name: string
     key: string
+    keyHash?: string | null
     lastUsed?: Date | string | null
     active?: boolean
     createdAt?: Date | string
@@ -39569,6 +39854,7 @@ export namespace Prisma {
     id?: string
     name: string
     key: string
+    keyHash?: string | null
     lastUsed?: Date | string | null
     active?: boolean
     createdAt?: Date | string
@@ -39590,6 +39876,7 @@ export namespace Prisma {
     details?: string | null
     ipAddress?: string | null
     userAgent?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
@@ -39599,6 +39886,7 @@ export namespace Prisma {
     details?: string | null
     ipAddress?: string | null
     userAgent?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
@@ -39641,7 +39929,7 @@ export namespace Prisma {
   export type KycDocumentCreateWithoutUserInput = {
     id?: string
     type: $Enums.DocType
-    fileUrl: string
+    filePath?: string | null
     status?: $Enums.DocStatus
     reviewNote?: string | null
     reviewedAt?: Date | string | null
@@ -39651,7 +39939,7 @@ export namespace Prisma {
   export type KycDocumentUncheckedCreateWithoutUserInput = {
     id?: string
     type: $Enums.DocType
-    fileUrl: string
+    filePath?: string | null
     status?: $Enums.DocStatus
     reviewNote?: string | null
     reviewedAt?: Date | string | null
@@ -39728,15 +40016,16 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
     affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
-    product: ProductCreateNestedOneWithoutOrdersInput
+    product?: ProductCreateNestedOneWithoutOrdersInput
     pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutUserInput = {
     id?: string
-    productId: string
+    productId?: string | null
     buyerName: string
     buyerEmail: string
     buyerCpf?: string | null
@@ -39767,6 +40056,7 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliationId?: string | null
     affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
     pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
@@ -40100,6 +40390,7 @@ export namespace Prisma {
     userId?: StringFilter<"ApiKey"> | string
     name?: StringFilter<"ApiKey"> | string
     key?: StringFilter<"ApiKey"> | string
+    keyHash?: StringNullableFilter<"ApiKey"> | string | null
     lastUsed?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
     active?: BoolFilter<"ApiKey"> | boolean
     createdAt?: DateTimeFilter<"ApiKey"> | Date | string
@@ -40126,11 +40417,12 @@ export namespace Prisma {
     OR?: AuditLogScalarWhereInput[]
     NOT?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
     id?: StringFilter<"AuditLog"> | string
-    userId?: StringFilter<"AuditLog"> | string
+    userId?: StringNullableFilter<"AuditLog"> | string | null
     action?: StringFilter<"AuditLog"> | string
     details?: StringNullableFilter<"AuditLog"> | string | null
     ipAddress?: StringNullableFilter<"AuditLog"> | string | null
     userAgent?: StringNullableFilter<"AuditLog"> | string | null
+    metadata?: JsonNullableFilter<"AuditLog">
     createdAt?: DateTimeFilter<"AuditLog"> | Date | string
   }
 
@@ -40185,7 +40477,7 @@ export namespace Prisma {
     id?: StringFilter<"KycDocument"> | string
     userId?: StringFilter<"KycDocument"> | string
     type?: EnumDocTypeFilter<"KycDocument"> | $Enums.DocType
-    fileUrl?: StringFilter<"KycDocument"> | string
+    filePath?: StringNullableFilter<"KycDocument"> | string | null
     status?: EnumDocStatusFilter<"KycDocument"> | $Enums.DocStatus
     reviewNote?: StringNullableFilter<"KycDocument"> | string | null
     reviewedAt?: DateTimeNullableFilter<"KycDocument"> | Date | string | null
@@ -40243,7 +40535,7 @@ export namespace Prisma {
     NOT?: OrderScalarWhereInput | OrderScalarWhereInput[]
     id?: StringFilter<"Order"> | string
     userId?: StringFilter<"Order"> | string
-    productId?: StringFilter<"Order"> | string
+    productId?: StringNullableFilter<"Order"> | string | null
     buyerName?: StringFilter<"Order"> | string
     buyerEmail?: StringFilter<"Order"> | string
     buyerCpf?: StringNullableFilter<"Order"> | string | null
@@ -40274,6 +40566,7 @@ export namespace Prisma {
     wooviCorrelationId?: StringNullableFilter<"Order"> | string | null
     wooviEndToEndId?: StringNullableFilter<"Order"> | string | null
     wooviTransactionId?: StringNullableFilter<"Order"> | string | null
+    externalCorrelationId?: StringNullableFilter<"Order"> | string | null
     affiliationId?: StringNullableFilter<"Order"> | string | null
   }
 
@@ -40486,6 +40779,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -40533,6 +40830,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -40596,6 +40897,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -40643,6 +40948,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -40690,6 +40999,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -40737,6 +41050,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -40800,6 +41117,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -40847,6 +41168,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -40978,6 +41303,7 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
     affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
     user: UserCreateNestedOneWithoutOrdersInput
@@ -41017,6 +41343,7 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliationId?: string | null
     affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
     pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
@@ -41060,6 +41387,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -41107,6 +41438,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -41229,6 +41564,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -41276,6 +41615,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -41436,6 +41779,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -41483,6 +41830,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -41705,6 +42056,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -41752,6 +42107,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -41819,16 +42178,17 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
     affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
-    product: ProductCreateNestedOneWithoutOrdersInput
+    product?: ProductCreateNestedOneWithoutOrdersInput
     user: UserCreateNestedOneWithoutOrdersInput
   }
 
   export type OrderUncheckedCreateWithoutPendingBalancesInput = {
     id?: string
     userId: string
-    productId: string
+    productId?: string | null
     buyerName: string
     buyerEmail: string
     buyerCpf?: string | null
@@ -41859,6 +42219,7 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliationId?: string | null
     affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
   }
@@ -41896,6 +42257,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -41943,6 +42308,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -42010,16 +42379,17 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
     affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
-    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    product?: ProductUpdateOneWithoutOrdersNestedInput
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutPendingBalancesInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
     buyerName?: StringFieldUpdateOperationsInput | string
     buyerEmail?: StringFieldUpdateOperationsInput | string
     buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
@@ -42050,6 +42420,7 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
   }
@@ -42093,6 +42464,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -42140,6 +42515,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -42187,6 +42566,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -42234,6 +42617,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -42297,6 +42684,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -42344,6 +42735,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -42391,6 +42786,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -42438,6 +42837,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -42501,6 +42904,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -42548,6 +42955,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -42595,6 +43006,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -42642,6 +43057,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -42705,6 +43124,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -42752,6 +43175,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -42799,6 +43226,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -42846,6 +43277,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -42909,6 +43344,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -42956,6 +43395,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -43003,6 +43446,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -43050,6 +43497,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -43113,6 +43564,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -43160,6 +43615,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -43307,6 +43766,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -43354,6 +43817,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -43417,6 +43884,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -43464,6 +43935,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -43511,6 +43986,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -43558,6 +44037,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -43621,6 +44104,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -43668,6 +44155,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -43715,6 +44206,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -43762,6 +44257,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -43825,6 +44324,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -43872,6 +44375,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -43919,6 +44426,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -43966,6 +44477,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -44122,6 +44637,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -44169,6 +44688,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -44285,6 +44808,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -44332,6 +44859,10 @@ export namespace Prisma {
     username?: string | null
     lastActiveAt?: Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: string | null
+    lastLoginAt?: Date | string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
     twoFactorEnabled?: boolean
     twoFactorSecret?: string | null
     twoFactorMethod?: $Enums.TwoFactorMethod | null
@@ -44469,8 +45000,9 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliationSale?: AffiliationSaleCreateNestedOneWithoutOrderInput
-    product: ProductCreateNestedOneWithoutOrdersInput
+    product?: ProductCreateNestedOneWithoutOrdersInput
     user: UserCreateNestedOneWithoutOrdersInput
     pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
   }
@@ -44478,7 +45010,7 @@ export namespace Prisma {
   export type OrderUncheckedCreateWithoutAffiliationInput = {
     id?: string
     userId: string
-    productId: string
+    productId?: string | null
     buyerName: string
     buyerEmail: string
     buyerCpf?: string | null
@@ -44509,6 +45041,7 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliationSale?: AffiliationSaleUncheckedCreateNestedOneWithoutOrderInput
     pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
   }
@@ -44562,6 +45095,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -44609,6 +45146,10 @@ export namespace Prisma {
     username?: NullableStringFieldUpdateOperationsInput | string | null
     lastActiveAt?: DateTimeFieldUpdateOperationsInput | Date | string
     onboardingSteps?: NullableJsonNullValueInput | InputJsonValue
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
     twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
     twoFactorMethod?: NullableEnumTwoFactorMethodFieldUpdateOperationsInput | $Enums.TwoFactorMethod | null
@@ -44804,8 +45345,9 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliation?: AffiliationCreateNestedOneWithoutOrdersInput
-    product: ProductCreateNestedOneWithoutOrdersInput
+    product?: ProductCreateNestedOneWithoutOrdersInput
     user: UserCreateNestedOneWithoutOrdersInput
     pendingBalances?: PendingBalanceCreateNestedManyWithoutOrderInput
   }
@@ -44813,7 +45355,7 @@ export namespace Prisma {
   export type OrderUncheckedCreateWithoutAffiliationSaleInput = {
     id?: string
     userId: string
-    productId: string
+    productId?: string | null
     buyerName: string
     buyerEmail: string
     buyerCpf?: string | null
@@ -44844,6 +45386,7 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliationId?: string | null
     pendingBalances?: PendingBalanceUncheckedCreateNestedManyWithoutOrderInput
   }
@@ -44943,8 +45486,9 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
-    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    product?: ProductUpdateOneWithoutOrdersNestedInput
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
   }
@@ -44952,7 +45496,7 @@ export namespace Prisma {
   export type OrderUncheckedUpdateWithoutAffiliationSaleInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
     buyerName?: StringFieldUpdateOperationsInput | string
     buyerEmail?: StringFieldUpdateOperationsInput | string
     buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
@@ -44983,6 +45527,7 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
     pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
   }
@@ -45037,6 +45582,7 @@ export namespace Prisma {
     id?: string
     name: string
     key: string
+    keyHash?: string | null
     lastUsed?: Date | string | null
     active?: boolean
     createdAt?: Date | string
@@ -45048,6 +45594,7 @@ export namespace Prisma {
     details?: string | null
     ipAddress?: string | null
     userAgent?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: Date | string
   }
 
@@ -45062,7 +45609,7 @@ export namespace Prisma {
   export type KycDocumentCreateManyUserInput = {
     id?: string
     type: $Enums.DocType
-    fileUrl: string
+    filePath?: string | null
     status?: $Enums.DocStatus
     reviewNote?: string | null
     reviewedAt?: Date | string | null
@@ -45080,7 +45627,7 @@ export namespace Prisma {
 
   export type OrderCreateManyUserInput = {
     id?: string
-    productId: string
+    productId?: string | null
     buyerName: string
     buyerEmail: string
     buyerCpf?: string | null
@@ -45111,6 +45658,7 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliationId?: string | null
   }
 
@@ -45323,6 +45871,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     key?: StringFieldUpdateOperationsInput | string
+    keyHash?: NullableStringFieldUpdateOperationsInput | string | null
     lastUsed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -45332,6 +45881,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     key?: StringFieldUpdateOperationsInput | string
+    keyHash?: NullableStringFieldUpdateOperationsInput | string | null
     lastUsed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -45341,6 +45891,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     key?: StringFieldUpdateOperationsInput | string
+    keyHash?: NullableStringFieldUpdateOperationsInput | string | null
     lastUsed?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     active?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -45352,6 +45903,7 @@ export namespace Prisma {
     details?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -45361,6 +45913,7 @@ export namespace Prisma {
     details?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -45370,6 +45923,7 @@ export namespace Prisma {
     details?: NullableStringFieldUpdateOperationsInput | string | null
     ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
     userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -45400,7 +45954,7 @@ export namespace Prisma {
   export type KycDocumentUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDocStatusFieldUpdateOperationsInput | $Enums.DocStatus
     reviewNote?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45410,7 +45964,7 @@ export namespace Prisma {
   export type KycDocumentUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDocStatusFieldUpdateOperationsInput | $Enums.DocStatus
     reviewNote?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45420,7 +45974,7 @@ export namespace Prisma {
   export type KycDocumentUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
-    fileUrl?: StringFieldUpdateOperationsInput | string
+    filePath?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDocStatusFieldUpdateOperationsInput | $Enums.DocStatus
     reviewNote?: NullableStringFieldUpdateOperationsInput | string | null
     reviewedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45486,15 +46040,16 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
     affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
-    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    product?: ProductUpdateOneWithoutOrdersNestedInput
     pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
     buyerName?: StringFieldUpdateOperationsInput | string
     buyerEmail?: StringFieldUpdateOperationsInput | string
     buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45525,6 +46080,7 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
     pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
@@ -45532,7 +46088,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
     buyerName?: StringFieldUpdateOperationsInput | string
     buyerEmail?: StringFieldUpdateOperationsInput | string
     buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
@@ -45563,6 +46119,7 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -45817,6 +46374,7 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
     affiliationId?: string | null
   }
 
@@ -45941,6 +46499,7 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
     affiliation?: AffiliationUpdateOneWithoutOrdersNestedInput
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
@@ -45980,6 +46539,7 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
     pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
@@ -46018,6 +46578,7 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -46138,7 +46699,7 @@ export namespace Prisma {
   export type OrderCreateManyAffiliationInput = {
     id?: string
     userId: string
-    productId: string
+    productId?: string | null
     buyerName: string
     buyerEmail: string
     buyerCpf?: string | null
@@ -46169,6 +46730,7 @@ export namespace Prisma {
     wooviCorrelationId?: string | null
     wooviEndToEndId?: string | null
     wooviTransactionId?: string | null
+    externalCorrelationId?: string | null
   }
 
   export type AffiliationSaleUpdateWithoutAffiliationInput = {
@@ -46233,8 +46795,9 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationSale?: AffiliationSaleUpdateOneWithoutOrderNestedInput
-    product?: ProductUpdateOneRequiredWithoutOrdersNestedInput
+    product?: ProductUpdateOneWithoutOrdersNestedInput
     user?: UserUpdateOneRequiredWithoutOrdersNestedInput
     pendingBalances?: PendingBalanceUpdateManyWithoutOrderNestedInput
   }
@@ -46242,7 +46805,7 @@ export namespace Prisma {
   export type OrderUncheckedUpdateWithoutAffiliationInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
     buyerName?: StringFieldUpdateOperationsInput | string
     buyerEmail?: StringFieldUpdateOperationsInput | string
     buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46273,6 +46836,7 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     affiliationSale?: AffiliationSaleUncheckedUpdateOneWithoutOrderNestedInput
     pendingBalances?: PendingBalanceUncheckedUpdateManyWithoutOrderNestedInput
   }
@@ -46280,7 +46844,7 @@ export namespace Prisma {
   export type OrderUncheckedUpdateManyWithoutAffiliationInput = {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
-    productId?: StringFieldUpdateOperationsInput | string
+    productId?: NullableStringFieldUpdateOperationsInput | string | null
     buyerName?: StringFieldUpdateOperationsInput | string
     buyerEmail?: StringFieldUpdateOperationsInput | string
     buyerCpf?: NullableStringFieldUpdateOperationsInput | string | null
@@ -46311,6 +46875,7 @@ export namespace Prisma {
     wooviCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviEndToEndId?: NullableStringFieldUpdateOperationsInput | string | null
     wooviTransactionId?: NullableStringFieldUpdateOperationsInput | string | null
+    externalCorrelationId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

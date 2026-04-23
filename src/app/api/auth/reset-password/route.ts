@@ -13,9 +13,19 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { token, password } = resetPasswordSchema.parse(body);
 
-    const existingToken = await prisma.passwordResetToken.findUnique({
-      where: { token },
+    const { hashApiKey } = await import("@/lib/encryption");
+    const hashed = hashApiKey(token);
+
+    let existingToken = await prisma.passwordResetToken.findUnique({
+      where: { tokenHash: hashed },
     });
+
+    // Fallback for legacy tokens (stored as plain UUID in 'token' field)
+    if (!existingToken) {
+      existingToken = await prisma.passwordResetToken.findUnique({
+        where: { token },
+      });
+    }
 
     if (!existingToken) {
       return NextResponse.json({ error: "Token inválido" }, { status: 400 });

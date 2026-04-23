@@ -16,13 +16,20 @@ export async function GET(req: Request) {
     const dbUser = await prisma.user.findUnique({ where: { email: 'rooseveltyyy@gmail.com' }, select: { id: true } });
     if (dbUser) userId = dbUser.id;
   }
-  
+
+  const { searchParams } = new URL(req.url);
+  const status = searchParams.get("status");
+  const method = searchParams.get("method");
+  const productId = searchParams.get("productId");
+  const search = searchParams.get("search");
+  const page = parseInt(searchParams.get("page") ?? "1");
+
   const where: any = { userId };
 
   if (status && status !== "ALL") where.status = status;
   if (method && method !== "ALL") where.paymentMethod = method;
   if (productId && productId !== "ALL") where.productId = productId;
-  
+
   if (search) {
     where.OR = [
       { buyerName: { contains: search, mode: "insensitive" } },
@@ -56,4 +63,3 @@ export async function GET(req: Request) {
     }
   });
 }
-

@@ -29,7 +29,7 @@ export async function POST(
     }
 
     // 2. Permission check (Owner or Admin)
-    if (order.userId !== session.user.id && session.user.role !== "ADMIN") {
+    if (order.userId !== session.user.id && (session.user as any).role !== "ADMIN") {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

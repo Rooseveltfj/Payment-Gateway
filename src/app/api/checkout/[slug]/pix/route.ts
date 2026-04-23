@@ -5,10 +5,18 @@ import { NextResponse } from "next/server";
 import { wooviRequest } from "@/lib/woovi";
 import { sendPixGeneratedEmail } from "@/lib/email";
 
+import { rateLimits } from "@/lib/rate-limit";
+
 export async function POST(
   req: Request,
   { params }: { params: { slug: string } }
 ) {
+  const ip = req.headers.get('x-forwarded-for') ?? 'anonymous';
+  const { success } = await rateLimits.checkout.limit(ip);
+  if (!success) {
+    return NextResponse.json({ error: "Muitas tentativas. Tente novamente mais tarde." }, { status: 429 });
+  }
+
   try {
     const { slug } = params;
     const body = await req.json();

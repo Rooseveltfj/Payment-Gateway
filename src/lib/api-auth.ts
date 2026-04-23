@@ -30,22 +30,16 @@ export async function validateApiKey(
     };
   }
 
-  // Keys are stored as a prefix + hash. Prefix is the first 8 chars (bg_live_ or bg_test_)
-  const keys = await prisma.apiKey.findMany({
-    where: { active: true },
-    select: { id: true, key: true, userId: true, name: true },
+  const { hashApiKey } = await import("@/lib/encryption");
+  const keyHash = hashApiKey(rawKey);
+
+  const matchedKey = await prisma.apiKey.findUnique({
+    where: { 
+      keyHash: keyHash,
+      active: true 
+    },
+    select: { id: true, userId: true },
   });
-
-  let matchedKey: (typeof keys)[0] | null = null;
-
-  for (const k of keys) {
-    // key field stores bcrypt hash
-    const isMatch = await bcrypt.compare(rawKey, k.key);
-    if (isMatch) {
-      matchedKey = k;
-      break;
-    }
-  }
 
   if (!matchedKey) {
     return {

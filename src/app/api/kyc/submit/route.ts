@@ -4,7 +4,15 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
+import { rateLimits } from "@/lib/rate-limit";
+
 export async function POST(req: Request) {
+  const ip = req.headers.get('x-forwarded-for') ?? 'anonymous';
+  const { success } = await rateLimits.kyc.limit(ip);
+  if (!success) {
+    return NextResponse.json({ error: "Muitas tentativas. Tente novamente mais tarde." }, { status: 429 });
+  }
+
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Não autorizado" }, { status: 401 });

@@ -5,23 +5,29 @@ import { z } from "zod"
 import { generateTwoFactorToken } from "@/lib/tokens"
 import { sendEmail } from "@/lib/mail"
 import { getTwoFactorEmailTemplate } from "@/lib/email-templates"
+import { rateLimits } from "@/lib/rate-limit"
+import { audit } from "@/lib/audit"
 
 const registerSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   password: z.string().min(6),
-  document: z.string().min(11), // CPF
+  document: z.string().min(11),
 })
 
 export async function POST(req: Request) {
+  const ip = req.headers.get('x-forwarded-for') ?? 'anonymous'
+  const { success } = await rateLimits.auth.limit(ip)
+  if (!success) {
+    return NextResponse.json({ error: "Muitas tentativas. Tente novamente mais tarde." }, { status: 429 })
+  }
+
   try {
     const body = await req.json()
     const { name, email, password, document } = registerSchema.parse(body)
 
     const existingUser = await prisma.user.findFirst({
-      where: {
-        OR: [{ email }, { document }]
-      }
+      where: { OR: [{ email }, { document }] }
     })
 
     if (existingUser) {
@@ -43,14 +49,14 @@ export async function POST(req: Request) {
       },
     })
 
-    // Generate and send 2FA Token
-    const { code } = await generateTwoFactorToken(email);
-    
+    await audit('USER_REGISTERED', user.id, { email, name }, req)
+
+    const { code } = await generateTwoFactorToken(email)
     await sendEmail({
       to: email,
       subject: "Verifique sua conta - PulsePay",
       html: getTwoFactorEmailTemplate(code)
-    });
+    })
 
     return NextResponse.json({
       user: { id: user.id, email: user.email, name: user.name },

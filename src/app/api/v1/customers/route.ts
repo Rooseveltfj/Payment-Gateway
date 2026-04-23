@@ -2,9 +2,16 @@ import { NextResponse } from "next/server";
 import { validateApiKey } from "@/lib/api-auth";
 import { prisma } from "@/lib/prisma";
 
+import { rateLimits } from "@/lib/rate-limit";
+
 export async function GET(request: Request) {
   const auth = await validateApiKey(request);
   if ("error" in auth) return auth.error;
+
+  const { success } = await rateLimits.api.limit(auth.user.keyId);
+  if (!success) {
+    return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+  }
 
   const { searchParams } = new URL(request.url);
   const page = parseInt(searchParams.get("page") ?? "0");

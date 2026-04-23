@@ -1,65 +1,107 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { sendOrderConfirmationEmail, sendNewSaleEmail, sendBadgeEarnedEmail, sendNewOrderNotificationEmail } from "@/lib/email";
+import { 
+  sendOrderConfirmationEmail, 
+  sendNewSaleEmail, 
+  sendBadgeEarnedEmail, 
+  sendNewOrderNotificationEmail 
+} from "@/lib/email";
+import { createHmac, timingSafeEqual } from 'crypto'
+import { rateLimits } from "@/lib/rate-limit";
+import { audit } from "@/lib/audit"
 
-/**
- * Woovi Webhook Handler
- * Endpoint: /api/webhooks/woovi
- * 
- * To solve the "status 200" requirement, this route always returns a success code 
- * quickly, while processing the payment event asynchronously or within the request.
- */
+// IPs permitidos da Woovi (da documentação oficial)
+const WOOVI_IPS = ['179.190.27.5', '179.190.27.6', '186.224.205.214']
 
-export async function POST(req: Request) {
-  try {
-    const rawBody = await req.text();
-    const signature = req.headers.get("x-webhook-signature") || "";
-
-    // 1. Validation (MVP-friendly as requested)
-    if (!signature || signature.length === 0) {
-      console.warn("[Webhook] Missing x-webhook-signature header");
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const payload = JSON.parse(rawBody);
-    const { event, charge, pix } = payload;
-
-    // 2. Ignore tests or invalid payloads
-    if (!charge?.correlationID) {
-      return NextResponse.json({ ok: true });
-    }
-
-    // 3. Handle Payment Confirmation
-    const isPaid = [
-      "OPENPIX:CHARGE_COMPLETED",
-      "woovi:CHARGE_COMPLETED",
-      "woovi:TRANSACTION_RECEIVED",
-    ].includes(event);
-
-    if (isPaid) {
-      console.log(`[Webhook] Payment Confirmed: ${charge?.correlationID} (${event})`);
-      await handleChargePaid(payload);
-    } else if (event === "woovi:CHARGE_CREATED" || event === "OPENPIX:CHARGE_CREATED") {
-      console.log(`[Webhook] Charge Created: ${charge?.correlationID}`);
-      await handleChargeCreated(charge);
-    } else if (event === "OPENPIX:CHARGE_EXPIRED" || event === "woovi:CHARGE_EXPIRED") {
-      console.log(`[Webhook] Charge Expired: ${charge?.correlationID}`);
-      await handleChargeExpired(charge);
-    }
-
-    return NextResponse.json({ ok: true });
-  } catch (error) {
-    console.error("Webhook Error:", error);
-    // Still return 200 to Woovi to avoid retries on failure during processing
-    return NextResponse.json({ ok: true });
+export async function POST(request: Request) {
+  // 1. Rate Limiting
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0] ?? 'anonymous';
+  const { success } = await rateLimits.webhook.limit(ip);
+  if (!success) {
+    return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
   }
+
+  // 2. Verificar IP de origem
+  if (process.env.NODE_ENV === 'production' && !WOOVI_IPS.includes(ip)) {
+    console.warn(`[Webhook] IP não autorizado: ${ip}`)
+    return new Response(null, { status: 403 })
+  }
+
+  // 3. Validar header de autorização (configurado na Woovi)
+  const authHeader = request.headers.get('authorization')
+  if (authHeader !== process.env.WOOVI_WEBHOOK_AUTH) {
+    console.warn(`[Webhook] Authorization header inválido`)
+    return new Response(null, { status: 401 })
+  }
+
+  // 4. Ler body como texto para validar assinatura
+  const rawBody = await request.text()
+  
+  // 5. Validar assinatura HMAC
+  const signature = request.headers.get('x-webhook-signature')
+  if (signature && process.env.WEBHOOK_HMAC_SECRET) {
+    // Validação de assinatura conforme documentação Woovi
+    // Por enquanto, aceitamos se presente (Placeholder para lógica RSA/HMAC completa)
+    const isValid = signature.length > 0 
+    if (!isValid) {
+      console.warn(`[Webhook] Assinatura HMAC inválida`)
+      return new Response(null, { status: 401 })
+    }
+  }
+
+  // 6. Retornar 200 IMEDIATAMENTE
+  const responsePromise = NextResponse.json({ ok: true })
+
+  // 7. Processar de forma assíncrona
+  try {
+    const payload = JSON.parse(rawBody)
+    processWebhookAsync(payload).catch(err => 
+      console.error('[Webhook] Erro no processamento:', err)
+    )
+  } catch (e) {
+    console.error("[Webhook] Payload inválido")
+  }
+
+  return responsePromise
 }
+
+async function processWebhookAsync(payload: any) {
+  const { event, charge, pix } = payload
+  if (!charge?.correlationID) return
+
+  // Idempotência básica via status do pedido (já verificado dentro de handleChargePaid)
+  
+  const isPaid = [
+    'OPENPIX:CHARGE_COMPLETED',
+    'woovi:CHARGE_COMPLETED',
+    'woovi:TRANSACTION_RECEIVED',
+  ].includes(event)
+
+  try {
+    if (isPaid) {
+      await handleChargePaid(payload)
+    } else if (event === "woovi:CHARGE_CREATED" || event === "OPENPIX:CHARGE_CREATED") {
+      await handleChargeCreated(charge)
+    } else if (event === 'OPENPIX:CHARGE_EXPIRED' || event === "woovi:CHARGE_EXPIRED") {
+      await handleChargeExpired(charge)
+    }
+  } catch (err) {
+    await audit('WEBHOOK_FAILED', null, { 
+      correlationID: charge.correlationID, 
+      error: err instanceof Error ? err.message : String(err) 
+    });
+  }
+
+  // Log de processamento
+  console.log(`[Webhook] Processado: ${charge.correlationID} (${event})`)
+}
+
+// --- Funções Auxiliares de Processamento ---
 
 async function handleChargePaid(payload: any) {
   const { charge, pix } = payload;
   const correlationID = charge.correlationID;
 
-  // 1. Find Order
   const order = await prisma.order.findUnique({
     where: { wooviCorrelationId: correlationID },
     include: { 
@@ -74,9 +116,7 @@ async function handleChargePaid(payload: any) {
   if (!order || order.status === "PAID") return;
 
   const seller = order.user;
-  const product = order.product;
-
-  // 2. Update Order Status
+  const product = order.product ?? null;
   const paidAt = new Date(charge.updatedAt || Date.now());
   const history = (order.statusHistory as any[]) || [];
 
@@ -94,11 +134,9 @@ async function handleChargePaid(payload: any) {
     }
   });
 
-  // 3. Financial Logic & Maturity
   const maturityDate = new Date();
   maturityDate.setDate(maturityDate.getDate() + 14);
 
-  // --- Affiliate Calculation ---
   let affiliateCommission = 0;
   const affiliation = order.affiliation;
 
@@ -109,14 +147,12 @@ async function handleChargePaid(payload: any) {
     } else {
       affiliateCommission = offer.commissionValue;
     }
-    // Garantir que a comissão não exceda o valor líquido
     affiliateCommission = Math.min(affiliateCommission, order.netAmount);
   }
 
   const finalSellerNetAmount = order.netAmount - affiliateCommission;
 
   await prisma.$transaction(async (tx) => {
-    // 1. Create Pending Balance for Seller
     await tx.pendingBalance.create({
       data: {
         userId: seller.id,
@@ -126,7 +162,6 @@ async function handleChargePaid(payload: any) {
       }
     });
 
-    // 2. If Affiliate exists, credit them
     if (affiliation && affiliateCommission > 0) {
       await tx.affiliationSale.create({
         data: {
@@ -155,7 +190,6 @@ async function handleChargePaid(payload: any) {
         }
       });
 
-      // Update Affiliate User balances
       await tx.user.update({
         where: { id: affiliation.affiliateId },
         data: {
@@ -164,27 +198,26 @@ async function handleChargePaid(payload: any) {
         }
       });
       
-      // Create notification for affiliate
       await tx.notification.create({
         data: {
           userId: affiliation.affiliateId,
-          title: "Comisso recebida! 💸",
-          content: `Voc ganhou R$ ${affiliateCommission.toFixed(2)} pela venda de ${product.name}.`,
+          title: "Comissão recebida! 💸",
+          content: `Você ganhou R$ ${affiliateCommission.toFixed(2)} pela venda de ${product?.name ?? "um produto"}.`,
           type: "SUCCESS"
         }
       });
     }
 
-    // 3. Update Product Stats
-    await tx.product.update({
-      where: { id: product.id },
-      data: {
-        salesCount: { increment: 1 },
-        revenue: { increment: order.amount }
-      }
-    });
+    if (product) {
+      await tx.product.update({
+        where: { id: product.id },
+        data: {
+          salesCount: { increment: 1 },
+          revenue: { increment: order.amount }
+        }
+      });
+    }
 
-    // 4. Update Seller cumulative earnings
     await tx.user.update({
       where: { id: seller.id },
       data: {
@@ -194,30 +227,26 @@ async function handleChargePaid(payload: any) {
     });
   });
 
-  // 4. Badge Logic (Gross Amount)
   await checkAndGrantBadges(seller.id, seller.totalEarnings + order.amount, seller.badges);
 
-  // 5. Emails
   await Promise.all([
-    sendOrderConfirmationEmail({ email: order.buyerEmail, name: order.buyerName }, product.name, order.amount),
-    sendNewSaleEmail({ email: seller.email, name: seller.name }, product.name, order.amount, finalSellerNetAmount)
+    sendOrderConfirmationEmail({ email: order.buyerEmail, name: order.buyerName }, product?.name ?? "Produto", order.amount),
+    sendNewSaleEmail({ email: seller.email, name: seller.name }, product?.name ?? "Produto", order.amount, finalSellerNetAmount)
   ]).catch(err => console.error("Email sending Error:", err));
 
-  // 6. Create Dashboard Notification for Seller (Async)
   prisma.notification.create({
     data: {
       userId: seller.id,
       title: "Pagamento recebido! 💰",
-      content: `Venda confirmada: ${product.name} no valor de R$ ${order.amount.toFixed(2)}.` + 
-               (affiliateCommission > 0 ? ` (Comisso de R$ ${affiliateCommission.toFixed(2)} paga ao afiliado)` : ""),
+      content: `Venda confirmada: ${product?.name ?? "Produto"} no valor de R$ ${order.amount.toFixed(2)}.` + 
+               (affiliateCommission > 0 ? ` (Comissão de R$ ${affiliateCommission.toFixed(2)} paga ao afiliado)` : ""),
       type: "SUCCESS"
     }
   }).catch(err => console.error("Error creating notification:", err));
 
-  // 7. Player Webhooks Output (Optional robustness)
   await dispatchPlayerWebhooks(seller.id, "order.paid", {
     order_id: order.id,
-    product_slug: product.slug,
+    product_slug: product?.slug ?? null,
     amount: order.amount,
     net_amount: order.netAmount,
     buyer: {
@@ -226,6 +255,12 @@ async function handleChargePaid(payload: any) {
       cpf: order.buyerCpf
     },
     paid_at: paidAt.toISOString()
+  });
+
+  await audit('WEBHOOK_PROCESSED', seller.id, { 
+    correlationID, 
+    event: payload.event,
+    amount: order.amount 
   });
 }
 
@@ -237,6 +272,21 @@ async function handleChargeExpired(charge: any) {
     },
     data: { status: "EXPIRED" }
   });
+}
+
+async function handleChargeCreated(charge: any) {
+  const order = await prisma.order.findUnique({
+    where: { wooviCorrelationId: charge.correlationID },
+    include: { user: true, product: true }
+  });
+
+  if (order) {
+    await sendNewOrderNotificationEmail(
+      { email: order.user.email, name: order.user.name },
+      order.product?.name ?? "Produto",
+      order.amount
+    ).catch(err => console.error("Error sending New Order Notification:", err));
+  }
 }
 
 async function checkAndGrantBadges(userId: string, totalGross: number, existingBadges: any[]) {
@@ -274,11 +324,19 @@ async function dispatchPlayerWebhooks(userId: string, event: string, payload: an
       where: { userId, active: true, events: { has: event } }
     });
 
+    const { decrypt, isEncrypted } = await import("@/lib/encryption");
+
     for (const webhook of webhooks) {
-      // Basic robust delivery
+      let secret = webhook.secret;
+      try {
+        if (isEncrypted(secret)) secret = await decrypt(secret);
+      } catch (e) {
+        console.error(`[Webhook] Error decrypting secret for webhook ${webhook.id}`);
+      }
+
       fetch(webhook.url, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "X-PulsePay-Signature": webhook.secret },
+        headers: { "Content-Type": "application/json", "X-PulsePay-Signature": secret },
         body: JSON.stringify({ event, payload })
       }).then(res => {
          prisma.webhookLog.create({
@@ -295,20 +353,5 @@ async function dispatchPlayerWebhooks(userId: string, event: string, payload: an
     }
   } catch (err) {
     console.error("Webhook Dispatch error:", err);
-  }
-}
-
-async function handleChargeCreated(charge: any) {
-  const order = await prisma.order.findUnique({
-    where: { wooviCorrelationId: charge.correlationID },
-    include: { user: true, product: true }
-  });
-
-  if (order) {
-    await sendNewOrderNotificationEmail(
-      { email: order.user.email, name: order.user.name },
-      order.product.name,
-      order.amount
-    ).catch(err => console.error("Error sending New Order Notification:", err));
   }
 }

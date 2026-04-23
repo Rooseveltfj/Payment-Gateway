@@ -5,11 +5,19 @@ import { sendEmail } from "@/lib/mail";
 import { getForgotPasswordTemplate } from "@/lib/email-templates";
 import { z } from "zod";
 
+import { rateLimits } from "@/lib/rate-limit";
+
 const forgotPasswordSchema = z.object({
   email: z.string().email("E-mail inválido"),
 });
 
 export async function POST(req: Request) {
+  const ip = req.headers.get('x-forwarded-for') ?? 'anonymous';
+  const { success } = await rateLimits.passwordReset.limit(ip);
+  if (!success) {
+    return NextResponse.json({ error: "Muitas tentativas. Tente novamente mais tarde." }, { status: 429 });
+  }
+
   try {
     const body = await req.json();
     const { email } = forgotPasswordSchema.parse(body);

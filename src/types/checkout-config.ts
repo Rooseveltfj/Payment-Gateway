@@ -24,6 +24,7 @@ export interface AppearanceConfig {
   inputTextColor: string;
   layoutType: "standard" | "multistep" | "longform";
   themePreset: ThemePreset;
+  templateId?: TemplateId;
   logoUrl: string | null;
   bannerUrl: string | null;
   bannerExternal: string;

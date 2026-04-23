@@ -27,7 +27,7 @@ export async function GET(request: Request, { params }: { params: { email: strin
       lastPurchase: orders[0].createdAt,
       orders: orders.map((o) => ({
         id: o.id,
-        product: o.product.name,
+        product: o.product?.name ?? "—",
         amount: o.amount,
         status: o.status,
         paymentMethod: o.paymentMethod,

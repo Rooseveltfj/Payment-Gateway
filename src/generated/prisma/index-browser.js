@@ -148,6 +148,10 @@ exports.Prisma.UserScalarFieldEnum = {
   username: 'username',
   lastActiveAt: 'lastActiveAt',
   onboardingSteps: 'onboardingSteps',
+  lastLoginIp: 'lastLoginIp',
+  lastLoginAt: 'lastLoginAt',
+  failedLoginCount: 'failedLoginCount',
+  lockedUntil: 'lockedUntil',
   twoFactorEnabled: 'twoFactorEnabled',
   twoFactorSecret: 'twoFactorSecret',
   twoFactorMethod: 'twoFactorMethod'
@@ -170,6 +174,7 @@ exports.Prisma.AuditLogScalarFieldEnum = {
   details: 'details',
   ipAddress: 'ipAddress',
   userAgent: 'userAgent',
+  metadata: 'metadata',
   createdAt: 'createdAt'
 };
 
@@ -226,6 +231,7 @@ exports.Prisma.OrderScalarFieldEnum = {
   wooviCorrelationId: 'wooviCorrelationId',
   wooviEndToEndId: 'wooviEndToEndId',
   wooviTransactionId: 'wooviTransactionId',
+  externalCorrelationId: 'externalCorrelationId',
   affiliationId: 'affiliationId'
 };
 
@@ -276,6 +282,7 @@ exports.Prisma.ApiKeyScalarFieldEnum = {
   userId: 'userId',
   name: 'name',
   key: 'key',
+  keyHash: 'keyHash',
   lastUsed: 'lastUsed',
   active: 'active',
   createdAt: 'createdAt'
@@ -285,7 +292,7 @@ exports.Prisma.KycDocumentScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   type: 'type',
-  fileUrl: 'fileUrl',
+  filePath: 'filePath',
   status: 'status',
   reviewNote: 'reviewNote',
   reviewedAt: 'reviewedAt',
@@ -347,6 +354,7 @@ exports.Prisma.PasswordResetTokenScalarFieldEnum = {
   id: 'id',
   email: 'email',
   token: 'token',
+  tokenHash: 'tokenHash',
   expires: 'expires',
   createdAt: 'createdAt'
 };

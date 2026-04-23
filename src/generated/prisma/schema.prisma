@@ -35,6 +35,10 @@ model User {
   username           String?          @unique
   lastActiveAt       DateTime         @default(now())
   onboardingSteps    Json?
+  lastLoginIp        String?
+  lastLoginAt        DateTime?
+  failedLoginCount   Int              @default(0)
+  lockedUntil        DateTime?
   twoFactorEnabled   Boolean          @default(false)
   twoFactorSecret    String?
   twoFactorMethod    TwoFactorMethod? @default(TOTP)
@@ -70,15 +74,18 @@ model Notification {
 
 model AuditLog {
   id        String   @id @default(cuid())
-  userId    String
+  userId    String?
   action    String
   details   String?
   ipAddress String?
   userAgent String?
+  metadata  Json?
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
 
   @@index([userId])
+  @@index([action])
+  @@index([createdAt])
 }
 
 model Product {
@@ -109,45 +116,46 @@ model Product {
 }
 
 model Order {
-  id                 String           @id @default(cuid())
-  userId             String
-  productId          String
-  buyerName          String
-  buyerEmail         String
-  buyerCpf           String?
-  buyerPhone         String?
-  buyerData          Json?
-  amount             Float
-  platformFee        Float
-  netAmount          Float
-  status             OrderStatus      @default(PENDING)
-  paymentMethod      PaymentMethod
-  pixQrCode          String?
-  pixCopyPaste       String?
-  boletoUrl          String?
-  boletoBarcode      String?
-  cardLastFour       String?
-  cardBrand          String?
-  installments       Int              @default(1)
-  externalId         String?
-  paidAt             DateTime?
-  refundedAt         DateTime?
-  isMatured          Boolean          @default(false)
-  statusHistory      Json?
-  createdAt          DateTime         @default(now())
-  updatedAt          DateTime         @updatedAt
-  pixBrCode          String?
-  pixExpiresAt       DateTime?
-  pixQrCodeUrl       String?
-  wooviCorrelationId String?          @unique
-  wooviEndToEndId    String?
-  wooviTransactionId String?
-  affiliationId      String?
-  affiliationSale    AffiliationSale?
-  affiliation        Affiliation?     @relation(fields: [affiliationId], references: [id])
-  product            Product          @relation(fields: [productId], references: [id])
-  user               User             @relation(fields: [userId], references: [id])
-  pendingBalances    PendingBalance[]
+  id                    String           @id @default(cuid())
+  userId                String
+  productId             String?
+  buyerName             String
+  buyerEmail            String
+  buyerCpf              String?
+  buyerPhone            String?
+  buyerData             Json?
+  amount                Float
+  platformFee           Float
+  netAmount             Float
+  status                OrderStatus      @default(PENDING)
+  paymentMethod         PaymentMethod
+  pixQrCode             String?
+  pixCopyPaste          String?
+  boletoUrl             String?
+  boletoBarcode         String?
+  cardLastFour          String?
+  cardBrand             String?
+  installments          Int              @default(1)
+  externalId            String?
+  paidAt                DateTime?
+  refundedAt            DateTime?
+  isMatured             Boolean          @default(false)
+  statusHistory         Json?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+  pixBrCode             String?
+  pixExpiresAt          DateTime?
+  pixQrCodeUrl          String?
+  wooviCorrelationId    String?          @unique
+  wooviEndToEndId       String?
+  wooviTransactionId    String?
+  externalCorrelationId String?          @unique
+  affiliationId         String?
+  affiliationSale       AffiliationSale?
+  affiliation           Affiliation?     @relation(fields: [affiliationId], references: [id])
+  product               Product?         @relation(fields: [productId], references: [id])
+  user                  User             @relation(fields: [userId], references: [id])
+  pendingBalances       PendingBalance[]
 
   @@index([userId, status])
   @@index([createdAt])
@@ -208,6 +216,7 @@ model ApiKey {
   userId    String
   name      String
   key       String    @unique
+  keyHash   String?   @unique // SHA-256 da key para lookup seguro
   lastUsed  DateTime?
   active    Boolean   @default(true)
   createdAt DateTime  @default(now())
@@ -218,7 +227,7 @@ model KycDocument {
   id         String    @id @default(cuid())
   userId     String
   type       DocType
-  fileUrl    String
+  filePath   String?
   status     DocStatus @default(PENDING)
   reviewNote String?
   reviewedAt DateTime?
@@ -286,6 +295,7 @@ model PasswordResetToken {
   id        String   @id @default(cuid())
   email     String
   token     String   @unique
+  tokenHash String?  @unique // SHA-256 da raw token para lookup seguro
   expires   DateTime
   createdAt DateTime @default(now())
 
