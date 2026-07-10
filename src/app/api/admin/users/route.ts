@@ -35,7 +35,9 @@ export async function GET(req: Request) {
     if (status) where.status = status;
     if (kycStatus) where.kycStatus = kycStatus;
 
-    const [users, total] = await prisma.$transaction([
+    // Duas leituras independentes: Promise.all em vez de $transaction
+    // (a transação custava BEGIN + q1 + q2 + COMMIT em série = 4 round-trips).
+    const [users, total] = await Promise.all([
       prisma.user.findMany({
         where,
         skip,
@@ -50,29 +52,25 @@ export async function GET(req: Request) {
       prisma.user.count({ where })
     ]);
 
-    // Enhance users with volume data
-    const enhancedUsers = await Promise.all(users.map(async (u) => {
-      try {
-        const volume = await prisma.order.aggregate({
-          _sum: { amount: true },
-          where: { userId: u.id, status: "PAID" }
-        });
+    // Volume por usuário em UMA query (antes: um aggregate por usuário — N+1).
+    const volumeByUser = new Map<string, number>();
+    try {
+      const volumes = await prisma.order.groupBy({
+        by: ['userId'],
+        _sum: { amount: true },
+        where: { userId: { in: users.map(u => u.id) }, status: "PAID" }
+      });
+      for (const v of volumes) volumeByUser.set(v.userId, v._sum.amount || 0);
+    } catch (err) {
+      console.error("Error aggregating user volumes:", err);
+      // fallback: volumes ficam 0, como no tratamento de erro anterior
+    }
 
-        return {
-          ...u,
-          volume: volume._sum.amount || 0,
-          productCount: u._count.products,
-          _count: undefined
-        };
-      } catch (err) {
-        console.error(`Error enhancing user ${u.id}:`, err);
-        return {
-          ...u,
-          volume: 0,
-          productCount: u._count.products,
-          _count: undefined
-        };
-      }
+    const enhancedUsers = users.map((u) => ({
+      ...u,
+      volume: volumeByUser.get(u.id) || 0,
+      productCount: u._count.products,
+      _count: undefined
     }));
 
     return NextResponse.json({
