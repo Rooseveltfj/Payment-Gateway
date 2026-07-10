@@ -3,7 +3,7 @@
 import { TemplateId, AppearanceConfig, ButtonStyle, FontFamily } from "@/types/checkout-config";
 import { THEME_LIST } from "@/types/checkout-theme";
 import { Input } from "@/components/ui/Input";
-import { ImageUpload } from "@/components/ui/ImageUpload";
+import { AssetUpload } from "@/components/ui/AssetUpload";
 import { ThemeThumbnail } from "@/components/checkout-builder/ThemeThumbnail";
 import { cn } from "@/lib/utils";
 import { Check, Edit2, Layout, Sliders, Type, Image as ImageIcon, Minus } from "lucide-react";
@@ -172,25 +172,25 @@ export function AppearanceTab({ config, onChange }: Props) {
       <SectionLabel icon={ImageIcon}>Logo & Banner</SectionLabel>
       <div className="space-y-6">
         {/* Logo Upload */}
-        <ImageUpload
+        <AssetUpload
+          kind="logo"
           label="Logo do Checkout (Header)"
           value={config.logoUrl}
           onChange={url => onChange({ logoUrl: url })}
           aspectRatio="1/1"
-          maxSizeMB={1}
           hint="PNG transparente recomendado (aparece no topo do checkout)"
         />
 
         <div className="h-px bg-white/5" />
 
-        {/* Banner Upload */}
-        <ImageUpload
+        {/* Banner Upload (imagem OU vídeo) */}
+        <AssetUpload
+          kind="banner"
           label="Banner / Capa do Produto"
           value={config.bannerUrl}
           onChange={url => onChange({ bannerUrl: url })}
           aspectRatio="16/9"
-          maxSizeMB={3}
-          hint="Aparece como hero image. O vídeo VSL tem prioridade se configurado."
+          hint="Imagem ou vídeo (loop, sem som). O vídeo VSL da aba Conteúdo tem prioridade."
         />
 
         <div className="space-y-2">

@@ -2,6 +2,7 @@
 
 import { CheckoutConfig } from "@/types/checkout-config";
 import { resolveTheme } from "@/types/checkout-theme";
+import { isVideoUrl } from "@/lib/checkout-assets";
 import { CheckoutThemeProvider } from "./CheckoutThemeProvider";
 import { CountdownTimer } from "./preview/CountdownTimer";
 import { SocialPopup } from "./preview/SocialPopup";
@@ -124,7 +125,11 @@ export function CheckoutPreview({ config, isMobile }: Props) {
                 </div>
               ) : (a.bannerUrl || a.bannerExternal) ? (
                 <div className="relative overflow-hidden" style={{ borderRadius: framed ? V.rCard : 0, border: framed ? `1px solid ${V.border}` : "none", boxShadow: framed ? V.shadowCard : "none" }}>
-                  <img src={a.bannerUrl || a.bannerExternal} alt="Banner" className="w-full object-cover max-h-[320px] sm:max-h-[420px]" />
+                  {isVideoUrl(a.bannerUrl || a.bannerExternal) ? (
+                    <video src={a.bannerUrl || a.bannerExternal} className="w-full object-cover max-h-[320px] sm:max-h-[420px]" muted loop playsInline autoPlay />
+                  ) : (
+                    <img src={a.bannerUrl || a.bannerExternal} alt="Banner" className="w-full object-cover max-h-[320px] sm:max-h-[420px]" />
+                  )}
                 </div>
               ) : (
                 <div className="w-full aspect-video flex flex-col items-center justify-center gap-3 border-2 border-dashed"

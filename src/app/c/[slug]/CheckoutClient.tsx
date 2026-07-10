@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { CheckoutConfig } from "@/types/checkout-config";
 import { resolveTheme, ctaVariant } from "@/types/checkout-theme";
+import { isVideoUrl } from "@/lib/checkout-assets";
 import { CheckoutThemeProvider } from "@/components/checkout-builder/CheckoutThemeProvider";
 import { CountdownTimer } from "@/components/checkout-builder/preview/CountdownTimer";
 import { SocialPopup } from "@/components/checkout-builder/preview/SocialPopup";
@@ -242,11 +243,19 @@ export function CheckoutClient({ product, config }: Props) {
                 />
               </div>
             ) : (a.bannerUrl || a.bannerExternal) && (
-              <img
-                src={a.bannerUrl || a.bannerExternal}
-                alt="Banner do Produto"
-                className="w-full rounded-2xl object-cover shadow-2xl ring-1 ring-white/10"
-              />
+              isVideoUrl(a.bannerUrl || a.bannerExternal) ? (
+                <video
+                  src={a.bannerUrl || a.bannerExternal}
+                  className="w-full rounded-2xl object-cover shadow-2xl ring-1 ring-white/10"
+                  muted loop playsInline autoPlay
+                />
+              ) : (
+                <img
+                  src={a.bannerUrl || a.bannerExternal}
+                  alt="Banner do Produto"
+                  className="w-full rounded-2xl object-cover shadow-2xl ring-1 ring-white/10"
+                />
+              )
             )}
 
             {/* Scarcity Countdown */}
