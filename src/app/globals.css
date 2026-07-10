@@ -95,47 +95,51 @@ th, td { border: none !important; }
 }
 
 /* ============================================================
-   Checkout themes — botões e efeitos dirigidos por CSS vars do tema
-   (--ck-accent, --ck-accent-text, --ck-cta-gradient definidas no root do tema)
+   Checkout themes — botões, padrões e efeitos 100% dirigidos pelas
+   CSS variables `--checkout-*` emitidas pelo CheckoutThemeProvider.
+   Zero cor hardcoded: tudo resolve via var().
    ============================================================ */
-.ck-btn { transition: filter .2s ease, transform .2s ease, box-shadow .2s ease; }
-.ck-btn--solid { background: var(--ck-accent); color: var(--ck-accent-text); }
-.ck-btn--solid:hover { filter: brightness(1.08); }
-
-.ck-btn--outline {
-  background: transparent;
-  border: 1.5px solid var(--ck-accent);
-  color: var(--ck-accent);
+.ck-btn {
+  border-radius: var(--checkout-radius-cta);
+  text-transform: var(--checkout-cta-transform, none);
+  transition: filter .2s ease, transform .2s ease, box-shadow .2s ease, background-color .2s ease, color .2s ease;
 }
-.ck-btn--outline:hover { background: var(--ck-accent); color: var(--ck-accent-text); }
+/* Variante escolhida via data-cta no root do provider */
+[data-cta="solid"] .ck-btn { background: var(--checkout-cta-background); color: var(--checkout-cta-foreground); }
+[data-cta="solid"] .ck-btn:hover { background: var(--checkout-cta-hover); }
 
-.ck-btn--gradient {
-  background: var(--ck-cta-gradient);
+[data-cta="outline"] .ck-btn {
+  background: transparent;
+  border: var(--checkout-border-width) solid var(--checkout-cta-foreground);
+  color: var(--checkout-cta-foreground);
+}
+[data-cta="outline"] .ck-btn:hover { background: var(--checkout-cta-hover); color: var(--checkout-accent-foreground); }
+
+[data-cta="gradient"] .ck-btn {
+  background: var(--checkout-cta-background);
   background-size: 220% 220%;
-  color: var(--ck-accent-text);
+  color: var(--checkout-cta-foreground);
   animation: ckShimmer 5s ease infinite;
 }
-@keyframes ckShimmer {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
+@keyframes ckShimmer { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 
-.ck-btn--glow { box-shadow: 0 0 24px var(--ck-accent), 0 0 4px var(--ck-accent) inset; }
-.ck-btn--glow:hover { box-shadow: 0 0 36px var(--ck-accent), 0 0 6px var(--ck-accent) inset; }
+/* Glow do CTA (temas com --checkout-cta-glow != none) */
+.ck-btn--glow { box-shadow: var(--checkout-cta-glow); }
 
+/* Pulse (Urgência) */
 .ck-btn--pulse { animation: ckPulse 1.8s cubic-bezier(0.4,0,0.6,1) infinite; }
-@keyframes ckPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.025); }
-}
+@keyframes ckPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.025); } }
 @media (prefers-reduced-motion: reduce) {
-  .ck-btn--pulse, .ck-btn--gradient { animation: none; }
+  .ck-btn--pulse, [data-cta="gradient"] .ck-btn { animation: none; }
 }
 
-/* Grid pattern (Neon Tech) */
-.ck-grid-pattern {
+/* Padrões de fundo */
+.ck-pattern-grid {
   background-image:
-    linear-gradient(rgba(0,255,136,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,255,136,0.06) 1px, transparent 1px);
+    linear-gradient(var(--checkout-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--checkout-border) 1px, transparent 1px);
   background-size: 44px 44px;
+}
+.ck-pattern-noise {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
 }

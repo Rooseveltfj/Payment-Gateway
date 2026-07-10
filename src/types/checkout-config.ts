@@ -25,6 +25,9 @@ export interface AppearanceConfig {
   layoutType: "standard" | "multistep" | "longform";
   themePreset: ThemePreset;
   templateId?: TemplateId;
+  // Overrides granulares de tokens do tema (persistidos no JSON checkoutConfig).
+  // Chaves = tokens de CheckoutThemeColors (ex.: { accent: "#..." }). Ver resolveTheme.
+  themeOverrides?: Record<string, string>;
   logoUrl: string | null;
   bannerUrl: string | null;
   bannerExternal: string;

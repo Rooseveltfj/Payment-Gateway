@@ -1,77 +1,83 @@
 // ============================================================
-// PulsePay — CheckoutTheme: sistema de tokens dos templates
-// FONTE ÚNICA DA VERDADE visual. Preview (builder) e página pública (/c/[slug])
-// resolvem o tema por aqui — cores, fontes, formas e efeitos nunca divergem.
-// Todos os pares texto/fundo validados em WCAG AA (4.5:1). Ver scripts/contrast.
+// PulsePay — CheckoutTheme: sistema COMPLETO de design tokens
+// FONTE ÚNICA DA VERDADE visual do checkout. Preview (builder) e página pública
+// consomem estes tokens EXCLUSIVAMENTE via CSS variables `--checkout-*`
+// (ver CheckoutThemeProvider). Zero cores hardcoded nos componentes de render.
+// Todos os pares texto/fundo validados em WCAG AA (scripts/contrast-check).
 // ============================================================
 import type { TemplateId, AppearanceConfig } from "./checkout-config";
+
+// ── Tokens ──────────────────────────────────────────────────
+export interface CheckoutThemeColors {
+  background: string;        // fundo da página (sólido ou gradient-mesh)
+  surface: string;           // card/painel
+  surfaceElevated: string;   // realce dentro do card
+  textPrimary: string;
+  textSecondary: string;
+  accent: string;            // marca / realces
+  accentForeground: string;  // texto sobre accent
+  ctaBackground: string;     // fundo do botão (sólido, "transparent"=outline, ou gradient)
+  ctaForeground: string;     // texto do CTA
+  ctaHover: string;          // estado hover do CTA
+  border: string;
+  success: string;
+  badgeBackground: string;
+  badgeForeground: string;
+  inputBackground: string;
+  inputBorder: string;
+  inputText: string;
+  inputPlaceholder: string;
+}
+
+export interface CheckoutThemeTypography {
+  fontHeading: string;       // valor CSS font-family (ref. checkout-fonts)
+  fontBody: string;
+  fontMono: string;          // labels/mono (usado por temas técnicos)
+  headingWeight: number;
+  headingScale: number;      // multiplicador da escala de títulos
+  bodySize: string;          // font-size base do corpo
+  letterSpacing: string;     // tracking dos títulos
+  ctaTextTransform: "none" | "uppercase";
+}
+
+export interface CheckoutThemeShape {
+  radiusCard: string;
+  radiusInput: string;
+  radiusCta: string;
+  borderWidth: string;
+}
+
+export interface CheckoutThemeEffects {
+  shadowCard: string;
+  gradient?: { direction: string; stops: string[] }; // gradiente opcional (ex.: CTA)
+  ctaGlow?: string;          // box-shadow de glow do CTA (opcional)
+  backgroundPattern: "none" | "grid" | "noise" | "gradient-mesh";
+}
+
+export interface CheckoutThemeLayout {
+  density: "compact" | "normal" | "spacious";
+  badgeStyle: "pill" | "flat" | "outline";
+  previewStyle: "framed" | "fullbleed";
+}
 
 export interface CheckoutTheme {
   id: TemplateId;
   label: string;
   mode: "dark" | "light";
-
-  fonts: {
-    /** valor CSS font-family (ref. a var do checkout-fonts) para títulos */
-    heading: string;
-    /** valor CSS font-family para corpo/UI */
-    body: string;
-    /** opcional: mono para labels (neon) */
-    mono?: string;
-    headingWeight: number;
-    bodyWeight: number;
-    /** peso dos labels de campo/uppercase */
-    labelWeight: number;
-    headingTransform: "none" | "uppercase";
-    headingTracking: string; // letter-spacing
-    labelTracking: string;
-  };
-
-  colors: {
-    /** fundo da página — pode ser gradiente/mesh */
-    bg: string;
-    /** fundo sólido equivalente (fallback p/ contraste, thumb, mono) */
-    bgSolid: string;
-    surface: string;
-    surfaceBorder: string;
-    surfaceElevated: string;
-    text: string;
-    subtext: string;
-    muted: string;
-    accent: string;
-    accentText: string; // texto sobre accent (AA garantido)
-    accentSoft: string; // accent translúcido p/ realces
-    fieldBg: string;
-    fieldBorder: string;
-    fieldText: string;
-    label: string;
-  };
-
-  radius: {
-    card: string;
-    field: string;
-    button: string;
-  };
-
-  button: {
-    variant: "solid" | "outline" | "gradient";
-    gradient?: string; // usado quando variant = gradient
-    glow: boolean;
-    animate: "none" | "pulse" | "shimmer";
-  };
-
-  shadow: {
-    card: string;
-    button: string;
-  };
-
-  glass: boolean; // backdrop-blur nos cards
-  backgroundPattern: "none" | "grid" | "mesh";
-  badgeStyle: "pill" | "outline" | "text";
-  density: "compact" | "normal" | "spacious";
+  colors: CheckoutThemeColors;
+  typography: CheckoutThemeTypography;
+  shape: CheckoutThemeShape;
+  effects: CheckoutThemeEffects;
+  layout: CheckoutThemeLayout;
 }
 
-// ── Referências de fonte (resolvem via checkout-fonts.ts) ──
+// Overrides granulares persistidos junto do config (JSON). Todos opcionais.
+export type ThemeOverrides = Partial<CheckoutThemeColors> & {
+  fontHeading?: string;
+  fontBody?: string;
+};
+
+// ── Fontes (resolvem via checkout-fonts.ts) ──
 const F = {
   inter: "var(--font-ck-inter), system-ui, sans-serif",
   playfair: "var(--font-ck-playfair), Georgia, serif",
@@ -81,239 +87,250 @@ const F = {
 };
 
 // ============================================================
-// OS 8 TEMAS
+// OS 8 TEMAS COMPLETOS
 // ============================================================
 export const THEMES: Record<TemplateId, CheckoutTheme> = {
-  // 1 ─── Escuro Clássico — o "seguro" ─────────────────────────
+  // 1 ─── Escuro Clássico ──────────────────────────────────────
   classic: {
-    id: "classic",
-    label: "Escuro Clássico",
-    mode: "dark",
-    fonts: {
-      heading: F.inter, body: F.inter,
-      headingWeight: 800, bodyWeight: 400, labelWeight: 600,
-      headingTransform: "none", headingTracking: "-0.02em", labelTracking: "0.04em",
-    },
+    id: "classic", label: "Escuro Clássico", mode: "dark",
     colors: {
-      bg: "#0A0A0F", bgSolid: "#0A0A0F",
-      surface: "#131318", surfaceBorder: "rgba(255,255,255,0.08)", surfaceElevated: "#1A1A22",
-      text: "#F4F4F5", subtext: "#A1A1AA", muted: "#71717A",
-      accent: "#7C3AED", accentText: "#FFFFFF", accentSoft: "rgba(124,58,237,0.14)",
-      fieldBg: "#0E0E13", fieldBorder: "rgba(255,255,255,0.10)", fieldText: "#F4F4F5", label: "#A1A1AA",
+      background: "#0A0A0F", surface: "#131318", surfaceElevated: "#1A1A22",
+      textPrimary: "#F4F4F5", textSecondary: "#A1A1AA",
+      accent: "#7C3AED", accentForeground: "#FFFFFF",
+      ctaBackground: "#7C3AED", ctaForeground: "#FFFFFF", ctaHover: "#6D28D9",
+      border: "rgba(255,255,255,0.08)", success: "#3FD68C",
+      badgeBackground: "rgba(124,58,237,0.14)", badgeForeground: "#C4B5FD",
+      inputBackground: "#0E0E13", inputBorder: "rgba(255,255,255,0.10)",
+      inputText: "#F4F4F5", inputPlaceholder: "#71717A",
     },
-    radius: { card: "16px", field: "12px", button: "12px" },
-    button: { variant: "solid", glow: false, animate: "none" },
-    shadow: { card: "0 8px 32px rgba(0,0,0,0.4)", button: "0 8px 24px rgba(124,58,237,0.35)" },
-    glass: false, backgroundPattern: "none", badgeStyle: "pill", density: "normal",
+    typography: { fontHeading: F.inter, fontBody: F.inter, fontMono: F.mono, headingWeight: 800, headingScale: 1, bodySize: "15px", letterSpacing: "-0.02em", ctaTextTransform: "uppercase" },
+    shape: { radiusCard: "16px", radiusInput: "12px", radiusCta: "12px", borderWidth: "1px" },
+    effects: { shadowCard: "0 8px 32px rgba(0,0,0,0.4)", backgroundPattern: "none" },
+    layout: { density: "normal", badgeStyle: "pill", previewStyle: "framed" },
   },
 
-  // 2 ─── Minimalista — monocromático, leve, outline ───────────
+  // 2 ─── Minimalista ──────────────────────────────────────────
   minimalist: {
-    id: "minimalist",
-    label: "Minimalista",
-    mode: "dark",
-    fonts: {
-      heading: F.inter, body: F.inter,
-      headingWeight: 400, bodyWeight: 300, labelWeight: 400,
-      headingTransform: "none", headingTracking: "-0.01em", labelTracking: "0.18em",
-    },
+    id: "minimalist", label: "Minimalista", mode: "dark",
     colors: {
-      bg: "#0B0B0B", bgSolid: "#0B0B0B",
-      surface: "transparent", surfaceBorder: "rgba(255,255,255,0.10)", surfaceElevated: "rgba(255,255,255,0.02)",
-      text: "#EDEDED", subtext: "#8F8F8F", muted: "#5A5A5A",
-      accent: "#FFFFFF", accentText: "#0B0B0B", accentSoft: "rgba(255,255,255,0.06)",
-      fieldBg: "transparent", fieldBorder: "rgba(255,255,255,0.14)", fieldText: "#EDEDED", label: "#8F8F8F",
+      background: "#0B0B0B", surface: "transparent", surfaceElevated: "rgba(255,255,255,0.03)",
+      textPrimary: "#EDEDED", textSecondary: "#8F8F8F",
+      accent: "#FFFFFF", accentForeground: "#0B0B0B",
+      ctaBackground: "transparent", ctaForeground: "#EDEDED", ctaHover: "#FFFFFF",
+      border: "rgba(255,255,255,0.12)", success: "#EDEDED",
+      badgeBackground: "transparent", badgeForeground: "#8F8F8F",
+      inputBackground: "transparent", inputBorder: "rgba(255,255,255,0.14)",
+      inputText: "#EDEDED", inputPlaceholder: "#6E6E6E",
     },
-    radius: { card: "2px", field: "2px", button: "2px" },
-    button: { variant: "outline", glow: false, animate: "none" },
-    shadow: { card: "none", button: "none" },
-    glass: false, backgroundPattern: "none", badgeStyle: "text", density: "spacious",
+    typography: { fontHeading: F.inter, fontBody: F.inter, fontMono: F.mono, headingWeight: 400, headingScale: 1.05, bodySize: "15px", letterSpacing: "-0.01em", ctaTextTransform: "uppercase" },
+    shape: { radiusCard: "2px", radiusInput: "2px", radiusCta: "2px", borderWidth: "1px" },
+    effects: { shadowCard: "none", backgroundPattern: "none" },
+    layout: { density: "spacious", badgeStyle: "flat", previewStyle: "framed" },
   },
 
-  // 3 ─── Gradiente Pro — mesh + glassmorphism ─────────────────
+  // 3 ─── Gradiente Pro ────────────────────────────────────────
   gradient: {
-    id: "gradient",
-    label: "Gradiente Pro",
-    mode: "dark",
-    fonts: {
-      heading: F.inter, body: F.inter,
-      headingWeight: 800, bodyWeight: 400, labelWeight: 600,
-      headingTransform: "none", headingTracking: "-0.025em", labelTracking: "0.05em",
-    },
+    id: "gradient", label: "Gradiente Pro", mode: "dark",
     colors: {
-      bg: "radial-gradient(at 15% 20%, #2A1E5C 0px, transparent 55%), radial-gradient(at 85% 10%, #1E3A8A 0px, transparent 50%), radial-gradient(at 70% 85%, #4C1D95 0px, transparent 55%), #0D0B1E",
-      bgSolid: "#0D0B1E",
-      surface: "rgba(255,255,255,0.07)", surfaceBorder: "rgba(255,255,255,0.14)", surfaceElevated: "rgba(255,255,255,0.10)",
-      text: "#FFFFFF", subtext: "#C7C3E8", muted: "#9A94C4",
-      accent: "#A78BFA", accentText: "#FFFFFF", accentSoft: "rgba(167,139,250,0.16)",
-      fieldBg: "rgba(255,255,255,0.06)", fieldBorder: "rgba(255,255,255,0.16)", fieldText: "#FFFFFF", label: "#C7C3E8",
+      background: "radial-gradient(at 15% 20%, #2A1E5C 0px, transparent 55%), radial-gradient(at 85% 10%, #1E3A8A 0px, transparent 50%), radial-gradient(at 70% 85%, #4C1D95 0px, transparent 55%), #0D0B1E",
+      surface: "rgba(255,255,255,0.07)", surfaceElevated: "rgba(255,255,255,0.10)",
+      textPrimary: "#FFFFFF", textSecondary: "#C7C3E8",
+      accent: "#A78BFA", accentForeground: "#FFFFFF",
+      ctaBackground: "linear-gradient(120deg, #6D28D9, #4338CA, #6D28D9)", ctaForeground: "#FFFFFF", ctaHover: "#5B21B6",
+      border: "rgba(255,255,255,0.14)", success: "#4ADE80",
+      badgeBackground: "rgba(167,139,250,0.16)", badgeForeground: "#DDD6FE",
+      inputBackground: "rgba(255,255,255,0.06)", inputBorder: "rgba(255,255,255,0.16)",
+      inputText: "#FFFFFF", inputPlaceholder: "#9A94C4",
     },
-    radius: { card: "24px", field: "14px", button: "14px" },
-    button: {
-      variant: "gradient",
-      gradient: "linear-gradient(120deg, #6D28D9, #4338CA, #6D28D9)",
-      glow: false, animate: "shimmer",
-    },
-    shadow: { card: "0 16px 48px rgba(76,29,149,0.35)", button: "0 12px 32px rgba(67,56,202,0.5)" },
-    glass: true, backgroundPattern: "mesh", badgeStyle: "pill", density: "normal",
+    typography: { fontHeading: F.inter, fontBody: F.inter, fontMono: F.mono, headingWeight: 800, headingScale: 1, bodySize: "15px", letterSpacing: "-0.025em", ctaTextTransform: "uppercase" },
+    shape: { radiusCard: "24px", radiusInput: "14px", radiusCta: "14px", borderWidth: "1px" },
+    effects: { shadowCard: "0 16px 48px rgba(76,29,149,0.35)", gradient: { direction: "120deg", stops: ["#6D28D9", "#4338CA", "#6D28D9"] }, backgroundPattern: "gradient-mesh" },
+    layout: { density: "normal", badgeStyle: "pill", previewStyle: "framed" },
   },
 
-  // 4 ─── Neon Tech — preto + verde neon, mono, grid ───────────
+  // 4 ─── Neon Tech ────────────────────────────────────────────
   neon: {
-    id: "neon",
-    label: "Neon Tech",
-    mode: "dark",
-    fonts: {
-      heading: F.inter, body: F.inter, mono: F.mono,
-      headingWeight: 700, bodyWeight: 400, labelWeight: 500,
-      headingTransform: "none", headingTracking: "-0.01em", labelTracking: "0.14em",
-    },
+    id: "neon", label: "Neon Tech", mode: "dark",
     colors: {
-      bg: "#000000", bgSolid: "#000000",
-      surface: "rgba(0,255,136,0.03)", surfaceBorder: "rgba(0,255,136,0.35)", surfaceElevated: "rgba(0,255,136,0.06)",
-      text: "#FFFFFF", subtext: "#86EFAC", muted: "#4ADE80",
-      accent: "#00FF88", accentText: "#001208", accentSoft: "rgba(0,255,136,0.12)",
-      fieldBg: "rgba(0,255,136,0.04)", fieldBorder: "rgba(0,255,136,0.30)", fieldText: "#FFFFFF", label: "#86EFAC",
+      background: "#000000", surface: "rgba(0,255,136,0.03)", surfaceElevated: "rgba(0,255,136,0.06)",
+      textPrimary: "#FFFFFF", textSecondary: "#86EFAC",
+      accent: "#00FF88", accentForeground: "#001208",
+      ctaBackground: "#00FF88", ctaForeground: "#001208", ctaHover: "#33FFA0",
+      border: "rgba(0,255,136,0.35)", success: "#00FF88",
+      badgeBackground: "rgba(0,255,136,0.10)", badgeForeground: "#86EFAC",
+      inputBackground: "rgba(0,255,136,0.04)", inputBorder: "rgba(0,255,136,0.30)",
+      inputText: "#FFFFFF", inputPlaceholder: "#4ADE80",
     },
-    radius: { card: "4px", field: "4px", button: "4px" },
-    button: { variant: "solid", glow: true, animate: "none" },
-    shadow: { card: "0 0 0 1px rgba(0,255,136,0.2)", button: "0 0 24px rgba(0,255,136,0.6)" },
-    glass: false, backgroundPattern: "grid", badgeStyle: "outline", density: "normal",
+    typography: { fontHeading: F.inter, fontBody: F.inter, fontMono: F.mono, headingWeight: 700, headingScale: 1, bodySize: "15px", letterSpacing: "-0.01em", ctaTextTransform: "uppercase" },
+    shape: { radiusCard: "4px", radiusInput: "4px", radiusCta: "4px", borderWidth: "1px" },
+    effects: { shadowCard: "0 0 0 1px rgba(0,255,136,0.2)", ctaGlow: "0 0 24px rgba(0,255,136,0.6)", backgroundPattern: "grid" },
+    layout: { density: "normal", badgeStyle: "outline", previewStyle: "framed" },
   },
 
-  // 5 ─── Elegante — preto quente + dourado, serif ─────────────
+  // 5 ─── Elegante ─────────────────────────────────────────────
   elegant: {
-    id: "elegant",
-    label: "Elegante",
-    mode: "dark",
-    fonts: {
-      heading: F.playfair, body: F.inter,
-      headingWeight: 600, bodyWeight: 400, labelWeight: 500,
-      headingTransform: "none", headingTracking: "0em", labelTracking: "0.2em",
-    },
+    id: "elegant", label: "Elegante", mode: "dark",
     colors: {
-      bg: "#141210", bgSolid: "#141210",
-      surface: "#1C1915", surfaceBorder: "rgba(212,184,114,0.18)", surfaceElevated: "#232019",
-      text: "#F5EFE4", subtext: "#B8A98C", muted: "#8A7B5E",
-      accent: "#D4B872", accentText: "#1A1408", accentSoft: "rgba(212,184,114,0.12)",
-      fieldBg: "#191611", fieldBorder: "rgba(212,184,114,0.22)", fieldText: "#F5EFE4", label: "#B8A98C",
+      background: "#141210", surface: "#1C1915", surfaceElevated: "#232019",
+      textPrimary: "#F5EFE4", textSecondary: "#B8A98C",
+      accent: "#D4B872", accentForeground: "#1A1408",
+      ctaBackground: "#D4B872", ctaForeground: "#1A1408", ctaHover: "#C4A85E",
+      border: "rgba(212,184,114,0.18)", success: "#8FBF7F",
+      badgeBackground: "rgba(212,184,114,0.12)", badgeForeground: "#D4B872",
+      inputBackground: "#191611", inputBorder: "rgba(212,184,114,0.22)",
+      inputText: "#F5EFE4", inputPlaceholder: "#8A7B5E",
     },
-    radius: { card: "10px", field: "8px", button: "8px" },
-    button: { variant: "solid", glow: false, animate: "none" },
-    shadow: { card: "0 12px 40px rgba(0,0,0,0.5)", button: "0 8px 24px rgba(212,184,114,0.25)" },
-    glass: false, backgroundPattern: "none", badgeStyle: "outline", density: "spacious",
+    typography: { fontHeading: F.playfair, fontBody: F.inter, fontMono: F.mono, headingWeight: 600, headingScale: 1.08, bodySize: "15px", letterSpacing: "0em", ctaTextTransform: "none" },
+    shape: { radiusCard: "10px", radiusInput: "8px", radiusCta: "8px", borderWidth: "1px" },
+    effects: { shadowCard: "0 12px 40px rgba(0,0,0,0.5)", backgroundPattern: "none" },
+    layout: { density: "spacious", badgeStyle: "outline", previewStyle: "framed" },
   },
 
-  // 6 ─── Urgência — vermelho, condensada caps, pulse ──────────
+  // 6 ─── Urgência ─────────────────────────────────────────────
   urgency: {
-    id: "urgency",
-    label: "Urgência",
-    mode: "dark",
-    fonts: {
-      heading: F.oswald, body: F.inter,
-      headingWeight: 700, bodyWeight: 400, labelWeight: 600,
-      headingTransform: "uppercase", headingTracking: "0.01em", labelTracking: "0.08em",
-    },
+    id: "urgency", label: "Urgência", mode: "dark",
     colors: {
-      bg: "#0C0A0A", bgSolid: "#0C0A0A",
-      surface: "#17110F", surfaceBorder: "rgba(220,38,38,0.28)", surfaceElevated: "#1F1512",
-      text: "#FAFAFA", subtext: "#E5A3A3", muted: "#B87878",
-      accent: "#DC2626", accentText: "#FFFFFF", accentSoft: "rgba(220,38,38,0.14)",
-      fieldBg: "#140F0E", fieldBorder: "rgba(220,38,38,0.25)", fieldText: "#FAFAFA", label: "#E5A3A3",
+      background: "#0C0A0A", surface: "#17110F", surfaceElevated: "#1F1512",
+      textPrimary: "#FAFAFA", textSecondary: "#E5A3A3",
+      accent: "#DC2626", accentForeground: "#FFFFFF",
+      ctaBackground: "#DC2626", ctaForeground: "#FFFFFF", ctaHover: "#B91C1C",
+      border: "rgba(220,38,38,0.28)", success: "#4ADE80",
+      badgeBackground: "rgba(220,38,38,0.14)", badgeForeground: "#F87171",
+      inputBackground: "#140F0E", inputBorder: "rgba(220,38,38,0.25)",
+      inputText: "#FAFAFA", inputPlaceholder: "#B87878",
     },
-    radius: { card: "8px", field: "6px", button: "8px" },
-    button: { variant: "solid", glow: false, animate: "pulse" },
-    shadow: { card: "0 8px 28px rgba(0,0,0,0.5)", button: "0 10px 30px rgba(220,38,38,0.45)" },
-    glass: false, backgroundPattern: "none", badgeStyle: "pill", density: "compact",
+    typography: { fontHeading: F.oswald, fontBody: F.inter, fontMono: F.mono, headingWeight: 700, headingScale: 1.05, bodySize: "15px", letterSpacing: "0.01em", ctaTextTransform: "uppercase" },
+    shape: { radiusCard: "8px", radiusInput: "6px", radiusCta: "8px", borderWidth: "1px" },
+    effects: { shadowCard: "0 8px 28px rgba(0,0,0,0.5)", ctaGlow: "0 10px 30px rgba(220,38,38,0.45)", backgroundPattern: "none" },
+    layout: { density: "compact", badgeStyle: "pill", previewStyle: "framed" },
   },
 
-  // 7 ─── Claro Profissional — SaaS azul ───────────────────────
+  // 7 ─── Claro Profissional ───────────────────────────────────
   clean: {
-    id: "clean",
-    label: "Claro Profissional",
-    mode: "light",
-    fonts: {
-      heading: F.inter, body: F.inter,
-      headingWeight: 700, bodyWeight: 400, labelWeight: 600,
-      headingTransform: "none", headingTracking: "-0.02em", labelTracking: "0.04em",
-    },
+    id: "clean", label: "Claro Profissional", mode: "light",
     colors: {
-      bg: "#F5F7FA", bgSolid: "#F5F7FA",
-      surface: "#FFFFFF", surfaceBorder: "#E2E8F0", surfaceElevated: "#FFFFFF",
-      text: "#0F172A", subtext: "#475569", muted: "#94A3B8",
-      accent: "#2563EB", accentText: "#FFFFFF", accentSoft: "rgba(37,99,235,0.10)",
-      fieldBg: "#FFFFFF", fieldBorder: "#CBD5E1", fieldText: "#0F172A", label: "#475569",
+      background: "#F5F7FA", surface: "#FFFFFF", surfaceElevated: "#FFFFFF",
+      textPrimary: "#0F172A", textSecondary: "#475569",
+      accent: "#2563EB", accentForeground: "#FFFFFF",
+      ctaBackground: "#2563EB", ctaForeground: "#FFFFFF", ctaHover: "#1D4ED8",
+      border: "#E2E8F0", success: "#16A34A",
+      badgeBackground: "rgba(37,99,235,0.10)", badgeForeground: "#1D4ED8",
+      inputBackground: "#FFFFFF", inputBorder: "#CBD5E1",
+      inputText: "#0F172A", inputPlaceholder: "#6B7688",
     },
-    radius: { card: "14px", field: "10px", button: "10px" },
-    button: { variant: "solid", glow: false, animate: "none" },
-    shadow: { card: "0 4px 24px rgba(15,23,42,0.08)", button: "0 8px 20px rgba(37,99,235,0.25)" },
-    glass: false, backgroundPattern: "none", badgeStyle: "pill", density: "normal",
+    typography: { fontHeading: F.inter, fontBody: F.inter, fontMono: F.mono, headingWeight: 700, headingScale: 1, bodySize: "15px", letterSpacing: "-0.02em", ctaTextTransform: "uppercase" },
+    shape: { radiusCard: "14px", radiusInput: "10px", radiusCta: "10px", borderWidth: "1px" },
+    effects: { shadowCard: "0 4px 24px rgba(15,23,42,0.08)", backgroundPattern: "none" },
+    layout: { density: "normal", badgeStyle: "pill", previewStyle: "framed" },
   },
 
-  // 8 ─── Claro Suave — off-white quente + sálvia, arredondado ─
+  // 8 ─── Claro Suave ──────────────────────────────────────────
   ocean: {
-    id: "ocean",
-    label: "Claro Suave",
-    mode: "light",
-    fonts: {
-      heading: F.nunito, body: F.nunito,
-      headingWeight: 800, bodyWeight: 400, labelWeight: 700,
-      headingTransform: "none", headingTracking: "-0.01em", labelTracking: "0.03em",
-    },
+    id: "ocean", label: "Claro Suave", mode: "light",
     colors: {
-      bg: "#FAF7F2", bgSolid: "#FAF7F2",
-      surface: "#FFFFFF", surfaceBorder: "#EDE7DD", surfaceElevated: "#FFFFFF",
-      text: "#2D2A26", subtext: "#6B6459", muted: "#A39B8D",
-      accent: "#4A7C59", accentText: "#FFFFFF", accentSoft: "rgba(74,124,89,0.12)",
-      fieldBg: "#FBF9F5", fieldBorder: "#E5DFD3", fieldText: "#2D2A26", label: "#6B6459",
+      background: "#FAF7F2", surface: "#FFFFFF", surfaceElevated: "#FFFFFF",
+      textPrimary: "#2D2A26", textSecondary: "#6B6459",
+      accent: "#4A7C59", accentForeground: "#FFFFFF",
+      ctaBackground: "#4A7C59", ctaForeground: "#FFFFFF", ctaHover: "#3F6B4F",
+      border: "#EDE7DD", success: "#3F6B4F",
+      badgeBackground: "rgba(74,124,89,0.12)", badgeForeground: "#3F6B4F",
+      inputBackground: "#FBF9F5", inputBorder: "#E5DFD3",
+      inputText: "#2D2A26", inputPlaceholder: "#857D6E",
     },
-    radius: { card: "24px", field: "16px", button: "16px" },
-    button: { variant: "solid", glow: false, animate: "none" },
-    shadow: { card: "0 12px 40px rgba(74,124,89,0.10)", button: "0 10px 28px rgba(74,124,89,0.22)" },
-    glass: false, backgroundPattern: "none", badgeStyle: "pill", density: "spacious",
+    typography: { fontHeading: F.nunito, fontBody: F.nunito, fontMono: F.mono, headingWeight: 800, headingScale: 1, bodySize: "15px", letterSpacing: "-0.01em", ctaTextTransform: "none" },
+    shape: { radiusCard: "24px", radiusInput: "16px", radiusCta: "16px", borderWidth: "1px" },
+    effects: { shadowCard: "0 12px 40px rgba(74,124,89,0.10)", backgroundPattern: "none" },
+    layout: { density: "spacious", badgeStyle: "pill", previewStyle: "framed" },
   },
 };
 
 export const THEME_LIST = Object.values(THEMES);
 
+/** Deriva a variante do CTA a partir dos tokens (sem campo extra). */
+export function ctaVariant(t: CheckoutTheme): "solid" | "outline" | "gradient" {
+  if (t.colors.ctaBackground.includes("gradient(")) return "gradient";
+  if (t.colors.ctaBackground === "transparent") return "outline";
+  return "solid";
+}
+
 /**
- * Resolve o tema efetivo a partir da AppearanceConfig.
- * Regra (corrige o bug do merge): o TEMA é a fonte da verdade; cores custom só
- * sobrescrevem quando o usuário realmente preencheu (string não-vazia).
- * Campos vazios ("") = "herdar do template".
+ * Resolve o tema efetivo: TEMA base + overrides do usuário.
+ * Regra (corrige o bug do merge antigo): cores custom só sobrescrevem quando
+ * preenchidas (string não-vazia). Campos vazios = herdar 100% do template.
  */
-export function resolveTheme(a: AppearanceConfig): CheckoutTheme {
+export function resolveTheme(a: AppearanceConfig, overrides?: ThemeOverrides): CheckoutTheme {
   const base = THEMES[(a.templateId as TemplateId) || "classic"] || THEMES.classic;
   const ov = (v: string | null | undefined) => (v && v.trim() ? v.trim() : undefined);
 
-  return {
-    ...base,
-    colors: {
-      ...base.colors,
-      bg: ov(a.bgColor) ?? base.colors.bg,
-      bgSolid: ov(a.bgColor) ?? base.colors.bgSolid,
-      surface: ov(a.widgetBgColor) ?? base.colors.surface,
-      text: ov(a.textColor) ?? base.colors.text,
-      accent: ov(a.primaryColor) ?? ov(a.buttonColor) ?? base.colors.accent,
-      accentText: ov(a.buttonTextColor) ?? base.colors.accentText,
-      fieldBg: ov(a.inputBgColor) ?? base.colors.fieldBg,
-      fieldText: ov(a.inputTextColor) ?? base.colors.fieldText,
-    },
-    // botão custom sobrescreve accent, mas mantém variante do tema
-    button: {
-      ...base.button,
-      ...(ov(a.buttonColor) ? { variant: base.button.variant === "gradient" ? "gradient" : "solid" } : {}),
-    },
+  // Overrides vindos dos 8 campos de cor da aba Aparência (mecanismo atual)
+  const fromAppearance: ThemeOverrides = {
+    background: ov(a.bgColor),
+    surface: ov(a.widgetBgColor),
+    textPrimary: ov(a.textColor),
+    accent: ov(a.primaryColor),
+    ctaBackground: ov(a.buttonColor),
+    ctaForeground: ov(a.buttonTextColor),
+    inputBackground: ov(a.inputBgColor),
+    inputText: ov(a.inputTextColor),
   };
+  // Precedência: 8 campos de cor da aba → themeOverrides persistido → param explícito
+  const persisted = (a.themeOverrides as ThemeOverrides | undefined) || undefined;
+  const merged: ThemeOverrides = { ...fromAppearance, ...(persisted || {}), ...(overrides || {}) };
+  const colorKeys = Object.keys(base.colors) as (keyof CheckoutThemeColors)[];
+  const colors = { ...base.colors };
+  for (const k of colorKeys) {
+    const val = merged[k];
+    if (val && String(val).trim()) colors[k] = val as string;
+  }
+
+  const typography = { ...base.typography };
+  if (merged.fontHeading) typography.fontHeading = merged.fontHeading;
+  if (merged.fontBody) typography.fontBody = merged.fontBody;
+
+  return { ...base, colors, typography };
 }
 
-/** CSS custom properties do tema, para aplicar no root do checkout. */
-export function themeCssVars(t: CheckoutTheme): Record<string, string> {
+/** Mapa completo de CSS variables `--checkout-*` (consumido pelo Provider). */
+export function themeToCssVars(t: CheckoutTheme): Record<string, string> {
+  const c = t.colors;
+  const gapByDensity = { compact: "1rem", normal: "1.5rem", spacious: "2.25rem" }[t.layout.density];
   return {
-    "--ck-bg": t.colors.bg,
-    "--ck-surface": t.colors.surface,
-    "--ck-accent": t.colors.accent,
-    "--ck-accent-text": t.colors.accentText,
-    "--ck-cta-gradient": t.button.gradient || t.colors.accent,
+    "--checkout-background": c.background,
+    "--checkout-surface": c.surface === "transparent" ? "transparent" : c.surface,
+    "--checkout-surface-elevated": c.surfaceElevated,
+    "--checkout-text-primary": c.textPrimary,
+    "--checkout-text-secondary": c.textSecondary,
+    "--checkout-accent": c.accent,
+    "--checkout-accent-foreground": c.accentForeground,
+    "--checkout-cta-background": c.ctaBackground,
+    "--checkout-cta-foreground": c.ctaForeground,
+    "--checkout-cta-hover": c.ctaHover,
+    "--checkout-border": c.border,
+    "--checkout-success": c.success,
+    "--checkout-badge-background": c.badgeBackground,
+    "--checkout-badge-foreground": c.badgeForeground,
+    "--checkout-input-background": c.inputBackground,
+    "--checkout-input-border": c.inputBorder,
+    "--checkout-input-text": c.inputText,
+    "--checkout-input-placeholder": c.inputPlaceholder,
+    // typography
+    "--checkout-font-heading": t.typography.fontHeading,
+    "--checkout-font-body": t.typography.fontBody,
+    "--checkout-font-mono": t.typography.fontMono,
+    "--checkout-heading-weight": String(t.typography.headingWeight),
+    "--checkout-heading-scale": String(t.typography.headingScale),
+    "--checkout-body-size": t.typography.bodySize,
+    "--checkout-letter-spacing": t.typography.letterSpacing,
+    "--checkout-cta-transform": t.typography.ctaTextTransform,
+    // shape
+    "--checkout-radius-card": t.shape.radiusCard,
+    "--checkout-radius-input": t.shape.radiusInput,
+    "--checkout-radius-cta": t.shape.radiusCta,
+    "--checkout-border-width": t.shape.borderWidth,
+    // effects
+    "--checkout-shadow-card": t.effects.shadowCard,
+    "--checkout-cta-glow": t.effects.ctaGlow || "none",
+    // layout
+    "--checkout-gap": gapByDensity,
   };
 }

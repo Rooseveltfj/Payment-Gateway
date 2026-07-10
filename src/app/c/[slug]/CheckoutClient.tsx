@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { CheckoutConfig } from "@/types/checkout-config";
-import { resolveTheme, themeCssVars } from "@/types/checkout-theme";
-import { checkoutFontVars } from "@/lib/checkout-fonts";
+import { resolveTheme, ctaVariant } from "@/types/checkout-theme";
+import { CheckoutThemeProvider } from "@/components/checkout-builder/CheckoutThemeProvider";
 import { CountdownTimer } from "@/components/checkout-builder/preview/CountdownTimer";
 import { SocialPopup } from "@/components/checkout-builder/preview/SocialPopup";
 import { ReviewCarousel } from "@/components/checkout-builder/preview/ReviewCarousel";
 import { CreditCard, QrCode, FileText, Loader2, CheckCircle2, Shield, Lock, BadgeCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { BRAND } from "@/lib/brand-colors";
 
 interface Props {
   product: {
@@ -29,14 +30,12 @@ function getVideoEmbed(url: string): string | null {
   return null;
 }
 
-// Classe do CTA a partir da variante/efeitos do tema (mesmo CSS do preview)
+// Classe do CTA — a variante vem do data-cta do provider; aqui só glow/pulse.
 function _cnBtn(theme: ReturnType<typeof resolveTheme>): string {
   return [
     "ck-btn",
-    `ck-btn--${theme.button.variant}`,
-    theme.button.glow ? "ck-btn--glow" : "",
-    theme.button.animate === "pulse" ? "ck-btn--pulse" : "",
-    theme.button.animate === "shimmer" ? "ck-btn--gradient" : "",
+    theme.effects.ctaGlow ? "ck-btn--glow" : "",
+    theme.id === "urgency" ? "ck-btn--pulse" : "",
   ].filter(Boolean).join(" ");
 }
 
@@ -99,26 +98,26 @@ export function CheckoutClient({ product, config }: Props) {
   // Tema resolvido pela MESMA função do preview do builder (fonte única).
   const theme = resolveTheme(a);
   const templateId = theme.id;
-  const userFont = a.fontFamily && a.fontFamily !== "Geist" ? a.fontFamily : null;
-  const fontFamily = userFont || theme.fonts.body;
-  const headingFont = userFont || theme.fonts.heading;
+  const headingFont = "var(--checkout-font-heading)";
 
+  // Tudo consumido via var(--checkout-*) emitidas pelo CheckoutThemeProvider.
   const ts = {
-    bg: theme.colors.bg,
-    cardBg: theme.colors.surface === "transparent" ? "rgba(255,255,255,0.02)" : theme.colors.surface,
-    cardBorder: theme.colors.surfaceBorder,
-    text: theme.colors.text,
-    subtext: theme.colors.subtext,
-    accent: theme.colors.accent,
-    buttonText: theme.colors.accentText,
-    fieldBg: theme.colors.fieldBg,
-    fieldBorder: theme.colors.fieldBorder,
-    labelColor: theme.colors.label,
-    isDark: theme.mode === "dark",
+    bg: "var(--checkout-background)",
+    cardBg: "var(--checkout-surface)",
+    cardBorder: "var(--checkout-border)",
+    text: "var(--checkout-text-primary)",
+    subtext: "var(--checkout-text-secondary)",
+    accent: "var(--checkout-accent)",
+    buttonText: "var(--checkout-cta-foreground)",
+    fieldBg: "var(--checkout-input-background)",
+    fieldBorder: "var(--checkout-input-border)",
+    labelColor: "var(--checkout-input-placeholder)",
+    surfaceEl: "var(--checkout-surface-elevated)",
+    badgeBg: "var(--checkout-badge-background)",
   };
 
-  // Botão respeita a variante do tema; buttonStyle do usuário só ajusta o raio.
-  const btnRadius = a.buttonStyle === "pill" ? "9999px" : a.buttonStyle === "square" ? "4px" : theme.radius.button;
+  // buttonStyle do usuário só ajusta o raio; variante/cor vêm do tema (data-cta).
+  const btnRadius = a.buttonStyle === "pill" ? "9999px" : a.buttonStyle === "square" ? "4px" : "var(--checkout-radius-cta)";
   const ctaClass = _cnBtn(theme);
   const isLongForm = a.layoutType === "longform";
   const isMultiStep = a.layoutType === "multistep";
@@ -132,7 +131,8 @@ export function CheckoutClient({ product, config }: Props) {
   const fieldStyle = {
     background: ts.fieldBg,
     border: `1px solid ${ts.fieldBorder}`,
-    color: ts.text,
+    color: "var(--checkout-input-text)",
+    borderRadius: "var(--checkout-radius-input)",
   };
 
   const handleCreateOrder = async (e: React.FormEvent) => {
@@ -179,28 +179,14 @@ export function CheckoutClient({ product, config }: Props) {
   };
 
   return (
-    <div
-      className={cn("min-h-screen relative", checkoutFontVars)}
-      style={{
-        background: ts.bg,
-        fontFamily,
-        fontWeight: theme.fonts.bodyWeight,
-        color: ts.text,
-        ...themeCssVars(theme),
-      } as React.CSSProperties}
-    >
-      {/* Background pattern (Neon grid) */}
-      {theme.backgroundPattern === "grid" && (
-        <div className="ck-grid-pattern absolute inset-0 pointer-events-none" aria-hidden />
-      )}
-
-      {/* Urgency Banner */}
+    <CheckoutThemeProvider theme={theme} applyBackground className="min-h-screen relative">
+      {/* Urgency Banner — usa o par accent/accentForeground (AA garantido) */}
       {t.urgency.enabled && (
         <div
           className="sticky top-0 z-50 w-full text-center text-sm font-bold py-2 px-4 shadow-md overflow-hidden"
-          style={{ background: t.urgency.bgColor || ts.accent, color: "#fff", fontFamily: headingFont, textTransform: theme.fonts.headingTransform }}
+          style={{ background: ts.accent, color: "var(--checkout-accent-foreground)", fontFamily: headingFont, textTransform: theme.typography.ctaTextTransform }}
         >
-          <div className={theme.button.animate === "pulse" ? "animate-pulse" : ""}>{t.urgency.text}</div>
+          <div className={theme.id === "urgency" ? "animate-pulse" : ""}>{t.urgency.text}</div>
         </div>
       )}
 
@@ -218,12 +204,12 @@ export function CheckoutClient({ product, config }: Props) {
               {sp.buyerCount?.enabled && (
                 <div
                   className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md"
-                  style={{ background: ts.isDark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.04)", border: `1px solid ${ts.fieldBorder}` }}
+                  style={{ background: ts.badgeBg, border: `1px solid ${ts.cardBorder}` }}
                 >
                   <div className="flex -space-x-1.5">
                     {[1, 2, 3].map(i => (
                       <div key={i} className="w-5 h-5 rounded-full border-2 flex items-center justify-center text-[7px] font-bold text-white"
-                        style={{ borderColor: ts.isDark ? "#09090b" : "#fff", background: ts.accent }}>
+                        style={{ borderColor: ts.bg, background: ts.accent, color: "var(--checkout-accent-foreground)" }}>
                         {String.fromCharCode(64 + i)}
                       </div>
                     ))}
@@ -236,7 +222,7 @@ export function CheckoutClient({ product, config }: Props) {
             </div>
 
             <div className="space-y-4">
-              <h1 className="text-4xl leading-tight" style={{ color: ts.text, fontFamily: headingFont, fontWeight: theme.fonts.headingWeight, letterSpacing: theme.fonts.headingTracking, textTransform: theme.fonts.headingTransform }}>
+              <h1 className="leading-tight" style={{ color: ts.text, fontFamily: headingFont, fontWeight: "var(--checkout-heading-weight)" as unknown as number, letterSpacing: "var(--checkout-letter-spacing)", fontSize: "calc(clamp(1.875rem, 4.5vw, 3rem) * var(--checkout-heading-scale))", textTransform: theme.id === "urgency" ? "uppercase" : "none" }}>
                 {c.headline}
               </h1>
               <p className="text-xl" style={{ color: ts.subtext }}>
@@ -286,7 +272,7 @@ export function CheckoutClient({ product, config }: Props) {
             {/* Reviews */}
             {sp.reviews.enabled && sp.reviews.items.length > 0 && (
               <div className="py-8 border-t border-white/5">
-                 <ReviewCarousel reviews={sp.reviews.items} display={sp.reviews.display} primaryColor={ts.accent} />
+                 <ReviewCarousel reviews={sp.reviews.items} display={sp.reviews.display} />
               </div>
             )}
 
@@ -308,7 +294,7 @@ export function CheckoutClient({ product, config }: Props) {
               
               {isMultiStep && !pixData && (
                 <div className="flex items-center gap-2 mb-6">
-                   <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
+                   <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ background: ts.cardBorder }}>
                      <div className="h-full transition-all duration-500" style={{ background: ts.accent, width: step === 1 ? '50%' : '100%' }} />
                    </div>
                    <span className="text-[10px] font-bold tracking-widest uppercase opacity-50">Etapa {step} de 2</span>
@@ -322,7 +308,7 @@ export function CheckoutClient({ product, config }: Props) {
                 } else {
                    handleCreateOrder(e);
                 }
-              }} className="rounded-[24px] sm:rounded-[32px] p-5 sm:p-8 space-y-6 shadow-2xl transition-all duration-500" style={{ background: ts.cardBg, border: `1px solid ${ts.cardBorder}`, boxShadow: templateId === "neon" ? `0 0 50px ${ts.accent}20` : undefined }}>
+              }} className="p-5 sm:p-8 space-y-6 transition-all duration-500" style={{ background: ts.cardBg, border: `1px solid ${ts.cardBorder}`, borderRadius: "var(--checkout-radius-card)", boxShadow: "var(--checkout-shadow-card)", backdropFilter: templateId === "gradient" ? "blur(16px)" : undefined }}>
                 
                 {!pixData ? (
                   <>
@@ -471,7 +457,7 @@ export function CheckoutClient({ product, config }: Props) {
                           <div key={bump.id} className="p-4 rounded-xl border-2 border-dashed flex items-start gap-3 transition-colors relative overflow-hidden" 
                                style={{ 
                                  borderColor: selectedBumps.includes(bump.id) ? ts.accent : ts.fieldBorder,
-                                 background: selectedBumps.includes(bump.id) ? `${ts.accent}15` : ts.fieldBg 
+                                 background: selectedBumps.includes(bump.id) ? ts.badgeBg : ts.fieldBg
                                }}>
                              <div className="absolute top-0 right-0 bg-red-500 text-white text-[8px] font-black uppercase px-2 py-0.5 rounded-bl-lg">
                                Oferta Única
@@ -537,7 +523,7 @@ export function CheckoutClient({ product, config }: Props) {
                           className={cn(ctaClass, "w-full relative overflow-hidden group py-4 sm:py-5 text-base sm:text-lg font-black disabled:opacity-50 flex items-center justify-center gap-2")}
                           style={{
                             borderRadius: btnRadius,
-                            boxShadow: theme.button.variant === "solid" ? `0 16px 32px ${ts.accent}40` : undefined,
+                            boxShadow: ctaVariant(theme) === "solid" ? "var(--checkout-shadow-card)" : undefined,
                           }}
                         >
                           <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
@@ -570,7 +556,7 @@ export function CheckoutClient({ product, config }: Props) {
                                 key={brand}
                                 className="text-[9px] font-black uppercase tracking-tighter px-1.5 py-0.5 rounded"
                                 style={{
-                                  border: `1px solid ${ts.isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)"}`,
+                                  border: `1px solid ${ts.fieldBorder}`,
                                   color: ts.text
                                 }}
                               >
@@ -611,8 +597,8 @@ export function CheckoutClient({ product, config }: Props) {
                       </p>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-[#7c3aed]/10 border border-[#7c3aed]/20 text-left space-y-2" style={{ borderColor: `${a.primaryColor}30`, background: `${a.primaryColor}10` }}>
-                      <h4 className="text-xs font-bold uppercase" style={{ color: a.primaryColor }}>Como pagar?</h4>
+                    <div className="p-4 rounded-xl text-left space-y-2" style={{ borderWidth: 1, borderStyle: "solid", borderColor: ts.cardBorder, background: ts.badgeBg }}>
+                      <h4 className="text-xs font-bold uppercase" style={{ color: ts.accent }}>Como pagar?</h4>
                       <ol className="text-xs space-y-1 opacity-80 list-decimal pl-4">
                         <li>Abra o app do seu banco</li>
                         <li>Vá em Área PIX e escolha &quot;Ler QR Code&quot; ou &quot;Pix Copia e Cola&quot;</li>
@@ -636,7 +622,7 @@ export function CheckoutClient({ product, config }: Props) {
             </a>
           )}
           {t.supportWidget.whatsapp && (
-            <a href={`https://wa.me/${t.supportWidget.whatsapp}`} target="_blank" rel="noreferrer" className="w-12 h-12 rounded-full cursor-pointer bg-[#25D366] shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
+            <a href={`https://wa.me/${t.supportWidget.whatsapp}`} target="_blank" rel="noreferrer" style={{ background: BRAND.whatsapp }} className="w-12 h-12 rounded-full cursor-pointer shadow-xl flex items-center justify-center hover:scale-110 transition-transform">
               <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.888-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.88-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.347-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
             </a>
           )}
@@ -645,8 +631,8 @@ export function CheckoutClient({ product, config }: Props) {
 
       {/* Social Proof Popup */}
       {sp.popup.enabled && (
-        <SocialPopup interval={sp.popup.interval} primaryColor={ts.accent} />
+        <SocialPopup interval={sp.popup.interval} />
       )}
-    </div>
+    </CheckoutThemeProvider>
   );
 }

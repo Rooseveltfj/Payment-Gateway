@@ -41,9 +41,11 @@ export function CountdownTimer({ config }: Props) {
     ? [["H", h], ["M", m], ["S", s]]
     : [["M", m], ["S", s]];
 
+  // Cores 100% via var(--checkout-*). "urgent" apenas realça com o accent do tema.
+  const accentText = isUrgent ? "var(--checkout-accent)" : "var(--checkout-text-secondary)";
   return (
-    <div className={`rounded-xl p-4 space-y-2 ${isUrgent ? "bg-red-950/40 border border-red-500/40" : "bg-white/5 border border-white/10"}`}>
-      <p className="text-xs font-semibold text-center" style={{ color: isUrgent ? "#f87171" : "#a1a1aa" }}>
+    <div className="rounded-xl p-4 space-y-2" style={{ background: "var(--checkout-surface-elevated)", border: "1px solid var(--checkout-border)" }}>
+      <p className="text-xs font-semibold text-center" style={{ color: accentText, fontFamily: "var(--checkout-font-mono)" }}>
         {config.countdown.label}
       </p>
       <div className="flex items-center justify-center gap-3">
@@ -51,21 +53,22 @@ export function CountdownTimer({ config }: Props) {
           <div key={i} className="flex items-center gap-3">
             <div className="text-center">
               <div
-                className="text-3xl font-bold font-mono tabular-nums rounded-lg px-3 py-2 min-w-[60px]"
+                className="text-3xl font-bold tabular-nums rounded-lg px-3 py-2 min-w-[60px]"
                 style={{
-                  background: isUrgent ? "rgba(239,68,68,0.15)" : "rgba(255,255,255,0.05)",
-                  color: isUrgent ? "#f87171" : "#f4f4f5",
-                  border: `1px solid ${isUrgent ? "rgba(239,68,68,0.3)" : "rgba(255,255,255,0.1)"}`
+                  background: "var(--checkout-badge-background)",
+                  color: isUrgent ? "var(--checkout-accent)" : "var(--checkout-text-primary)",
+                  border: "1px solid var(--checkout-border)",
+                  fontFamily: "var(--checkout-font-mono)",
                 }}
               >
                 {pad(value as number)}
               </div>
-              <span className="text-[10px] uppercase tracking-widest mt-1 block" style={{ color: isUrgent ? "#f87171" : "#71717a" }}>
+              <span className="text-[10px] uppercase tracking-widest mt-1 block" style={{ color: accentText }}>
                 {label}
               </span>
             </div>
             {i < segments.length - 1 && (
-              <span className="text-2xl font-bold mb-4" style={{ color: isUrgent ? "#f87171" : "#52525b" }}>:</span>
+              <span className="text-2xl font-bold mb-4" style={{ color: accentText }}>:</span>
             )}
           </div>
         ))}
