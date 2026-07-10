@@ -101,4 +101,21 @@ TTFB prod = mediana de 12 amostras (p95); TTFB dev = média runs 2–3 (fidelida
 Instrumentação temporária em `src/lib/prisma.ts` **revertida** (`git checkout`) após a coleta. Scripts de medição preservados em `perf/*.mjs`/`ttfb.sh` para re-medição idêntica na Fase 3 (exigência: antes/depois por correção).
 
 ---
-**FIM DA FASE 2. Nenhuma otimização aplicada. Aguardando aprovação para a Fase 3** (ordem proposta: gargalo #1 → #2 → #3, re-medindo com os mesmos scripts após cada commit).
+
+# ADENDO — FASE 3 executada (2026-07-10, branch `perf/fase-3`)
+
+Protocolo: uma correção por commit; re-medição com o MESMO protocolo do baseline (prod `:3001`, mediana de 12 amostras pós-aquecimento) após cada uma; regra de revert <15% — nenhum revert foi necessário.
+
+| Fix | Commit | Rota/métrica | Antes | Depois | Δ |
+|---|---|---|---|---|---|
+| #1 `Promise.all` nas 9 queries independentes | `3c54dda` | `GET /api/admin/metrics` | 1432ms | **294ms** | **−79%** |
+| #2 pool: idle 10s→120s + keepAlive | `b1c7c69` | 1º clique após 15s de pausa (`/api/admin/kyc`) | 1143ms | **296ms** | **−74%** |
+| #3 users: `Promise.all` + `groupBy` (fim do $transaction e do N+1) | `b05b413` | `GET /api/admin/users` | 722ms | **295ms** | **−59%** |
+
+**Bateria final de regressão (7 rotas, mesmo protocolo):** rotas não tocadas variaram ±1% (overview-stats 151→151ms, transactions 293→294ms, kyc 292→294ms, withdrawals 291→292ms, dashboard/metrics 294→292ms). Nenhuma regressão.
+
+**Verificação funcional:** respostas byte-a-byte equivalentes em conteúdo — metrics com todos os campos/charts populados; users com volumes reais conferidos (usuário com R$587.532 na pág. 2 bate com o topPlayers do metrics), paginação e shape intactos; zero erros nos logs do servidor.
+
+**Não tocado (fora do escopo aprovado):** webhooks, split, KYC, RLS, índices (sem número que os justifique hoje — §3), rendering client-side (§5.6), duplas de queries das rotas de ~292ms (ganho potencial ~140ms cada; candidato a Fase 4 se desejado).
+
+**Teto atual:** todas as rotas medidas agora custam ~150–295ms = 1–2 × RTT de 141ms (piso de infra desta máquina → us-east-1). Abaixo disso, só mudando a geografia (deploy na mesma região do banco), não o código.
