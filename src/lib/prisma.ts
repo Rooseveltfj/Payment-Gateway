@@ -5,10 +5,13 @@ import pg from "pg";
 const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 
 // No Prisma 7, a configuração do cliente gerado pode exigir um driver adapter explicitamente.
-const pool = new pg.Pool({ 
+const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
   connectionTimeoutMillis: 5000,
-  idleTimeoutMillis: 10000, 
+  // 10s descartava o pool entre cliques do admin; cada navegação intermitente
+  // pagava ~845ms de reconexão TCP+TLS+auth ao pooler (medido em PERF_BASELINE.md §2).
+  idleTimeoutMillis: 120000,
+  keepAlive: true, // evita drop silencioso da conexão ociosa pelo caminho de rede
   max: 20, // Aumentado para lidar com requisições concorrentes na dashboard
   allowExitOnIdle: true,
   ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : { rejectUnauthorized: false }
