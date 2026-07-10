@@ -17,41 +17,63 @@ export async function GET() {
     const today = startOfDay(new Date());
     const thirtyDaysAgo = subDays(today, 30);
 
-    // 1. Basic Stats
-    const activeUsers = await prisma.user.count({ where: { status: "ACTIVE" } });
-    
-    const volumeData = await prisma.order.aggregate({
-      _sum: { amount: true, platformFee: true },
-      where: { status: "PAID" }
-    });
-
-    const pendingWithdrawals = await prisma.withdrawal.aggregate({
-      _sum: { amount: true },
-      where: { status: "PENDING" }
-    });
-
-    const transactionsToday = await prisma.order.count({
-      where: { createdAt: { gte: today } }
-    });
-
-    const newUsersToday = await prisma.user.count({
-      where: { createdAt: { gte: today } }
-    });
-
-    const pendingKyc = await prisma.user.count({
-      where: { kycStatus: "PENDING" }
-    });
-
-    // 2. Volume Timeline (30 days)
-    const salesTimeline = await prisma.order.groupBy({
-      by: ['createdAt'],
-      _sum: { amount: true },
-      where: {
-        status: "PAID",
-        createdAt: { gte: thirtyDaysAgo }
-      },
-      orderBy: { createdAt: 'asc' }
-    });
+    // Queries independentes em paralelo (1 round-trip ao invés de 9 sequenciais).
+    // Mesmas queries/filtros de antes — só o agendamento mudou.
+    const [
+      activeUsers,
+      volumeData,
+      pendingWithdrawals,
+      transactionsToday,
+      newUsersToday,
+      pendingKyc,
+      salesTimeline,
+      paymentMethods,
+      topPlayersRaw,
+    ] = await Promise.all([
+      // 1. Basic Stats
+      prisma.user.count({ where: { status: "ACTIVE" } }),
+      prisma.order.aggregate({
+        _sum: { amount: true, platformFee: true },
+        where: { status: "PAID" }
+      }),
+      prisma.withdrawal.aggregate({
+        _sum: { amount: true },
+        where: { status: "PENDING" }
+      }),
+      prisma.order.count({
+        where: { createdAt: { gte: today } }
+      }),
+      prisma.user.count({
+        where: { createdAt: { gte: today } }
+      }),
+      prisma.user.count({
+        where: { kycStatus: "PENDING" }
+      }),
+      // 2. Volume Timeline (30 days)
+      prisma.order.groupBy({
+        by: ['createdAt'],
+        _sum: { amount: true },
+        where: {
+          status: "PAID",
+          createdAt: { gte: thirtyDaysAgo }
+        },
+        orderBy: { createdAt: 'asc' }
+      }),
+      // 3. Payment Methods Distribution
+      prisma.order.groupBy({
+        by: ['paymentMethod'],
+        _count: true,
+        where: { status: "PAID" }
+      }),
+      // 4. Top 10 Players
+      prisma.order.groupBy({
+        by: ['userId'],
+        _sum: { amount: true },
+        where: { status: "PAID" },
+        orderBy: { _sum: { amount: 'desc' } },
+        take: 10
+      }),
+    ]);
 
     // Process timeline to group by day (since createdAt is full timestamp)
     const timelineByDay: Record<string, number> = {};
@@ -65,26 +87,10 @@ export async function GET() {
       volume: amount
     }));
 
-    // 3. Payment Methods Distribution
-    const paymentMethods = await prisma.order.groupBy({
-      by: ['paymentMethod'],
-      _count: true,
-      where: { status: "PAID" }
-    });
-
     const chartPayments = paymentMethods.map(item => ({
       name: item.paymentMethod,
       value: item._count
     }));
-
-    // 4. Top 10 Players
-    const topPlayersRaw = await prisma.order.groupBy({
-      by: ['userId'],
-      _sum: { amount: true },
-      where: { status: "PAID" },
-      orderBy: { _sum: { amount: 'desc' } },
-      take: 10
-    });
 
     const userIds = topPlayersRaw.map(p => p.userId);
     const users = await prisma.user.findMany({
