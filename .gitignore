@@ -42,3 +42,6 @@ secrets/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# perf: dados brutos de medição (contêm params reais de queries)
+/perf/raw/
