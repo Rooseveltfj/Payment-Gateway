@@ -55,14 +55,40 @@ const V = {
 };
 
 function getVideoEmbed(url: string): string | null {
-  const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+  if (!url) return null;
+  // YouTube: watch?v= / youtu.be/ / shorts/ / embed/ / live/ (com ou sem www, -nocookie, m.)
+  const yt = url.match(/(?:youtube(?:-nocookie)?\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/|v\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/i);
   if (yt) return `https://www.youtube.com/embed/${yt[1]}?autoplay=0&controls=1&rel=0`;
-  const vi = url.match(/vimeo\.com\/(\d+)/);
+  // Vimeo: vimeo.com/123 ou vimeo.com/video/123
+  const vi = url.match(/vimeo\.com\/(?:video\/)?(\d+)/i);
   if (vi) return `https://player.vimeo.com/video/${vi[1]}`;
   return null;
 }
 
 const money = (n: number) => `R$ ${n.toFixed(2).replace(".", ",")}`;
+
+// Campo em MÓDULO (identidade estável) — se ficar dentro do render, o React
+// remonta o <input> a cada tecla e perde o foco (bug do mobile). Mesmo visual
+// em preview (placeholder) e live (input controlado).
+function CheckoutField({ live, labelStyle, fieldStyle, inputPh, label, ph, value, onChange, type = "text", required }: {
+  live: boolean; labelStyle: React.CSSProperties; fieldStyle: React.CSSProperties; inputPh: string;
+  label: string; ph?: string; value?: string; onChange?: (v: string) => void; type?: string; required?: boolean;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <label className="block text-[10px] @md:text-[11px] uppercase ml-0.5" style={labelStyle}>{label}{required ? " *" : ""}</label>
+      {live ? (
+        <input
+          type={type} required={required} value={value ?? ""} onChange={(e) => onChange?.(e.target.value)} placeholder={ph}
+          className="w-full h-11 @md:h-12 px-4 text-sm outline-none focus:ring-2 focus:ring-[color:var(--checkout-accent)] transition"
+          style={fieldStyle}
+        />
+      ) : (
+        <div className="h-11 @md:h-12 px-4 flex items-center" style={fieldStyle}><span className="text-sm" style={{ color: inputPh }}>{ph}</span></div>
+      )}
+    </div>
+  );
+}
 
 export function CheckoutRenderer({ config, mode, form, className }: Props) {
   const { appearance: a, content: c, triggers: t, socialProof: sp, form: f, bumpUpsell: bu } = config;
@@ -97,21 +123,8 @@ export function CheckoutRenderer({ config, mode, form, className }: Props) {
     return <div className="flex items-center gap-2 px-3 py-1.5 @md:px-4 @md:py-2 rounded-full backdrop-blur-md" style={{ background: V.badgeBg, border: `1px solid ${V.border}` }}>{children}</div>;
   };
 
-  // ── Campo: mesmo visual em preview e live; só o miolo muda ──
-  const Field = ({ label, ph, value, onChange, type = "text", required }: { label: string; ph?: string; value?: string; onChange?: (v: string) => void; type?: string; required?: boolean }) => (
-    <div className="space-y-1.5">
-      <label className="block text-[10px] @md:text-[11px] uppercase ml-0.5" style={labelStyle}>{label}{required ? " *" : ""}</label>
-      {live ? (
-        <input
-          type={type} required={required} value={value ?? ""} onChange={(e) => onChange?.(e.target.value)} placeholder={ph}
-          className="w-full h-11 @md:h-12 px-4 text-sm outline-none focus:ring-2 focus:ring-[color:var(--checkout-accent)] transition"
-          style={fieldStyle}
-        />
-      ) : (
-        <div className="h-11 @md:h-12 px-4 flex items-center" style={fieldStyle}><span className="text-sm" style={{ color: V.inputPh }}>{ph}</span></div>
-      )}
-    </div>
-  );
+  // Props comuns do campo (o componente é estável em módulo — ver CheckoutField)
+  const fieldCtx = { live, labelStyle, fieldStyle, inputPh: V.inputPh };
 
   const bannerSrc = a.bannerUrl || a.bannerExternal;
 
@@ -230,16 +243,16 @@ export function CheckoutRenderer({ config, mode, form, className }: Props) {
 
                   {showFields && (
                     <div className="space-y-3 @md:space-y-4">
-                      <Field label="Nome Completo" ph="Seu nome aqui" required value={form?.values.buyerName} onChange={(v) => form?.setValue({ buyerName: v })} />
-                      <Field label="E-mail Principal" ph="seu@email.com" type="email" required value={form?.values.buyerEmail} onChange={(v) => form?.setValue({ buyerEmail: v })} />
-                      {f.optionalFields.cpf && <Field label="CPF / CNPJ" ph="000.000.000-00" required value={form?.values.buyerCpf} onChange={(v) => form?.setValue({ buyerCpf: v })} />}
-                      {f.optionalFields.phone && <Field label="Telefone / WhatsApp" ph="(00) 00000-0000" type="tel" required value={form?.values.buyerPhone} onChange={(v) => form?.setValue({ buyerPhone: v })} />}
-                      {f.optionalFields.birthDate && <Field label="Nascimento" type="date" required value={form?.values.buyerData.birthDate} onChange={(v) => form?.setBuyerData("birthDate", v)} />}
-                      {f.optionalFields.address && <Field label="Endereço" ph="Rua, número, bairro" required value={form?.values.buyerData.address} onChange={(v) => form?.setBuyerData("address", v)} />}
-                      {f.optionalFields.zipCode && <Field label="CEP" ph="00000-000" required value={form?.values.buyerData.zipCode} onChange={(v) => form?.setBuyerData("zipCode", v)} />}
-                      {f.optionalFields.company && <Field label="Empresa" ph="Sua empresa" required value={form?.values.buyerData.company} onChange={(v) => form?.setBuyerData("company", v)} />}
+                      <CheckoutField {...fieldCtx} label="Nome Completo" ph="Seu nome aqui" required value={form?.values.buyerName} onChange={(v) => form?.setValue({ buyerName: v })} />
+                      <CheckoutField {...fieldCtx} label="E-mail Principal" ph="seu@email.com" type="email" required value={form?.values.buyerEmail} onChange={(v) => form?.setValue({ buyerEmail: v })} />
+                      {f.optionalFields.cpf && <CheckoutField {...fieldCtx} label="CPF / CNPJ" ph="000.000.000-00" required value={form?.values.buyerCpf} onChange={(v) => form?.setValue({ buyerCpf: v })} />}
+                      {f.optionalFields.phone && <CheckoutField {...fieldCtx} label="Telefone / WhatsApp" ph="(00) 00000-0000" type="tel" required value={form?.values.buyerPhone} onChange={(v) => form?.setValue({ buyerPhone: v })} />}
+                      {f.optionalFields.birthDate && <CheckoutField {...fieldCtx} label="Nascimento" type="date" required value={form?.values.buyerData.birthDate} onChange={(v) => form?.setBuyerData("birthDate", v)} />}
+                      {f.optionalFields.address && <CheckoutField {...fieldCtx} label="Endereço" ph="Rua, número, bairro" required value={form?.values.buyerData.address} onChange={(v) => form?.setBuyerData("address", v)} />}
+                      {f.optionalFields.zipCode && <CheckoutField {...fieldCtx} label="CEP" ph="00000-000" required value={form?.values.buyerData.zipCode} onChange={(v) => form?.setBuyerData("zipCode", v)} />}
+                      {f.optionalFields.company && <CheckoutField {...fieldCtx} label="Empresa" ph="Sua empresa" required value={form?.values.buyerData.company} onChange={(v) => form?.setBuyerData("company", v)} />}
                       {f.customFields.map(cf => (
-                        <Field key={cf.id} label={cf.label} ph={cf.placeholder} required={cf.required} value={form?.values.buyerData[cf.id]} onChange={(v) => form?.setBuyerData(cf.id, v)} />
+                        <CheckoutField {...fieldCtx} key={cf.id} label={cf.label} ph={cf.placeholder} required={cf.required} value={form?.values.buyerData[cf.id]} onChange={(v) => form?.setBuyerData(cf.id, v)} />
                       ))}
                     </div>
                   )}

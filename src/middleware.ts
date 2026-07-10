@@ -1,7 +1,6 @@
 import NextAuth from "next-auth"
 import authConfig from "./auth.config"
 import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
 
 const { auth } = NextAuth(authConfig)
 
@@ -31,7 +30,10 @@ export default auth(async (req) => {
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https: https://api.dicebear.com https://cdn.simpleicons.org",
+      "media-src 'self' blob: data: https://*.supabase.co",
       "connect-src 'self' https://*.supabase.co https://api.woovi.com",
+      // VSL: permite embutir players do YouTube/Vimeo (checkout)
+      "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com",
       "frame-ancestors 'none'",
     ].join('; ')
   )
