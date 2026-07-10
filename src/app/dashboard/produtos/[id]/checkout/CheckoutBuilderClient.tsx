@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { CheckoutConfig, DEFAULT_CHECKOUT_CONFIG } from "@/types/checkout-config";
 import { cn } from "@/lib/utils";
@@ -38,6 +38,8 @@ export function CheckoutBuilderClient({ productId, initialProduct }: { productId
   const [previewMode, setPreviewMode] = useState<"desktop" | "mobile">("desktop");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [dirty, setDirty] = useState(false); // alterações não salvas
+  const mounted = useRef(false);
   const [mobileZoom, setMobileZoom] = useState(0.85); // Zoom Padrão aumentado
   
   // States to keep track of changes
@@ -84,6 +86,7 @@ export function CheckoutBuilderClient({ productId, initialProduct }: { productId
         throw new Error("Falha ao salvar. Verifique sua conexão.");
       }
 
+      setDirty(false); // persistido
       if (showSuccess) {
         setSaved(true);
         setTimeout(() => setSaved(false), 2000);
@@ -95,13 +98,29 @@ export function CheckoutBuilderClient({ productId, initialProduct }: { productId
     }
   };
 
-  // Debounced auto-save (1.5s)
+  // Marca "dirty" em qualquer mudança (ignora o mount) + auto-save debounced (1.5s)
   useEffect(() => {
-    const timer = setTimeout(() => {
-      handleSave(false);
-    }, 1500);
+    if (!mounted.current) { mounted.current = true; return; }
+    setDirty(true);
+    setSaved(false);
+    const timer = setTimeout(() => { handleSave(false); }, 1500);
     return () => clearTimeout(timer);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config, productInfo]);
+
+  // Aviso ao fechar/atualizar/sair da aba com alterações não salvas
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (dirty) { e.preventDefault(); e.returnValue = ""; }
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [dirty]);
+
+  const leaveBuilder = () => {
+    if (dirty && !window.confirm("Você tem alterações não salvas. Sair mesmo assim?")) return;
+    router.push("/dashboard/produtos");
+  };
 
   const openPreview = () => {
     window.open(`/c/${productInfo.slug || productId}`, "_blank");
@@ -112,8 +131,8 @@ export function CheckoutBuilderClient({ productId, initialProduct }: { productId
       {/* ─── Topbar ─── */}
       <header className="h-[56px] shrink-0 bg-[#07070f] border-b border-white/5 flex items-center justify-between px-5 z-20">
         <div className="flex items-center gap-4">
-          <button 
-            onClick={() => router.push("/dashboard/produtos")}
+          <button
+            onClick={leaveBuilder}
             className="flex items-center gap-2 text-[13px] font-medium text-[#64748b] hover:text-[#f1f5f9] transition-colors"
           >
             <ChevronLeft className="h-4 w-4" />
@@ -154,6 +173,16 @@ export function CheckoutBuilderClient({ productId, initialProduct }: { productId
         </div>
 
         <div className="flex items-center gap-3">
+          {/* Indicador de estado: salvando / não salvo / salvo */}
+          <span className="text-[11px] font-medium min-w-[92px] text-right tabular-nums">
+            {saving ? (
+              <span className="text-[#64748b]">Salvando…</span>
+            ) : dirty ? (
+              <span className="text-amber-400 flex items-center gap-1.5 justify-end"><span className="w-1.5 h-1.5 rounded-full bg-amber-400" /> Não salvo</span>
+            ) : saved ? (
+              <span className="text-green-400">Tudo salvo ✓</span>
+            ) : null}
+          </span>
           <button
             onClick={openPreview}
             className="flex items-center gap-2 h-9 px-4 rounded-xl text-[12px] font-bold text-[#64748b] hover:bg-white/5 hover:text-[#f1f5f9] transition-all"
@@ -164,14 +193,14 @@ export function CheckoutBuilderClient({ productId, initialProduct }: { productId
             onClick={() => handleSave()}
             disabled={saving}
             className={cn(
-              "h-9 px-6 rounded-xl text-[12px] font-bold transition-all flex items-center gap-2 min-w-[100px] justify-center",
-              saved 
-                ? "bg-green-500 text-white shadow-[0_0_20px_rgba(34,197,94,0.3)]" 
+              "h-9 px-6 rounded-xl text-[12px] font-bold transition-all flex items-center gap-2 min-w-[100px] justify-center disabled:opacity-70",
+              saved
+                ? "bg-green-500 text-white shadow-[0_0_20px_rgba(34,197,94,0.3)]"
                 : "bg-purple-600 hover:bg-purple-500 text-white shadow-[0_0_20px_rgba(147,51,234,0.3)]"
             )}
           >
             {saving ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <><Loader2 className="h-4 w-4 animate-spin" /> Salvando</>
             ) : saved ? (
               <><Check className="h-4 w-4" /> Salvo!</>
             ) : (

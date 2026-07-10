@@ -89,6 +89,11 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Container queries: o checkout responde à largura do PRÓPRIO container
+    // (preview do builder e página pública renderizam o mesmo layout no mesmo
+    // breakpoint, seja em 390px no builder-mobile ou no viewport real).
+    require("@tailwindcss/container-queries"),
+  ],
 };
 export default config;
