@@ -209,16 +209,19 @@ export interface CheckoutConfig {
 // ─── Default Config ────────────────────────────────────────
 export const DEFAULT_CHECKOUT_CONFIG: CheckoutConfig = {
   appearance: {
-    primaryColor: "#7c3aed",
-    bgColor: "#09090b",
-    textColor: "#f4f4f5",
-    buttonColor: "#7c3aed",
-    buttonTextColor: "#ffffff",
-    widgetBgColor: "rgba(255,255,255,0.06)",
-    inputBgColor: "rgba(255,255,255,0.03)",
-    inputTextColor: "#ffffff",
+    // Cores vazias por padrão = "herdar do template" (ver resolveTheme()).
+    // Preenchê-las via aba Aparência sobrescreve o token do tema.
+    primaryColor: "",
+    bgColor: "",
+    textColor: "",
+    buttonColor: "",
+    buttonTextColor: "",
+    widgetBgColor: "",
+    inputBgColor: "",
+    inputTextColor: "",
     layoutType: "standard",
     themePreset: "dark",
+    templateId: "classic",
     logoUrl: null,
     bannerUrl: null,
     bannerExternal: "",

@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { CheckoutConfig } from "@/types/checkout-config";
+import { resolveTheme, themeCssVars } from "@/types/checkout-theme";
+import { checkoutFontVars } from "@/lib/checkout-fonts";
 import { CountdownTimer } from "@/components/checkout-builder/preview/CountdownTimer";
 import { SocialPopup } from "@/components/checkout-builder/preview/SocialPopup";
 import { ReviewCarousel } from "@/components/checkout-builder/preview/ReviewCarousel";
@@ -19,18 +21,23 @@ interface Props {
   config: CheckoutConfig | null;
 }
 
-const FONT_IMPORTS: Record<string, string> = {
-  Inter: "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap",
-  Poppins: "https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap",
-  Montserrat: "https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap",
-};
-
 function getVideoEmbed(url: string): string | null {
   const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
   if (yt) return `https://www.youtube.com/embed/${yt[1]}`;
   const vi = url.match(/vimeo\.com\/(\d+)/);
   if (vi) return `https://player.vimeo.com/video/${vi[1]}`;
   return null;
+}
+
+// Classe do CTA a partir da variante/efeitos do tema (mesmo CSS do preview)
+function _cnBtn(theme: ReturnType<typeof resolveTheme>): string {
+  return [
+    "ck-btn",
+    `ck-btn--${theme.button.variant}`,
+    theme.button.glow ? "ck-btn--glow" : "",
+    theme.button.animate === "pulse" ? "ck-btn--pulse" : "",
+    theme.button.animate === "shimmer" ? "ck-btn--gradient" : "",
+  ].filter(Boolean).join(" ");
 }
 
 export function CheckoutClient({ product, config }: Props) {
@@ -89,39 +96,30 @@ export function CheckoutClient({ product, config }: Props) {
   // 3. Destructuring
   const { appearance: a, content: c, triggers: t, socialProof: sp, form: f, bumpUpsell: bu } = config;
 
-  const templateId = a.templateId || "classic";
-  const fontFamily = a.fontFamily === "Geist" ? "inherit" : a.fontFamily;
-  const userAccent = a.primaryColor || "#7c3aed";
+  // Tema resolvido pela MESMA função do preview do builder (fonte única).
+  const theme = resolveTheme(a);
+  const templateId = theme.id;
+  const userFont = a.fontFamily && a.fontFamily !== "Geist" ? a.fontFamily : null;
+  const fontFamily = userFont || theme.fonts.body;
+  const headingFont = userFont || theme.fonts.heading;
 
-  const getTemplateStyles = () => {
-    switch (templateId) {
-      case "minimalist": return { bg: "#050505", cardBg: "rgba(255,255,255,0.02)", cardBorder: "rgba(255,255,255,0.05)", text: "#ffffff", subtext: "#71717a", accent: userAccent, fieldBg: "rgba(255,255,255,0.03)", fieldBorder: "rgba(255,255,255,0.07)", labelColor: "rgba(255,255,255,0.4)", isDark: true };
-      case "neon": return { bg: "#000000", cardBg: "rgba(0,255,159,0.02)", cardBorder: "rgba(0,255,159,0.1)", text: "#ffffff", subtext: "#00ff9f90", accent: "#00ff9f", fieldBg: "rgba(0,255,159,0.03)", fieldBorder: "rgba(0,255,159,0.08)", labelColor: "rgba(255,255,255,0.4)", isDark: true };
-      case "gradient": return { bg: `linear-gradient(135deg, #1e1b4b 0%, #4c1d95 100%)`, cardBg: "rgba(255,255,255,0.07)", cardBorder: "rgba(255,255,255,0.12)", text: "#ffffff", subtext: "#c4b5fd", accent: userAccent, fieldBg: "rgba(255,255,255,0.05)", fieldBorder: "rgba(255,255,255,0.1)", labelColor: "rgba(255,255,255,0.5)", isDark: true };
-      case "elegant": return { bg: "#0d0d10", cardBg: "#16161a", cardBorder: "rgba(255,255,255,0.04)", text: "#ffffff", subtext: "#94a3b8", accent: userAccent, fieldBg: "rgba(255,255,255,0.03)", fieldBorder: "rgba(255,255,255,0.06)", labelColor: "rgba(255,255,255,0.4)", isDark: true };
-      case "urgency": return { bg: "#09090b", cardBg: "rgba(239,68,68,0.04)", cardBorder: "rgba(239,68,68,0.2)", text: "#ffffff", subtext: "#f87171", accent: "#ef4444", fieldBg: "rgba(255,255,255,0.03)", fieldBorder: "rgba(239,68,68,0.15)", labelColor: "rgba(255,255,255,0.4)", isDark: true };
-      case "clean": return { bg: "#ffffff", cardBg: "#f8fafc", cardBorder: "#e2e8f0", text: "#0f172a", subtext: "#64748b", accent: userAccent, fieldBg: "#ffffff", fieldBorder: "#e2e8f0", labelColor: "#475569", isDark: false };
-      case "ocean": return { bg: "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)", cardBg: "#ffffff", cardBorder: "#bfdbfe", text: "#1e3a5f", subtext: "#3b82f6", accent: "#2563eb", fieldBg: "#f0f7ff", fieldBorder: "#bfdbfe", labelColor: "#475569", isDark: false };
-      default: return { bg: a.bgColor || "#07070f", cardBg: "rgba(255,255,255,0.03)", cardBorder: "rgba(255,255,255,0.06)", text: "#f8fafc", subtext: "#64748b", accent: userAccent, fieldBg: "rgba(255,255,255,0.03)", fieldBorder: "rgba(255,255,255,0.06)", labelColor: "rgba(255,255,255,0.4)", isDark: true };
-    }
-  };
-
-  const baseTs = getTemplateStyles();
   const ts = {
-    bg: a.bgColor || baseTs.bg,
-    cardBg: a.widgetBgColor || baseTs.cardBg,
-    cardBorder: baseTs.cardBorder,
-    text: a.textColor || baseTs.text,
-    subtext: baseTs.subtext,
-    accent: a.buttonColor || baseTs.accent,
-    buttonText: a.buttonTextColor || "#ffffff",
-    fieldBg: a.inputBgColor || baseTs.fieldBg,
-    fieldBorder: baseTs.fieldBorder,
-    labelColor: a.inputTextColor || baseTs.labelColor,
-    isDark: baseTs.isDark
+    bg: theme.colors.bg,
+    cardBg: theme.colors.surface === "transparent" ? "rgba(255,255,255,0.02)" : theme.colors.surface,
+    cardBorder: theme.colors.surfaceBorder,
+    text: theme.colors.text,
+    subtext: theme.colors.subtext,
+    accent: theme.colors.accent,
+    buttonText: theme.colors.accentText,
+    fieldBg: theme.colors.fieldBg,
+    fieldBorder: theme.colors.fieldBorder,
+    labelColor: theme.colors.label,
+    isDark: theme.mode === "dark",
   };
 
-  const btnRadius = a.buttonStyle === "pill" ? "9999px" : a.buttonStyle === "square" ? "4px" : "12px";
+  // Botão respeita a variante do tema; buttonStyle do usuário só ajusta o raio.
+  const btnRadius = a.buttonStyle === "pill" ? "9999px" : a.buttonStyle === "square" ? "4px" : theme.radius.button;
+  const ctaClass = _cnBtn(theme);
   const isLongForm = a.layoutType === "longform";
   const isMultiStep = a.layoutType === "multistep";
 
@@ -182,25 +180,27 @@ export function CheckoutClient({ product, config }: Props) {
 
   return (
     <div
-      className="min-h-screen relative"
+      className={cn("min-h-screen relative", checkoutFontVars)}
       style={{
         background: ts.bg,
         fontFamily,
+        fontWeight: theme.fonts.bodyWeight,
         color: ts.text,
-      }}
+        ...themeCssVars(theme),
+      } as React.CSSProperties}
     >
-      {/* Font loader */}
-      {a.fontFamily !== "Geist" && FONT_IMPORTS[a.fontFamily] && (
-        <link rel="stylesheet" href={FONT_IMPORTS[a.fontFamily]} />
+      {/* Background pattern (Neon grid) */}
+      {theme.backgroundPattern === "grid" && (
+        <div className="ck-grid-pattern absolute inset-0 pointer-events-none" aria-hidden />
       )}
 
       {/* Urgency Banner */}
       {t.urgency.enabled && (
         <div
           className="sticky top-0 z-50 w-full text-center text-sm font-bold py-2 px-4 shadow-md overflow-hidden"
-          style={{ background: t.urgency.bgColor, color: "#fff" }}
+          style={{ background: t.urgency.bgColor || ts.accent, color: "#fff", fontFamily: headingFont, textTransform: theme.fonts.headingTransform }}
         >
-          <div className="animate-pulse">{t.urgency.text}</div>
+          <div className={theme.button.animate === "pulse" ? "animate-pulse" : ""}>{t.urgency.text}</div>
         </div>
       )}
 
@@ -236,7 +236,7 @@ export function CheckoutClient({ product, config }: Props) {
             </div>
 
             <div className="space-y-4">
-              <h1 className="text-4xl font-extrabold tracking-tight leading-tight" style={{ color: ts.text }}>
+              <h1 className="text-4xl leading-tight" style={{ color: ts.text, fontFamily: headingFont, fontWeight: theme.fonts.headingWeight, letterSpacing: theme.fonts.headingTracking, textTransform: theme.fonts.headingTransform }}>
                 {c.headline}
               </h1>
               <p className="text-xl" style={{ color: ts.subtext }}>
@@ -531,15 +531,13 @@ export function CheckoutClient({ product, config }: Props) {
                           </div>
                         </div>
 
-                        <button 
+                        <button
                           disabled={loading}
                           type="submit"
-                          className="w-full relative overflow-hidden group py-4 sm:py-5 text-base sm:text-lg font-black transition-all disabled:opacity-50 flex items-center justify-center gap-2"
-                          style={{ 
-                            background: ts.accent,
-                            color: a.buttonTextColor || "#fff",
+                          className={cn(ctaClass, "w-full relative overflow-hidden group py-4 sm:py-5 text-base sm:text-lg font-black disabled:opacity-50 flex items-center justify-center gap-2")}
+                          style={{
                             borderRadius: btnRadius,
-                            boxShadow: `0 16px 32px ${ts.accent}40`,
+                            boxShadow: theme.button.variant === "solid" ? `0 16px 32px ${ts.accent}40` : undefined,
                           }}
                         >
                           <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
@@ -547,7 +545,7 @@ export function CheckoutClient({ product, config }: Props) {
                             <Loader2 className="h-5 w-5 animate-spin relative z-10" />
                           ) : (
                             <span className="relative z-10 uppercase tracking-widest flex items-center gap-2">
-                              {isMultiStep && step === 1 ? "Ir para pagamento" : `Pagar R$ ${totalPrice.toFixed(2).replace(".", ",")}`}
+                              {isMultiStep && step === 1 ? "Ir para pagamento" : (a.buttonText?.trim() ? a.buttonText : `Pagar R$ ${totalPrice.toFixed(2).replace(".", ",")}`)}
                             </span>
                           )}
                         </button>

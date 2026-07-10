@@ -1,8 +1,10 @@
 "use client";
 
-import { TemplateId, AppearanceConfig, ButtonStyle, FontFamily, ThemePreset } from "@/types/checkout-config";
+import { TemplateId, AppearanceConfig, ButtonStyle, FontFamily } from "@/types/checkout-config";
+import { THEME_LIST } from "@/types/checkout-theme";
 import { Input } from "@/components/ui/Input";
 import { ImageUpload } from "@/components/ui/ImageUpload";
+import { ThemeThumbnail } from "@/components/checkout-builder/ThemeThumbnail";
 import { cn } from "@/lib/utils";
 import { Check, Edit2, Layout, Sliders, Type, Image as ImageIcon, Minus } from "lucide-react";
 
@@ -30,18 +32,10 @@ const COLOR_FIELDS = [
   { key: "inputTextColor", label: "Texto dos inputs" },
 ] as const;
 
-const TEMPLATES: { id: TemplateId; label: string; preview: string; theme: ThemePreset; isLight?: boolean }[] = [
-  // Dark Templates
-  { id: "classic", label: "Escuro Clássico", theme: "dark", preview: "bg-[#1a1a2e] border-[#8b5cf6]/20" },
-  { id: "minimalist", label: "Minimalista", theme: "minimalist", preview: "bg-[#050505] border-white/5" },
-  { id: "gradient", label: "Gradiente Pro", theme: "gradient", preview: "bg-gradient-to-br from-[#4c1d95] to-[#1e1b4b]" },
-  { id: "neon", label: "Neon Tech", theme: "neon", preview: "bg-black border-[#00ff9f]/30" },
-  { id: "elegant", label: "Elegante", theme: "elegant", preview: "bg-[#0d0d10] border-[#d4d4d8]/10" },
-  { id: "urgency", label: "Urgência", theme: "urgency", preview: "bg-[#09090b] border-red-500/30" },
-  // Light Templates
-  { id: "clean", label: "Clean Light", theme: "clean", preview: "bg-white border-gray-200", isLight: true },
-  { id: "ocean", label: "Ocean Light", theme: "ocean", preview: "bg-gradient-to-br from-[#eff6ff] to-[#dbeafe] border-blue-200", isLight: true },
-];
+// Lista derivada do registry de temas (fonte única). Thumbnails são renderizadas
+// a partir dos tokens reais via <ThemeThumbnail> — nunca imagens estáticas.
+const DARK_TEMPLATES = THEME_LIST.filter(t => t.mode === "dark");
+const LIGHT_TEMPLATES = THEME_LIST.filter(t => t.mode === "light");
 
 interface Props {
   config: AppearanceConfig;
@@ -59,66 +53,37 @@ function SectionLabel({ children, icon: Icon }: { children: React.ReactNode; ico
 
 export function AppearanceTab({ config, onChange }: Props) {
   const activeTemplate = config.templateId || "classic";
-  const darkTemplates = TEMPLATES.filter(t => !t.isLight);
-  const lightTemplates = TEMPLATES.filter(t => t.isLight);
 
+  // "Restaurar" = limpar overrides → herdar 100% do template selecionado (ver resolveTheme).
   const resetColors = () => {
     onChange({
-      primaryColor: "#7c3aed",
-      bgColor: "#09090b",
-      textColor: "#f4f4f5",
-      buttonColor: "#7c3aed",
-      buttonTextColor: "#ffffff",
-      widgetBgColor: "rgba(255,255,255,0.06)",
-      inputBgColor: "rgba(255,255,255,0.03)",
-      inputTextColor: "#ffffff",
+      primaryColor: "", bgColor: "", textColor: "", buttonColor: "",
+      buttonTextColor: "", widgetBgColor: "", inputBgColor: "", inputTextColor: "",
     });
   };
 
-  const renderTemplateGrid = (templates: typeof TEMPLATES) => (
+  const renderTemplateGrid = (templates: typeof THEME_LIST) => (
     <div className="grid grid-cols-2 gap-3">
       {templates.map(t => (
         <button
           key={t.id}
-          onClick={() => onChange({
-            themePreset: t.theme,
-            // @ts-ignore
-            templateId: t.id
-          })}
+          onClick={() => onChange({ templateId: t.id, themePreset: t.mode })}
           className={cn(
             "group relative flex flex-col gap-2 transition-all",
             activeTemplate === t.id ? "scale-[1.02]" : "hover:scale-[1.01]"
           )}
         >
           <div className={cn(
-            "w-full aspect-[4/3] rounded-xl border-2 transition-all flex flex-col p-2 gap-1 overflow-hidden",
-            t.preview,
+            "w-full rounded-xl border-2 transition-all overflow-hidden",
             activeTemplate === t.id
               ? "border-purple-500 ring-4 ring-purple-500/10 shadow-[0_0_20px_rgba(139,92,246,0.2)]"
               : "border-white/5 hover:border-white/10"
           )}>
-            {/* Template preview elements */}
-            <div className={cn("w-full h-1 rounded-full", t.isLight ? "bg-black/10" : "bg-white/10")} />
-            <div className={cn("w-2/3 h-1 rounded-full", t.isLight ? "bg-black/10" : "bg-white/10")} />
-            <div className="flex-1" />
-            {/* CTA button preview */}
-            <div className={cn(
-              "w-full h-3 rounded-md",
-              t.theme === "neon" ? "bg-[#00ff9f]/40" :
-              t.theme === "urgency" ? "bg-red-500/40" :
-              t.isLight ? "bg-blue-500/40" :
-              "bg-purple-500/40"
-            )} />
-
+            {/* Miniatura viva derivada dos tokens do tema */}
+            <ThemeThumbnail theme={t} />
             {activeTemplate === t.id && (
-              <div className="absolute top-2 right-2 bg-purple-500 rounded-full p-1 shadow-lg">
+              <div className="absolute top-2 right-2 bg-purple-500 rounded-full p-1 shadow-lg z-10">
                 <Check className="h-3 w-3 text-white" />
-              </div>
-            )}
-            
-            {t.isLight && (
-              <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-white rounded-md text-[8px] font-black text-gray-600 uppercase tracking-wide border border-gray-200">
-                LIGHT
               </div>
             )}
           </div>
@@ -155,11 +120,11 @@ export function AppearanceTab({ config, onChange }: Props) {
 
       {/* ─── Templates ─── */}
       <SectionLabel icon={Layout}>Templates Escuros</SectionLabel>
-      {renderTemplateGrid(darkTemplates)}
+      {renderTemplateGrid(DARK_TEMPLATES)}
 
       {/* ─── Light Templates ─── */}
       <SectionLabel icon={Layout}>Templates Claros</SectionLabel>
-      {renderTemplateGrid(lightTemplates)}
+      {renderTemplateGrid(LIGHT_TEMPLATES)}
 
       {/* ─── Colors ─── */}
       <SectionLabel icon={Sliders}>Cores Customizadas (Sobrescreve Template)</SectionLabel>
