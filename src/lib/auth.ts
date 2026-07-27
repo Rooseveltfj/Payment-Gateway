@@ -1,5 +1,6 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
+import crypto from "crypto"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 import authConfig from "@/auth.config"
@@ -14,6 +15,61 @@ import { detectSuspiciousActivity } from "./security-monitor"
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
   trustHost: true,
+  // Merge explícito: preserva os callbacks edge de auth.config.ts (session + jwt
+  // de credenciais) e adiciona a lógica de banco do Google (Node runtime).
+  callbacks: {
+    ...authConfig.callbacks,
+    // Só atua no Google; credenciais passam direto (fluxo intacto).
+    async signIn({ user, account, profile }) {
+      if (account?.provider !== "google") return true;
+
+      // Só cria se o Google confirmou o e-mail.
+      if (!(profile as { email_verified?: boolean } | undefined)?.email_verified) {
+        return "/login?error=google_unverified";
+      }
+      const email = user.email;
+      if (!email) return "/login?error=google_unverified";
+
+      const existing = await prisma.user.findUnique({ where: { email } });
+      if (existing) {
+        // Regra: e-mail já existe (com senha) → não vincular, não logar.
+        return "/login?error=email_exists";
+      }
+
+      // Senha aleatória segura (nunca exibida/reutilizável) — User.password é NOT NULL.
+      const randomPassword = await bcrypt.hash(crypto.randomBytes(32).toString("hex"), 10);
+      const created = await prisma.user.create({
+        data: {
+          name: user.name || (profile as { name?: string } | undefined)?.name || "Usuário",
+          email,
+          password: randomPassword,
+          role: "USER",       // NUNCA vem do provider
+          status: "ACTIVE",   // Google já verificou o e-mail (não passa por TwoFactorToken)
+          avatarUrl: (profile as { picture?: string } | undefined)?.picture ?? null,
+        },
+      });
+      await audit("USER_REGISTERED", created.id, { email, name: created.name, via: "google" }, undefined);
+      return true;
+    },
+    // Enriquecimento em Node: o jwt edge (auth.config.ts) não pode tocar o Prisma.
+    // No 1º sign-in Google, corrige token.sub p/ o id do banco e injeta role/kycStatus.
+    async jwt(params) {
+      const token = await authConfig.callbacks!.jwt!(params);
+      const { account, user } = params as { account?: { provider?: string }; user?: { email?: string | null } };
+      if (account?.provider === "google" && user?.email) {
+        const db = await prisma.user.findUnique({
+          where: { email: user.email },
+          select: { id: true, role: true, kycStatus: true },
+        });
+        if (db) {
+          token.sub = db.id;
+          (token as { role?: string }).role = db.role;
+          (token as { kycStatus?: string }).kycStatus = db.kycStatus;
+        }
+      }
+      return token;
+    },
+  },
   events: {
     signIn: async ({ user }) => {
       const head = headers();
@@ -138,5 +194,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return null
       },
     }),
+    // Reinclui o Google definido em auth.config.ts (o override de `providers`
+    // acima descartaria authConfig.providers). Google fica definido em 1 lugar só.
+    ...authConfig.providers.filter((p) => (p as { id?: string }).id !== "credentials"),
   ],
 })

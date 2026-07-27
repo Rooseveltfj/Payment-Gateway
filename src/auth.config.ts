@@ -1,4 +1,5 @@
 import Credentials from "next-auth/providers/credentials"
+import Google from "next-auth/providers/google"
 import type { NextAuthConfig } from "next-auth"
 
 export default {
@@ -8,6 +9,13 @@ export default {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
+    }),
+    // Definição edge-safe do Google (só clientId/secret via env). Toda a lógica
+    // de banco (criar/rejeitar usuário, enriquecer o token) vive em src/lib/auth.ts.
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: false,
     }),
   ],
   session: { strategy: "jwt" },
