@@ -3,7 +3,9 @@
  * Styled with dark theme, electric purple (#A020F0) and neon glow effects.
  */
 
-const LOGO_URL = "https://www.pulsepay.com.br/assets/logo-png.png"; 
+// URL base dos links dos e-mails. Fallback = valor atual (não muda comportamento sem a env).
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://www.pulsepay.com.br";
+const LOGO_URL = `${APP_URL}/assets/logo-png.png`;
 const ACCENT_COLOR = "#BF00FF";
 const BG_COLOR = "#030507";
 
@@ -48,7 +50,7 @@ export const getTwoFactorEmailTemplate = (code: string) => `
       
       <p class="expiry">Expira em 5 minutos</p>
       
-      <a href="https://www.pulsepay.com.br/auth/verify" class="button">Confirmar Acesso</a>
+      <a href="${APP_URL}/auth/verify" class="button">Confirmar Acesso</a>
     </div>
     <div class="footer">
       <p>PulsePay Intermediação LTDA. Se não solicitou, ignore.</p>
@@ -88,7 +90,7 @@ export const getWelcomeEmailTemplate = (name: string) => `
         <div class="feature-item"><span class="feature-icon">✓</span> Dashboard em tempo real</div>
       </div>
       
-      <a href="https://www.pulsepay.com.br/dashboard" class="button">Acessar Painel</a>
+      <a href="${APP_URL}/dashboard" class="button">Acessar Painel</a>
     </div>
     <div class="footer">
       <p>&copy; 2024 PulsePay. O futuro dos pagamentos digitais.</p>
@@ -160,7 +162,7 @@ export const getOrderConfirmationTemplate = (buyerName: string, productName: str
       
       <p class="text">O acesso ao seu produto será enviado em breve pelo vendedor ou já está disponível na sua plataforma de origem.</p>
       
-      <a href="https://www.pulsepay.com.br" class="button">Ver Detalhes</a>
+      <a href="${APP_URL}" class="button">Ver Detalhes</a>
     </div>
     <div class="footer">
       <p>&copy; 2024 PulsePay. Transação segura via PIX.</p>
@@ -208,7 +210,7 @@ export const getNewSaleTemplate = (userName: string, productName: string, amount
       
       <p class="text" style="font-size: 12px;">O saldo líquido ficará disponível para saque após o período de maturação.</p>
       
-      <a href="https://www.pulsepay.com.br/dashboard/vendas" class="button">Ver Dashboard</a>
+      <a href="${APP_URL}/dashboard/vendas" class="button">Ver Dashboard</a>
     </div>
     <div class="footer">
       <p>&copy; 2024 PulsePay. Escalando seu negócio.</p>
@@ -230,7 +232,7 @@ export const getKycApprovedTemplate = (name: string) => `
     <div class="content">
       <h1 class="headline">KYC Aprovado! 💎</h1>
       <p class="text">Olá ${name}, seus documentos foram verificados. Sua conta está agora totalmente liberada para saques.</p>
-      <a href="https://www.pulsepay.com.br/dashboard/financeiro" class="button">Realizar Saque</a>
+      <a href="${APP_URL}/dashboard/financeiro" class="button">Realizar Saque</a>
     </div>
   </div>
 </body>
@@ -251,7 +253,7 @@ export const getBadgeEarnedTemplate = (name: string, badgeName: string) => `
       <div class="badge-icon">💎</div>
       <p class="text">Incrível! <strong>${name}</strong>, você desbloqueou a plaquinha de <strong>${badgeName}</strong> em vendas acumuladas.</p>
       <p class="text">Você faz parte do nosso grupo de elite. Continue escalando!</p>
-      <a href="https://www.pulsepay.com.br/dashboard" class="button">Ver minhas conquistas</a>
+      <a href="${APP_URL}/dashboard" class="button">Ver minhas conquistas</a>
     </div>
   </div>
 </body>
@@ -273,7 +275,7 @@ export const getNewOrderGeneratedTemplate = (sellerName: string, productName: st
         <div style="font-size: 24px; font-weight: 800; color: #fff; margin-top: 5px;">R$ ${amount.toFixed(2).replace('.', ',')}</div>
       </div>
       <p class="text">Você receberá outro e-mail assim que o pagamento for confirmado.</p>
-      <a href="https://www.pulsepay.com.br/dashboard/vendas" class="button">Ver no Painel</a>
+      <a href="${APP_URL}/dashboard/vendas" class="button">Ver no Painel</a>
     </div>
   </div>
 </body>

@@ -52,11 +52,19 @@ export async function POST(req: Request) {
     await audit('USER_REGISTERED', user.id, { email, name }, req)
 
     const { code } = await generateTwoFactorToken(email)
-    await sendEmail({
+    // Envio CRÍTICO: sem o código o usuário não verifica a conta.
+    const emailResult = await sendEmail({
       to: email,
       subject: "Verifique sua conta - PulsePay",
       html: getTwoFactorEmailTemplate(code)
     })
+
+    if (!emailResult.success) {
+      // Conta já criada; não deixamos 500 genérico — mensagem clara e acionável.
+      return NextResponse.json({
+        error: "Sua conta foi criada, mas não conseguimos enviar o código de verificação agora. Vá para a tela de verificação e clique em \"reenviar código\", ou tente novamente em instantes."
+      }, { status: 502 })
+    }
 
     return NextResponse.json({
       user: { id: user.id, email: user.email, name: user.name },

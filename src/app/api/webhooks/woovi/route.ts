@@ -312,7 +312,8 @@ async function checkAndGrantBadges(userId: string, totalGross: number, existingB
       
       const user = await prisma.user.findUnique({ where: { id: userId }, select: { email: true, name: true } });
       if (user) {
-        await sendBadgeEarnedEmail(user, threshold.label);
+        // Não-crítico: falha de e-mail não pode interromper a concessão de badges.
+        await sendBadgeEarnedEmail(user, threshold.label).catch(err => console.error("[webhook] Falha e-mail de badge (ignorado):", err));
       }
     }
   }

@@ -31,12 +31,16 @@ export async function POST(req: Request) {
       data: { status: "ACTIVE" }
     });
 
-    // 3. Send welcome email
-    await sendEmail({
-      to: email,
-      subject: "Bem-vindo à PulsePay 🚀",
-      html: getWelcomeEmailTemplate(user.name)
-    });
+    // 3. Send welcome email — NÃO-crítico: falha aqui não pode bloquear a verificação.
+    try {
+      await sendEmail({
+        to: email,
+        subject: "Bem-vindo à PulsePay 🚀",
+        html: getWelcomeEmailTemplate(user.name)
+      });
+    } catch (e) {
+      console.error("[verify] Falha ao enviar e-mail de boas-vindas (ignorado):", e);
+    }
 
     return NextResponse.json({
       success: true,
