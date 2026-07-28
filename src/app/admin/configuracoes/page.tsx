@@ -2,11 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { 
-  Zap, 
-  Mail, 
-  Lock, 
-  Save, 
-  Database
+  Zap,
+  Mail,
+  Lock,
+  Save
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -21,8 +20,6 @@ interface AdminSettingsData {
   maintenanceMessage?: string;
   emailSenderName?: string;
   emailSenderAddress?: string;
-  wooviProductionKey?: string;
-  wooviSandboxKey?: string;
 }
 
 export default function AdminSettings() {
@@ -184,39 +181,7 @@ export default function AdminSettings() {
             </div>
          </div>
 
-         {/* API Integrations */}
-         <div className="md:col-span-2 bg-slate-900/40 border border-slate-800/50 rounded-[2.5rem] p-10 backdrop-blur-xl shadow-2xl">
-            <div className="flex items-center gap-4 mb-10">
-               <Database className="h-6 w-6 text-primary" />
-               <div className="flex-1 border-b border-slate-800 pb-2">
-                  <h3 className="text-xl font-black text-white uppercase italic tracking-widest">Integração Woovi (OpenPix)</h3>
-                  <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mt-1">Credenciais de processamento de pagamentos PIX.</p>
-               </div>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-               <div className="bg-slate-950/50 p-6 rounded-2xl border border-slate-800">
-                  <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] block mb-3">Produção (API KEY)</label>
-                  <Input 
-                    type="password" 
-                    className="h-12 bg-slate-900 border-slate-800 text-sm font-mono tracking-widest"
-                    value={settings.wooviProductionKey || ""}
-                    onChange={e => updateField('wooviProductionKey', e.target.value)}
-                    placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                  />
-               </div>
-               <div className="bg-primary/5 p-6 rounded-2xl border border-primary/10">
-                  <label className="text-[10px] font-black text-green-400 uppercase tracking-[0.2em] block mb-3">Sandbox / Testes (API KEY)</label>
-                  <Input 
-                    type="password" 
-                    className="h-12 bg-slate-900 border-slate-800 text-sm font-mono tracking-widest"
-                    value={settings.wooviSandboxKey || ""}
-                    onChange={e => updateField('wooviSandboxKey', e.target.value)}
-                    placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                  />
-               </div>
-            </div>
-         </div>
+         {/* Integração de pagamento (Woovi) ocultada por enquanto — reintegrar depois. */}
       </div>
     </div>
   );

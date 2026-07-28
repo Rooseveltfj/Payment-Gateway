@@ -500,7 +500,7 @@ export default function LandingPage() {
                 <span className="font-display text-8xl font-black text-white italic">0,8</span>
                 <span className="font-display text-4xl font-bold text-success">%</span>
               </div>
-              <p className="text-text-secondary text-sm mb-10 pb-8 border-b border-white/5 uppercase font-bold tracking-[0.2em]">por transação via Woovi</p>
+              <p className="text-text-secondary text-sm mb-10 pb-8 border-b border-white/5 uppercase font-bold tracking-[0.2em]">por transação</p>
               
               <ul className="space-y-5 mb-12">
                 {["Liquidação D+0 — na hora", "Split automático para o player", "QR Code dinâmico via API", "Webhook em tempo real", "Sem taxa de adesão"].map((benefit) => (
@@ -545,7 +545,7 @@ export default function LandingPage() {
                       <span className="text-accent font-bold font-mono">R$ 9,20</span>
                     </div>
                     <div className="flex justify-between text-xs border-t border-white/5 pt-2">
-                      <span className="text-text-muted">Taxa Woovi (0.8%):</span>
+                      <span className="text-text-muted">Taxa de processamento (0.8%):</span>
                       <span className="text-white font-bold font-mono">R$ 0,80</span>
                     </div>
                   </div>

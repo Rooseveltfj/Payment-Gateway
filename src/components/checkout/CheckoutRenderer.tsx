@@ -3,6 +3,7 @@
 import { CheckoutConfig } from "@/types/checkout-config";
 import { resolveTheme } from "@/types/checkout-theme";
 import { isVideoUrl } from "@/lib/checkout-assets";
+import { PAYMENTS_ENABLED } from "@/lib/features";
 import { CheckoutThemeProvider } from "@/components/checkout-builder/CheckoutThemeProvider";
 import { CountdownTimer } from "@/components/checkout-builder/preview/CountdownTimer";
 import { SocialPopup } from "@/components/checkout-builder/preview/SocialPopup";
@@ -257,7 +258,7 @@ export function CheckoutRenderer({ config, mode, form, className }: Props) {
                     </div>
                   )}
 
-                  {showPayment && (
+                  {showPayment && PAYMENTS_ENABLED && (
                     <div className="space-y-4">
                       {bu.orderBumps?.filter(b => b.enabled).map(bump => {
                         const on = live ? form!.selectedBumps.includes(bump.id) : false;
@@ -299,16 +300,23 @@ export function CheckoutRenderer({ config, mode, form, className }: Props) {
                     </div>
                   )}
 
-                  {/* CTA */}
-                  <button type={live ? "submit" : "button"} disabled={live && form!.loading} className={btnClass}
-                    style={{ borderRadius: V.rInput, fontFamily: V.fontBody, fontWeight: 800 }}>
-                    <span className="relative z-10 select-none uppercase tracking-widest text-[15px] flex items-center justify-center gap-2">
-                      {live && form!.loading ? <Loader2 className="h-5 w-5 animate-spin" />
-                        : isMultiStep && step === 1 ? "Ir para pagamento →"
-                        : live ? `Pagar ${money(form!.totalPrice)}`
-                        : a.buttonText}
-                    </span>
-                  </button>
+                  {/* CTA — ou aviso "em breve" quando pagamentos estão desativados */}
+                  {PAYMENTS_ENABLED ? (
+                    <button type={live ? "submit" : "button"} disabled={live && form!.loading} className={btnClass}
+                      style={{ borderRadius: V.rInput, fontFamily: V.fontBody, fontWeight: 800 }}>
+                      <span className="relative z-10 select-none uppercase tracking-widest text-[15px] flex items-center justify-center gap-2">
+                        {live && form!.loading ? <Loader2 className="h-5 w-5 animate-spin" />
+                          : isMultiStep && step === 1 ? "Ir para pagamento →"
+                          : live ? `Pagar ${money(form!.totalPrice)}`
+                          : a.buttonText}
+                      </span>
+                    </button>
+                  ) : (
+                    <div className="w-full py-5 px-4 text-center" style={{ background: V.badgeBg, border: `1px dashed ${V.border}`, borderRadius: V.rInput }}>
+                      <p className="text-[13px] font-black uppercase tracking-widest" style={{ color: V.accent }}>Pagamentos em breve</p>
+                      <p className="text-[12px] mt-1" style={{ color: V.sub }}>Estamos finalizando a integração de pagamento. Volte em breve para concluir sua compra.</p>
+                    </div>
+                  )}
 
                   {(t.authority.sealSecure || t.authority.sealSatisfaction || t.authority.sealProtected) && (
                     <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center pt-2">

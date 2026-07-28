@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { validateApiKey } from "@/lib/api-auth";
 import { rateLimits } from "@/lib/rate-limit";
 import { audit } from "@/lib/audit";
+import { WOOVI_ENABLED } from "@/lib/features";
 import { z } from "zod";
 
 const corsHeaders = {
@@ -38,6 +39,11 @@ function formatBRL(cents: number) {
 }
 
 export async function POST(request: Request) {
+  // Integração Woovi desativada por enquanto — não geramos PIX.
+  if (!WOOVI_ENABLED) {
+    return json({ error: "Pagamento via PIX temporariamente indisponível." }, 503);
+  }
+
   // ── Auth ──────────────────────────────────────────────────────────────────
   const auth = await validateApiKey(request);
   if ("error" in auth) {

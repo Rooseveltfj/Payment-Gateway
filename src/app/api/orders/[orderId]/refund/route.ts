@@ -2,12 +2,18 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { wooviRequest } from "@/lib/woovi";
+import { WOOVI_ENABLED } from "@/lib/features";
 import crypto from "crypto";
 
 export async function POST(
   req: Request,
   { params }: { params: { orderId: string } }
 ) {
+  // Integração Woovi desativada por enquanto — reembolso via API indisponível.
+  if (!WOOVI_ENABLED) {
+    return NextResponse.json({ error: "Reembolso indisponível: integração de pagamento desativada." }, { status: 503 });
+  }
+
   try {
     const session = await auth();
     if (!session?.user) {

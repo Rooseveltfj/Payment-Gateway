@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { wooviRequest } from "@/lib/woovi";
 import { sendPixGeneratedEmail } from "@/lib/email";
+import { WOOVI_ENABLED } from "@/lib/features";
 
 import { rateLimits } from "@/lib/rate-limit";
 
@@ -11,6 +12,11 @@ export async function POST(
   req: Request,
   { params }: { params: { slug: string } }
 ) {
+  // Integração Woovi desativada por enquanto — não geramos PIX.
+  if (!WOOVI_ENABLED) {
+    return NextResponse.json({ error: "Pagamento via PIX temporariamente indisponível." }, { status: 503 });
+  }
+
   const ip = req.headers.get('x-forwarded-for') ?? 'anonymous';
   const { success } = await rateLimits.checkout.limit(ip);
   if (!success) {

@@ -1,7 +1,6 @@
 import React from "react";
 
 const partners = [
-  { name: "Woovi",      logo: "woovi-logo",   type: "inline-svg"  },
   { name: "PIX BCB",    logo: "pix-logo",     type: "inline-svg"  },
   { name: "Supabase",   logo: "https://cdn.simpleicons.org/supabase/3ECF8E",    type: "img" },
   { name: "Vercel",     logo: "https://cdn.simpleicons.org/vercel/ffffff",      type: "img" },
@@ -14,13 +13,6 @@ const partners = [
 ];
 
 export function PartnerTicker() {
-  const WooviLogo = () => (
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-      <rect width="32" height="32" rx="8" fill="#00C853" fillOpacity="0.15"/>
-      <text x="16" y="21" textAnchor="middle" fill="#00C853" fontSize="13" fontWeight="800" fontFamily="sans-serif">W</text>
-    </svg>
-  );
-
   const PixLogo = () => (
     <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
       <rect width="32" height="32" rx="8" fill="#32BCAD" fillOpacity="0.15"/>
@@ -114,7 +106,6 @@ export function PartnerTicker() {
           {[...partners, ...partners].map((partner, index) => (
             <div key={`${partner.name}-${index}`} className="ticker-item">
               <div className="logo-container">
-                {partner.type === 'inline-svg' && partner.logo === 'woovi-logo' && <WooviLogo />}
                 {partner.type === 'inline-svg' && partner.logo === 'pix-logo' && <PixLogo />}
                 {partner.type === 'img' && <img src={partner.logo} alt={partner.name} />}
               </div>

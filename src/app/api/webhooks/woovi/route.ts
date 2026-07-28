@@ -9,11 +9,17 @@ import {
 import { createHmac, timingSafeEqual } from 'crypto'
 import { rateLimits } from "@/lib/rate-limit";
 import { audit } from "@/lib/audit"
+import { WOOVI_ENABLED } from "@/lib/features";
 
 // IPs permitidos da Woovi (da documentação oficial)
 const WOOVI_IPS = ['179.190.27.5', '179.190.27.6', '186.224.205.214']
 
 export async function POST(request: Request) {
+  // Integração Woovi desativada por enquanto — responde 200 e ignora o payload.
+  if (!WOOVI_ENABLED) {
+    return NextResponse.json({ ok: true, ignored: true });
+  }
+
   // 1. Rate Limiting
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0] ?? 'anonymous';
   const { success } = await rateLimits.webhook.limit(ip);
